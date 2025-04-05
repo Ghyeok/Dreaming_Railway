@@ -30,7 +30,7 @@ public class IncreaseTiredness : MonoBehaviour
                 SubwayManager.Instance.playerState == SubwayManager.PlayerState.SLEEP)
             {
                 SubwayManager.Instance.playerState = SubwayManager.PlayerState.DEEPSLEEP;
-                SubwayManager.Instance.currentTired = 0f;
+                SubwayManager.Instance.currentTired /= 2;
                 // 꿈 속 Scene으로 이동하는 코드
                 break;
             }

@@ -4,9 +4,10 @@ public class SubwayManager : Managers<SubwayManager>
 {
     public enum PlayerState
     {
-        AWAKE,
+        STANDING,
         SLEEP,
         DEEPSLEEP,
+        GAMEOVER,
     }
 
     public float maxTired;
