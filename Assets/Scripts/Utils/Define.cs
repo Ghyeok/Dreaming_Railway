@@ -12,7 +12,7 @@ public class Define
     public enum Sounds
     {
         BGM,
-        VFX,
+        SFX,
         MaxCount
     }
 
@@ -22,7 +22,7 @@ public class Define
         MaxCount
     }
 
-    public enum VFX
+    public enum SFX
     {
         // VFX 목록 작성
         MaxCount
