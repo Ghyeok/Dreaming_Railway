@@ -748,6 +748,7 @@ GameObject:
   - component: {fileID: 829118114}
   - component: {fileID: 829118113}
   - component: {fileID: 829118112}
+  - component: {fileID: 829118115}
   m_Layer: 5
   m_Name: TestSlapButton
   m_TagString: Untagged
@@ -857,6 +858,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829118110}
   m_CullTransparentMesh: 1
+--- !u!114 &829118115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829118110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b2749298135f334f903f794d91539cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slapButton: {fileID: 829118112}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,7 +1285,10 @@ MonoBehaviour:
   maxTired: 100
   currentTired: 0
   tiredIncreaseSpeed: 2
+  isSlapCoolTime: 0
+  tiredDecreaseBySlap: 0
   playerState: 1
+  playerBehave: 0
 --- !u!4 &1453932065
 Transform:
   m_ObjectHideFlags: 0
@@ -1299,6 +1316,7 @@ GameObject:
   - component: {fileID: 1837855575}
   - component: {fileID: 1837855574}
   - component: {fileID: 1837855573}
+  - component: {fileID: 1837855576}
   m_Layer: 5
   m_Name: TestDreamButton
   m_TagString: Untagged
@@ -1408,6 +1426,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837855571}
   m_CullTransparentMesh: 1
+--- !u!114 &1837855576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837855571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c410a31512d17d409cbf3dfdf70a535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fallAsleepButton: {fileID: 1837855573}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -31,7 +31,12 @@ public class IncreaseTiredness : MonoBehaviour
             {
                 SubwayManager.Instance.playerState = SubwayManager.PlayerState.DEEPSLEEP;
                 SubwayManager.Instance.currentTired /= 2;
-                // ²Ş ¼Ó SceneÀ¸·Î ÀÌµ¿ÇÏ´Â ÄÚµå
+                // ê¿ˆ ì† Sceneìœ¼ë¡œ ì´ë™í•˜ëŠ” ì½”ë“œ
+                break;
+            }
+
+            if (SubwayManager.Instance.playerBehave == SubwayManager.PlayerBehave.FALLASLEEP)
+            {
                 break;
             }
         }

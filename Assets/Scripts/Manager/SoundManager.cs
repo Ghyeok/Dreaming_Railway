@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
- /* AudioClip : ½ÇÁ¦·Î Àç»ıµÇ´Â »ç¿îµå ÆÄÀÏ
- *  AudioSource : ÇØ´ç Å¬¸³À» °ü¸®ÇÏ´Â ¿ªÇÒ
+ /* AudioClip : ì‹¤ì œë¡œ ì¬ìƒë˜ëŠ” ì‚¬ìš´ë“œ íŒŒì¼
+ *  AudioSource : í•´ë‹¹ í´ë¦½ì„ ê´€ë¦¬í•˜ëŠ” ì—­í• 
  */
 
 public class SoundManager : Managers<SoundManager>
@@ -12,8 +12,8 @@ public class SoundManager : Managers<SoundManager>
     AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
     Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
-    AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGMÀ¸·Î »ç¿ëÇÒ AudioSource
-    AudioSource SFXSource { get { return audioSources[(int)Define.Sounds.SFX]; } } // SFX(È¿°úÀ½)À¸·Î »ç¿ëÇÒ AudioSource
+    AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGMìœ¼ë¡œ ì‚¬ìš©í•  AudioSource
+    AudioSource SFXSource { get { return audioSources[(int)Define.Sounds.SFX]; } } // SFX(íš¨ê³¼ìŒ)ìœ¼ë¡œ ì‚¬ìš©í•  AudioSource
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,14 +33,14 @@ public class SoundManager : Managers<SoundManager>
 
         if(newSoundType == Define.Sounds.BGM)
         {
-            // BGM Àç»ı ·ÎÁ÷..
+            // BGM ì¬ìƒ ë¡œì§..
             BGMSource.clip = clip;
             BGMSource.Play();
         }
 
         if (newSoundType == Define.Sounds.SFX)
         {
-            // È¿°úÀ½ Àç»ı ·ÎÁ÷..
+            // íš¨ê³¼ìŒ ì¬ìƒ ë¡œì§..
             SFXSource.clip = clip;
             SFXSource.PlayOneShot(clip);
         }
@@ -56,7 +56,7 @@ public class SoundManager : Managers<SoundManager>
 
         if (clip == null)
         {
-            Debug.LogWarning($"¿Àµğ¿À Å¬¸³À» Ã£À» ¼ö ¾ø½À´Ï´Ù : {path}");
+            Debug.LogWarning($"ì˜¤ë””ì˜¤ í´ë¦½ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤ : {path}");
         }
         else
         {

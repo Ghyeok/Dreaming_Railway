@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class SlapPlayerFace : MonoBehaviour
     void Start()
     {
         slapButton = GetComponent<Button>();
-        slapButton.onClick.AddListener(DecreaseTired);
+        slapButton.onClick.AddListener(Slap);
     }
 
     // Update is called once per frame
@@ -17,8 +18,20 @@ public class SlapPlayerFace : MonoBehaviour
         
     }
 
-    void DecreaseTired()
+    void Slap()
     {
-        SubwayManager.Instance.currentTired -= 10f; // ÀÓ½Ã ÄÚµå
+        StartCoroutine(DecreaseTiredBySlap());
+    }
+
+    IEnumerator DecreaseTiredBySlap()
+    {
+        if (!SubwayManager.Instance.isSlapCoolTime && SubwayManager.Instance.playerState == SubwayManager.PlayerState.SLEEP)
+        {
+            SubwayManager.Instance.isSlapCoolTime = true;
+            SubwayManager.Instance.currentTired -= SubwayManager.Instance.tiredDecreaseBySlap;
+
+            yield return new WaitForSeconds(5f); // 5ì´ˆ ì¿¨íƒ€ìž„
+            SubwayManager.Instance.isSlapCoolTime = false;
+        }
     }
 }
