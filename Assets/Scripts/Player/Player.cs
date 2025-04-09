@@ -3,37 +3,56 @@ using UnityEngine;
 public class Player : MonoBehaviour
 { 
     [SerializeField] [Range(1f, 20f)] float moveSpeed = 5f;
-    [SerializeField] [Range(1f, 20f)] float jumpForce = 5f;
-    private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rigid;
 
+    public float jumpPower;
+    public bool isJump = false;
     private bool moveRight, moveLeft;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();
+    }
+    
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
     }
 
-    //좌우 움직이기
-    void Update()
+    void FixedUpdate() 
     {
+        float moveX = Input.GetAxis("Horizontal");
+
         if (moveRight)
             transform.position += Vector3.right * moveSpeed * Time.deltaTime;
         else if (moveLeft)
-       
-         transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+   
+     rigid.linearVelocity = new Vector2(moveX*moveSpeed, rigid.linearVelocity.y);
     }
+
+    public void Jump()
+    {
+        if (!isJump)
+            {
+                isJump = true;
+                rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse);
+            }
+        }
 
     public void StartMoveRight() => moveRight = true;
     public void StopMoveRight() => moveRight = false;
-
     public void StartMoveLeft() => moveLeft = true;
     public void StopMoveLeft() => moveLeft = false;
 
-    //점프
-    public void Jump()
-    {   
-      if (Mathf.Approximately(rb.linearVelocity.y, 0))
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        if (other.gameObject.name.Equals("Ground"))
+        {
+            isJump = false;
+        }
     }
-}
 
+}
