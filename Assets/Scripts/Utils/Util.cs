@@ -4,6 +4,16 @@ using UnityEngine;
 // Static으로 선언하자
 public static class Util
 {
+    public static T GetOrAddComponet<T>(GameObject go) where T : Component
+    {
+        T component = go.GetComponent<T>();
+        if (component == null)
+            component = go.AddComponent<T>();
+
+        return component;
+    }
+
+
     // root 게임오브젝트 산하에 있는 <T> 컴포넌트를 가지고, name이 일치하는 child를 찾아주는 함수, recursive가 true면 child의 child도 찾아준다
     public static T FindChild<T>(GameObject root, string name = null, bool recursive = false) where T : UnityEngine.Object
     {
@@ -33,5 +43,15 @@ public static class Util
         }
 
         return null;
+    }
+
+    public static GameObject FindChild(GameObject root, string name = null, bool recursive = false)
+    {
+        Transform transform = FindChild<Transform>(root, name, recursive); // 모든 게임 오브젝트는 Transform 컴포넌트를 갖는다!
+
+        if (transform != null)
+            return transform.gameObject;
+        else
+            return null;
     }
 }

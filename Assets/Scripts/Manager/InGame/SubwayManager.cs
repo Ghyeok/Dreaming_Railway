@@ -33,6 +33,11 @@ public class SubwayManager : Managers<SubwayManager>
 
     public override void Awake()
     {
+        Init();
+    }
+
+    void Init()
+    {
         playerState = PlayerState.SLEEP;
         playerBehave = PlayerBehave.NONE;
         maxTired = 100f;
