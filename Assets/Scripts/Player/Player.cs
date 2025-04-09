@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(1f, 20f)] float moveSpeed = 5f;
     [SerializeField] private Rigidbody2D rigid;
 
-    public float jumpPower;
+    public float jumpPower = 5f;
     public bool isJump = false;
     private bool moveRight, moveLeft;
 
@@ -22,9 +22,15 @@ public class Player : MonoBehaviour
     }
 
     void FixedUpdate() 
-    {
+    {//키보드키
         float moveX = Input.GetAxis("Horizontal");
 
+         if (moveX > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (moveX < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+
+    //UI로 이동
         if (moveRight)
             transform.position += Vector3.right * moveSpeed * Time.deltaTime;
         else if (moveLeft)
@@ -42,9 +48,19 @@ public class Player : MonoBehaviour
             }
         }
 
-    public void StartMoveRight() => moveRight = true;
+    public void StartMoveRight() 
+    {
+        moveRight = true;
+        transform.localScale = new Vector3(1, 1, 1);
+    }
+
     public void StopMoveRight() => moveRight = false;
-    public void StartMoveLeft() => moveLeft = true;
+    public void StartMoveLeft()
+    {
+        moveLeft = true;
+        transform.localScale = new Vector3(-1, 1, 1);
+    }
+     
     public void StopMoveLeft() => moveLeft = false;
 
     private void OnCollisionEnter2D(Collision2D other) 
@@ -54,5 +70,4 @@ public class Player : MonoBehaviour
             isJump = false;
         }
     }
-
 }
