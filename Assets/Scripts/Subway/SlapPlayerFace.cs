@@ -27,10 +27,12 @@ public class SlapPlayerFace : MonoBehaviour
     {
         if (!SubwayManager.Instance.isSlapCoolTime && SubwayManager.Instance.playerState == SubwayManager.PlayerState.SLEEP)
         {
+            SubwayManager.Instance.playerBehave = SubwayManager.PlayerBehave.SLAP;
             SubwayManager.Instance.isSlapCoolTime = true;
             SubwayManager.Instance.currentTired -= SubwayManager.Instance.tiredDecreaseBySlap;
 
             yield return new WaitForSeconds(5f); // 5초 쿨타임
+            SubwayManager.Instance.playerBehave = SubwayManager.PlayerBehave.NONE;
             SubwayManager.Instance.isSlapCoolTime = false;
         }
     }

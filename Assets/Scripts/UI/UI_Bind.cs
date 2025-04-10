@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 // UI를 산하로 가지고 있는 부모 오브젝트에 할당하자 ex) UI_Root
@@ -26,6 +27,7 @@ public class UI_Bind : MonoBehaviour
     void DreamButtonTest(PointerEventData data)
     {
         Debug.Log("꿈 속 진입!");
+        SceneManager.LoadScene("InDream_PlayerMove");
     }
     // 테스트용 메소드
     void SlapButtonTest(PointerEventData data)
