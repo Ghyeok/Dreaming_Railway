@@ -778,7 +778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0e58703723fe74abc634f4a22d7129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5.5
+  acceleration: 5
+  MaxSpeed: 8
   rigid: {fileID: 0}
   jumpPower: 5
   isJump: 0
@@ -1278,7 +1279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 780054739}
-  speed: 5
+  speed: 8
   center: {x: 0, y: 3.5}
   size: {x: 40, y: 15}
 --- !u!1 &1381799232

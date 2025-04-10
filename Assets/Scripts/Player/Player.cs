@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 { 
-    [SerializeField] [Range(1f, 20f)] float moveSpeed = 5f;
+   // [SerializeField] [Range(1f, 20f)] float moveSpeed = 5f;
+    [SerializeField] private float acceleration;  
+    [SerializeField] private float MaxSpeed = 8f;       
     [SerializeField] private Rigidbody2D rigid;
+    private float Speed = 0f;
 
     public float jumpPower;
     public bool isJump = false;
@@ -25,20 +28,37 @@ public class Player : MonoBehaviour
     {//키보드키
         float moveX = Input.GetAxis("Horizontal");
 
-         if (moveX > 0)
+    //UI로 이동
+        if (moveRight) moveX = 1;
+        else if (moveLeft) moveX = -1;
+
+    //방향 전환 시
+        if ((Speed > 0 && moveX < 0) || (Speed < 0 && moveX > 0))
+            Speed = 0; //방향 바꾸면 속도 멈춤
+
+    //방향 따라 플레이어 좌우 반전전
+        if (moveX > 0)
             transform.localScale = new Vector3(1, 1, 1);
         else if (moveX < 0)
             transform.localScale = new Vector3(-1, 1, 1);
 
-    //UI로 이동
-        if (moveRight)
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
-        else if (moveLeft)
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-   
-     rigid.linearVelocity = new Vector2(moveX*moveSpeed, rigid.linearVelocity.y);
+    //가속
+        if (moveX != 0)
+        {
+            Speed += moveX * acceleration * Time.fixedDeltaTime;
+            Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
+        }
+
+    //감속
+        else
+        {
+            Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
+        }
+
+        rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
     }
 
+//점프 함수
     public void Jump()
     {
         if (!isJump)
@@ -48,6 +68,7 @@ public class Player : MonoBehaviour
             }
         }
 
+//UI 좌우 버튼을 위한..
     public void StartMoveRight() 
     {
         moveRight = true;
