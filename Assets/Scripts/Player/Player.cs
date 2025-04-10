@@ -5,7 +5,7 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(1f, 20f)] float moveSpeed = 5f;
     [SerializeField] private Rigidbody2D rigid;
 
-    public float jumpPower = 5f;
+    public float jumpPower;
     public bool isJump = false;
     private bool moveRight, moveLeft;
 
