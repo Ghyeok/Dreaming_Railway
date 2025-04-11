@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlapPlayerFace : MonoBehaviour
+public class PlayerSlap : MonoBehaviour
 {
     public Button slapButton;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

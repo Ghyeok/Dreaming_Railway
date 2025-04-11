@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FallAsleep : MonoBehaviour
+public class PlayerFallAsleep : MonoBehaviour
 {
     public Button fallAsleepButton;
 

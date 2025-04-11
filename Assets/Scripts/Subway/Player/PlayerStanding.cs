@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Standing : MonoBehaviour
+public class PlayerStanding : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
