@@ -14,6 +14,7 @@ public class UI_Bind : MonoBehaviour
     {
         TestDreamButton,
         TestSlapButton,
+        TestTransferButton,
     }
     public enum TestGameObject
     {
@@ -34,6 +35,10 @@ public class UI_Bind : MonoBehaviour
     {
         Debug.Log("뺨 때리기!");
     }
+    void TransferButtonTest(PointerEventData data)
+    {
+        Debug.Log("환승 성공!");
+    }
 
 
     // 유니티 최상위 클래스인 Object 배열로 저장
@@ -52,6 +57,9 @@ public class UI_Bind : MonoBehaviour
 
         GameObject dream = GetButton((int)TestButtons.TestDreamButton).gameObject;
         AddUIEvent(dream, DreamButtonTest, Define.UIEvent.Click);
+
+        GameObject transfer = GetButton((int)TestButtons.TestTransferButton).gameObject;
+        AddUIEvent(transfer, TransferButtonTest, Define.UIEvent.Click);
 
         GameObject go = GetImage((int)TestImage.TestImage).gameObject;
         AddUIEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);

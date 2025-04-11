@@ -778,6 +778,64 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1849244634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849244636}
+  - component: {fileID: 1849244635}
+  m_Layer: 0
+  m_Name: Station Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1849244635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849244634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b1ed1e59aac63b46801e4fe2cca1c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineData: {fileID: 11400000, guid: 83238737b52aeba41bf659797bb7d27e, type: 2}
+  stationDatas:
+  - data:
+      minTravelTime: 0
+      maxTravelTime: 0
+      minStopTime: 0
+      maxStopTime: 0
+      stationType: 0
+      travelToNextStationTime: 0
+      stopTime: 0
+    travelTime: 0
+    stopTime: 0
+    stationType: 0
+  stationIdx: 0
+--- !u!4 &1849244636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849244634}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 438.3922, y: 191.55971, z: -1.5182945}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2109156199
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -786,6 +844,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1106571346503452999, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1106571346503452999, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -115.62
+      objectReference: {fileID: 0}
     - target: {fileID: 1848005837727853365, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -865,6 +931,10 @@ PrefabInstance:
     - target: {fileID: 1848005837727853365, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3727364295970252760, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
+      propertyPath: m_text
+      value: Transfer
       objectReference: {fileID: 0}
     - target: {fileID: 6094283034332839438, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_Name
@@ -984,3 +1054,4 @@ SceneRoots:
   - {fileID: 1138007194}
   - {fileID: 2109156199}
   - {fileID: 2879724028938901787}
+  - {fileID: 1849244636}
