@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class FadeManager : Managers<FadeManager>
+public class FadeManager : SingletonManagers<FadeManager>
 {
     public float fadeTime;
     public Image fadeImage;

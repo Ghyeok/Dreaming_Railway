@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SubwayManager : Managers<SubwayManager>
+public class SubwayManager : SingletonManagers<SubwayManager>
 {
     public enum PlayerState
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DreamManager : Managers<DreamManager>
+public class DreamManager : SingletonManagers<DreamManager>
 {
     public enum PlayerState
     {

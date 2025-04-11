@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class UIManager : Managers<UIManager>
+public class UIManager : SingletonManagers<UIManager>
 {
     private GameObject _root;
 
