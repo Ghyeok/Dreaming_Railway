@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class Define
 {
+    public enum GameMode
+    {
+        Tutorial,
+        NormalMode,
+        InfiniteMode,
+    }
+
     public enum UIEvent
     {
         Click,
