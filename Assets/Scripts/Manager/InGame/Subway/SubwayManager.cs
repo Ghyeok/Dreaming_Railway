@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+// 세분화가 필요할 것 같다...
 public class SubwayManager : SingletonManagers<SubwayManager>
 {
     public enum PlayerState
@@ -33,6 +35,7 @@ public class SubwayManager : SingletonManagers<SubwayManager>
 
     public override void Awake()
     {
+        base.Awake();
         Init();
     }
 
