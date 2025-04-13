@@ -25,19 +25,16 @@ public class Camera_move : MonoBehaviour
     }
 
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime);
         transform.position = new Vector3(transform.position.x, transform.position.y, -10f);
 
         //제한 영역 범위
         float lx = size.x * 0.5f - width;
-        float clampX = Math.Clamp(transform.position.x, -lx + center.x, lx + center.x);
+        float clampX = Mathf.Clamp(transform.position.x, -lx + center.x, lx + center.x);
 
         float ly = size.y * 0.5f - height;
-        float clampY = Math.Clamp(transform.position.y, -ly + center.y, ly + center.y);
-        
-        //최종 위치 적용
-        transform.position = new Vector3(clampX, clampY, -10f);
+        float clampY = Mathf.Clamp(transform.position.y, -ly + center.y, ly + center.y);
     }
 }
