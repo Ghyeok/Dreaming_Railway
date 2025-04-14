@@ -9,7 +9,6 @@ public class TransferManager : SingletonManagers<TransferManager>
 {
     public int curTransferCount;
     public int maxTransferCount;
-    public int dayCount;
 
     public StationData currentStation;
 
@@ -17,7 +16,6 @@ public class TransferManager : SingletonManagers<TransferManager>
     {
         base.Awake();
         curTransferCount = 0;
-        dayCount = 1;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,7 +32,7 @@ public class TransferManager : SingletonManagers<TransferManager>
 
     void DetermineMaxTransferCount()
     {
-        switch (dayCount)
+        switch (SubwayGameManager.Instance.dayCount)
         {
             case 1:
                 maxTransferCount = 3;
@@ -52,5 +50,10 @@ public class TransferManager : SingletonManagers<TransferManager>
                 maxTransferCount = 9;
                 break;
         }
+    }
+
+    public void SuccessTransfer()
+    {
+
     }
 }

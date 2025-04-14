@@ -51,17 +51,17 @@ public class StationManager : SingletonManagers<StationManager>
 
     public void ChooseTransferStation()
     {
-        if (TransferManager.Instance.dayCount >= 1 && TransferManager.Instance.dayCount <= 3)
+        if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
         {
             stationIdx = Random.Range(10, 15);
             stationDatas[stationIdx].stationType = StationType.Transfer;
         }
-        else if (TransferManager.Instance.dayCount >= 4 && TransferManager.Instance.dayCount <= 6)
+        else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
         {
             stationIdx = Random.Range(6, 11);
             stationDatas[stationIdx].stationType = StationType.Transfer;
         }
-        else if (TransferManager.Instance.dayCount >= 7)
+        else if (SubwayGameManager.Instance.dayCount >= 7)
         {
             stationIdx = Random.Range(3, 7);
             stationDatas[stationIdx].stationType = StationType.Transfer;

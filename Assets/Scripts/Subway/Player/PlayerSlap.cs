@@ -15,7 +15,7 @@ public class PlayerSlap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void Slap()
@@ -25,15 +25,15 @@ public class PlayerSlap : MonoBehaviour
 
     IEnumerator DecreaseTiredBySlap()
     {
-        if (!SubwayManager.Instance.isSlapCoolTime && SubwayManager.Instance.playerState == SubwayManager.PlayerState.SLEEP)
+        if (!SubwayGameManager.Instance.isSlapCoolTime && SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            SubwayManager.Instance.playerBehave = SubwayManager.PlayerBehave.SLAP;
-            SubwayManager.Instance.isSlapCoolTime = true;
-            SubwayManager.Instance.currentTired -= SubwayManager.Instance.tiredDecreaseBySlap;
+            SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
+            SubwayGameManager.Instance.isSlapCoolTime = true;
+            TiredManager.Instance.currentTired -= SubwayGameManager.Instance.tiredDecreaseBySlap;
 
             yield return new WaitForSeconds(5f); // 5초 쿨타임
-            SubwayManager.Instance.playerBehave = SubwayManager.PlayerBehave.NONE;
-            SubwayManager.Instance.isSlapCoolTime = false;
+            SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
+            SubwayGameManager.Instance.isSlapCoolTime = false;
         }
     }
 }
