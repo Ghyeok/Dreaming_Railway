@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class StationDataInstance
@@ -46,30 +47,48 @@ public class StationManager : SingletonManagers<StationManager>
             stationDatas.Add(new StationDataInstance(station));
         }
 
-        ChooseTransferStation();
+        ChooseStationType();
     }
 
-    public void ChooseTransferStation()
+    public void ChooseStationType()
     {
-        if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
+        // 환승역 결정
+        if (TransferManager.Instance.curTransferCount < TransferManager.Instance.maxTransferCount)
         {
-            stationIdx = Random.Range(10, 15);
-            stationDatas[stationIdx].stationType = StationType.Transfer;
+            if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
+            {
+                stationIdx = Random.Range(10, 15);
+                stationDatas[stationIdx].stationType = StationType.Transfer;
+            }
+            else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
+            {
+                stationIdx = Random.Range(6, 11);
+                stationDatas[stationIdx].stationType = StationType.Transfer;
+            }
+            else if (SubwayGameManager.Instance.dayCount >= 7)
+            {
+                stationIdx = Random.Range(3, 7);
+                stationDatas[stationIdx].stationType = StationType.Transfer;
+            }
         }
-        else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
+        // 목적지 결정
+        else if (TransferManager.Instance.curTransferCount == TransferManager.Instance.maxTransferCount)
         {
-            stationIdx = Random.Range(6, 11);
-            stationDatas[stationIdx].stationType = StationType.Transfer;
+            if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
+            {
+                stationIdx = Random.Range(10, 15);
+                stationDatas[stationIdx].stationType = StationType.Destination;
+            }
+            else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
+            {
+                stationIdx = Random.Range(6, 11);
+                stationDatas[stationIdx].stationType = StationType.Destination;
+            }
+            else if (SubwayGameManager.Instance.dayCount >= 7)
+            {
+                stationIdx = Random.Range(3, 7);
+                stationDatas[stationIdx].stationType = StationType.Destination;
+            }
         }
-        else if (SubwayGameManager.Instance.dayCount >= 7)
-        {
-            stationIdx = Random.Range(3, 7);
-            stationDatas[stationIdx].stationType = StationType.Transfer;
-        }
-    }
-
-    public void ChooseDestinationStation()
-    {
-        // 마지막 환승 카운트라면 목적지 역 선택
     }
 }
