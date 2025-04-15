@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PlayerFallAsleep : MonoBehaviour
 {
     public Button fallAsleepButton;
+    private SubwayGameManager _game; // 의존성 주입 고려중
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,12 +21,12 @@ public class PlayerFallAsleep : MonoBehaviour
 
     void EnterToDream()
     {
-        SubwayManager.Instance.playerBehave = SubwayManager.PlayerBehave.FALLASLEEP;
+        SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.FALLASLEEP;
 
-        if (SubwayManager.Instance.playerState != SubwayManager.PlayerState.STANDING &&
-            SubwayManager.Instance.playerState != SubwayManager.PlayerState.DEEPSLEEP)
+        if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.STANDING &&
+            SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
         {
-            SubwayManager.Instance.playerState = SubwayManager.PlayerState.DEEPSLEEP;
+            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
             // 꿈 속 Scene으로 이동하는 코드
         }
     }

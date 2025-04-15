@@ -6,35 +6,45 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-// UI를 산하로 가지고 있는 부모 오브젝트에 할당하자 ex) UI_Root
 public class UI_Bind : MonoBehaviour
 {
-    // 테스트용 타입
-    public enum TestButtons
+    public enum Buttons
     {
-        TestDreamButton,
-        TestSlapButton,
-        TestTransferButton,
+        StandingButton, // 입석
+        FallAsleepButton, // 즉시 잠들기
+        SlapButton, // 뺨 떄리기
+        TransferButton, // 환승하기
+        GetOffButton, // 목적지에 내리기
+        PauseButton, // 일시정지
+        // 필요한 버튼 추가..
     }
-    public enum TestGameObject
+    public enum Texts
     {
-        TestObject1,
+        Text,
+        // 필요한 텍스트 추가..
     }
-    public enum TestImage
+    public enum Images
     {
-        TestImage,
+        Image,
+        // 필요한 이미지 추가..
     }
-    // 테스트용 메소드
+    public enum GameObjects
+    {
+        GameObject,
+        // 필요한 게임오브젝트 추가..
+    }
+
     void DreamButtonTest(PointerEventData data)
     {
         Debug.Log("꿈 속 진입!");
         SceneManager.LoadScene("InDream_PlayerMove");
     }
-    // 테스트용 메소드
+
     void SlapButtonTest(PointerEventData data)
     {
         Debug.Log("뺨 때리기!");
     }
+
     void TransferButtonTest(PointerEventData data)
     {
         Debug.Log("환승 성공!");
@@ -48,20 +58,21 @@ public class UI_Bind : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Bind<Button>(typeof(TestButtons));
-        Bind<Image>(typeof(TestImage));
-        Bind<GameObject>(typeof(TestGameObject));
+        Bind<Button>(typeof(Buttons));
+        Bind<Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
+        Bind<GameObject>(typeof(GameObjects));
 
-        GameObject slap = GetButton((int)TestButtons.TestSlapButton).gameObject;
+        GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
         AddUIEvent(slap, SlapButtonTest, Define.UIEvent.Click);
 
-        GameObject dream = GetButton((int)TestButtons.TestDreamButton).gameObject;
+        GameObject dream = GetButton((int)Buttons.FallAsleepButton).gameObject;
         AddUIEvent(dream, DreamButtonTest, Define.UIEvent.Click);
 
-        GameObject transfer = GetButton((int)TestButtons.TestTransferButton).gameObject;
+        GameObject transfer = GetButton((int)Buttons.TransferButton).gameObject;
         AddUIEvent(transfer, TransferButtonTest, Define.UIEvent.Click);
 
-        GameObject go = GetImage((int)TestImage.TestImage).gameObject;
+        GameObject go = GetImage((int)Images.Image).gameObject;
         AddUIEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
     }
 
