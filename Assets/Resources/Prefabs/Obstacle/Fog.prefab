@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4863714919639389838}
   - component: {fileID: 4379931995592609623}
   - component: {fileID: 719110751949969212}
+  - component: {fileID: 3880702763422207596}
   - component: {fileID: 5022238599266024563}
   m_Layer: 0
   m_Name: Fog
@@ -97,14 +98,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2371902892865413948}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -116,6 +117,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3880702763422207596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371902892865413948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48ef36566016e7f49b6fa47ecc44ea22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Xvelocity: 0.15
+  Yvelocity: 0.1
 --- !u!66 &5022238599266024563
 CompositeCollider2D:
   m_ObjectHideFlags: 0

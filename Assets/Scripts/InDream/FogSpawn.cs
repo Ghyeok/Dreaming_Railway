@@ -4,6 +4,7 @@ public class FogSpawn : MonoBehaviour
 {
     public GameObject Fog;
     public Vector3[] spawnPositions = new Vector3[3];
+    private int randomIndex;
 
 
     void Start () 
@@ -13,21 +14,25 @@ public class FogSpawn : MonoBehaviour
 
     void SpawnRandomPosition()
     {   //안개 생성 위치 랜덤 지정
-        int randomIndex = Random.Range(0, spawnPositions.Length);
+        randomIndex = Random.Range(0, spawnPositions.Length);
 
-        Quaternion rotation;
-        if (randomIndex == 0) //왼쪽
+        if (randomIndex == 0) //좌
             transform.rotation = Quaternion.Euler(0,0,-90);
 
-        else if (randomIndex == 1) // 오른쪽
+        else if (randomIndex == 1) //우
             transform.rotation = Quaternion.Euler(0, 0, 90);
 
-        else if(randomIndex == 2) // 중앙
+        else if(randomIndex == 2) //하
             transform.rotation = Quaternion.identity;
 
         //안개 생성
-        Instantiate(Fog, spawnPositions[randomIndex], transform.rotation);
+        GameObject FogClone = Instantiate(Fog, spawnPositions[randomIndex], transform.rotation);
+
+        //인덱스값 전달
+        FogMovement movement = FogClone.GetComponent<FogMovement>();
+        if (movement != null)
+        {
+            movement.SetIndex(randomIndex);
+        }
     }
-
-
 }
