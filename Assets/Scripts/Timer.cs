@@ -1,11 +1,17 @@
 using TMPro;
 using UnityEngine;
 
+// SubwayGameManager에서 관리하는 단 하나의 타이머
 public class Timer : MonoBehaviour
 {
-    public TextMeshProUGUI timer;
-    public float curTime;
-    public bool isStop;
+    public TextMeshProUGUI timerText;
+    public float curTime { get; private set; }
+    public bool isStop { get; private set; }
+
+    private void Awake()
+    {
+        timerText = GetComponent<TextMeshProUGUI>();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,7 +25,7 @@ public class Timer : MonoBehaviour
         if (!isStop)
         {
             curTime += Time.deltaTime;
-            timer.text = "Time : " + curTime.ToString("F2");
+            timerText.text = "Time : " + curTime.ToString("F2");
         }
     }
 

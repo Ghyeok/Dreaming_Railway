@@ -24,7 +24,18 @@ public class StationManager : SingletonManagers<StationManager>
 {
     public LineDataSO lineData;
     public List<StationDataInstance> stationDatas = new List<StationDataInstance>();
-    public int stationIdx;
+    public int transferIdx;
+
+    public int currentStationIdx;
+    private float timeChecker;
+
+
+    public override void Awake()
+    {
+        base.Awake();
+        currentStationIdx = -1;
+        timeChecker = 0;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,7 +46,7 @@ public class StationManager : SingletonManagers<StationManager>
     // Update is called once per frame
     void Update()
     {
-
+        CheckCurrentStation();
     }
 
     public void GenerateStations()
@@ -57,18 +68,18 @@ public class StationManager : SingletonManagers<StationManager>
         {
             if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
             {
-                stationIdx = Random.Range(10, 15);
-                stationDatas[stationIdx].stationType = StationType.Transfer;
+                transferIdx = Random.Range(10, 15);
+                stationDatas[transferIdx].stationType = StationType.Transfer;
             }
             else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
             {
-                stationIdx = Random.Range(6, 11);
-                stationDatas[stationIdx].stationType = StationType.Transfer;
+                transferIdx = Random.Range(6, 11);
+                stationDatas[transferIdx].stationType = StationType.Transfer;
             }
             else if (SubwayGameManager.Instance.dayCount >= 7)
             {
-                stationIdx = Random.Range(3, 7);
-                stationDatas[stationIdx].stationType = StationType.Transfer;
+                transferIdx = Random.Range(3, 7);
+                stationDatas[transferIdx].stationType = StationType.Transfer;
             }
         }
         // 목적지 결정
@@ -76,19 +87,31 @@ public class StationManager : SingletonManagers<StationManager>
         {
             if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
             {
-                stationIdx = Random.Range(10, 15);
-                stationDatas[stationIdx].stationType = StationType.Destination;
+                transferIdx = Random.Range(10, 15);
+                stationDatas[transferIdx].stationType = StationType.Destination;
             }
             else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
             {
-                stationIdx = Random.Range(6, 11);
-                stationDatas[stationIdx].stationType = StationType.Destination;
+                transferIdx = Random.Range(6, 11);
+                stationDatas[transferIdx].stationType = StationType.Destination;
             }
             else if (SubwayGameManager.Instance.dayCount >= 7)
             {
-                stationIdx = Random.Range(3, 7);
-                stationDatas[stationIdx].stationType = StationType.Destination;
+                transferIdx = Random.Range(3, 7);
+                stationDatas[transferIdx].stationType = StationType.Destination;
             }
+        }
+    }
+
+    public void CheckCurrentStation() // 현재 어느 역을 지나고 있는지 확인하는 함수
+    {
+        Timer timer = SubwayGameManager.Instance.timer;
+
+        if (timer.curTime >= timeChecker)
+        {
+            currentStationIdx++;
+            timeChecker += stationDatas[currentStationIdx].travelTime;
+            timeChecker += stationDatas[currentStationIdx].stopTime;
         }
     }
 }
