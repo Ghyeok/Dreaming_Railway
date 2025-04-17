@@ -34,7 +34,7 @@ public class UI_Bind : MonoBehaviour
         // 필요한 게임오브젝트 추가..
     }
 
-    void DreamButtonTest(PointerEventData data)
+    void FallAsleepButtonTest(PointerEventData data)
     {
         Debug.Log("꿈 속 진입!");
         SceneManager.LoadScene("InDream_PlayerMove");
@@ -49,6 +49,18 @@ public class UI_Bind : MonoBehaviour
     {
         Debug.Log("환승 성공!");
     }
+    void StandingButtonTest(PointerEventData data)
+    {
+        Debug.Log("입석중...");
+    }
+    void PauseButtonTest(PointerEventData data)
+    {
+        Debug.Log("일시정지!");
+    }
+    void GetOffButtonTest(PointerEventData data)
+    {
+        Debug.Log("목적지 도착!");
+    }
 
 
     // 유니티 최상위 클래스인 Object 배열로 저장
@@ -60,20 +72,24 @@ public class UI_Bind : MonoBehaviour
     {
         Bind<Button>(typeof(Buttons));
         Bind<Text>(typeof(Texts));
-        Bind<Image>(typeof(Images));
-        Bind<GameObject>(typeof(GameObjects));
+
+        GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
+        AddUIEvent(pause, PauseButtonTest, Define.UIEvent.Click);
+
+        GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
+        AddUIEvent(stand, StandingButtonTest, Define.UIEvent.Click);
+
+        GameObject getOff = GetButton((int)Buttons.GetOffButton).gameObject;
+        AddUIEvent(getOff, GetOffButtonTest, Define.UIEvent.Click);
 
         GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
         AddUIEvent(slap, SlapButtonTest, Define.UIEvent.Click);
 
-        GameObject dream = GetButton((int)Buttons.FallAsleepButton).gameObject;
-        AddUIEvent(dream, DreamButtonTest, Define.UIEvent.Click);
+        GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
+        AddUIEvent(fallAsleep, FallAsleepButtonTest, Define.UIEvent.Click);
 
         GameObject transfer = GetButton((int)Buttons.TransferButton).gameObject;
         AddUIEvent(transfer, TransferButtonTest, Define.UIEvent.Click);
-
-        GameObject go = GetImage((int)Images.Image).gameObject;
-        AddUIEvent(go, (PointerEventData data) => { go.transform.position = data.position; }, Define.UIEvent.Drag);
     }
 
     // Update is called once per frame

@@ -10,8 +10,6 @@ public class TransferManager : SingletonManagers<TransferManager>
     public int curTransferCount;
     public int maxTransferCount;
 
-    public StationData currentStation;
-
     public override void Awake()
     {
         base.Awake();
@@ -54,6 +52,23 @@ public class TransferManager : SingletonManagers<TransferManager>
 
     public void SuccessTransfer()
     {
+        if(StationManager.Instance.currentStationIdx == StationManager.Instance.transferIdx)
+        {
+            curTransferCount++;
+            Debug.Log("환승 성공!");
+        }
+        else
+        {
+            Debug.Log("환승 실패");
+        }
+    }
 
+    public void FailTransfer()
+    {
+        if (StationManager.Instance.currentStationIdx > StationManager.Instance.transferIdx)
+        {
+            Debug.Log("환승 실패! 게임 오버");
+            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.GAMEOVER;
+        }
     }
 }
