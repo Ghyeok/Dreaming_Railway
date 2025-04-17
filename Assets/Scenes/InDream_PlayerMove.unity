@@ -1326,7 +1326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.116
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1406,8 +1406,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1486541897}
+  - component: {fileID: 1486541898}
   m_Layer: 0
-  m_Name: MaPYSpawner
+  m_Name: MapYSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1422,12 +1423,31 @@ Transform:
   m_GameObject: {fileID: 1486541896}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.6, y: 0.41133332, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1486541898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486541896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0f3cf61dd3456540944cde9870f66c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 878937813}
+  mapList:
+  - {fileID: 1280388442073319779, guid: d8ee4940646e0db4fb247e0cdbd320da, type: 3}
+  - {fileID: 1280388442073319779, guid: c7531c73275ffa54da77496ac8c9fb8e, type: 3}
+  - {fileID: 1280388442073319779, guid: 89f6c9fcfe1d0ea4bb2b3b226f513af0, type: 3}
+  - {fileID: 1280388442073319779, guid: 522ca6c0abe74bb43ab262d9f1453be9, type: 3}
+  - {fileID: 1280388442073319779, guid: b5ebefd972a1b5641a430f96d18fac7c, type: 3}
 --- !u!1 &1751064296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1847,7 +1867,7 @@ MonoBehaviour:
   - {fileID: 5119156888014228460, guid: d189aa6bcad8dd045b0a821d7c0b18a9, type: 3}
   - {fileID: 5119156888014228460, guid: 5edac39bb41a9c242b1cbdfcc4b6e272, type: 3}
   - {fileID: 5119156888014228460, guid: 7d79f7cbf5ea1674a9310daad3bf36b6, type: 3}
-  groundY: 3
+  groundY: 0
   tileLength: 48.4
   startSpawnOffset: 8
 --- !u!4 &2141137975
