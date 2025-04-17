@@ -28,11 +28,18 @@ public class FogSpawn : MonoBehaviour
         //안개 생성
         GameObject FogClone = Instantiate(Fog, spawnPositions[randomIndex], transform.rotation);
 
-        //인덱스값 전달
+
+        //랜덤인덱스값 전달
         FogMovement movement = FogClone.GetComponent<FogMovement>();
         if (movement != null)
         {
             movement.SetIndex(randomIndex);
+        }
+
+        MapXSpawn mapLogic = FogClone.GetComponent<MapXSpawn>();
+        if (mapLogic != null)
+        {
+            mapLogic.SetIndex(randomIndex);
         }
     }
 }

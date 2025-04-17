@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 { 
     [SerializeField] private float acceleration;  
-    [SerializeField] private float MaxSpeed = 8f;       
+    [SerializeField] private float MaxSpeed;      
     [SerializeField] private Rigidbody2D rigid;
    
-    private float Speed = 0f;
+    private float Speed = 2.5f;
     public float jumpPower;
-    public float UImoveX = 0f;
+    public float UImoveX = 2.5f;
     public bool isJump = false;
 
     void Awake()
@@ -37,9 +37,9 @@ public class Player : MonoBehaviour
 
     //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(1/2, 1/2, 1);
         else if (moveX < 0)
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-1/2, 1/2, 1);
 
     //가속
         if (moveX != 0)
