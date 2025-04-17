@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+
 
 public class MapXSpawn : MonoBehaviour
 {
@@ -8,70 +8,67 @@ public class MapXSpawn : MonoBehaviour
     public List<GameObject> mapList;
 
     int randomint;  //타일 번호 랜덤 변수
-    private int SpawnedIndex; //스폰된 위치 변수
-    float nextSpawnTransform;  
-    public float tileLength = 8f;
-  
+    public float groundY;
+    float nextSpawnTransformRight; // 오른쪽 스폰 기준점
+    float nextSpawnTransformLeft;  // 왼쪽 스폰 기준점
+    public float tileLength;
+    public float startSpawnOffset; // 스폰 시작 오프셋
+
+    private bool canSpawnRight = false;
+    private bool canSpawnLeft = false;
 
     //맵 길이 제한
-    public int maxTileCount;
-    private int spawnedCount;
-
-
-    public void SetIndex(int index)
-    {
-        SpawnedIndex = index;
-    }
-
+    //public int maxTileCount;
+    //private int spawnedCount;
 
     void Start()
     {
-        if (SpawnedIndex == 0) //캐릭터가 왼쪽 -> 오른쪽일 때
-        {
-            nextSpawnTransform = player.transform.position.x + tileLength / 2f - 1f;
-        }
-        if (SpawnedIndex == 1) //캐릭터가 오른쪽-> 왼쪽일 때
-        {
-            nextSpawnTransform = player.transform.position.x - tileLength / 2f + 1f;
-        }
+        nextSpawnTransformRight = player.transform.position.x + startSpawnOffset;
+        nextSpawnTransformLeft = player.transform.position.x - startSpawnOffset;
+
     }
 
     void Update()
-    { 
-        if (SpawnedIndex == 0) //캐릭터가 왼쪽 -> 오른쪽일 때
+    {
+        // 오른쪽 이동 및 스폰
+        if (!canSpawnRight && player.transform.position.x > startSpawnOffset)
         {
-            if (player.transform.position.x > nextSpawnTransform)
-            {
-                MapXSpawnToRight();
-            }
+            canSpawnRight = true;
+            Debug.Log("오른쪽 스폰 시작");
         }
 
-        if (SpawnedIndex == 1) //캐릭터가 오른쪽-> 왼쪽일 때
+        if (canSpawnRight && player.transform.position.x > nextSpawnTransformRight)
         {
-            if (player.transform.position.x < nextSpawnTransform)
-            {
-                MapXSpawnToLeft();
-            }
+            MapXSpawnToRight();
         }
-        
+
+        // 왼쪽 이동 및 스폰
+        if (!canSpawnLeft && player.transform.position.x < -startSpawnOffset)
+        {
+            canSpawnLeft = true;
+            Debug.Log("왼쪽 스폰 시작");
+        }
+
+        if (canSpawnLeft && player.transform.position.x < nextSpawnTransformLeft)
+        {
+            MapXSpawnToLeft();
+        }
     }
 
-    void MapXSpawnToRight() //오른쪽으로 맵 생성
+    void MapXSpawnToRight() // 오른쪽으로 맵 생성
     {
-        randomint = Random.Range(0, mapList.Count); //맵패턴 숫자만큼까지 랜덤으로
-
+        int randomint = Random.Range(0, mapList.Count);
         Instantiate(mapList[randomint], transform.position, Quaternion.identity);
-        nextSpawnTransform = player.transform.position.x + tileLength;
-        transform.position = new Vector3(transform.position.x + tileLength, transform.position.y,0);
+        transform.position = new Vector3(transform.position.x + tileLength, groundY, 0f);
+        nextSpawnTransformRight += tileLength;
     }
 
-    void MapXSpawnToLeft() //왼쪽으로 맵 생성
+    void MapXSpawnToLeft() // 왼쪽으로 맵 생성
     {
-        randomint = Random.Range(0, mapList.Count); 
-
+        int randomint = Random.Range(0, mapList.Count);
         Instantiate(mapList[randomint], transform.position, Quaternion.identity);
-        nextSpawnTransform = player.transform.position.x - tileLength;
-        transform.position = new Vector3(transform.position.x - tileLength, transform.position.y,0);
+        transform.position = new Vector3(transform.position.x - tileLength, groundY, 0f);
+        nextSpawnTransformLeft -= tileLength;
     }
-    
+
 }

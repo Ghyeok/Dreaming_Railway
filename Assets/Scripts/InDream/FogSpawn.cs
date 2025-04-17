@@ -35,11 +35,5 @@ public class FogSpawn : MonoBehaviour
         {
             movement.SetIndex(randomIndex);
         }
-
-        MapXSpawn mapLogic = FogClone.GetComponent<MapXSpawn>();
-        if (mapLogic != null)
-        {
-            mapLogic.SetIndex(randomIndex);
-        }
     }
 }

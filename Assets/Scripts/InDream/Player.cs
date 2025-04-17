@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class Player : MonoBehaviour
 { 
     [SerializeField] private float acceleration;  
@@ -11,6 +12,8 @@ public class Player : MonoBehaviour
     public float jumpPower;
     public float UImoveX = 2.5f;
     public bool isJump = false;
+    public float minSpeed = 1.75f;
+    private bool isInObstacle = false;
 
     void Awake()
     {
@@ -37,9 +40,9 @@ public class Player : MonoBehaviour
 
     //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
-            transform.localScale = new Vector3(1/2, 1/2, 1);
+            transform.localScale = new Vector3(0.5f, 0.5f, 1);
         else if (moveX < 0)
-            transform.localScale = new Vector3(-1/2, 1/2, 1);
+            transform.localScale = new Vector3(-0.5f, 0.5f, 1);
 
     //가속
         if (moveX != 0)
@@ -52,6 +55,18 @@ public class Player : MonoBehaviour
         else
         {
             Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
+        }
+
+    //장애물 감속
+        if (isInObstacle)
+        {
+            float absCurrentSpeed = Mathf.Abs(Speed);
+            float direction = Mathf.Sign(Speed);
+            float decelerationRate = (absCurrentSpeed - minSpeed) / 3f; // 3초 동안 줄어들도록
+
+    //(3초 후 최소속도 도달)
+            float absSlowSpeed = Mathf.MoveTowards(absCurrentSpeed, minSpeed, decelerationRate * Time.fixedDeltaTime);
+            Speed = direction * absSlowSpeed;
         }
 
         rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
@@ -83,25 +98,27 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if (other.gameObject.name == "Ground" || other.gameObject.name == "Ground1")
+        if (other.gameObject.CompareTag("Ground"))
         {
             isJump = false;
         }
     }
 
-    //장애물 충돌
+    //장애물 감지
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.name == "Obstacle")
+        if (other.CompareTag("Obstacle"))
         {
-            Speed = Mathf.Sign(Speed) * 0.5f;
+            isInObstacle = true;
         }
     }
+
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.name == "Obstacle")
+        if (other.CompareTag("Obstacle"))
         {
-            Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
+            isInObstacle = false;
         }
-    }
+    }   
+    
 }

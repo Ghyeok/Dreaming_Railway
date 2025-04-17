@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 86169825}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -306,7 +306,7 @@ Transform:
   m_GameObject: {fileID: 86169821}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: 0}
+  m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 8, y: 1, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -714,7 +714,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1486299096}
           m_TargetAssemblyTypeName: Player, Assembly-CSharp
           m_MethodName: StartMoveLeft
           m_Mode: 1
@@ -730,7 +730,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1486299096}
           m_TargetAssemblyTypeName: Player, Assembly-CSharp
           m_MethodName: StopMove
           m_Mode: 1
@@ -1007,7 +1007,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1486299096}
           m_TargetAssemblyTypeName: Player, Assembly-CSharp
           m_MethodName: Jump
           m_Mode: 1
@@ -1297,7 +1297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392419007}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1326,7 +1326,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1369,8 +1369,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: acceleration
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1382,6 +1386,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
   m_PrefabInstance: {fileID: 1486299093}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486299096 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+  m_PrefabInstance: {fileID: 1486299093}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878937813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e3e4b8d28c6f714999f484428831c9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1751064296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,7 +1669,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1486299096}
           m_TargetAssemblyTypeName: Player, Assembly-CSharp
           m_MethodName: StartMoveRight
           m_Mode: 1
@@ -1670,7 +1685,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 1486299096}
           m_TargetAssemblyTypeName: Player, Assembly-CSharp
           m_MethodName: StopMove
           m_Mode: 1
@@ -1778,7 +1793,7 @@ GameObject:
   - component: {fileID: 2074208872}
   m_Layer: 0
   m_Name: Ground1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1963,8 +1978,9 @@ MonoBehaviour:
   - {fileID: 5119156888014228460, guid: d189aa6bcad8dd045b0a821d7c0b18a9, type: 3}
   - {fileID: 5119156888014228460, guid: 5edac39bb41a9c242b1cbdfcc4b6e272, type: 3}
   - {fileID: 5119156888014228460, guid: 7d79f7cbf5ea1674a9310daad3bf36b6, type: 3}
-  tileLength: 8
-  maxTileCount: 0
+  groundY: 3
+  tileLength: 48.4
+  startSpawnOffset: 8
 --- !u!4 &2141137975
 Transform:
   m_ObjectHideFlags: 0
@@ -1974,7 +1990,7 @@ Transform:
   m_GameObject: {fileID: 2141137973}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.570045, y: 1.2561054, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1994,7 +2010,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4868983364254284209, guid: 751fd72703196934cb44ce9242c26691, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4868983364254284209, guid: 751fd72703196934cb44ce9242c26691, type: 3}
       propertyPath: m_LocalPosition.z
