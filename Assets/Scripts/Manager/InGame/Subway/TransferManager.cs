@@ -1,7 +1,10 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 
 // 환승 로직을 담당하는 매니저
@@ -9,6 +12,8 @@ public class TransferManager : SingletonManagers<TransferManager>
 {
     public int curTransferCount;
     public int maxTransferCount;
+
+    public TextMeshProUGUI transferText;
 
     public override void Awake()
     {
@@ -50,20 +55,21 @@ public class TransferManager : SingletonManagers<TransferManager>
         }
     }
 
-    public void SuccessTransfer()
+    public void SuccessTransfer(PointerEventData data)
     {
-        if(StationManager.Instance.currentStationIdx == StationManager.Instance.transferIdx)
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferIdx)
         {
             curTransferCount++;
             Debug.Log("환승 성공!");
+            StationManager.Instance.GenerateStations();
         }
         else
         {
-            Debug.Log("환승 실패");
+            Debug.Log("환승 실패..");
         }
     }
 
-    public void FailTransfer()
+    public void CheckFailTransfer()
     {
         if (StationManager.Instance.currentStationIdx > StationManager.Instance.transferIdx)
         {

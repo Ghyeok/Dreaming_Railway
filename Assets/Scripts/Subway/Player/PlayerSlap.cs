@@ -20,11 +20,12 @@ public class PlayerSlap : MonoBehaviour
 
     void Slap()
     {
+        SubwayPlayerManager.Instance.slapNum++;
         StartCoroutine(DecreaseTiredBySlap());
     }
 
     IEnumerator DecreaseTiredBySlap()
-    {
+    {      
         if (!SubwayGameManager.Instance.isSlapCoolTime && SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    public float curTime { get; private set; }
+    public float curTime;
     public bool isStop { get; private set; }
 
     private void Awake()
@@ -38,5 +38,10 @@ public class Timer : MonoBehaviour
     {
         curTime = 0f;
         isStop = false;
+    }
+
+    public void ForceAddTime(float time , float lerpSpeed)
+    {
+        curTime = Mathf.Lerp(curTime, curTime + time, lerpSpeed); // 필요시 Time.deltaTime 곱하기
     }
 }

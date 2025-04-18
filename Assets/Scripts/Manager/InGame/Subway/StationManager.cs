@@ -51,6 +51,7 @@ public class StationManager : SingletonManagers<StationManager>
 
     public void GenerateStations()
     {
+        currentStationIdx = 0;
         stationDatas.Clear();
 
         foreach (var station in lineData.stations)

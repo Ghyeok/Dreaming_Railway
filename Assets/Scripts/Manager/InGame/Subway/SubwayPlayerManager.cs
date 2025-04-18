@@ -25,6 +25,8 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
     public PlayerState playerState;
     public PlayerBehave playerBehave;
 
+    public int slapNum = 0;
+
     public override void Awake()
     {
         base.Awake();
