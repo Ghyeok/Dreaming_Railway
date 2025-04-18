@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.EventSystems;
@@ -20,7 +21,9 @@ public class UI_Bind : MonoBehaviour
     }
     public enum Texts
     {
-        Text,
+        DayText,
+        TransferText,
+        TimeText,
         // 필요한 텍스트 추가..
     }
     public enum Images
@@ -39,19 +42,9 @@ public class UI_Bind : MonoBehaviour
         Debug.Log("꿈 속 진입!");
         SceneManager.LoadScene("InDream_PlayerMove");
     }
-
     void SlapButtonTest(PointerEventData data)
     {
         Debug.Log("뺨 때리기!");
-    }
-
-    void TransferButtonTest(PointerEventData data)
-    {
-        Debug.Log("환승 성공!");
-    }
-    void StandingButtonTest(PointerEventData data)
-    {
-        Debug.Log("입석중...");
     }
     void PauseButtonTest(PointerEventData data)
     {
@@ -61,11 +54,6 @@ public class UI_Bind : MonoBehaviour
     {
         Debug.Log("목적지 도착!");
     }
-
-
-    // 유니티 최상위 클래스인 Object 배열로 저장
-    // 예를 들어, typeof(Button)을 키로 해서 Button 타입의 오브젝트들을 배열로 저장할 수 있음
-    Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>(); 
         
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -77,7 +65,7 @@ public class UI_Bind : MonoBehaviour
         AddUIEvent(pause, PauseButtonTest, Define.UIEvent.Click);
 
         GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-        AddUIEvent(stand, StandingButtonTest, Define.UIEvent.Click);
+        AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
 
         GameObject getOff = GetButton((int)Buttons.GetOffButton).gameObject;
         AddUIEvent(getOff, GetOffButtonTest, Define.UIEvent.Click);
@@ -89,7 +77,11 @@ public class UI_Bind : MonoBehaviour
         AddUIEvent(fallAsleep, FallAsleepButtonTest, Define.UIEvent.Click);
 
         GameObject transfer = GetButton((int)Buttons.TransferButton).gameObject;
-        AddUIEvent(transfer, TransferButtonTest, Define.UIEvent.Click);
+        AddUIEvent(transfer, TransferManager.Instance.SuccessTransfer, Define.UIEvent.Click);
+
+        TextMeshPro dayText = GetText((int)Texts.DayText);
+        TextMeshPro transferText = GetText((int)Texts.TransferText);
+        TextMeshPro timeText = GetText((int)Texts.TimeText);
     }
 
     // Update is called once per frame
@@ -97,6 +89,10 @@ public class UI_Bind : MonoBehaviour
     {
         
     }
+
+    // 유니티 최상위 클래스인 Object 배열로 저장
+    // 예를 들어, typeof(Button)을 키로 해서 Button 타입의 오브젝트들을 배열로 저장할 수 있음
+    Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
 
     // 유니티 하이라키에 있는 <T> 컴포넌트를 가진 type형 오브젝트를 이름으로 자동 매핑한 후, objects[] 딕셔너리에 넣어준다
     // Enum 값과 유니티 하이라키에 있는 게임 오브젝트의 이름을 같게 하자
@@ -129,7 +125,7 @@ public class UI_Bind : MonoBehaviour
     }
 
     // 자주 사용하는 UI들의 Get<T> 함수 사용하기 쉽게 다시 선언
-    protected Text GetText(int idx) { return Get<Text>(idx); }
+    protected TextMeshPro GetText(int idx) { return Get<TextMeshPro>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
 
