@@ -24,10 +24,11 @@ public class StationManager : SingletonManagers<StationManager>
 {
     public LineDataSO lineData;
     public List<StationDataInstance> stationDatas = new List<StationDataInstance>();
-    public int transferIdx;
+    public int transferStationIdx;
 
     public int currentStationIdx;
-    private float timeChecker;
+    public int destinationStationIdx;
+    public float timeChecker;
 
 
     public override void Awake()
@@ -69,18 +70,18 @@ public class StationManager : SingletonManagers<StationManager>
         {
             if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
             {
-                transferIdx = Random.Range(10, 15);
-                stationDatas[transferIdx].stationType = StationType.Transfer;
+                transferStationIdx = Random.Range(10, 15);
+                stationDatas[transferStationIdx].stationType = StationType.Transfer;
             }
             else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
             {
-                transferIdx = Random.Range(6, 11);
-                stationDatas[transferIdx].stationType = StationType.Transfer;
+                transferStationIdx = Random.Range(6, 11);
+                stationDatas[transferStationIdx].stationType = StationType.Transfer;
             }
             else if (SubwayGameManager.Instance.dayCount >= 7)
             {
-                transferIdx = Random.Range(3, 7);
-                stationDatas[transferIdx].stationType = StationType.Transfer;
+                transferStationIdx = Random.Range(3, 7);
+                stationDatas[transferStationIdx].stationType = StationType.Transfer;
             }
         }
         // 목적지 결정
@@ -88,18 +89,18 @@ public class StationManager : SingletonManagers<StationManager>
         {
             if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
             {
-                transferIdx = Random.Range(10, 15);
-                stationDatas[transferIdx].stationType = StationType.Destination;
+                destinationStationIdx = Random.Range(10, 15);
+                stationDatas[destinationStationIdx].stationType = StationType.Destination;
             }
             else if (SubwayGameManager.Instance.dayCount >= 4 && SubwayGameManager.Instance.dayCount <= 6)
             {
-                transferIdx = Random.Range(6, 11);
-                stationDatas[transferIdx].stationType = StationType.Destination;
+                destinationStationIdx = Random.Range(6, 11);
+                stationDatas[destinationStationIdx].stationType = StationType.Destination;
             }
             else if (SubwayGameManager.Instance.dayCount >= 7)
             {
-                transferIdx = Random.Range(3, 7);
-                stationDatas[transferIdx].stationType = StationType.Destination;
+                destinationStationIdx = Random.Range(3, 7);
+                stationDatas[destinationStationIdx].stationType = StationType.Destination;
             }
         }
     }
