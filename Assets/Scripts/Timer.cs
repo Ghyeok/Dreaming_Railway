@@ -8,6 +8,9 @@ public class Timer : MonoBehaviour
     public float curTime;
     public bool isStop { get; private set; }
 
+    private int min;
+    private int sec;
+
     private void Awake()
     {
         timerText = GetComponent<TextMeshProUGUI>();
@@ -25,7 +28,10 @@ public class Timer : MonoBehaviour
         if (!isStop)
         {
             curTime += Time.deltaTime;
-            timerText.text = "Time : " + curTime.ToString("F2");
+            min = Mathf.FloorToInt(curTime / 60);
+            sec = Mathf.FloorToInt(curTime % 60);
+
+            timerText.text = string.Format("{0:00}:{1:00}", min, sec);
         }
     }
 
