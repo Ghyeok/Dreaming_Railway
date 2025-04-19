@@ -19,10 +19,6 @@ public class UI_Button : UI_Bind
     {
         Debug.Log("일시정지!");
     }
-    void GetOffButtonTest(PointerEventData data)
-    {
-        Debug.Log("목적지 도착!");
-    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,7 +32,7 @@ public class UI_Button : UI_Bind
         AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
 
         GameObject getOff = GetButton((int)Buttons.GetOffButton).gameObject;
-        AddUIEvent(getOff, GetOffButtonTest, Define.UIEvent.Click);
+        AddUIEvent(getOff, TransferManager.Instance.SuccessGetOff, Define.UIEvent.Click);
 
         GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
         AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), Define.UIEvent.Click);

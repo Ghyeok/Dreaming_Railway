@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -19,6 +18,7 @@ public class TransferManager : SingletonManagers<TransferManager>
     {
         base.Awake();
         curTransferCount = 0;
+        DetermineMaxTransferCount();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -55,9 +55,9 @@ public class TransferManager : SingletonManagers<TransferManager>
         }
     }
 
-    public void SuccessTransfer(PointerEventData data)
+    public void SuccessTransfer(PointerEventData data) // 환승 성공 시
     {
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferIdx)
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferStationIdx)
         {
             curTransferCount++;
             Debug.Log("환승 성공!");
@@ -69,9 +69,23 @@ public class TransferManager : SingletonManagers<TransferManager>
         }
     }
 
+    public void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시
+    {
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.destinationStationIdx)
+        {
+            SubwayGameManager.Instance.dayCount++;
+            Debug.Log("목적지 도착!");
+            StationManager.Instance.GenerateStations();
+        }
+        else
+        {
+            Debug.Log("목적지 도착 실패..");
+        }
+    }
+
     public void CheckFailTransfer()
     {
-        if (StationManager.Instance.currentStationIdx > StationManager.Instance.transferIdx)
+        if (StationManager.Instance.currentStationIdx > StationManager.Instance.transferStationIdx)
         {
             Debug.Log("환승 실패! 게임 오버");
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.GAMEOVER;
