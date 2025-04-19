@@ -1,16 +1,17 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerFallAsleep : MonoBehaviour
 {
-    public Button fallAsleepButton;
     private SubwayGameManager _game; // 의존성 주입 고려중
+    public static event Action OnFallAsleepButtonClicked;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        fallAsleepButton = GetComponent<Button>();
-        fallAsleepButton.onClick.AddListener(EnterToDream);
+
     }
 
     // Update is called once per frame
@@ -27,7 +28,22 @@ public class PlayerFallAsleep : MonoBehaviour
             SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
         {
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-            // 꿈 속 Scene으로 이동하는 코드
+            SceneManager.LoadScene("InDream_PlayerMove");
         }
+    }
+
+    public static void TriggerFallAsleep()
+    {
+        OnFallAsleepButtonClicked?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        OnFallAsleepButtonClicked += EnterToDream;
+    }
+
+    private void OnDisable()
+    {
+        OnFallAsleepButtonClicked -= EnterToDream;
     }
 }

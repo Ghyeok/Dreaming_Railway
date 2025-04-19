@@ -1,15 +1,16 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerSlap : MonoBehaviour
 {
-    public Button slapButton;
+    public static event Action OnSlapButtonClicked;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        slapButton = GetComponent<Button>();
-        slapButton.onClick.AddListener(Slap);
+
     }
 
     // Update is called once per frame
@@ -20,7 +21,6 @@ public class PlayerSlap : MonoBehaviour
 
     void Slap()
     {
-        SubwayPlayerManager.Instance.slapNum++;
         StartCoroutine(DecreaseTiredBySlap());
     }
 
@@ -28,13 +28,30 @@ public class PlayerSlap : MonoBehaviour
     {      
         if (!SubwayGameManager.Instance.isSlapCoolTime && SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
+            Debug.Log("뺨 때리기!");
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
             SubwayGameManager.Instance.isSlapCoolTime = true;
             TiredManager.Instance.currentTired -= SubwayGameManager.Instance.tiredDecreaseBySlap;
+            SubwayPlayerManager.Instance.slapNum++;
 
             yield return new WaitForSeconds(5f); // 5초 쿨타임
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
             SubwayGameManager.Instance.isSlapCoolTime = false;
         }
+    }
+
+    public static void TriggerSlap()
+    {
+        OnSlapButtonClicked?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        OnSlapButtonClicked += Slap;
+    }
+
+    private void OnDisable()
+    {
+        OnSlapButtonClicked -= Slap;
     }
 }
