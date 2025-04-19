@@ -9,23 +9,6 @@ using UnityEngine.UI;
 
 public class UI_Bind : MonoBehaviour
 {
-    public enum Buttons
-    {
-        StandingButton, // 입석
-        FallAsleepButton, // 즉시 잠들기
-        SlapButton, // 뺨 떄리기
-        TransferButton, // 환승하기
-        GetOffButton, // 목적지에 내리기
-        PauseButton, // 일시정지
-        // 필요한 버튼 추가..
-    }
-    public enum Texts
-    {
-        DayText,
-        TransferText,
-        TimeText,
-        // 필요한 텍스트 추가..
-    }
     public enum Images
     {
         Image,
@@ -36,58 +19,17 @@ public class UI_Bind : MonoBehaviour
         GameObject,
         // 필요한 게임오브젝트 추가..
     }
-
-    void FallAsleepButtonTest(PointerEventData data)
-    {
-        Debug.Log("꿈 속 진입!");
-        SceneManager.LoadScene("InDream_PlayerMove");
-    }
-    void SlapButtonTest(PointerEventData data)
-    {
-        Debug.Log("뺨 때리기!");
-    }
-    void PauseButtonTest(PointerEventData data)
-    {
-        Debug.Log("일시정지!");
-    }
-    void GetOffButtonTest(PointerEventData data)
-    {
-        Debug.Log("목적지 도착!");
-    }
         
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Bind<Button>(typeof(Buttons));
-        Bind<Text>(typeof(Texts));
 
-        GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
-        AddUIEvent(pause, PauseButtonTest, Define.UIEvent.Click);
-
-        GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-        AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
-
-        GameObject getOff = GetButton((int)Buttons.GetOffButton).gameObject;
-        AddUIEvent(getOff, GetOffButtonTest, Define.UIEvent.Click);
-
-        GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
-        AddUIEvent(slap, SlapButtonTest, Define.UIEvent.Click);
-
-        GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
-        AddUIEvent(fallAsleep, FallAsleepButtonTest, Define.UIEvent.Click);
-
-        GameObject transfer = GetButton((int)Buttons.TransferButton).gameObject;
-        AddUIEvent(transfer, TransferManager.Instance.SuccessTransfer, Define.UIEvent.Click);
-
-        TextMeshPro dayText = GetText((int)Texts.DayText);
-        TextMeshPro transferText = GetText((int)Texts.TransferText);
-        TextMeshPro timeText = GetText((int)Texts.TimeText);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // 유니티 최상위 클래스인 Object 배열로 저장
@@ -125,7 +67,7 @@ public class UI_Bind : MonoBehaviour
     }
 
     // 자주 사용하는 UI들의 Get<T> 함수 사용하기 쉽게 다시 선언
-    protected TextMeshPro GetText(int idx) { return Get<TextMeshPro>(idx); }
+    protected TextMeshProUGUI GetText(int idx) { return Get<TextMeshProUGUI>(idx); }
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     protected Image GetImage(int idx) { return Get<Image>(idx); }
 

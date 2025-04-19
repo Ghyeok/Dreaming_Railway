@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class UIManager : SingletonManagers<UIManager>
 {
-    [SerializeField]
-    private UI_Bind uiBind;
-
     private GameObject _root;
 
     public override void Awake()
