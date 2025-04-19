@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TiredManager : SingletonManagers<TiredManager>
 {
@@ -66,8 +67,8 @@ public class TiredManager : SingletonManagers<TiredManager>
                 SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
             {
                 SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-                currentTired /= 2;
-                // 꿈 속 Scene으로 이동하는 코드
+                currentTired /= 2; // 감소하는 피로도 수정 필요
+                SceneManager.LoadScene("InDream_PlayerMove");
                 break;
             }
 
