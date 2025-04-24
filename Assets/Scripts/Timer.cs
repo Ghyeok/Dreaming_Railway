@@ -10,6 +10,7 @@ public class Timer : MonoBehaviour
 
     private int min;
     private int sec;
+    private int milSec;
 
     private void Awake()
     {
@@ -30,8 +31,9 @@ public class Timer : MonoBehaviour
             curTime += Time.deltaTime;
             min = Mathf.FloorToInt(curTime / 60);
             sec = Mathf.FloorToInt(curTime % 60);
+            milSec = Mathf.FloorToInt((curTime * 100f) % 100);
 
-            timerText.text = string.Format("{0:00}:{1:00}", min, sec);
+            timerText.text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
         }
     }
 
