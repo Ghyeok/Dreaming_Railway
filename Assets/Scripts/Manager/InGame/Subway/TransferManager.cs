@@ -12,7 +12,8 @@ public class TransferManager : SingletonManagers<TransferManager>
     public int curTransferCount;
     public int maxTransferCount;
 
-    public TextMeshProUGUI transferText;
+    private bool hasTransfered = false;
+    private bool hasArrived = false;
 
     public override void Awake()
     {
@@ -24,16 +25,17 @@ public class TransferManager : SingletonManagers<TransferManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         DetermineMaxTransferCount();
+        SuccessTransfer();
     }
 
-    void DetermineMaxTransferCount()
+    private void DetermineMaxTransferCount()
     {
         switch (SubwayGameManager.Instance.dayCount)
         {
@@ -54,25 +56,35 @@ public class TransferManager : SingletonManagers<TransferManager>
                 break;
         }
     }
-
-    public void SuccessTransfer(PointerEventData data) // 환승 성공 시
+    
+    public void SuccessTransfer() // 환승 성공 시 1번만 실행
     {
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferStationIdx)
+        if (hasTransfered)
+            return;
+
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferStationIdx &&
+            SubwayGameManager.Instance.isStopping)
         {
+            hasTransfered = true;
+
+            SubwayGameManager.Instance.isStopping = false;
             curTransferCount++;
             Debug.Log("환승 성공!");
             StationManager.Instance.GenerateStations();
-        }
-        else
-        {
-            Debug.Log("환승 실패..");
         }
     }
 
     public void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시
     {
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.destinationStationIdx)
+        if (hasArrived)
+            return;
+
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.destinationStationIdx &&
+            SubwayGameManager.Instance.isStopping)
         {
+            hasArrived = true;
+
+            SubwayGameManager.Instance.isStopping = false;
             SubwayGameManager.Instance.dayCount++;
             Debug.Log("목적지 도착!");
             StationManager.Instance.GenerateStations();
@@ -90,5 +102,15 @@ public class TransferManager : SingletonManagers<TransferManager>
             Debug.Log("환승 실패! 게임 오버");
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.GAMEOVER;
         }
+    }
+
+    public void ReturnTransferState()
+    {
+        hasTransfered = false;
+    }
+
+    public void ReturnArriveState()
+    {
+        hasArrived = false;
     }
 }

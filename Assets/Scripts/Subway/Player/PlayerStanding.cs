@@ -31,7 +31,6 @@ public class PlayerStanding : MonoBehaviour
 
         timer.ForceAddTime(totalTime, skipSpeed);
         Debug.Log("환승 성공! (입석) ");
-        StationManager.Instance.timeChecker += totalTime; // 버그 발생, 스킵할 때 현재역 체크하는 시간 변수도 변해야한다
         TransferManager.Instance.curTransferCount++;
         StationManager.Instance.GenerateStations();
     }

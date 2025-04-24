@@ -9,8 +9,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public float tiredDecreaseBySlap;
     public int dayCount;
 
-    public bool isTraveling; // 운행 중
-    public bool isStopping; // 정차 중
+    public bool isStopping; // 정차중
 
     [SerializeField]
     public Timer timer;
@@ -18,7 +17,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public override void Awake()
     {
         base.Awake();
-        isTraveling = false;
         isStopping = false;
         isSlapCoolTime = false;
         tiredDecreaseBySlap = 3f;

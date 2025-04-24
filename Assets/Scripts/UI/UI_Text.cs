@@ -15,15 +15,15 @@ public class UI_Text : UI_Bind
 
     public TextMeshProUGUI tiredText;
     public TextMeshProUGUI transferText;
+    public TextMeshProUGUI dayText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        TextMeshProUGUI dayText = GetText((int)Texts.DayText);
+        dayText = GetText((int)Texts.DayText);
         transferText = GetText((int)Texts.TransferText);
-        TextMeshProUGUI timeText = GetText((int)Texts.TimeText);
         tiredText = GetText((int)Texts.TiredText);
     }
 

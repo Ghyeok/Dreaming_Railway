@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,26 +29,23 @@ public class StationManager : SingletonManagers<StationManager>
 
     public int currentStationIdx;
     public int destinationStationIdx;
-    public float timeChecker;
-
 
     public override void Awake()
     {
         base.Awake();
-        currentStationIdx = -1;
-        timeChecker = 0;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateStations();
+        GenerateStations(); // 다른 매니저들 생성 전에 실행되면 안되므로, Start()에 넣어야한다
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckCurrentStation();
+        IsSubwayStopped();
     }
 
     public void GenerateStations()
@@ -61,6 +59,8 @@ public class StationManager : SingletonManagers<StationManager>
         }
 
         ChooseStationType();
+        TransferManager.Instance.ReturnTransferState();
+        SubwayGameManager.Instance.timer.ResetStationTimer();
     }
 
     public void ChooseStationType()
@@ -107,13 +107,39 @@ public class StationManager : SingletonManagers<StationManager>
 
     public void CheckCurrentStation() // 현재 어느 역을 지나고 있는지 확인하는 함수
     {
-        Timer timer = SubwayGameManager.Instance.timer;
+        Timer timer = SubwayGameManager.Instance.timer;     
+        float accumulatedTime = 0f; 
 
-        if (timer.curTime >= timeChecker)
+        for (int i = 0; i < stationDatas.Count; i++)
         {
-            currentStationIdx++;
-            timeChecker += stationDatas[currentStationIdx].travelTime;
-            timeChecker += stationDatas[currentStationIdx].stopTime;
+            accumulatedTime += stationDatas[i].travelTime;
+            accumulatedTime += stationDatas[i].stopTime;
+
+            if (timer.stationTime < accumulatedTime)
+            {
+                currentStationIdx = i;
+                break;
+            }
+        }
+    }
+
+    public void IsSubwayStopped()
+    {
+        Timer timer = SubwayGameManager.Instance.timer;
+        float accumulatedTime = 0f;
+
+        for (int i = 0; i < stationDatas.Count; i++)
+        {
+            accumulatedTime += stationDatas[i].travelTime;
+
+            if (i == currentStationIdx)
+            {
+                float stopStart = accumulatedTime;
+                float stopEnd = accumulatedTime + stationDatas[i].stopTime;
+
+                SubwayGameManager.Instance.isStopping = (timer.curTime > stopStart && timer.curTime < stopEnd);
+            }
+            accumulatedTime += stationDatas[i].stopTime;
         }
     }
 }

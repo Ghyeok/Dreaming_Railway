@@ -717,8 +717,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineData: {fileID: 11400000, guid: 83238737b52aeba41bf659797bb7d27e, type: 2}
   stationDatas: []
-  transferIdx: 0
+  transferStationIdx: 0
   currentStationIdx: 0
+  destinationStationIdx: 0
   timeChecker: 0
 --- !u!1 &832575517
 GameObject:
@@ -906,7 +907,6 @@ MonoBehaviour:
   isSlapCoolTime: 0
   tiredDecreaseBySlap: 0
   dayCount: 0
-  isTraveling: 0
   isStopping: 0
   timer: {fileID: 963767729}
 --- !u!1 &1709475327
@@ -955,7 +955,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curTransferCount: 0
   maxTransferCount: 0
-  transferText: {fileID: 0}
 --- !u!1 &1917781424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,10 +1011,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1570678888748741397, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_margin.z
-      value: -281.47906
-      objectReference: {fileID: 0}
     - target: {fileID: 1848005837727853365, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1096,35 +1091,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2115469652786827950, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -103
-      objectReference: {fileID: 0}
-    - target: {fileID: 3330594719297125423, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -37
-      objectReference: {fileID: 0}
-    - target: {fileID: 3330594719297125423, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -35
-      objectReference: {fileID: 0}
     - target: {fileID: 6094283034332839438, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_Name
       value: TestCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6185486790860538180, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 8464352499305178334, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_text
-      value: 'Timer
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8769611399525187143, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
-      propertyPath: m_text
-      value: 51/100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

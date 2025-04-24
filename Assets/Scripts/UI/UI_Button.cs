@@ -9,7 +9,6 @@ public class UI_Button : UI_Bind
         StandingButton, // 입석
         FallAsleepButton, // 즉시 잠들기
         SlapButton, // 뺨 떄리기
-        TransferButton, // 환승하기
         GetOffButton, // 목적지에 내리기
         PauseButton, // 일시정지
         // 필요한 버튼 추가..
@@ -39,9 +38,6 @@ public class UI_Button : UI_Bind
 
         GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
         AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), Define.UIEvent.Click);
-
-        GameObject transfer = GetButton((int)Buttons.TransferButton).gameObject;
-        AddUIEvent(transfer, TransferManager.Instance.SuccessTransfer, Define.UIEvent.Click);
     }
 
     public GameObject BindButton(Buttons buttons)
