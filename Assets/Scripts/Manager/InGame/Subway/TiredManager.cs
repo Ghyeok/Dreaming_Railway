@@ -6,7 +6,7 @@ public class TiredManager : SingletonManagers<TiredManager>
 {
     public float maxTired;
     public float currentTired;
-    public float tiredIncreaseSpeed;
+    private float tiredTimer;
 
     public bool isTiredHalf;
 
@@ -15,20 +15,21 @@ public class TiredManager : SingletonManagers<TiredManager>
         base.Awake();
 
         maxTired = 100f;
-        currentTired = 51f;
-        tiredIncreaseSpeed = 1f;
+        currentTired = 30f;
+        tiredTimer = 0f;
         isTiredHalf = true;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        IncreaseTired();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        IncreaseTiredOneSecond();
         CheckTired();
     }
 
@@ -46,35 +47,22 @@ public class TiredManager : SingletonManagers<TiredManager>
         }
     }
 
-    private void IncreaseTired()
+    private void IncreaseTiredOneSecond()
     {
-        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP &&
-            currentTired <= maxTired)
+        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            StartCoroutine(IncreaseTiredPerOneSecond());
-        }
-    }
-
-
-    IEnumerator IncreaseTiredPerOneSecond()
-    {
-        while (true)
-        {
-            currentTired += tiredIncreaseSpeed;
-            yield return new WaitForSeconds(1f);
-
-            if (currentTired >= maxTired &&
-                SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
+            tiredTimer += Time.deltaTime;
+            if (tiredTimer >= 1f)
             {
-                SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-                currentTired /= 2; // 감소하는 피로도 수정 필요
-                SceneManager.LoadScene("InDream_PlayerMove");
-                break;
-            }
-
-            if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.FALLASLEEP)
-            {
-                break;
+                currentTired += 1f;
+                tiredTimer = 0f;   
+                
+                if(currentTired >= maxTired)
+                {
+                    SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
+                    currentTired /= 2; // 감소하는 피로도 수정 필요
+                    SceneManager.LoadScene("InDream_PlayerMove");
+                }
             }
         }
     }
