@@ -19,30 +19,31 @@ public class UI_Button : UI_Bind
         Debug.Log("일시정지!");
     }
 
+    public GameObject pause;
+    public GameObject stand;
+    public GameObject getOff;
+    public GameObject slap;
+    public GameObject fallAsleep;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Bind<Button>(typeof(Buttons));
 
-        GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
+        pause = GetButton((int)Buttons.PauseButton).gameObject;
         AddUIEvent(pause, PauseButtonTest, Define.UIEvent.Click);
 
-        GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
+        stand = GetButton((int)Buttons.StandingButton).gameObject;
         AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
 
-        GameObject getOff = GetButton((int)Buttons.GetOffButton).gameObject;
+        getOff = GetButton((int)Buttons.GetOffButton).gameObject;
         AddUIEvent(getOff, TransferManager.Instance.SuccessGetOff, Define.UIEvent.Click);
 
-        GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
+        slap = GetButton((int)Buttons.SlapButton).gameObject;
         AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), Define.UIEvent.Click);
 
-        GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
+        fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
         AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), Define.UIEvent.Click);
-    }
-
-    public GameObject BindButton(Buttons buttons)
-    {
-        return GetButton((int)buttons).gameObject;
     }
 
     // Update is called once per frame

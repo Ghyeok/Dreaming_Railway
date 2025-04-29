@@ -9,11 +9,6 @@ using UnityEngine.UI;
 
 public class UI_Bind : MonoBehaviour
 {
-    public enum Images
-    {
-        Image,
-        // 필요한 이미지 추가..
-    }
     public enum GameObjects
     {
         GameObject,

@@ -8,23 +8,28 @@ public class UI_Text : UI_Bind
     {
         DayText,
         TransferText,
-        TimeText,
+        TimerText,
         TiredText,
+        SlapText,
         // 필요한 텍스트 추가..
     }
 
     public TextMeshProUGUI tiredText;
     public TextMeshProUGUI transferText;
     public TextMeshProUGUI dayText;
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI slapText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
 
+        timeText = GetText((int)Texts.TimerText);
         dayText = GetText((int)Texts.DayText);
         transferText = GetText((int)Texts.TransferText);
         tiredText = GetText((int)Texts.TiredText);
+        slapText = GetText((int)Texts.SlapText);
     }
 
     public GameObject BindText(Texts texts)
@@ -37,6 +42,7 @@ public class UI_Text : UI_Bind
     {
         TiredText();
         TransferText();
+        SlapText();
     }
 
     void TiredText()
@@ -49,5 +55,10 @@ public class UI_Text : UI_Bind
     {
         StationManager stationManager = StationManager.Instance;
         transferText.text = $"{stationManager.currentStationIdx} / {stationManager.transferStationIdx} Stations";
+    }
+
+    void SlapText()
+    {
+        slapText.text = $"{SubwayPlayerManager.Instance.slapNum}";
     }
 }
