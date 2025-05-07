@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerFallAsleep : MonoBehaviour
 {
-    private SubwayGameManager _game; // 의존성 주입 고려중
     public static event Action OnFallAsleepButtonClicked;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

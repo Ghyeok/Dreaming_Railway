@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
     {
         if (!isJump)
         {
-            isJump = true;
+            isJump = true;  
             rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse);
         }
     }
