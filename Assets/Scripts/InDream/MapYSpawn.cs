@@ -29,7 +29,7 @@ public class MapYSpawn : MonoBehaviour
         randomint = Random.Range(0, mapList.Count); //맵패턴 숫자만큼까지 랜덤으로
 
         Instantiate(mapList[randomint], transform.position, Quaternion.identity);
-        nextSpawnTransform = player.transform.position.y + 10f;
+        nextSpawnTransform = player.transform.position.y + 1.5f;
         transform.position = new Vector3(transform.position.x, transform.position.y + 10f,0);
     }
 }

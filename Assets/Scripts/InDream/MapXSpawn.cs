@@ -36,7 +36,7 @@ public class MapXSpawn : MonoBehaviour
             Debug.Log("오른쪽 스폰 시작");
         }
 
-        if (canSpawnRight && player.transform.position.x + tileLength/1.7f > nextSpawnTransformRight)
+        if (canSpawnRight && player.transform.position.x + tileLength/1.4f > nextSpawnTransformRight)
         {
             MapXSpawnToRight();
         }
@@ -48,7 +48,7 @@ public class MapXSpawn : MonoBehaviour
             Debug.Log("왼쪽 스폰 시작");
         }
 
-        if (canSpawnLeft && player.transform.position.x - tileLength/1.7f < nextSpawnTransformLeft)
+        if (canSpawnLeft && player.transform.position.x - tileLength/1.4f < nextSpawnTransformLeft)
         {
             MapXSpawnToLeft();
         }

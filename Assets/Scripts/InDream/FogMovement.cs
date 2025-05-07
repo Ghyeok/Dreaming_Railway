@@ -6,9 +6,9 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float Yvelocity;
     private int SpawnedIndex;
 
-    Vector3 target1 = new Vector3(100, 1, -5);
-    Vector3 target2 = new Vector3(-100, 1, -5);
-    Vector3 target3 = new Vector3(0, 50, -5);
+    Vector3 target1 = new Vector3(210, 1, -5);
+    Vector3 target2 = new Vector3(-210, 1, -5);
+    Vector3 target3 = new Vector3(0, 70, -5);
 
 
     void Start()
