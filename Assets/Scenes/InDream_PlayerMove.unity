@@ -1312,6 +1312,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1006996651317423553, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -6068086055596096122, guid: 1849b23072e61f84782fef1c9ed7b945, type: 3}
+    - target: {fileID: 1006996651317423553, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -1326,7 +1334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.116
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1364,8 +1372,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5761860412416466949, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_GravityScale
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: MaxSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: jumpPower
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
@@ -1767,7 +1783,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 1, g: 0.5882353, b: 0.5882353, a: 1}
