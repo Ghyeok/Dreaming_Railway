@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour
@@ -7,7 +8,13 @@ public class Player : MonoBehaviour
     [SerializeField] private float acceleration;  
     [SerializeField] private float MaxSpeed;      
     [SerializeField] private Rigidbody2D rigid;
-   
+
+//발소리를 위한
+    private Vector2 lastFootstepPosition;
+    private float distanceMovedSinceLastStep = 0f;
+    [SerializeField] private float stepDistance; // 발소리가 나는 최소 거리
+    private bool isLeftFoot = true;
+
     private float Speed = 2.5f;
     public float jumpPower;
     public float UImoveX = 2.5f;
@@ -21,9 +28,13 @@ public class Player : MonoBehaviour
     }
     
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) //점프
         {
             Jump();
+        }
+        if ( (Mathf.Abs(transform.position.x) > 200) || (transform.position.y > 50) )
+        {//씬 이동
+            SceneManager.LoadScene("TestSubwayScene");
         }
     }
     
@@ -57,6 +68,7 @@ public class Player : MonoBehaviour
             Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
         }
 
+
     //장애물 감속
         if (isInObstacle)
         {
@@ -71,6 +83,29 @@ public class Player : MonoBehaviour
         }
 
         rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
+
+
+
+    //발자국 소리
+       if ( (Speed != 0) && (!isJump) ) //속도가 0이 아니고 점프하고 있지 않을 때
+       {
+        float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
+        distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
+            if (distanceMovedSinceLastStep >= stepDistance)//마지막 발자국으로부터의 거리가 특정 거리 이상일 때
+            {
+                if (isLeftFoot) //왼발 앞
+                    SoundManager.Instance.Footstep1SFX();
+                else
+                    SoundManager.Instance.Footstep2SFX();//오른발 앞
+                    isLeftFoot = !isLeftFoot;
+                    distanceMovedSinceLastStep = 0f;//거리 초기화
+                    lastFootstepPosition = transform.position;
+            }
+        }
+        else
+        {// 멈추면 위치 갱신
+            lastFootstepPosition = transform.position;
+        }
     }
 
 
@@ -95,7 +130,7 @@ public class Player : MonoBehaviour
         {
             SoundManager.Instance.JumpSFX();
             isJump = true;
-            rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse);  
+            rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse); 
         }
     }
     private void OnCollisionEnter2D(Collision2D other) 
@@ -123,19 +158,6 @@ public class Player : MonoBehaviour
             isInObstacle = false;
         }
     }   
-    
-    void Footstep()
-    {
-        while ((Speed != 0) && (isJump = false))
-        {
-            SoundManager.Instance.Footstep1SFX();
-            SoundManager.Instance.Footstep2SFX();
 
-            if ((Speed == 0)  ||  (isJump = true))
-            {
-                break;
-            }       
-        }
-    }   
 }
 

@@ -84,7 +84,12 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     void TestBGM()
     {
-        PlayAudioClip("TrainLullaby1.1", Define.Sounds.BGM);
+        PlayAudioClip("TrainMusic", Define.Sounds.BGM);
+    }
+
+    public void DreamBGM()
+    {
+        PlayAudioClip("DreamMusic", Define.Sounds.BGM);
     }
   
     public void JumpSFX()

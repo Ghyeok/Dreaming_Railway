@@ -55,6 +55,7 @@ public class TiredManager : SingletonManagers<TiredManager>
                 SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
                 currentTired /= 2; // 감소하는 피로도 수정 필요
                 SceneManager.LoadScene("InDream_PlayerMove");
+                SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
             }
         }
     }
