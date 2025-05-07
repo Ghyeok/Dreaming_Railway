@@ -5,7 +5,6 @@ public class BackgroundLineMove : MonoBehaviour
 {
     private float moveRatio;
     private Quaternion originRotation;
-    private Quaternion zeroRotation;
     private Quaternion targetRotation;
 
     private void Awake()

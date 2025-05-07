@@ -9,12 +9,10 @@ public class UI_Text : UI_Bind
         DayText,
         TransferText,
         TimerText,
-        TiredText,
         SlapText,
         // 필요한 텍스트 추가..
     }
 
-    public TextMeshProUGUI tiredText;
     public TextMeshProUGUI transferText;
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI timeText;
@@ -28,7 +26,6 @@ public class UI_Text : UI_Bind
         timeText = GetText((int)Texts.TimerText);
         dayText = GetText((int)Texts.DayText);
         transferText = GetText((int)Texts.TransferText);
-        tiredText = GetText((int)Texts.TiredText);
         slapText = GetText((int)Texts.SlapText);
     }
 
@@ -40,15 +37,8 @@ public class UI_Text : UI_Bind
     // Update is called once per frame
     void Update()
     {
-        TiredText();
         TransferText();
         SlapText();
-    }
-
-    void TiredText()
-    {
-        TiredManager tiredManager = TiredManager.Instance;
-        tiredText.text = $"{tiredManager.currentTired} / {tiredManager.maxTired}"; 
     }
 
     void TransferText()

@@ -6,7 +6,6 @@ public class TiredManager : SingletonManagers<TiredManager>
 {
     public float maxTired;
     public float currentTired;
-    private float tiredTimer;
 
     public bool isTiredHalf;
 
@@ -16,7 +15,6 @@ public class TiredManager : SingletonManagers<TiredManager>
 
         maxTired = 100f;
         currentTired = 30f;
-        tiredTimer = 0f;
         isTiredHalf = true;
     }
 
@@ -51,18 +49,12 @@ public class TiredManager : SingletonManagers<TiredManager>
     {
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            tiredTimer += Time.deltaTime;
-            if (tiredTimer >= 1f)
+            currentTired += Time.deltaTime;
+            if (currentTired >= maxTired)
             {
-                currentTired += 1f;
-                tiredTimer = 0f;   
-                
-                if(currentTired >= maxTired)
-                {
-                    SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-                    currentTired /= 2; // 감소하는 피로도 수정 필요
-                    SceneManager.LoadScene("InDream_PlayerMove");
-                }
+                SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
+                currentTired /= 2; // 감소하는 피로도 수정 필요
+                SceneManager.LoadScene("InDream_PlayerMove");
             }
         }
     }
