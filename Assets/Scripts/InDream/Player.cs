@@ -40,9 +40,9 @@ public class Player : MonoBehaviour
 
     //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
-            transform.localScale = new Vector3(0.5f, 0.5f, 1);
+            transform.localScale = new Vector3(0.45f, 0.45f, 1);
         else if (moveX < 0)
-            transform.localScale = new Vector3(-0.5f, 0.5f, 1);
+            transform.localScale = new Vector3(-0.45f, 0.45f, 1);
 
     //가속
         if (moveX != 0)
@@ -60,6 +60,7 @@ public class Player : MonoBehaviour
     //장애물 감속
         if (isInObstacle)
         {
+            SoundManager.Instance.EnterFogSFX();
             float absCurrentSpeed = Mathf.Abs(Speed);
             float direction = Mathf.Sign(Speed);
             float decelerationRate = (absCurrentSpeed - minSpeed) / 3f; // 3초 동안 줄어들도록
@@ -92,14 +93,16 @@ public class Player : MonoBehaviour
     {
         if (!isJump)
         {
+            SoundManager.Instance.JumpSFX();
             isJump = true;
-            rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse);
+            rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse);  
         }
     }
     private void OnCollisionEnter2D(Collision2D other) 
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            SoundManager.Instance.LandSFX();
             isJump = false;
         }
     }
@@ -121,4 +124,18 @@ public class Player : MonoBehaviour
         }
     }   
     
+    void Footstep()
+    {
+        while ((Speed != 0) && (isJump = false))
+        {
+            SoundManager.Instance.Footstep1SFX();
+            SoundManager.Instance.Footstep2SFX();
+
+            if ((Speed == 0)  ||  (isJump = true))
+            {
+                break;
+            }       
+        }
+    }   
 }
+

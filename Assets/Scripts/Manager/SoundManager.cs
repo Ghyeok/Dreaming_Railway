@@ -86,4 +86,25 @@ public class SoundManager : SingletonManagers<SoundManager>
     {
         PlayAudioClip("TrainLullaby1.1", Define.Sounds.BGM);
     }
+  
+    public void JumpSFX()
+    {
+        PlayAudioClip("JumpSound", Define.Sounds.SFX);
+    }
+    public void LandSFX()
+    {
+        PlayAudioClip("LandSound", Define.Sounds.SFX);
+    }
+    public void Footstep1SFX()
+    {
+        PlayAudioClip("FootstepCloud1", Define.Sounds.SFX);
+    }
+    public void Footstep2SFX()
+    {
+        PlayAudioClip("FootstepCloud2", Define.Sounds.SFX);
+    }
+    public void EnterFogSFX()
+    {
+        PlayAudioClip("EnterFog", Define.Sounds.SFX);
+    }
 }
