@@ -7,6 +7,7 @@ public class Timer : MonoBehaviour
     public TextMeshProUGUI timerText;
     public float curTime;
     public float stationTime;
+    public float subwayTime;
     public bool isStop { get; private set; }
 
     private int min;
@@ -31,6 +32,7 @@ public class Timer : MonoBehaviour
         {
             curTime += Time.deltaTime;
             stationTime += Time.deltaTime;
+            subwayTime += Time.deltaTime;
             min = Mathf.FloorToInt(curTime / 60);
             sec = Mathf.FloorToInt(curTime % 60);
             milSec = Mathf.FloorToInt((curTime * 100f) % 100);
@@ -55,8 +57,8 @@ public class Timer : MonoBehaviour
         curTime = Mathf.Lerp(curTime, curTime + time, lerpSpeed); // 필요시 Time.deltaTime 곱하기
     }
 
-    public void ResetStationTimer()
+    public void ResetTimer(float time)
     {
-        stationTime = 0f;
+        time = 0f;
     }
 }

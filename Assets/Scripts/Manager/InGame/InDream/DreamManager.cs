@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DreamManager : SingletonManagers<DreamManager>
 {
@@ -19,5 +20,13 @@ public class DreamManager : SingletonManagers<DreamManager>
     void Update()
     {
         
+    }
+
+    public void EnterTheDream() // 지하철 -> 꿈속에 들어올 때 
+    {
+        SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
+        TiredManager.Instance.SetTiredAfterDream();
+        SceneManager.LoadScene("InDream_PlayerMove");
+        SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
     }
 }
