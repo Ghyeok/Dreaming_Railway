@@ -19,15 +19,13 @@ public class PlayerFallAsleep : MonoBehaviour
 
     }
 
-    void EnterToDream()
+    private void EnterToDream()
     {
         SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.FALLASLEEP;
 
-        if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.STANDING &&
-            SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
+        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-            SceneManager.LoadScene("InDream_PlayerMove");
+            DreamManager.Instance.EnterTheDream();
         }
     }
 

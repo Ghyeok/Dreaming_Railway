@@ -60,7 +60,7 @@ public class StationManager : SingletonManagers<StationManager>
 
         ChooseStationType();
         TransferManager.Instance.ReturnTransferState();
-        SubwayGameManager.Instance.timer.ResetStationTimer();
+        SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.stationTime);
     }
 
     public void ChooseStationType()

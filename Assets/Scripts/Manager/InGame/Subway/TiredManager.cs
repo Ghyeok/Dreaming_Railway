@@ -27,35 +27,45 @@ public class TiredManager : SingletonManagers<TiredManager>
     // Update is called once per frame
     void Update()
     {
-        IncreaseTiredOneSecond();
-        CheckTired();
+        IncreaseTired();
+        IsTiredHalf();
     }
 
-    private void CheckTired()
+    private void IsTiredHalf()
     {
-        currentTired = Mathf.Clamp(currentTired, 0, maxTired);
-
-        if (currentTired > maxTired / 2)
-        {
-            isTiredHalf = true;
-        }
-        else
+        if(currentTired < maxTired / 2)
         {
             isTiredHalf = false;
         }
+        else
+        {
+            isTiredHalf = true;
+        }
     }
 
-    private void IncreaseTiredOneSecond()
+
+    public void SetTiredAfterDream()
+    {
+        if (SubwayGameManager.Instance.timer.subwayTime <= 100f)
+        {
+            currentTired /= 2f;
+            SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.subwayTime);
+        }
+        else if (SubwayGameManager.Instance.timer.subwayTime > 100f)
+        {
+            currentTired = (currentTired / 2f) * 3f;
+            SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.subwayTime);
+        }
+    }
+
+    private void IncreaseTired()
     {
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
             currentTired += Time.deltaTime;
             if (currentTired >= maxTired)
             {
-                SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-                currentTired /= 2; // 감소하는 피로도 수정 필요
-                SceneManager.LoadScene("InDream_PlayerMove");
-                SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
+                DreamManager.Instance.EnterTheDream();
             }
         }
     }

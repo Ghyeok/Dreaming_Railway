@@ -32,7 +32,7 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     private void Start()
     {
-        TestBGM();
+        SubwayBGM();
     }
 
     // Update is called once per frame
@@ -82,7 +82,7 @@ public class SoundManager : SingletonManagers<SoundManager>
         return clip;
     }
 
-    void TestBGM()
+    public void SubwayBGM()
     {
         PlayAudioClip("TrainMusic", Define.Sounds.BGM);
     }
