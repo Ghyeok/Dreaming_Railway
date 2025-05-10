@@ -112,4 +112,9 @@ public class SoundManager : SingletonManagers<SoundManager>
     {
         PlayAudioClip("EnterFog", Define.Sounds.SFX);
     }
+
+    public void ExitDreamSFX()
+    {
+        PlayAudioClip("ExitDream", Define.Sounds.SFX);
+    }
 }

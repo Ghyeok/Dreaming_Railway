@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 
+
 public class Player : MonoBehaviour
 { 
     [SerializeField] private float acceleration;  
@@ -22,18 +23,24 @@ public class Player : MonoBehaviour
     public float minSpeed = 1.75f;
     private bool isInObstacle = false;
 
+    Animator MyAnimator;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        MyAnimator = GetComponent<Animator>();
     }
     
-    void Update() {
+    void Update() 
+    {
+        
         if (Input.GetKeyDown(KeyCode.Space)) //점프
         {
             Jump();
         }
         if ( (Mathf.Abs(transform.position.x) > 200) || (transform.position.y > 50) )
         {//씬 이동
+            SoundManager.Instance.ExitDreamSFX();
             SceneManager.LoadScene("TestSubwayScene");
         }
     }
@@ -106,6 +113,8 @@ public class Player : MonoBehaviour
         {// 멈추면 위치 갱신
             lastFootstepPosition = transform.position;
         }
+        //달리기 모션
+        MyAnimator.SetBool("IsRunning", Speed != 0);
     }
 
 
