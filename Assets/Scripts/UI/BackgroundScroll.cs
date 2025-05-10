@@ -23,7 +23,7 @@ public class BackgroundScroll : MonoBehaviour
     {
         if(backgroundType == BackgroundSpawner.BackgroundType.UNDERGROUND)
         {
-            scrollSpeed = 25f;
+            scrollSpeed = 100f;
         }
         else if (backgroundType == BackgroundSpawner.BackgroundType.HANGANG)
         {

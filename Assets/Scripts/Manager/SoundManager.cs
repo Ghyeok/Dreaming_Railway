@@ -15,17 +15,21 @@ public class SoundManager : SingletonManagers<SoundManager>
     AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGM으로 사용할 AudioSource
     AudioSource SFXSource { get { return audioSources[(int)Define.Sounds.SFX]; } } // SFX(효과음)으로 사용할 AudioSource
 
+    GameObject bgmObject;
+    GameObject sfxObject;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
     {
         base.Awake();
 
-        GameObject bgmObject = new GameObject("BGM");
+        bgmObject = new GameObject("BGM");
         bgmObject.transform.parent = this.transform;
         audioSources[(int)Define.Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
         audioSources[(int)Define.Sounds.BGM].loop = true;
 
-        GameObject sfxObject = new GameObject("SFX");
+        sfxObject = new GameObject("SFX");
         sfxObject.transform.parent = this.transform;
         audioSources[(int)Define.Sounds.SFX] = sfxObject.AddComponent<AudioSource>();
     }
@@ -61,7 +65,7 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     }
 
-    AudioClip GetOrAddAudioClip(string path)
+    public AudioClip GetOrAddAudioClip(string path)
     {
         if (audioClips.TryGetValue(path, out AudioClip clip)) // Get
             return clip;
@@ -112,9 +116,13 @@ public class SoundManager : SingletonManagers<SoundManager>
     {
         PlayAudioClip("EnterFog", Define.Sounds.SFX);
     }
-
     public void ExitDreamSFX()
     {
         PlayAudioClip("ExitDream", Define.Sounds.SFX);
+    }
+     public void SetSFXVolume(float volume)
+    {
+        AudioSource src = sfxObject.GetComponent<AudioSource>();
+        src.volume = volume;
     }
 }
