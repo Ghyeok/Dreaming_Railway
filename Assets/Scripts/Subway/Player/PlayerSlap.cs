@@ -32,11 +32,10 @@ public class PlayerSlap : MonoBehaviour
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
             if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.SLAP)
             {
-                SoundManager.Instance.SetSFXVolume(0.3f);
+                SoundManager.Instance.SetSFXVolume(0.1f);
                 SoundManager.Instance.PlayAudioClip("slap", Define.Sounds.SFX);
-                SoundManager.Instance.SetSFXVolume(1f);
-
             }
+
             SubwayGameManager.Instance.isSlapCoolTime = true;
             TiredManager.Instance.currentTired -= SubwayGameManager.Instance.tiredDecreaseBySlap;
             SubwayPlayerManager.Instance.slapNum++;

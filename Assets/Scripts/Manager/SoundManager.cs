@@ -9,15 +9,14 @@ using UnityEngine;
 
 public class SoundManager : SingletonManagers<SoundManager>
 {
-    AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
-    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
+    private AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
+    private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
-    AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGM으로 사용할 AudioSource
+    private AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGM으로 사용할 AudioSource
     AudioSource SFXSource { get { return audioSources[(int)Define.Sounds.SFX]; } } // SFX(효과음)으로 사용할 AudioSource
 
-    GameObject bgmObject;
-    GameObject sfxObject;
-
+    private GameObject bgmObject;
+    private GameObject sfxObject;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
@@ -122,7 +121,6 @@ public class SoundManager : SingletonManagers<SoundManager>
     }
      public void SetSFXVolume(float volume)
     {
-        AudioSource src = sfxObject.GetComponent<AudioSource>();
-        src.volume = volume;
+        SFXSource.volume = volume;
     }
 }

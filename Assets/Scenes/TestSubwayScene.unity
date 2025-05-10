@@ -1266,7 +1266,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6089245582863712375, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6089245582863712375, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1338,7 +1338,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7039876846177751495, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_PixelPerfect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7039876846177751495, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
       propertyPath: m_SortingOrder
@@ -1408,6 +1408,7 @@ PrefabInstance:
     - {fileID: 2146421381623127207, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7145637677531337426, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
+    - {fileID: 838143805728524637, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ccb9d3bcc04f7a46a29c0aa7e74a17a, type: 3}
