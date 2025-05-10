@@ -31,6 +31,7 @@ public class PlayerStanding : MonoBehaviour
 
         timer.ForceAddTime(totalTime, skipSpeed);
         Debug.Log("환승 성공! (입석) ");
+        SoundManager.Instance.PlayAudioClip("Standing", Define.Sounds.SFX);
         TransferManager.Instance.curTransferCount++;
         StationManager.Instance.GenerateStations();
     }
