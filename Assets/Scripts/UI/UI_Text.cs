@@ -6,7 +6,6 @@ public class UI_Text : UI_Bind
 {
     public enum Texts
     {
-        DayText,
         TransferText,
         TimerText,
         SlapText,
@@ -14,7 +13,6 @@ public class UI_Text : UI_Bind
     }
 
     public TextMeshProUGUI transferText;
-    public TextMeshProUGUI dayText;
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI slapText;
 
@@ -24,7 +22,6 @@ public class UI_Text : UI_Bind
         Bind<TextMeshProUGUI>(typeof(Texts));
 
         timeText = GetText((int)Texts.TimerText);
-        dayText = GetText((int)Texts.DayText);
         transferText = GetText((int)Texts.TransferText);
         slapText = GetText((int)Texts.SlapText);
     }
@@ -44,7 +41,7 @@ public class UI_Text : UI_Bind
     void TransferText()
     {
         StationManager stationManager = StationManager.Instance;
-        transferText.text = $"{stationManager.currentStationIdx} / {stationManager.transferStationIdx} Stations";
+        transferText.text = $"환승까지 <size=300%>{stationManager.transferStationIdx - stationManager.currentStationIdx}</size>역";
     }
 
     void SlapText()

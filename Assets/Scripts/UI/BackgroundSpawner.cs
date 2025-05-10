@@ -10,6 +10,7 @@ public class BackgroundSpawner : MonoBehaviour
     }
 
     private Queue<GameObject> backgroundQueue = new Queue<GameObject>();
+    [SerializeField]
     private bool isSpecialBackgroundShown = false;
 
     public GameObject undergroundPrefab;
