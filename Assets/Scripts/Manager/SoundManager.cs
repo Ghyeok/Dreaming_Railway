@@ -44,7 +44,7 @@ public class SoundManager : SingletonManagers<SoundManager>
         
     }
 
-    public void PlayAudioClip(string path, Define.Sounds newSoundType)
+    public void PlayAudioClip(string path, Define.Sounds newSoundType, float volumeScale = 1f)
     {
         AudioClip clip = GetOrAddAudioClip(path);
 
@@ -59,7 +59,7 @@ public class SoundManager : SingletonManagers<SoundManager>
         {
             // 효과음 재생 로직..
             SFXSource.clip = clip;
-            SFXSource.PlayOneShot(clip);
+            SFXSource.PlayOneShot(clip, volumeScale);
         }
 
     }
@@ -113,7 +113,7 @@ public class SoundManager : SingletonManagers<SoundManager>
     }
     public void EnterFogSFX()
     {
-        PlayAudioClip("EnterFog", Define.Sounds.SFX);
+        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.2f);
     }
     public void ExitDreamSFX()
     {

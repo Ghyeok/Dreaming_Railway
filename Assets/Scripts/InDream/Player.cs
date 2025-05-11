@@ -142,9 +142,9 @@ public class Player : MonoBehaviour
             rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse); 
         }
     }
-    private void OnCollisionEnter2D(Collision2D other) 
-    {
-        if (other.gameObject.CompareTag("Ground"))
+    private void OnCollisionEnter2D(Collision2D collision) 
+    {// 바닥 윗 표면에 착지할 때만
+        if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
         {
             SoundManager.Instance.LandSFX();
             isJump = false;
