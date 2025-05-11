@@ -14,14 +14,17 @@ public class Player : MonoBehaviour
     private Vector2 lastFootstepPosition;
     private float distanceMovedSinceLastStep = 0f;
     [SerializeField] private float stepDistance; // 발소리가 나는 최소 거리
-    private bool isLeftFoot = true;
-
-    private float Speed = 2.5f;
+    
+    public float Speed;
     public float jumpPower;
-    public float UImoveX = 2.5f;
+    private float UimoveX;    
+    
+    public float minSpeed;
+    private bool isLeftFoot = true;
     public bool isJump = false;
-    public float minSpeed = 1.75f;
+
     private bool isInObstacle = false;
+    public bool wasMovingLastFrame = false;
 
     Animator MyAnimator;
 
@@ -46,15 +49,18 @@ public class Player : MonoBehaviour
     }
     
     void FixedUpdate() 
-    {//키보드키
-        float KeyboardmoveX = Input.GetAxis("Horizontal");
+    {// UI 키와 키보드 입력을 동시에 처리(방향값 받기)
+        float moveX = 0f;
 
-    //키보드 혹은 UI에서 방향값 받기
-        float moveX = KeyboardmoveX != 0 ? KeyboardmoveX : UImoveX;
+        if (Input.GetKey(KeyCode.RightArrow) || UimoveX > 0) // 오른쪽 키 또는 UI 입력
+            moveX = 1f;
+        else if (Input.GetKey(KeyCode.LeftArrow) || UimoveX < 0) // 왼쪽 키 또는 UI 입력
+            moveX = -1f;
 
     //방향 전환 시
         if ((Speed < 0 && moveX > 0) || (Speed > 0 && moveX < 0))
             Speed = 0; //방향 바꾸면 속도 멈춤
+
 
     //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
@@ -62,17 +68,33 @@ public class Player : MonoBehaviour
         else if (moveX < 0)
             transform.localScale = new Vector3(-0.45f, 0.45f, 1);
 
-    //가속
-        if (moveX != 0)
-        {
-            Speed += moveX * acceleration * Time.fixedDeltaTime;
-            Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
-        }
 
-    //감속
-        else
+        if (moveX != 0)
+        {//좌우 누르면
+            if (!wasMovingLastFrame && Mathf.Abs(Speed) < 0.0001f)
+            {
+            // 정지 상태 -> 처음 입력됨 -> 5부터 시작
+                Speed = moveX * 4f;
+                Debug.Log("처음 눌러 Speed = " + Speed);
+                wasMovingLastFrame = true;
+            }
+            else
+            {
+                // 가속 적용
+                Speed += moveX * acceleration * Time.fixedDeltaTime;
+                Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
+            }
+
+        }
+    
+        else //안 누르면 감속
         {
             Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
+
+            if (Mathf.Abs(Speed) == 0f)
+            {
+                wasMovingLastFrame = false;
+            }
         }
 
 
@@ -82,7 +104,7 @@ public class Player : MonoBehaviour
             SoundManager.Instance.EnterFogSFX();
             float absCurrentSpeed = Mathf.Abs(Speed);
             float direction = Mathf.Sign(Speed);
-            float decelerationRate = (absCurrentSpeed - minSpeed) / 3f; // 3초 동안 줄어들도록
+            float decelerationRate = (absCurrentSpeed - minSpeed) / 2.5f; // 3초 동안 줄어들도록
 
     //(3초 후 최소속도 도달)
             float absSlowSpeed = Mathf.MoveTowards(absCurrentSpeed, minSpeed, decelerationRate * Time.fixedDeltaTime);
@@ -121,15 +143,15 @@ public class Player : MonoBehaviour
 //UI로의 이동
     public void StartMoveRight() 
     {
-        UImoveX = 1;
+        UimoveX = 1;
     }
     public void StartMoveLeft()
     {
-        UImoveX = -1;
+        UimoveX = -1;
     }
     public void StopMove()
     {
-        UImoveX = 0f; //정지
+        UimoveX = 0f; //정지
     }
 
 //점프 함수

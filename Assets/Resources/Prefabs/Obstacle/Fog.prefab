@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ef36566016e7f49b6fa47ecc44ea22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Xvelocity: 0.05
-  Yvelocity: 0.001
+  Xvelocity: 0.07
+  Yvelocity: 0.01
 --- !u!66 &5022238599266024563
 CompositeCollider2D:
   m_ObjectHideFlags: 0
