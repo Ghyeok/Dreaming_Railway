@@ -1,15 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : SingletonManagers<UIManager>
 {
     private GameObject _root;
-
-    public override void Awake()
-    {
-        base.Awake();
-        // 여기에 바인딩하자
-    }
 
     public static GameObject Root
     {
@@ -77,5 +72,82 @@ public class UIManager : SingletonManagers<UIManager>
             Debug.LogError($"[Error] UI Load 실패 : Prefabs/UIs/{newUIType} 확인 바람");
             return null;
         }
+    }
+
+    // UI 팝업 구현
+    int _order = 10;
+    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+
+    public T ShowPopupUI<T>(string name =null) where T : UI_Popup
+    {
+        if(string.IsNullOrEmpty(name)){
+            name = typeof(T).Name;
+        }
+
+        GameObject go = LoadUI($"Popup/{name}");
+        T popup = Util.GetOrAddComponet<T>(go);
+        _popupStack.Push(popup);
+
+        go.transform.SetParent(Root.transform);
+
+        return popup;
+    }
+
+    // 엉뚱한 UI를 삭제하는 것을 방지
+    public void ClosePopupUI(UI_Popup popup)
+    {
+        if (_popupStack.Count == 0)
+        {
+            return;
+        }
+
+        if (_popupStack.Peek() != popup)
+        {
+            Debug.Log("Close Popup Failed!");
+            return;
+        }
+
+        ClosePopupUI();
+    }
+
+    public void ClosePopupUI()
+    {
+        if (_popupStack.Count == 0)
+        {
+            return;
+        }
+
+        UI_Popup popup = _popupStack.Pop();
+    }
+
+    public void CloseAllPopupUI()
+    {
+        while (_popupStack.Count > 0)
+        {
+            ClosePopupUI();
+        }
+    }
+
+    public void SetCanvas(GameObject go, bool sort = true)
+    {
+        Canvas canvas = Util.GetOrAddComponet<Canvas>(go);
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.overrideSorting = true;
+
+
+        if (sort)
+        {
+            canvas.sortingOrder = _order;
+            _order++;
+        }
+        else
+        {
+            canvas.sortingOrder = 0;
+        }
+    }
+
+    private void Start()
+    {
+
     }
 }

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using static UI_Button;
 
-public class UI_Text : UI_Bind
+public class UI_Text : UI_Popup
 {
     public enum Texts
     {
@@ -18,6 +18,11 @@ public class UI_Text : UI_Bind
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        Init();   
+    }
+
+    public override void Init()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
 

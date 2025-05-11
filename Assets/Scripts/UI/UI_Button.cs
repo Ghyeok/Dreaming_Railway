@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Button : UI_Bind
+public class UI_Button : UI_Popup
 {
     public enum Buttons
     {
@@ -15,6 +15,7 @@ public class UI_Button : UI_Bind
 
     void PauseButtonTest(PointerEventData data)
     {
+        UIManager.Instance.ShowPopupUI<UI_Popup>("PausePopupCanvas");
         Debug.Log("일시정지!");
     }
 
@@ -25,6 +26,11 @@ public class UI_Button : UI_Bind
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
+    {
+        Init();
+    }
+
+    public override void Init()
     {
         Bind<Button>(typeof(Buttons));
 

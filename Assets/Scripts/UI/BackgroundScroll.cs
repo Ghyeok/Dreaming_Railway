@@ -27,7 +27,7 @@ public class BackgroundScroll : MonoBehaviour
         }
         else if (backgroundType == BackgroundSpawner.BackgroundType.HANGANG)
         {
-            scrollSpeed = 25f;
+            scrollSpeed = 100f;
         }
     }
 

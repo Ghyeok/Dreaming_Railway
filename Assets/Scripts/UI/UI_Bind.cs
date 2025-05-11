@@ -7,18 +7,20 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_Bind : MonoBehaviour
+public abstract class UI_Bind : MonoBehaviour
 {
     public enum GameObjects
     {
         GameObject,
         // 필요한 게임오브젝트 추가..
     }
+
+    public abstract void Init();
         
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        Init();
     }
 
     // Update is called once per frame

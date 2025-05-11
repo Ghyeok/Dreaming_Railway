@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Image : UI_Bind
+public class UI_Image : UI_Popup
 {
     public enum Images
     {
@@ -14,10 +14,16 @@ public class UI_Image : UI_Bind
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Init();
+    }
+
+    public override void Init()
+    {
         Bind<Image>(typeof(Images));
 
         timerImage = GetImage((int)Images.TimerImage);
     }
+
 
     // Update is called once per frame
     void Update()
