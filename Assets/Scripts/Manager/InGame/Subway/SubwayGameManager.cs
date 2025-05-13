@@ -1,3 +1,4 @@
+using UnityEditorInternal;
 using UnityEngine;
 
 /* 플레이어가 지하철에 있을 때의 전체적인 흐름을 관리하는 매니저이다.
@@ -17,10 +18,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public override void Awake()
     {
         base.Awake();
-        isStopping = false;
-        isSlapCoolTime = false;
-        tiredDecreaseBySlap = 3f;
-        dayCount = 1;
+        InitGame();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,5 +31,16 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     void Update()
     {
 
+    }
+
+    void InitGame()
+    {
+        isStopping = false;
+        isSlapCoolTime = false;
+        tiredDecreaseBySlap = 3f;
+        dayCount = 1;
+        timer = GetComponent<Timer>();
+
+        UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
     }
 }

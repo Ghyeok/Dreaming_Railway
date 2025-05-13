@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class UIManager : SingletonManagers<UIManager>
@@ -47,7 +48,7 @@ public class UIManager : SingletonManagers<UIManager>
         try
         {
             ui = Instantiate(Resources.Load<GameObject>($"Prefabs/UIs/{newUIType}"));
-            ui.transform.parent = Root.transform;
+            ui.transform.SetParent(Root.transform, false);
             return ui;
         }
         catch
@@ -56,7 +57,7 @@ public class UIManager : SingletonManagers<UIManager>
             return null;
         }
     }
-    
+
     // 이건 String으로 호출하는거
     public static GameObject LoadUI(string newUIType)
     {
@@ -64,7 +65,7 @@ public class UIManager : SingletonManagers<UIManager>
         try
         {
             ui = Instantiate(Resources.Load<GameObject>($"Prefabs/UIs/{newUIType}"));
-            ui.transform.parent = Root.transform;
+            ui.transform.SetParent(Root.transform, false);
             return ui;
         }
         catch
@@ -74,21 +75,38 @@ public class UIManager : SingletonManagers<UIManager>
         }
     }
 
+    public void SetCanvas(GameObject go, bool sort = true)
+    {
+        Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.overrideSorting = true;
+
+
+        if (sort)
+        {
+            canvas.sortingOrder = _order;
+            _order++;
+        }
+        else
+        {
+            canvas.sortingOrder = 0;
+        }
+    }
+
     // UI 팝업 구현
     int _order = 10;
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 
-    public T ShowPopupUI<T>(string name =null) where T : UI_Popup
+    public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
-        if(string.IsNullOrEmpty(name)){
+        if (string.IsNullOrEmpty(name))
+        {
             name = typeof(T).Name;
         }
 
-        GameObject go = LoadUI($"Popup/{name}");
-        T popup = Util.GetOrAddComponet<T>(go);
+        GameObject go = LoadUI($"Popup/{name}"); // Resources/Prefabs/UIs/Popup/
+        T popup = Util.GetOrAddComponent<T>(go);
         _popupStack.Push(popup);
-
-        go.transform.SetParent(Root.transform);
 
         return popup;
     }
@@ -118,6 +136,9 @@ public class UIManager : SingletonManagers<UIManager>
         }
 
         UI_Popup popup = _popupStack.Pop();
+        Destroy(popup.gameObject);
+        popup = null;
+        _order--;
     }
 
     public void CloseAllPopupUI()
@@ -128,26 +149,18 @@ public class UIManager : SingletonManagers<UIManager>
         }
     }
 
-    public void SetCanvas(GameObject go, bool sort = true)
+    // 팝업이 아닌 Scene에 구현되어 있는 UI
+    UI_Scene _sceneUI = null;
+
+    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
     {
-        Canvas canvas = Util.GetOrAddComponet<Canvas>(go);
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.overrideSorting = true;
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
 
+        GameObject go = LoadUI($"Scene/{name}");
+        T sceneUI = Util.GetOrAddComponent<T>(go);
+        _sceneUI = sceneUI;
 
-        if (sort)
-        {
-            canvas.sortingOrder = _order;
-            _order++;
-        }
-        else
-        {
-            canvas.sortingOrder = 0;
-        }
-    }
-
-    private void Start()
-    {
-
+        return sceneUI;
     }
 }

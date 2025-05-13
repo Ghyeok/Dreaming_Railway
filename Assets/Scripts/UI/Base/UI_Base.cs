@@ -2,19 +2,11 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public abstract class UI_Bind : MonoBehaviour
+public abstract class UI_Base : MonoBehaviour
 {
-    public enum GameObjects
-    {
-        GameObject,
-        // 필요한 게임오브젝트 추가..
-    }
-
     public abstract void Init();
         
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,7 +41,7 @@ public abstract class UI_Bind : MonoBehaviour
                 objects[i] = Util.FindChild<T>(gameObject, names[i], true); // <T>가 컴포넌트
 
             if (objects[i] == null)
-                Debug.Log("Failed to Bind");
+                Debug.Log($"Failed to Bind {names[i]}");
         }
     }
 
@@ -72,7 +64,7 @@ public abstract class UI_Bind : MonoBehaviour
     // 자동으로 UI에 이벤트를 연결해주는 함수
     public static void AddUIEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
-        UI_EventHandler evt = Util.GetOrAddComponet<UI_EventHandler>(go);
+        UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 
         switch (type)
         {

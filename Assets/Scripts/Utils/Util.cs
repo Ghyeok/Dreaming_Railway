@@ -4,7 +4,7 @@ using UnityEngine;
 // Static으로 선언하자
 public static class Util
 {
-    public static T GetOrAddComponet<T>(GameObject go) where T : Component
+    public static T GetOrAddComponent<T>(GameObject go) where T : Component
     {
         T component = go.GetComponent<T>();
         if (component == null)
