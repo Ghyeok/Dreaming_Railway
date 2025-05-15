@@ -41,11 +41,7 @@ public class Player : MonoBehaviour
         {
             Jump();
         }
-        if ( (Mathf.Abs(transform.position.x) > 200) || (transform.position.y > 50) )
-        {//씬 이동
-            SoundManager.Instance.ExitDreamSFX();
-            SceneManager.LoadScene("TestSubwayScene");
-        }
+        
     }
     
     void FixedUpdate() 
@@ -91,7 +87,7 @@ public class Player : MonoBehaviour
         {
             Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
 
-            if (Mathf.Abs(Speed) == 0f)
+            if (Mathf.Abs(Speed) < 0.01f)
             {
                 wasMovingLastFrame = false;
             }
@@ -171,16 +167,25 @@ public class Player : MonoBehaviour
             SoundManager.Instance.LandSFX();
             isJump = false;
         }
+
+        //꿈 속 탈출구랑 닿았을 때 씬 넘어가기기
+        if (collision.collider.CompareTag("ExitDoor"))
+        {
+            SoundManager.Instance.ExitDreamSFX();
+            SceneManager.LoadScene("TestSubwayScene"); 
+        }
     }
 
-    //장애물 감지
+
     private void OnTriggerStay2D(Collider2D other)
-    {
+    {   //장애물 감지
         if (other.CompareTag("Obstacle"))
         {
             isInObstacle = true;
         }
     }
+
+    
 
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -188,7 +193,7 @@ public class Player : MonoBehaviour
         {
             isInObstacle = false;
         }
-    }   
+    }  
 
 }
 

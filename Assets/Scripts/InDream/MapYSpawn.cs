@@ -7,15 +7,18 @@ public class MapYSpawn : MonoBehaviour
     public GameObject player;
     public List<GameObject> mapList;
 
-    private float nextSpawnY = 1f;
+    private float nextSpawnY = 0.5f;
     private float cameraHeight;
 
     int randomint;  //타일 번호 랜덤 변수
 
+    //맵 길이 제한
+    private int spawnedCount;
+
 
     void Start()
     {
-        cameraHeight = Camera.main.orthographicSize * 1.5f;
+        cameraHeight = Camera.main.orthographicSize * 1f;
 
         //시작 시 3개 미리 생성
         for (int i = 0; i < 3; i++)
@@ -42,13 +45,17 @@ public class MapYSpawn : MonoBehaviour
         float mapHeight = GetPrefabHeight(selectedMap);
 
         //고른 맵 생성
-        Instantiate(selectedMap, new Vector3(0, nextSpawnY, 0), Quaternion.identity);
+        Instantiate(selectedMap, new Vector3(10f, nextSpawnY, 0), Quaternion.identity);
 
        //다음 생성 위치 설정
-        nextSpawnY += mapHeight + 2f;
+        nextSpawnY += mapHeight + 1.8f;
+
+        // 맵 생성 수 증가
+        spawnedCount++; 
     }
 
-//맵 프리팹 높이 총괄 계산
+
+   //맵 프리팹 높이 총괄 계산
     float GetPrefabHeight(GameObject prefab)
    {
         Renderer[] renderers = prefab.GetComponentsInChildren<Renderer>();
@@ -67,3 +74,28 @@ public class MapYSpawn : MonoBehaviour
     }
 
 }
+
+
+ /* 
+
+if ( Manager(파일명).Instance.(깨어있던 시간) < 50 )
+{//평균 클리어 타임 22~25초
+    if ( spawnedCount == 10 +  2*Manager.Instance.(뺨 때린 횟수) )
+    {   
+        canSpawnRight = false;
+        canSpawnleft = false;
+    }
+  
+else if ( Manager.Instance.(깨어잇던 시간) >= 50 )
+//평균 클리어 타임 40~45초
+    if ( spawnedCount == 18 + 2*Manager.Instance.(뺨 때린 횟수) )
+    {   
+        canSpawnRight = false;
+        canSpawnleft = false;
+    }
+
+
+//^^^^ 맵길이 계산 로직
+
+
+*/
