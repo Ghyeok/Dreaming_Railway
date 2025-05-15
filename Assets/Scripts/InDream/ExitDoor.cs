@@ -3,8 +3,8 @@ using UnityEngine;
 public class ExitDoor : MonoBehaviour
 {
     public GameObject objectToSpawn;
-    private Vector3 finalPosition;
-    private bool hasSpawnedFinalObject = false;
+    //private Vector3 finalPosition;
+    //private bool hasSpawnedFinalObject = false;
 
     void Start()
     {

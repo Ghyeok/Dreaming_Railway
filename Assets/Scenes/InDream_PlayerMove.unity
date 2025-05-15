@@ -1600,7 +1600,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5761860412416466949, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_GravityScale
-      value: 0.5
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: Speed
@@ -2339,7 +2339,7 @@ Transform:
   m_GameObject: {fileID: 2141137973}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
