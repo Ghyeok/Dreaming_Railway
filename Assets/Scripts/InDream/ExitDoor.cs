@@ -35,12 +35,12 @@ public class ExitDoor : MonoBehaviour
 
             if (canSpawnRight)
             {
-               finalPosition = new Vector3((18 +  2*Manager.Instance.(뺨 때린 횟수))*(MapXSpawn.Instance.tileLength) - 5f,MapXSpawn.Instance.groundY, 0f);
+               finalPosition = new Vector3((18 +  2*SubwayPlayerManager.Instacne.slapNum)*(MapXSpawn.Instance.tileLength) - 5f,MapXSpawn.Instance.groundY, 0f);
             }
 
             if (canSpawnLeft)
             {
-                finalPosition = new Vector3(-(18 + 2*Manager.Instance.(뺨 때린 횟수))*(MapXSpawn.Instance.tileLength) + 5f,MapXSpawn.Instance.groundY, 0f);
+                finalPosition = new Vector3(-(18 + 2*SubwayPlayerManager.Instacne.slapNum)*(MapXSpawn.Instance.tileLength) + 5f,MapXSpawn.Instance.groundY, 0f);
             }
 
 

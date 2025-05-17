@@ -80,7 +80,7 @@ public class MapYSpawn : MonoBehaviour
 
 if ( Manager(파일명).Instance.(깨어있던 시간) < 50 )
 {//평균 클리어 타임 22~25초
-    if ( spawnedCount == 10 +  2*Manager.Instance.(뺨 때린 횟수) )
+    if ( spawnedCount == 10 +  2*SubwayPlayerManager.Instacne.slapNum )
     {   
         canSpawnRight = false;
         canSpawnleft = false;
@@ -88,7 +88,7 @@ if ( Manager(파일명).Instance.(깨어있던 시간) < 50 )
   
 else if ( Manager.Instance.(깨어잇던 시간) >= 50 )
 //평균 클리어 타임 40~45초
-    if ( spawnedCount == 18 + 2*Manager.Instance.(뺨 때린 횟수) )
+    if ( spawnedCount == 18 + 2*SubwayPlayerManager.Instacne.slapNum )
     {   
         canSpawnRight = false;
         canSpawnleft = false;
