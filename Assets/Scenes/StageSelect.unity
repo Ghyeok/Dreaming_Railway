@@ -384,7 +384,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 72541464}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 606241000}
+        m_TargetAssemblyTypeName: SubwayMiniMove, Assembly-CSharp
+        m_MethodName: MoveToPositionDay3
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &72541464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,7 +495,7 @@ MonoBehaviour:
   m_text: Day 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
-  m_sharedMaterial: {fileID: -892406320393217119, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
+  m_sharedMaterial: {fileID: 4974087182873981051, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -558,6 +570,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201118079}
+  m_CullTransparentMesh: 1
+--- !u!1 &269920830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 269920831}
+  - component: {fileID: 269920833}
+  - component: {fileID: 269920832}
+  m_Layer: 5
+  m_Name: SubwayMini
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &269920831
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269920830}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1679687, y: 0.1679687, z: 0.1679687}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 426570345}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 84, y: 71}
+  m_SizeDelta: {x: 90, y: 60}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &269920832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269920830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &269920833
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269920830}
   m_CullTransparentMesh: 1
 --- !u!1 &309722420
 GameObject:
@@ -677,7 +764,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 331337678}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 606241000}
+        m_TargetAssemblyTypeName: SubwayMiniMove, Assembly-CSharp
+        m_MethodName: MoveToPositionDay5
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &331337678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -745,6 +844,7 @@ Transform:
   m_LocalScale: {x: 5.95349, y: 5.95349, z: 5.95349}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 269920831}
   - {fileID: 518383209}
   m_Father: {fileID: 25462046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -905,7 +1005,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 550206313}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 606241000}
+        m_TargetAssemblyTypeName: SubwayMiniMove, Assembly-CSharp
+        m_MethodName: MoveToPositionDay4
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &550206313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,6 +1056,87 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550206310}
   m_CullTransparentMesh: 1
+--- !u!1 &606240999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 606241001}
+  - component: {fileID: 606241000}
+  m_Layer: 0
+  m_Name: SubwayMIniMove
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &606241000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606240999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 896d726ff13582447997682319c3271b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetImage: {fileID: 269920831}
+  position1: {x: -84, y: 71}
+  position2: {x: -42, y: 71}
+  position3: {x: 0, y: 71}
+  position4: {x: 42, y: 71}
+  position5: {x: 84, y: 71}
+--- !u!4 &606241001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606240999}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 244.61148, y: 154.57138, z: 2.066694}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1584906933}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &622871294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 622871295}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &622871295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622871294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 62.546448, y: 112.7419, z: -0.118943036}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &664863558
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1285,7 @@ MonoBehaviour:
   m_text: Day 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
-  m_sharedMaterial: {fileID: -892406320393217119, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
+  m_sharedMaterial: {fileID: 4974087182873981051, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1483,7 +1676,7 @@ MonoBehaviour:
   m_text: Day 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
-  m_sharedMaterial: {fileID: -892406320393217119, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
+  m_sharedMaterial: {fileID: 4974087182873981051, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1587,7 +1780,8 @@ Transform:
   m_LocalPosition: {x: 160.66666, y: 56.83334, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 606241001}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1778302582
@@ -1650,7 +1844,7 @@ MonoBehaviour:
   m_text: Day 3
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
-  m_sharedMaterial: {fileID: -892406320393217119, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
+  m_sharedMaterial: {fileID: 4974087182873981051, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1786,7 +1980,7 @@ MonoBehaviour:
   m_text: Day 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
-  m_sharedMaterial: {fileID: -892406320393217119, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
+  m_sharedMaterial: {fileID: 4974087182873981051, guid: b1ec0f5790442bf4dab00063af69e1ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1944,7 +2138,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1888979760}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 606241000}
+        m_TargetAssemblyTypeName: SubwayMiniMove, Assembly-CSharp
+        m_MethodName: MoveToPositionDay2
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1888979760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2065,7 +2271,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2146413730}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 606241000}
+        m_TargetAssemblyTypeName: SubwayMiniMove, Assembly-CSharp
+        m_MethodName: MoveToPositionDay1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2146413730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2113,3 +2331,4 @@ SceneRoots:
   - {fileID: 25462046}
   - {fileID: 664863560}
   - {fileID: 56675025}
+  - {fileID: 622871295}
