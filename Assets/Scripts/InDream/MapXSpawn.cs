@@ -8,8 +8,8 @@ public class MapXSpawn : MonoBehaviour
     public List<GameObject> mapList;
 
     public float groundY;
-    float nextSpawnTransformRight; // 오른쪽 스폰 기준점
-    float nextSpawnTransformLeft;  // 왼쪽 스폰 기준점
+    float nextSpawnDistanceRight; // 오른쪽 스폰 기준점
+    float nextSpawnDistanceLeft;  // 왼쪽 스폰 기준점
     public float tileLength;
     public float startSpawnOffset; // 스폰 시작 설정점
 
@@ -23,8 +23,8 @@ public class MapXSpawn : MonoBehaviour
 
     void Start()
     {
-        nextSpawnTransformRight = tileLength;  
-        nextSpawnTransformLeft = -tileLength; 
+        nextSpawnDistanceRight = tileLength;  
+        nextSpawnDistanceLeft = -tileLength; 
 
     }
 
@@ -37,7 +37,7 @@ public class MapXSpawn : MonoBehaviour
             Debug.Log("오른쪽 스폰 시작");
         }
 
-        if (canSpawnRight && player.transform.position.x + tileLength/1.2f > nextSpawnTransformRight)
+        if (canSpawnRight && player.transform.position.x + tileLength/1.2f > nextSpawnDistanceRight)
         {
             MapXSpawnToRight();
         }
@@ -49,7 +49,7 @@ public class MapXSpawn : MonoBehaviour
             Debug.Log("왼쪽 스폰 시작");
         }
 
-        if (canSpawnLeft && player.transform.position.x - tileLength/1.2f < nextSpawnTransformLeft)
+        if (canSpawnLeft && player.transform.position.x - tileLength/1.2f < nextSpawnDistanceLeft)
         {
             MapXSpawnToLeft();
         }
@@ -58,9 +58,9 @@ public class MapXSpawn : MonoBehaviour
     void MapXSpawnToRight() // 오른쪽으로 맵 생성
     {
         int randomint = Random.Range(0, mapList.Count);
-        Vector3 spawnPos = new Vector3(nextSpawnTransformRight, groundY, 0f);
+        Vector3 spawnPos = new Vector3(nextSpawnDistanceRight, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
-        nextSpawnTransformRight += tileLength;
+        nextSpawnDistanceRight += tileLength;
 
         spawnedCount++; // 맵 생성 수 증가
     }
@@ -68,9 +68,9 @@ public class MapXSpawn : MonoBehaviour
     void MapXSpawnToLeft() // 왼쪽으로 맵 생성
     {
         int randomint = Random.Range(0, mapList.Count);
-        Vector3 spawnPos = new Vector3(nextSpawnTransformLeft, groundY, 0f);
+        Vector3 spawnPos = new Vector3(nextSpawnDistanceLeft, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
-        nextSpawnTransformLeft -= tileLength;
+        nextSpawnDistanceLeft -= tileLength;
 
         spawnedCount++; // 맵 생성 수 증가
     }

@@ -18,7 +18,7 @@ public class MapYSpawn : MonoBehaviour
 
     void Start()
     {
-        cameraHeight = Camera.main.orthographicSize * 1f;
+        cameraHeight = Camera.main.orthographicSize * 1.5f;
 
         //시작 시 3개 미리 생성
         for (int i = 0; i < 3; i++)
@@ -48,7 +48,7 @@ public class MapYSpawn : MonoBehaviour
         Instantiate(selectedMap, new Vector3(10f, nextSpawnY, 0), Quaternion.identity);
 
        //다음 생성 위치 설정
-        nextSpawnY += mapHeight + 1.8f;
+        nextSpawnY += mapHeight + 0.5f;
 
         // 맵 생성 수 증가
         spawnedCount++; 

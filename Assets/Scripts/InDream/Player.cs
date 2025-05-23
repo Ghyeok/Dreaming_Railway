@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         MyAnimator = GetComponent<Animator>();
+        Speed = 0f;
     }
     
     void Update() 
@@ -67,9 +68,9 @@ public class Player : MonoBehaviour
 
         if (moveX != 0)
         {//좌우 누르면
-            if (!wasMovingLastFrame && Mathf.Abs(Speed) < 0.0001f)
+            if (!wasMovingLastFrame && Mathf.Abs(Speed) < 0.1f)
             {
-            // 정지 상태 -> 처음 입력됨 -> 5부터 시작
+            // 정지 상태 -> 처음 입력됨 -> 4부터 시작
                 Speed = moveX * 4f;
                 Debug.Log("처음 눌러 Speed = " + Speed);
                 wasMovingLastFrame = true;
@@ -106,6 +107,7 @@ public class Player : MonoBehaviour
             float absSlowSpeed = Mathf.MoveTowards(absCurrentSpeed, minSpeed, decelerationRate * Time.fixedDeltaTime);
             Speed = direction * absSlowSpeed;
         }
+
 
         rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
 

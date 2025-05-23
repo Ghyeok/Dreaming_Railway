@@ -9,6 +9,8 @@ public class FogMovement : MonoBehaviour
     private float currentXVelocity = 0f;
     private float currentYVelocity = 0f;
 
+    private bool hasReachedTarget = false;
+
 
     //안개가 도달할 마지막 지점(수정필요)
     Vector3 target1 = new Vector3(300, 1, -5);
@@ -27,24 +29,30 @@ public class FogMovement : MonoBehaviour
 
     void Update()
     {
+
+        if (hasReachedTarget) return; // 이미 도착했으면 아무 것도 하지 않음
+
         // 가속 적용
         if (SpawnedIndex == 0 || SpawnedIndex == 1)
             currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, maxXVelocity);
         else if (SpawnedIndex == 2)
             currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, maxYVelocity);
 
-        if (SpawnedIndex == 0 ) //왼쪽 -> 오른쪽
+
+        if (SpawnedIndex == 0) //왼쪽 -> 오른쪽
             transform.position = Vector3.MoveTowards(transform.position, target1, currentXVelocity * Time.deltaTime);
             if (Vector3.Distance(transform.position, target1) < 0.01f)
             {
                 Debug.Log("게임오버! (오른쪽 도착)");
+                hasReachedTarget = true;
             }
 
-        else if (SpawnedIndex == 1 ) //오른쪽 -> 왼쪽
+        else if (SpawnedIndex == 1) //오른쪽 -> 왼쪽
             transform.position = Vector3.MoveTowards(transform.position, target2, currentXVelocity * Time.deltaTime);
             if (Vector3.Distance(transform.position, target2) < 0.01f)
             {
                 Debug.Log("게임오버! (왼쪽 도착)");
+                hasReachedTarget = true;
             }
 
         else if (SpawnedIndex == 2 ) //아래 -> 위쪽
@@ -52,14 +60,35 @@ public class FogMovement : MonoBehaviour
             if (Vector3.Distance(transform.position, target3) < 0.01f)
             {
                 Debug.Log("게임오버! (위 도착)");
-            }
-
-      
+                hasReachedTarget = true;
+            }  
     }
 }
 
 
+
 /*
+
+
+
+private void OnCollisionEnter2D(Collision2D collision) 
+    {// 탈출구랑 닿았을 때
+        if (collision.collider.CompareTag("ExitDoor"))
+        {
+            Debug.Log("게임오버!");
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 //어둠 이동 속도
 if ( (Manager.Instance.(깨어있던 시간) < 100) )
 {
