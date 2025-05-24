@@ -41,20 +41,24 @@ public class MapYSpawn : MonoBehaviour
         randomint = Random.Range(0, mapList.Count); //맵패턴 숫자만큼까지 랜덤으로
         GameObject selectedMap = mapList[randomint]; //하나 뽑기
 
-        //고른 맵의 정보 읽기
+        /*고른 맵의 정보 읽기
         float mapHeight = GetPrefabHeight(selectedMap);
+        */
 
         //고른 맵 생성
-        Instantiate(selectedMap, new Vector3(10f, nextSpawnY, 0), Quaternion.identity);
+        float randomX = Random.Range(-6f, 6f);
+        Instantiate(selectedMap, new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
-       //다음 생성 위치 설정
-        nextSpawnY += mapHeight + 0.5f;
+        //다음 생성 위치 설정
+       //기존 nextSpawnY += mapHeight + 0.5f;
+        nextSpawnY += 5f;
 
         // 맵 생성 수 증가
         spawnedCount++; 
     }
 
-
+   
+   /*
    //맵 프리팹 높이 총괄 계산
     float GetPrefabHeight(GameObject prefab)
    {
@@ -72,6 +76,7 @@ public class MapYSpawn : MonoBehaviour
 
         return bounds.size.y;
     }
+    */
 
 }
 

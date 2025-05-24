@@ -36,7 +36,7 @@ public class FogMovement : MonoBehaviour
         if (SpawnedIndex == 0 || SpawnedIndex == 1)
             currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, maxXVelocity);
         else if (SpawnedIndex == 2)
-            currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, maxYVelocity);
+            currentYVelocity = Mathf.Min(currentYVelocity + 0.5f*acceleration * Time.deltaTime, maxYVelocity);
 
 
         if (SpawnedIndex == 0) //왼쪽 -> 오른쪽

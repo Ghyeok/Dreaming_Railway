@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4642938977099300260}
   - component: {fileID: 3735483474605919644}
   m_Layer: 0
-  m_Name: MapUp 1
+  m_Name: MapUp 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1280388442073319779}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 516195162875212088}
   - component: {fileID: 7491553302964162494}
   - component: {fileID: 351680135389349732}
-  - component: {fileID: 1823898353156634485}
+  - component: {fileID: 5173350337497578164}
   m_Layer: 0
   m_Name: Ground1
   m_TagString: Ground
@@ -136,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 5041467555960601860}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.3571415, y: 0, z: 0}
+  m_LocalPosition: {x: -4.6428585, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -243,7 +243,7 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!70 &1823898353156634485
+--- !u!70 &5173350337497578164
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   - component: {fileID: 4810538759571793260}
   - component: {fileID: 6646422743427605931}
   - component: {fileID: 3633995550567068318}
-  - component: {fileID: 1284797051853988500}
+  - component: {fileID: 3790756574284113371}
   m_Layer: 0
   m_Name: Ground1 (1)
   m_TagString: Ground
@@ -309,7 +309,7 @@ Transform:
   m_GameObject: {fileID: 6740798673805918749}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.440048, y: 0, z: 0.19207379}
+  m_LocalPosition: {x: 14.440048, y: 0, z: 0.19207379}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -416,7 +416,7 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!70 &1284797051853988500
+--- !u!70 &3790756574284113371
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

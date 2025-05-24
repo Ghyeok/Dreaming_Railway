@@ -1949,11 +1949,13 @@ MonoBehaviour:
   player: {fileID: 878937813}
   mapList:
   - {fileID: 1280388442073319779, guid: d8ee4940646e0db4fb247e0cdbd320da, type: 3}
-  - {fileID: 1280388442073319779, guid: ff28ba583ef5cb84da68337b7b29a0f4, type: 3}
   - {fileID: 1280388442073319779, guid: f47e15fc48a15574b8dc28084adba037, type: 3}
-  - {fileID: 1280388442073319779, guid: 54fe7e3495225bb4d947917ef0696c97, type: 3}
   - {fileID: 1280388442073319779, guid: 6a8ca630f6b802e4b97ecf749c36ffd6, type: 3}
-  - {fileID: 1280388442073319779, guid: 2c157e5e29fafa247baf716a8fa5a6b9, type: 3}
+  - {fileID: 1280388442073319779, guid: 54fe7e3495225bb4d947917ef0696c97, type: 3}
+  - {fileID: 1280388442073319779, guid: 8945585ff47e1ea41a76720866969958, type: 3}
+  - {fileID: 1280388442073319779, guid: b3f5f1b02340eb5409db6d667ad1ad41, type: 3}
+  - {fileID: 1280388442073319779, guid: 99d4deedfc2db0b44af7c876ea294935, type: 3}
+  - {fileID: 1280388442073319779, guid: 959ca3487478dd241901d910b1e10cf2, type: 3}
 --- !u!1 &1638231952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2557,7 +2559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6716378806822110413, guid: 0a432a3c4c023c74b9ba51db0f02566a, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

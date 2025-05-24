@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5761860412416466949}
   - component: {fileID: 8118554959565592736}
   m_Layer: 0
-  m_Name: Player
+  m_Name: InDreamPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

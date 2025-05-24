@@ -54,12 +54,13 @@ public class Player : MonoBehaviour
         else if (Input.GetKey(KeyCode.LeftArrow) || UimoveX < 0) // 왼쪽 키 또는 UI 입력
             moveX = -1f;
 
-    //방향 전환 시
+        
+        //방향 전환 시
         if ((Speed < 0 && moveX > 0) || (Speed > 0 && moveX < 0))
-            Speed = 0; //방향 바꾸면 속도 멈춤
+            Speed = -Speed; // 방향만 반전
 
 
-    //방향 따라 플레이어 좌우 반전
+        //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
             transform.localScale = new Vector3(0.45f, 0.45f, 1);
         else if (moveX < 0)
@@ -101,7 +102,7 @@ public class Player : MonoBehaviour
             SoundManager.Instance.EnterFogSFX();
             float absCurrentSpeed = Mathf.Abs(Speed);
             float direction = Mathf.Sign(Speed);
-            float decelerationRate = (absCurrentSpeed - minSpeed) / 2.5f; // 3초 동안 줄어들도록
+            float decelerationRate = (absCurrentSpeed - minSpeed) / 2f; // 2초 동안 줄어들도록
 
     //(3초 후 최소속도 도달)
             float absSlowSpeed = Mathf.MoveTowards(absCurrentSpeed, minSpeed, decelerationRate * Time.fixedDeltaTime);
@@ -151,6 +152,7 @@ public class Player : MonoBehaviour
     {
         UimoveX = 0f; //정지
     }
+    
 
 //점프 함수
     public void Jump()
@@ -158,8 +160,9 @@ public class Player : MonoBehaviour
         if (!isJump)
         {
             SoundManager.Instance.JumpSFX();
+            MyAnimator.SetBool("IsJumping", true);
             isJump = true;
-            rigid.AddForce(Vector3.up*jumpPower, ForceMode2D.Impulse); 
+            rigid.AddForce(Vector3.up * jumpPower, ForceMode2D.Impulse);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision) 
@@ -167,6 +170,7 @@ public class Player : MonoBehaviour
         if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
         {
             SoundManager.Instance.LandSFX();
+            MyAnimator.SetBool("IsJumping", false);
             isJump = false;
         }
 
