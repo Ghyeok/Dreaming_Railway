@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 16bb70b525f4ef940b31e53c8784a61f
+guid: 1397db84447650a46bbfd6139f93c399
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2470724680455193207
-    second: Bar_shot_0
+      213: 5274868991441096293
+    second: LD_Sleep4_0
+  - first:
+      213: -4051900596136819598
+    second: LD_Sleep4_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -126,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bar_shot_0
+      name: LD_Sleep4_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 22
-        width: 14
-        height: 905
+        x: 162
+        y: 0
+        width: 742
+        height: 1643
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +144,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98d7dab5ef836bdd0800000000000000
-      internalID: -2470724680455193207
+      spriteID: 56ec1977669143940800000000000000
+      internalID: 5274868991441096293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_Sleep4_1
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 742
+        width: 31
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 274421e20e1c4c7c0800000000000000
+      internalID: -4051900596136819598
       vertices: []
       indices: 
       edges: []
@@ -151,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -160,7 +185,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LD_Sleep4_0: 5274868991441096293
+      LD_Sleep4_1: -4051900596136819598
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
