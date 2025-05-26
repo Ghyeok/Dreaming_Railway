@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 // 지하철 내 플레이어의 행동, 상태를 관리하는 매니저이다.
@@ -27,14 +28,6 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
 
     public int slapNum = 0;
 
-    public override void Awake()
-    {
-        base.Awake();
-        playerState = PlayerState.SLEEP;
-        playerBehave = PlayerBehave.NONE;
-    }
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,5 +38,31 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
     void Update()
     {
         
+    }
+
+    private void Init()
+    {
+        playerState = PlayerState.SLEEP;
+        playerBehave = PlayerBehave.NONE;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "TestSubwayScene")
+        {
+            Debug.Log($"지하철 씬 로드: {gameObject.name}");
+            Init();
+        }
     }
 }

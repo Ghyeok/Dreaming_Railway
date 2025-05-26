@@ -30,15 +30,15 @@ public class StationManager : SingletonManagers<StationManager>
     public int currentStationIdx;
     public int destinationStationIdx;
 
-    public override void Awake()
-    {
-        base.Awake();
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GenerateStations(); // 다른 매니저들 생성 전에 실행되면 안되므로, Start()에 넣어야한다
+    }
+
+    private void Init()
+    {
+
     }
 
     // Update is called once per frame
@@ -140,6 +140,26 @@ public class StationManager : SingletonManagers<StationManager>
                 SubwayGameManager.Instance.isStopping = (timer.curTime > stopStart && timer.curTime < stopEnd);
             }
             accumulatedTime += stationDatas[i].stopTime;
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "TestSubwayScene")
+        {
+            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
+            Init();
         }
     }
 }

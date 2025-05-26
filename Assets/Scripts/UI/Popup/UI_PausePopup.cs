@@ -36,6 +36,8 @@ public class UI_PausePopup : UI_Popup
 
     public override void Init()
     {
+        base.Init();
+
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
 
@@ -50,6 +52,7 @@ public class UI_PausePopup : UI_Popup
     private void ResumeButtonOnclicked(PointerEventData data)
     {
         Debug.Log("게임 재개!");
+
         UIManager.Instance.ClosePopupUI(this);
         Time.timeScale = 1;
     }

@@ -25,7 +25,7 @@ public class PlayerFallAsleep : MonoBehaviour
 
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            DreamManager.Instance.EnterTheDream();
+            SceneManager.LoadScene("InDream_PlayerMove");
         }
     }
 
