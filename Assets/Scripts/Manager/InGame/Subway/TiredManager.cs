@@ -7,7 +7,8 @@ public class TiredManager : SingletonManagers<TiredManager>
     public float maxTired;
     public float currentTired;
 
-    public bool isTiredHalf;
+    public bool isTiredHalf; // true면 조는 모션, false면 멀쩡한 모션
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,17 +36,15 @@ public class TiredManager : SingletonManagers<TiredManager>
     }
 
 
-    public void SetTiredAfterDream()
+    public void SetTiredAfterDream() // 잠에 들때 피로도 재설정
     {
-        if (SubwayGameManager.Instance.timer.subwayTime <= 100f)
+        if (SubwayGameManager.Instance.timer.awakeTime <= 100f)
         {
             currentTired /= 2f;
-            SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.subwayTime);
         }
-        else if (SubwayGameManager.Instance.timer.subwayTime > 100f)
+        else if (SubwayGameManager.Instance.timer.awakeTime > 100f)
         {
             currentTired = (currentTired / 2f) * 3f;
-            SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.subwayTime);
         }
     }
 
@@ -61,11 +60,16 @@ public class TiredManager : SingletonManagers<TiredManager>
         }
     }
 
-    private void Init()
+    public override void Awake()
     {
-        maxTired = 100f;
+        base.Awake();
         currentTired = 30f;
-        isTiredHalf = true;
+        maxTired = 100f;
+    }
+
+    private void InitScene()
+    {
+
     }
 
     private void OnEnable()
@@ -84,7 +88,7 @@ public class TiredManager : SingletonManagers<TiredManager>
         if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
-            Init();
+            InitScene();
         }
     }
 }

@@ -15,7 +15,7 @@ public class DreamManager : SingletonManagers<DreamManager>
         
     }
 
-    private void Init()
+    private void InitScene()
     {
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
@@ -38,7 +38,7 @@ public class DreamManager : SingletonManagers<DreamManager>
         if (scene.name == "InDream_PlayerMove")
         {
             Debug.Log($"꿈속 씬 로드 : {scene.name}");
-            Init();
+            InitScene();
         }
     }
 }

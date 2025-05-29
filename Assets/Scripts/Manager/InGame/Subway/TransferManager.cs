@@ -15,7 +15,7 @@ public class TransferManager : SingletonManagers<TransferManager>
     private bool hasTransfered = false;
     private bool hasArrived = false;
 
-    private void Init()
+    private void InitScene()
     {
         curTransferCount = 0;
         DetermineMaxTransferCount();
@@ -38,19 +38,19 @@ public class TransferManager : SingletonManagers<TransferManager>
     {
         switch (SubwayGameManager.Instance.dayCount)
         {
-            case 1:
+            case 1: // Day 1
                 maxTransferCount = 3;
                 break;
-            case 2:
+            case 2: // Day 2
                 maxTransferCount = 4;
                 break;
-            case 3:
+            case 3: // Day 3
                 maxTransferCount = 5;
                 break;
-            case 4:
+            case 4: // Day 4
                 maxTransferCount = 7;
                 break;
-            case 5:
+            case 5: // Day 5
                 maxTransferCount = 9;
                 break;
         }
@@ -129,7 +129,7 @@ public class TransferManager : SingletonManagers<TransferManager>
         if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
-            Init();
+            InitScene();
         }
     }
 }

@@ -36,7 +36,7 @@ public class StationManager : SingletonManagers<StationManager>
         GenerateStations(); // 다른 매니저들 생성 전에 실행되면 안되므로, Start()에 넣어야한다
     }
 
-    private void Init()
+    private void InitScene()
     {
 
     }
@@ -60,7 +60,7 @@ public class StationManager : SingletonManagers<StationManager>
 
         ChooseStationType();
         TransferManager.Instance.ReturnTransferState();
-        SubwayGameManager.Instance.timer.ResetTimer(SubwayGameManager.Instance.timer.stationTime);
+        SubwayGameManager.Instance.timer.stationTime = 0f;
     }
 
     public void ChooseStationType()
@@ -84,7 +84,7 @@ public class StationManager : SingletonManagers<StationManager>
                 stationDatas[transferStationIdx].stationType = StationType.Transfer;
             }
         }
-        // 목적지 결정
+        // 목적지역 결정
         else if (TransferManager.Instance.curTransferCount == TransferManager.Instance.maxTransferCount)
         {
             if (SubwayGameManager.Instance.dayCount >= 1 && SubwayGameManager.Instance.dayCount <= 3)
@@ -159,7 +159,7 @@ public class StationManager : SingletonManagers<StationManager>
         if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
-            Init();
+            InitScene();
         }
     }
 }

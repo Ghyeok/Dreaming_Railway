@@ -5,9 +5,9 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
-    public float curTime;
-    public float stationTime;
-    public float subwayTime;
+    public float curTime; // 전체 게임의 시간
+    public float stationTime; // 역 한개를 지나는 시간
+    public float awakeTime; // 깨어있던 시간
     public bool isStop { get; private set; }
 
     private int min;
@@ -31,8 +31,13 @@ public class Timer : MonoBehaviour
         if (!isStop)
         {
             curTime += Time.deltaTime;
-            stationTime += Time.deltaTime;
-            subwayTime += Time.deltaTime;
+
+            if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
+            {
+                stationTime += Time.deltaTime;
+                awakeTime += Time.deltaTime;
+            }
+
             min = Mathf.FloorToInt(curTime / 60);
             sec = Mathf.FloorToInt(curTime % 60);
             milSec = Mathf.FloorToInt((curTime * 100f) % 100);
@@ -48,17 +53,11 @@ public class Timer : MonoBehaviour
 
     void StartTimer()
     {
-        curTime = 0f;
         isStop = false;
     }
 
     public void ForceAddTime(float time , float lerpSpeed)
     {
         curTime = Mathf.Lerp(curTime, curTime + time, lerpSpeed); // 필요시 Time.deltaTime 곱하기
-    }
-
-    public void ResetTimer(float time)
-    {
-        time = 0f;
     }
 }
