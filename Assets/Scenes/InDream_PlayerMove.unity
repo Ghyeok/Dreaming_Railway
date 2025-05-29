@@ -741,6 +741,57 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 899070470525575155, guid: 0a432a3c4c023c74b9ba51db0f02566a, type: 3}
   m_PrefabInstance: {fileID: 4614725223910199700}
   m_PrefabAsset: {fileID: 0}
+--- !u!60 &763083899
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763083895}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 51.2, y: 28.8}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -25.6, y: 14.400001}
+      - {x: -25.6, y: -14.400001}
+      - {x: 25.6, y: -14.400001}
+      - {x: 25.6, y: 14.400001}
+  m_UseDelaunayMesh: 0
 --- !u!1 &864479622
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2051,7 @@ MonoBehaviour:
   - {fileID: 1280388442073319779, guid: b3f5f1b02340eb5409db6d667ad1ad41, type: 3}
   - {fileID: 1280388442073319779, guid: 99d4deedfc2db0b44af7c876ea294935, type: 3}
   - {fileID: 1280388442073319779, guid: 959ca3487478dd241901d910b1e10cf2, type: 3}
+  - {fileID: 1280388442073319779, guid: 0049e6483cb3be74d8d00d12985544bc, type: 3}
 --- !u!1 &1638231952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2047,6 +2099,7 @@ MonoBehaviour:
   player: {fileID: 1486299094}
   Background: {fileID: 763083895}
   tileWidth: 51.2
+  tileHeight: 28.8
 --- !u!1 &1751064296
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,6 +2512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 878937813}
+  ExitDoor: {fileID: 0}
   mapList:
   - {fileID: 5119156888014228460, guid: bf777bb20def0cc4c8bdf13b5b62a542, type: 3}
   - {fileID: 5119156888014228460, guid: 4e97e613e88da274386d8394c310554b, type: 3}
@@ -2628,7 +2682,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 899070470525575155, guid: 0a432a3c4c023c74b9ba51db0f02566a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 763083899}
   m_SourcePrefab: {fileID: 100100000, guid: 0a432a3c4c023c74b9ba51db0f02566a, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
