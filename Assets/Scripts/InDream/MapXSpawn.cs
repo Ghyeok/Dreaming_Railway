@@ -17,7 +17,7 @@ public class MapXSpawn : MonoBehaviour
     private bool canSpawnRight = false;
     private bool canSpawnLeft = false; //기본맵 생성
 
-    private bool EndSpawn = false;
+    //private bool EndSpawn = false;
 
 
     //맵 길이 제한
