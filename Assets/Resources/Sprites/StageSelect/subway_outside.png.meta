@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: be8200e449ecfb34bac649593e1fdebb
+guid: 8ae189d33b375fb4991bc2e801d80af9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7550280261922936104
-    second: SD_Jump4_0
+      213: 2692540800951273729
+    second: subway_outside_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SD_Jump4_0
+      name: subway_outside_0
       rect:
         serializedVersion: 2
-        x: 68
-        y: 6
-        width: 476
-        height: 602
+        x: 0
+        y: 0
+        width: 2560
+        height: 1440
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8255f8625ebf7c860800000000000000
-      internalID: 7550280261922936104
+      spriteID: 10942ffb793dd5520800000000000000
+      internalID: 2692540800951273729
       vertices: []
       indices: 
       edges: []
@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      subway_outside_0: 2692540800951273729
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

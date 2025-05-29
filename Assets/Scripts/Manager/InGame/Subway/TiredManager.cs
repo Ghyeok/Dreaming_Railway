@@ -9,15 +9,6 @@ public class TiredManager : SingletonManagers<TiredManager>
 
     public bool isTiredHalf;
 
-    public override void Awake()
-    {
-        base.Awake();
-
-        maxTired = 100f;
-        currentTired = 30f;
-        isTiredHalf = true;
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -65,8 +56,35 @@ public class TiredManager : SingletonManagers<TiredManager>
             currentTired += Time.deltaTime;
             if (currentTired >= maxTired)
             {
-                DreamManager.Instance.EnterTheDream();
+                SceneManager.LoadScene("InDream_PlayerMove");
             }
+        }
+    }
+
+    private void Init()
+    {
+        maxTired = 100f;
+        currentTired = 30f;
+        isTiredHalf = true;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "TestSubwayScene")
+        {
+            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
+            Init();
         }
     }
 }

@@ -16,6 +16,8 @@ public class UI_SubwayScene : UI_Scene
 
     public enum Images
     {
+        PlayerImage,
+        BackgroundSubwayImage,
         BackgroundBlackImage,
         BackgroundWhiteImage,
         BackgroundImage,
@@ -47,11 +49,12 @@ public class UI_SubwayScene : UI_Scene
 
     public override void Init()
     {
+        // base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        // Button 관련 함수들, 쓰일수도 있으니 미리 가지고 있자
         GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
         AddUIEvent(pause, PauseButtonOnClicked, Define.UIEvent.Click);
 
@@ -94,5 +97,10 @@ public class UI_SubwayScene : UI_Scene
     private void SetSlapText()
     {
         GetText((int)Texts.SlapText).text = $"{SubwayPlayerManager.Instance.slapNum}";
+    }
+
+    private void SubwayCharacterSleepingMotion()
+    {
+        Sprite sprite = GetImage((int)Images.PlayerImage).sprite;
     }
 }

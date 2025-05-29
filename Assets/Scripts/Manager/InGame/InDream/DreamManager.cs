@@ -3,13 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class DreamManager : SingletonManagers<DreamManager>
 {
-    public enum PlayerState
-    {
-        DREAMING,
-        AWAKEDREAM,
-        GAMEOVER,
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,11 +15,30 @@ public class DreamManager : SingletonManagers<DreamManager>
         
     }
 
-    public void EnterTheDream() // 지하철 -> 꿈속에 들어올 때 
+    private void Init()
     {
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
-        SceneManager.LoadScene("InDream_PlayerMove");
         SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "InDream_PlayerMove")
+        {
+            Debug.Log($"꿈속 씬 로드 : {scene.name}");
+            Init();
+        }
     }
 }

@@ -913,6 +913,50 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3892273217968890185, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
   m_PrefabInstance: {fileID: 1486299093}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &933381920
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 933381922}
+  - component: {fileID: 933381921}
+  m_Layer: 0
+  m_Name: '@DreamManager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &933381921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933381920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e23ffee65c3574fb41003c70d35454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &933381922
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933381920}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.8898716, y: 0.63034075, z: 0.020564094}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1009587855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,7 +1993,7 @@ MonoBehaviour:
   player: {fileID: 878937813}
   mapList:
   - {fileID: 1280388442073319779, guid: d8ee4940646e0db4fb247e0cdbd320da, type: 3}
-  - {fileID: 1280388442073319779, guid: f47e15fc48a15574b8dc28084adba037, type: 3}
+  - {fileID: 1280388442073319779, guid: ff28ba583ef5cb84da68337b7b29a0f4, type: 3}
   - {fileID: 1280388442073319779, guid: 6a8ca630f6b802e4b97ecf749c36ffd6, type: 3}
   - {fileID: 1280388442073319779, guid: 54fe7e3495225bb4d947917ef0696c97, type: 3}
   - {fileID: 1280388442073319779, guid: 8945585ff47e1ea41a76720866969958, type: 3}
@@ -2570,6 +2614,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 933381922}
   - {fileID: 1366378052}
   - {fileID: 1175508877}
   - {fileID: 4614725223910199700}

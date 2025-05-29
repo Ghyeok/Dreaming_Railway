@@ -15,9 +15,8 @@ public class TransferManager : SingletonManagers<TransferManager>
     private bool hasTransfered = false;
     private bool hasArrived = false;
 
-    public override void Awake()
+    private void Init()
     {
-        base.Awake();
         curTransferCount = 0;
         DetermineMaxTransferCount();
     }
@@ -112,5 +111,25 @@ public class TransferManager : SingletonManagers<TransferManager>
     public void ReturnArriveState()
     {
         hasArrived = false;
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "TestSubwayScene")
+        {
+            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
+            Init();
+        }
     }
 }
