@@ -9,8 +9,8 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
     {
         NONE,
         STANDING, // 입석
-        SLEEP, // 졸고 있음
-        DEEPSLEEP, // 피로도 100
+        SLEEP, // 졸고 있음, 지속적으로 피로도 증가
+        DEEPSLEEP, // 피로도 100, 꿈 속 진입
         GAMEOVER,
     }
 
@@ -25,8 +25,7 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
 
     public PlayerState playerState;
     public PlayerBehave playerBehave;
-
-    public int slapNum = 0;
+    public int slapNum;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,8 +39,9 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
         
     }
 
-    private void Init()
+    private void InitScene()
     {
+        slapNum = 0;
         playerState = PlayerState.SLEEP;
         playerBehave = PlayerBehave.NONE;
     }
@@ -62,7 +62,7 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
         if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드: {gameObject.name}");
-            Init();
+            InitScene();
         }
     }
 }
