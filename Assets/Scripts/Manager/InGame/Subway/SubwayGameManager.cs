@@ -28,7 +28,29 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     }
 
-    private void Init()
+    public override void Awake()
+    {
+        base.Awake();
+
+        dayCount = 1;
+        timer = GetComponent<Timer>();
+    }
+
+
+    public int SetDreamMapLengthByAwakenTime() // 깨어있던 시간이 50초 이하면 1을 반환, 51초 이상이면 2를 반환
+    {
+        if (timer.awakeTime <= 50f && timer.awakeTime >= 0f)
+            return 1;
+        else if (timer.awakeTime > 50f)
+            return 2;
+        else
+        {
+            Debug.Log("깨어있던 시간이 음수입니다.");
+            return 0;
+        }
+    }
+
+    private void InitScene()
     {
         UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
         SoundManager.Instance.SubwayBGM();
@@ -36,8 +58,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         isStopping = false;
         isSlapCoolTime = false;
         tiredDecreaseBySlap = 3f;
-        dayCount = 1;
-        timer = GetComponent<Timer>();
+
+        timer.awakeTime = 0f;
     }
 
     private void OnEnable()
@@ -56,7 +78,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
-            Init();
+            InitScene();
         }
     }
 }
