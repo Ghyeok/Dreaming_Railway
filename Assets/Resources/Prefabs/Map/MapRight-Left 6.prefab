@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5492574195603092287}
   - component: {fileID: 4772841248486124973}
   m_Layer: 0
-  m_Name: MapRight-Left 4
+  m_Name: MapRight-Left 6
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
