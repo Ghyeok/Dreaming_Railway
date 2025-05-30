@@ -1748,11 +1748,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: MaxSpeed
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: minSpeed
-      value: 2
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: jumpPower
@@ -1768,11 +1768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: stepDistance
-      value: 7
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: wasMovingLastFrame
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2054,6 +2054,7 @@ MonoBehaviour:
   - {fileID: 1280388442073319779, guid: 959ca3487478dd241901d910b1e10cf2, type: 3}
   - {fileID: 1280388442073319779, guid: 0049e6483cb3be74d8d00d12985544bc, type: 3}
   - {fileID: 1280388442073319779, guid: caecaf83b8a31fb418f23f313621e02f, type: 3}
+  ExitPointYPosition: 0
 --- !u!1 &1638231952
 GameObject:
   m_ObjectHideFlags: 0

@@ -37,12 +37,19 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     }
 
 
-    public int SetDreamMapLengthByAwakenTime() // 깨어있던 시간이 50초 이하면 1을 반환, 51초 이상이면 2를 반환
+    public int SetDreamMapLengthByAwakenTime()
+    // 깨어있던 시간이 50초 이하면 1을 반환, 51초 이상-100초 이하이면 2를 반환
+    // 101초-125초 사이면 3을 반환, 126초 이상이면 4를 반환
     {
         if (timer.awakeTime <= 50f && timer.awakeTime >= 0f)
             return 1;
-        else if (timer.awakeTime > 50f)
+        else if (timer.awakeTime <= 100f && timer.awakeTime > 50f)
             return 2;
+        else if (timer.awakeTime <= 125f && timer.awakeTime > 100f)
+            return 3;
+        else if (timer.awakeTime > 125f)
+            return 4;
+
         else
         {
             Debug.Log("깨어있던 시간이 음수입니다.");

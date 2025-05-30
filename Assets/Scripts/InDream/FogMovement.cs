@@ -1,112 +1,116 @@
 using UnityEngine;
+using System;
+
 
 public class FogMovement : MonoBehaviour
 {
     [SerializeField] private float maxXVelocity;
     [SerializeField] private float maxYVelocity;
     [SerializeField] private float acceleration = 1f;
+    
+    [SerializeField] private float tempTargetXDistance = 300f; // X축 이동 안개용 임시 목표 거리
+    [SerializeField] private float tempTargetYDistance = 100f; // Y축 이동 안개용 임시 목표 거리
+
     private int SpawnedIndex;
+    private Vector3 initialPosition;
+
     private float currentXVelocity = 0f;
     private float currentYVelocity = 0f;
 
-    private bool hasReachedTarget = false;
+    private float realMaxXVelocity; // 실제 사용될 최대 X 속도
+    private float realMaxYVelocity; // 실제 사용될 최대 Y 속도
 
-
-    //안개가 도달할 마지막 지점(수정필요)
-    Vector3 target1 = new Vector3(300, 1, -5);
-    Vector3 target2 = new Vector3(-300, 1, -5);
-    Vector3 target3 = new Vector3(0, 100, -5);
+   
 
 
     void Start()
     {
-       
+        //깨어있던 시간에 의거한 어둠 이동 속도
+        int awakeTime = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
+        float speedConstant = 1f;
+
+        if (awakeTime <= 2)
+        {
+            speedConstant = 0.8f;
+        }
+
+        else if (awakeTime == 3)
+        {
+            speedConstant = 0.9f;
+        }
+
+        else if (awakeTime == 4)
+        {
+            speedConstant = 1f;
+        }
+
+        realMaxXVelocity = maxXVelocity * speedConstant;
+        realMaxYVelocity = maxYVelocity * speedConstant;
+
     }
+
+    void Awake()
+    {
+        initialPosition = transform.position;
+    }
+
+
+
     public void SetIndex(int index)
     {
-        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함
+        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
     }
+
 
     void Update()
     {
+        Vector3 targetPosition;//목표지점
 
-        if (hasReachedTarget) return; // 이미 도착했으면 아무 것도 하지 않음
-
-        // 가속 적용
-        if (SpawnedIndex == 0 || SpawnedIndex == 1)
-            currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, maxXVelocity);
-        else if (SpawnedIndex == 2)
-            currentYVelocity = Mathf.Min(currentYVelocity + 0.5f*acceleration * Time.deltaTime, maxYVelocity);
+        currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, realMaxXVelocity);
+        currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, realMaxYVelocity);
 
 
-        if (SpawnedIndex == 0) //왼쪽 -> 오른쪽
-            transform.position = Vector3.MoveTowards(transform.position, target1, currentXVelocity * Time.deltaTime);
-            if (Vector3.Distance(transform.position, target1) < 0.01f)
-            {
-                Debug.Log("게임오버! (오른쪽 도착)");
-                hasReachedTarget = true;
+        if (SpawnedIndex == 0 || SpawnedIndex == 1) //안개가 좌우 이동
+        {
+
+            if (MapXSpawn.Instance != null && MapXSpawn.Instance.ExitPointXPosition != 0f)
+            {//목적지 있을때
+                targetPosition = new Vector3(MapXSpawn.Instance.ExitPointXPosition, transform.position.y, transform.position.z);
+            }
+            else
+            {//목적지 없을떄
+                float tempTargetX = initialPosition.x + (SpawnedIndex == 0 ? tempTargetXDistance : -tempTargetXDistance);
+                targetPosition = new Vector3(tempTargetX, transform.position.y, transform.position.z);
             }
 
-        else if (SpawnedIndex == 1) //오른쪽 -> 왼쪽
-            transform.position = Vector3.MoveTowards(transform.position, target2, currentXVelocity * Time.deltaTime);
-            if (Vector3.Distance(transform.position, target2) < 0.01f)
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentXVelocity * Time.deltaTime);
+        }
+
+
+        else if (SpawnedIndex == 2) //안개가 위 이동
+        {
+            if (MapYSpawn.Instance != null && MapYSpawn.Instance.ExitPointYPosition != 0f)
             {
-                Debug.Log("게임오버! (왼쪽 도착)");
-                hasReachedTarget = true;
+                targetPosition = new Vector3(transform.position.x, MapYSpawn.Instance.ExitPointYPosition, transform.position.z);
+            }
+            else
+            {
+                float tempTargetY = transform.position.y + tempTargetYDistance;
+                targetPosition = new Vector3(transform.position.x, tempTargetY, transform.position.z);
             }
 
-        else if (SpawnedIndex == 2 ) //아래 -> 위쪽
-            transform.position =Vector3.MoveTowards(transform.position, target3, currentYVelocity * Time.deltaTime);
-            if (Vector3.Distance(transform.position, target3) < 0.01f)
-            {
-                Debug.Log("게임오버! (위 도착)");
-                hasReachedTarget = true;
-            }  
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentYVelocity * Time.deltaTime);
+        }
+
     }
-}
 
 
-
-/*
-
-
-
-private void OnCollisionEnter2D(Collision2D collision) 
+    void OnCollisionEnter2D(Collision2D collision)
     {// 탈출구랑 닿았을 때
         if (collision.collider.CompareTag("ExitDoor"))
         {
             Debug.Log("게임오버!");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-//어둠 이동 속도
-if ( (Manager.Instance.(깨어있던 시간) < 100) )
-{
-    Xvelocity = Xvelocity*0.8;
-    Yvelocity = Yvelocity*0.8;
 }
 
-else if( 100 <= (Manager.Instance.(깨어있던 시간) <= 125) )
-{    
-    Xvelocity = Xvelocity*0.9;
-    Yvelocity = Yvelocity*0.9;
-}
-
-else
-{    
-    Xvelocity = Xvelocity*1.0;
-    Yvelocity = Yvelocity*1.0;
-}
-
-
-*/

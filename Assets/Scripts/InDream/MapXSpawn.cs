@@ -29,7 +29,7 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
 
 
     private int spawnedCount;  //맵 길이 제한
-    public float ExitPointXPosition; //카메라 제한 위함
+    public float ExitPointXPosition; //카메라, 안개 제한 위함
 
 
     void Start()
@@ -82,15 +82,15 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
         {
             if (mapLength == 1)
             {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 10 + 2 * SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 8 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
             }
 
-            else if (mapLength == 2)
+            else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 18 +2 * SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }

@@ -128,11 +128,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3e4b8d28c6f714999f484428831c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 8
-  MaxSpeed: 8
+  acceleration: 1
+  MaxSpeed: 7
   rigid: {fileID: 0}
-  stepDistance: 0.6
+  stepDistance: 12
+  Speed: 4
   jumpPower: 9
-  UImoveX: 0
+  minSpeed: 1.8
   isJump: 0
-  minSpeed: 1.75
+  wasMovingLastFrame: 1

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-public class MapYSpawn : MonoBehaviour
+public class MapYSpawn : SingletonManagers<MapYSpawn>
 {
     public SubwayGameManager subwayGameManager;
     public GameObject player;
@@ -16,6 +16,7 @@ public class MapYSpawn : MonoBehaviour
 
     private int spawnedCount; //맵길이 제한
     private bool endMapSpawn = false;
+    public float ExitPointYPosition;
 
 
     void Start()
@@ -54,7 +55,7 @@ public class MapYSpawn : MonoBehaviour
                 }
             }
 
-            else if (mapLength == 2)
+            else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
                 if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
                 {
@@ -99,10 +100,19 @@ public class MapYSpawn : MonoBehaviour
 
 
     void SpawnExit() //탈출
-    { 
+    {
         if (endMapSpawn)
         {
-            Instantiate(mapList[9], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
+            GameObject spawnedLastMap = Instantiate(mapList[9], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
+            
+
+            // 프리팹 안의 "ExitDoor"를 찾기
+            Transform exitDoor = spawnedLastMap.transform.Find("ExitDoor");
+
+            if (exitDoor != null)
+            {
+                ExitPointYPosition = exitDoor.position.y;
+            }
         }
     }
 
