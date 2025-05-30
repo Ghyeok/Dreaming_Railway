@@ -10,13 +10,21 @@ public enum StationType
 [System.Serializable]
 public class StationData
 {
-    public float minTravelTime = 20f;
-    public float maxTravelTime = 30f;
-
-    public float minStopTime = 7f;
-    public float maxStopTime = 9f;
-
     public StationType stationType;
-    public float travelToNextStationTime;
+    public float travelTime;
     public float stopTime;
+
+    public StationData(float minTravelTime, float maxTravelTime, float minStopTime, float maxStopTime)
+    {
+        this.travelTime = Random.Range(minTravelTime, maxTravelTime);
+        this.stopTime = Random.Range(minStopTime, maxStopTime);
+        this.stationType = StationType.Normal;
+    }
+
+    public StationData(float minTravelTime, float maxTravelTime, float minStopTime, float maxStopTime, StationType type)
+    {
+        this.travelTime = Random.Range(minTravelTime, maxTravelTime);
+        this.stopTime = Random.Range(minStopTime, maxStopTime);
+        this.stationType = type;
+    }
 }

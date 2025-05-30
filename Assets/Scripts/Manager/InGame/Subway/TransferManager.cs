@@ -55,38 +55,40 @@ public class TransferManager : SingletonManagers<TransferManager>
                 break;
         }
     }
-    
-    public void SuccessTransfer() // 환승 성공 시 1번만 실행
+
+    private void SuccessTransfer() // 환승 성공 시 1번만 실행
     {
         if (hasTransfered)
             return;
 
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.transferStationIdx &&
-            SubwayGameManager.Instance.isStopping)
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
+            && SubwayGameManager.Instance.isStopping && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasTransfered = true;
 
             SubwayGameManager.Instance.isStopping = false;
-            curTransferCount++;
             Debug.Log("환승 성공!");
-            StationManager.Instance.GenerateStations();
+            curTransferCount++;
+            StationManager.Instance.currentLineIdx++;
         }
     }
 
-    public void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시
+    private void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시
     {
         if (hasArrived)
             return;
 
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.destinationStationIdx &&
-            SubwayGameManager.Instance.isStopping)
+        if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
+            && SubwayGameManager.Instance.isStopping && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasArrived = true;
 
             SubwayGameManager.Instance.isStopping = false;
             SubwayGameManager.Instance.dayCount++;
+            StationManager.Instance.currentLineIdx = 0;
             Debug.Log("목적지 도착!");
-            StationManager.Instance.GenerateStations();
+
+            StationManager.Instance.GenerateSubwayLines(); // Day가 바뀌면서 새로운 노선 생성
         }
         else
         {
@@ -94,21 +96,12 @@ public class TransferManager : SingletonManagers<TransferManager>
         }
     }
 
-    public void CheckFailTransfer()
-    {
-        if (StationManager.Instance.currentStationIdx > StationManager.Instance.transferStationIdx)
-        {
-            Debug.Log("환승 실패! 게임 오버");
-            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.GAMEOVER;
-        }
-    }
-
-    public void ReturnTransferState()
+    private void ReturnTransferState()
     {
         hasTransfered = false;
     }
 
-    public void ReturnArriveState()
+    private void ReturnArriveState()
     {
         hasArrived = false;
     }

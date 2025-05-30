@@ -53,6 +53,7 @@ public class Timer : MonoBehaviour
 
     void StartTimer()
     {
+        timerText = SubwayGameManager.Instance.timer.GetComponent<TextMeshProUGUI>();
         isStop = false;
     }
 
