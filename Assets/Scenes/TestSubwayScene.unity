@@ -852,7 +852,7 @@ MonoBehaviour:
   timerText: {fileID: 0}
   curTime: 0
   stationTime: 0
-  subwayTime: 0
+  awakeTime: 0
 --- !u!1 &1709475327
 GameObject:
   m_ObjectHideFlags: 0

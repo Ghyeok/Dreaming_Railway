@@ -1,24 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Tilemaps;
+using System.Collections;
 
 public class MapYSpawn : MonoBehaviour
 {
+    public SubwayGameManager subwayGameManager;
     public GameObject player;
     public List<GameObject> mapList;
 
-    private float nextSpawnY = 0.5f;
+    private float nextSpawnY = 0f;
     private float cameraHeight;
 
-    int randomint;  //타일 번호 랜덤 변수
+    
+    private bool canSpawnToUp = true;
 
-    //맵 길이 제한
-    private int spawnedCount;
+    private int spawnedCount; //맵길이 제한
+    private bool endMapSpawn = false;
 
 
     void Start()
     {
         cameraHeight = Camera.main.orthographicSize * 1.5f;
+        
 
         //시작 시 3개 미리 생성
         for (int i = 0; i < 3; i++)
@@ -27,80 +30,83 @@ public class MapYSpawn : MonoBehaviour
         }
     }
 
+
+
     void Update()
     {
         //카메라보다 위에 미리 맵이 없으면 생성
         if (player.transform.position.y + cameraHeight > nextSpawnY)
         {
-           MapYSpawnToUp();
+            MapYSpawnToUp();
         }
+
+
+        // 맵 길이
+        int mapLength = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
+        
+        if (!endMapSpawn)
+        {
+            if (mapLength == 1)
+            {//평균 클리어 타임 22~25초
+                if (spawnedCount >= 8 +  SubwayPlayerManager.Instance.slapNum)
+                {
+                    LimitMapSpawning();
+                }
+            }
+
+            else if (mapLength == 2)
+            {//평균 클리어 타임 40~45초
+                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
+                {
+                    LimitMapSpawning();
+                }
+            }
+        }
+
     }
+
+
 
     void MapYSpawnToUp()
     {
-        randomint = Random.Range(0, mapList.Count); //맵패턴 숫자만큼까지 랜덤으로
-        GameObject selectedMap = mapList[randomint]; //하나 뽑기
+        if (canSpawnToUp)
+        {
+            int randomint = Random.Range(0, mapList.Count - 1);
+            float randomX = Random.Range(-8f, 8f);
+            Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
-        /*고른 맵의 정보 읽기
-        float mapHeight = GetPrefabHeight(selectedMap);
-        */
+            //다음 생성 위치 설정
+            nextSpawnY += 5f;
 
-        //고른 맵 생성
-        float randomX = Random.Range(-6f, 6f);
-        Instantiate(selectedMap, new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
-
-        //다음 생성 위치 설정
-       //기존 nextSpawnY += mapHeight + 0.5f;
-        nextSpawnY += 5f;
-
-        // 맵 생성 수 증가
-        spawnedCount++; 
-    }
-
-   
-   /*
-   //맵 프리팹 높이 총괄 계산
-    float GetPrefabHeight(GameObject prefab)
-   {
-        Renderer[] renderers = prefab.GetComponentsInChildren<Renderer>();
-    
-        if (renderers.Length == 0)
-            return 0f;
-
-        Bounds bounds = renderers[0].bounds;
-
-        foreach (Renderer r in renderers)
-        {//모든 렌더러를 포함하는 전체 bounds 생성
-            bounds.Encapsulate(r.bounds); 
+            // 맵 생성 수 증가
+            spawnedCount++;
         }
-
-        return bounds.size.y;
+        
     }
-    */
+    
+
+    //^^^기본 맵 로직
+
+
+    void LimitMapSpawning()
+    {
+        endMapSpawn = true;    //탈출구 생성
+        canSpawnToUp = false;
+        SpawnExit();
+    }
+
+
+
+
+    void SpawnExit() //탈출
+    { 
+        if (endMapSpawn)
+        {
+            Instantiate(mapList[9], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
+        }
+    }
+
 
 }
 
 
- /* 
-
-if ( Manager(파일명).Instance.(깨어있던 시간) < 50 )
-{//평균 클리어 타임 22~25초
-    if ( spawnedCount == 10 +  2*SubwayPlayerManager.Instacne.slapNum )
-    {   
-        canSpawnRight = false;
-        canSpawnleft = false;
-    }
-  
-else if ( Manager.Instance.(깨어잇던 시간) >= 50 )
-//평균 클리어 타임 40~45초
-    if ( spawnedCount == 18 + 2*SubwayPlayerManager.Instacne.slapNum )
-    {   
-        canSpawnRight = false;
-        canSpawnleft = false;
-    }
-
-
-//^^^^ 맵길이 계산 로직
-
-
-*/

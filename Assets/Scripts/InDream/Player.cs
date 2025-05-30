@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         
         //방향 전환 시
         if ((Speed < 0 && moveX > 0) || (Speed > 0 && moveX < 0))
-            Speed = -Speed; // 방향만 반전
+            Speed = -Speed/2; // 방향만 반전
 
 
         //방향 따라 플레이어 좌우 반전
@@ -73,7 +73,6 @@ public class Player : MonoBehaviour
             {
             // 정지 상태 -> 처음 입력됨 -> 4부터 시작
                 Speed = moveX * 4f;
-                Debug.Log("처음 눌러 Speed = " + Speed);
                 wasMovingLastFrame = true;
             }
             else
