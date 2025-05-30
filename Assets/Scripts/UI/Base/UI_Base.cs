@@ -72,11 +72,18 @@ public abstract class UI_Base : MonoBehaviour
                 evt.onClickHandler -= action;
                 evt.onClickHandler += action;
                 break;
+            case Define.UIEvent.DragBegin:
+                evt.onBeginDraghandler -= action;
+                evt.onBeginDraghandler += action;
+                break;
             case Define.UIEvent.Drag:
                 evt.onDraghandler -= action;
                 evt.onDraghandler += action;
                 break;
-
+            case Define.UIEvent.DragEnd:
+                evt.onEndDraghandler -= action;
+                evt.onEndDraghandler += action;
+                break;
                 // 필요한 UI Event 추가...
         }
     }

@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 // EventSystem을 활용한 UI_Event 구현
-public class UI_EventHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerClickHandler
+public class UI_EventHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IPointerClickHandler, IEndDragHandler
 {
     public Action<PointerEventData> onClickHandler = null;
     public Action<PointerEventData> onBeginDraghandler = null;
     public Action<PointerEventData> onDraghandler = null;
+    public Action<PointerEventData> onEndDraghandler = null;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -19,6 +20,12 @@ public class UI_EventHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (onDraghandler != null)
             onDraghandler.Invoke(eventData);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (onEndDraghandler != null)
+            onEndDraghandler.Invoke(eventData);
     }
 
     public void OnPointerClick(PointerEventData eventData)

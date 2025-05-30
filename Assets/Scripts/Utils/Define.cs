@@ -12,6 +12,7 @@ public class Define
     public enum UIEvent
     {
         Click,
+        DragBegin,
         Drag,
         DragEnd,
     }
