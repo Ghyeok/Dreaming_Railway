@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class UI_SubwayScene : UI_Scene
 {
+    [SerializeField]
+    Animator anim;
+
     public enum Buttons
     {
         StandingButton,
@@ -46,6 +49,7 @@ public class UI_SubwayScene : UI_Scene
     {
         SetTransferText();
         SetSlapText();
+        SubwayCharacterSleepingMotion();
     }
 
     public override void Init()
@@ -97,6 +101,7 @@ public class UI_SubwayScene : UI_Scene
 
     private void SubwayCharacterSleepingMotion()
     {
-        Sprite sprite = GetImage((int)Images.PlayerImage).sprite;
+        anim = GetImage((int)Images.PlayerImage).gameObject.GetComponent<Animator>();
+        anim.SetFloat("tired", TiredManager.Instance.currentTired);
     }
 }
