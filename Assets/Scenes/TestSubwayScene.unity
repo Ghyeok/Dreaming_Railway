@@ -654,11 +654,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398efdebbf9729047b274081bf5df71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineData: {fileID: 11400000, guid: 83238737b52aeba41bf659797bb7d27e, type: 2}
-  stationDatas: []
-  transferStationIdx: 0
+  minTravelTime: 20
+  maxTravelTime: 30
+  minStopTime: 7
+  maxStopTime: 9
+  subwayLines: []
+  currentLineIdx: 0
   currentStationIdx: 0
-  destinationStationIdx: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,6 +837,7 @@ MonoBehaviour:
   isSlapCoolTime: 0
   tiredDecreaseBySlap: 0
   dayCount: 0
+  standingCount: 0
   isStopping: 0
   timer: {fileID: 0}
 --- !u!114 &1453932067
