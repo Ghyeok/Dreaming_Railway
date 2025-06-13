@@ -74,7 +74,7 @@ public class UI_PausePopup : UI_Popup
         AddUIEvent(menuImage, MenuImageDragEnd, Define.UIEvent.DragEnd);
 
         GameObject chooseButton = GetButton((int)Buttons.ChooseButton).gameObject;
-        AddUIEvent(chooseButton, ChooseButtonOnClikced, Define.UIEvent.Click);
+        AddUIEvent(chooseButton, ChooseButtonOnClicked, Define.UIEvent.Click);
 
     }
 
@@ -187,7 +187,7 @@ public class UI_PausePopup : UI_Popup
     }
     #endregion
 
-    private void ChooseButtonOnClikced(PointerEventData data) // 선택 버튼과 가장 가까운 버튼의 클릭 이벤트 호출
+    private void ChooseButtonOnClicked(PointerEventData data) // 선택 버튼과 가장 가까운 버튼의 클릭 이벤트 호출
     {
         RectTransform choose = GetButton((int)Buttons.ChooseButton).gameObject.GetComponent<RectTransform>();
         RectTransform target = null;
@@ -205,33 +205,33 @@ public class UI_PausePopup : UI_Popup
                     target = button;
                 }
             }
+        }
 
-            if (target != null)
+        if (target != null)
+        {
+            if (target.gameObject == GetButton((int)Buttons.HowToButton).gameObject)
             {
-                if (target.gameObject == GetButton((int)Buttons.HowToButton).gameObject)
-                {
-                    HowToButtonOnclicked(data);
-                }
+                HowToButtonOnclicked(data);
+            }
 
-                if (target.gameObject == GetButton((int)Buttons.StationButton).gameObject)
-                {
-                    StationButtonOnClicked(data);
-                }
+            if (target.gameObject == GetButton((int)Buttons.StationButton).gameObject)
+            {
+                StationButtonOnClicked(data);
+            }
 
-                if (target.gameObject == GetButton((int)Buttons.ResumeButton).gameObject)
-                {
-                    ResumeButtonOnclicked(data);
-                }
+            if (target.gameObject == GetButton((int)Buttons.ResumeButton).gameObject)
+            {
+                ResumeButtonOnclicked(data);
+            }
 
-                if (target.gameObject == GetButton((int)Buttons.SettingButton).gameObject)
-                {
-                    SettingButtonOnClicked(data);
-                }
+            if (target.gameObject == GetButton((int)Buttons.SettingButton).gameObject)
+            {
+                SettingButtonOnClicked(data);
+            }
 
-                if (target.gameObject == GetButton((int)Buttons.ExitButton).gameObject)
-                {
-                    ExitButtonOnclicked(data);
-                }
+            if (target.gameObject == GetButton((int)Buttons.ExitButton).gameObject)
+            {
+                ExitButtonOnclicked(data);
             }
         }
     }
@@ -256,7 +256,7 @@ public class UI_PausePopup : UI_Popup
 
     private void SettingButtonOnClicked(PointerEventData data)
     {
-
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SettingPopup");
     }
 
     private void ExitButtonOnclicked(PointerEventData data)
