@@ -64,7 +64,7 @@ public class UI_SubwayScene : UI_Scene
         AddUIEvent(pause, PauseButtonOnClicked, Define.UIEvent.Click);
 
         GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-        AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
+        AddUIEvent(stand, SetStandingButtonToSkip, Define.UIEvent.Click);
 
         GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
         AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), Define.UIEvent.Click);
@@ -103,5 +103,29 @@ public class UI_SubwayScene : UI_Scene
     {
         anim = GetImage((int)Images.PlayerImage).gameObject.GetComponent<Animator>();
         anim.SetFloat("tired", TiredManager.Instance.currentTired);
+    }
+
+    private void SetStandingButtonToSkip(PointerEventData data)
+    {
+        if (SubwayGameManager.Instance.standingCount == 0)
+        {
+            // 초기 설정
+            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
+            SoundManager.Instance.PlayAudioClip("Standing", Define.Sounds.SFX);
+            TiredManager.Instance.currentTired = 99;
+            // 입석 Animation....
+
+            // 1. 다른 버튼 비활성화
+            CanvasGroup cg = GetButton((int)Buttons.FallAsleepButton).gameObject.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+            cg = GetButton((int)Buttons.SlapButton).gameObject.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+
+            // 2. 스킵 버튼으로 변경, 이벤트 연결
+            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Button_stop"); // 임시
+            GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
+            ClearUIEvent(stand);
+            AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
+        }
     }
 }

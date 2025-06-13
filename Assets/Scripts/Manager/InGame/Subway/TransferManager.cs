@@ -17,7 +17,6 @@ public class TransferManager : SingletonManagers<TransferManager>
 
     private void InitScene()
     {
-        curTransferCount = 0;
         DetermineMaxTransferCount();
     }
 
@@ -69,8 +68,22 @@ public class TransferManager : SingletonManagers<TransferManager>
             SubwayGameManager.Instance.isStopping = false;
             Debug.Log("환승 성공!");
             curTransferCount++;
+            SubwayGameManager.Instance.standingCount++;
             StationManager.Instance.currentLineIdx++;
         }
+    }
+
+    public void ForceTransferByStanding()
+    {
+        Debug.Log("입석 성공!");
+
+        curTransferCount++;
+        SubwayGameManager.Instance.standingCount++;
+        SubwayGameManager.Instance.isStopping = false;
+        StationManager.Instance.currentLineIdx++;
+
+        SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
+        SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
     }
 
     private void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시

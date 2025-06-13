@@ -18,7 +18,7 @@ public class StationManager : SingletonManagers<StationManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateSubwayLines(); // 다른 매니저들 생성 전에 실행되면 안되므로, Start()에 넣어야한다
+        GenerateSubwayLines();
     }
 
     private void InitScene()

@@ -1,4 +1,3 @@
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +9,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public bool isSlapCoolTime;
     public float tiredDecreaseBySlap;
     public int dayCount;
+    public int standingCount;
 
     public bool isStopping; // 정차중
 
@@ -33,6 +33,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         base.Awake();
 
         dayCount = 1;
+        standingCount = 0;
         timer = GetComponent<Timer>();
     }
 
@@ -67,6 +68,12 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         tiredDecreaseBySlap = 3f;
 
         timer.awakeTime = 0f;
+
+        if(standingCount == 2)
+        {
+            standingCount = 0;
+        }
+
     }
 
     private void OnEnable()

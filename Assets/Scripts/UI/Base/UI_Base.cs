@@ -88,4 +88,17 @@ public abstract class UI_Base : MonoBehaviour
         }
     }
 
+    public static void ClearUIEvent(GameObject go)
+    {
+        UI_EventHandler evt = go.GetComponent<UI_EventHandler>();
+        if (evt != null)
+        {
+            evt.onClickHandler = null;
+            evt.onBeginDraghandler = null;
+            evt.onBeginDraghandler = null;
+            evt.onEndDraghandler = null;
+
+        }
+    }
+
 }

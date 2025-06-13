@@ -19,7 +19,7 @@ public class PlayerFallAsleep : MonoBehaviour
 
     }
 
-    private void EnterToDream()
+    public void EnterToDream()
     {
         SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.FALLASLEEP;
 
