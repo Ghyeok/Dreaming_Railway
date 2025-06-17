@@ -32,7 +32,6 @@ public class PlayerSlap : MonoBehaviour
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
             if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.SLAP)
             {
-                SoundManager.Instance.SetSFXVolume(0.1f);
                 SoundManager.Instance.PlayAudioClip("slap", Define.Sounds.SFX);
             }
 

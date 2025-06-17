@@ -17,6 +17,9 @@ public class SoundManager : SingletonManagers<SoundManager>
     private GameObject bgmObject;
     private GameObject sfxObject;
 
+    public bool IsBGMOff { get; private set; }
+    public bool IsSFXOff { get; private set; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
     {
@@ -98,28 +101,63 @@ public class SoundManager : SingletonManagers<SoundManager>
     {
         PlayAudioClip("JumpSound", Define.Sounds.SFX);
     }
+
     public void LandSFX()
     {
         PlayAudioClip("LandSound", Define.Sounds.SFX);
     }
+
     public void Footstep1SFX()
     {
         PlayAudioClip("FootstepCloud1", Define.Sounds.SFX);
     }
+
     public void Footstep2SFX()
     {
         PlayAudioClip("FootstepCloud2", Define.Sounds.SFX);
     }
+
     public void EnterFogSFX()
     {
         PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.1f);
     }
+
     public void ExitDreamSFX()
     {
         PlayAudioClip("ExitDream", Define.Sounds.SFX);
     }
-     public void SetSFXVolume(float volume)
+
+    public void SetSFXVolume(float volume)
     {
         SFXSource.volume = volume;
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        BGMSource.volume = volume;
+    }
+
+    public void SetSFXOff()
+    {
+        IsSFXOff = true;
+        sfxObject.GetComponent<AudioSource>().mute = true;
+    }
+
+    public void SetSFXOn()
+    {
+        IsSFXOff = false;
+        sfxObject.GetComponent<AudioSource>().mute = false;
+    }
+
+    public void SetBGMOff()
+    {
+        IsBGMOff = true;
+        bgmObject.GetComponent<AudioSource>().mute = true;
+    }
+
+    public void SetBGMOn()
+    {
+        IsBGMOff = false;
+        bgmObject.GetComponent<AudioSource>().mute = false;
     }
 }
