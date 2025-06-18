@@ -34,6 +34,10 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         dayCount = 1;
         standingCount = 0;
+
+        SoundManager.Instance.bgmVolume = 1f;
+        SoundManager.Instance.sfxVolume = 1f;
+
         timer = GetComponent<Timer>();
     }
 

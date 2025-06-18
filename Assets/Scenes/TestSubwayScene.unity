@@ -595,6 +595,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb80f70c355134848ab62ddd0df362f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmVolume: 0
+  sfxVolume: 0
 --- !u!4 &716528648
 Transform:
   m_ObjectHideFlags: 0

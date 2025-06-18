@@ -20,6 +20,9 @@ public class SoundManager : SingletonManagers<SoundManager>
     public bool IsBGMOff { get; private set; }
     public bool IsSFXOff { get; private set; }
 
+    public float bgmVolume;
+    public float sfxVolume;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Awake()
     {
@@ -127,14 +130,17 @@ public class SoundManager : SingletonManagers<SoundManager>
         PlayAudioClip("ExitDream", Define.Sounds.SFX);
     }
 
-    public void SetSFXVolume(float volume)
+    public float SetSFXVolume(float volume)
     {
         SFXSource.volume = volume;
+        return SFXSource.volume;
+
     }
 
-    public void SetBGMVolume(float volume)
+    public float SetBGMVolume(float volume)
     {
         BGMSource.volume = volume;
+        return BGMSource.volume;
     }
 
     public void SetSFXOff()
