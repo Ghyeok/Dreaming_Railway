@@ -1620,9 +1620,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fog: {fileID: 2371902892865413948, guid: 1f72dc083141bbd4d8cf78342cab7d93, type: 3}
   spawnPositions:
-  - {x: -112, y: 1, z: -5}
-  - {x: 112, y: 1, z: -5}
-  - {x: 0, y: -105, z: -5}
+  - {x: -50, y: 1, z: -5}
+  - {x: 50, y: 1, z: -5}
+  - {x: 0, y: -50, z: -5}
 --- !u!4 &1392419009
 Transform:
   m_ObjectHideFlags: 0
@@ -1673,6 +1673,10 @@ PrefabInstance:
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.x

@@ -8,11 +8,9 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float maxYVelocity;
     [SerializeField] private float acceleration = 1f;
     
-    [SerializeField] private float tempTargetXDistance = 300f; // X축 이동 안개용 임시 목표 거리
-    [SerializeField] private float tempTargetYDistance = 100f; // Y축 이동 안개용 임시 목표 거리
-
+   
     private int SpawnedIndex;
-    private Vector3 initialPosition;
+
 
     private float currentXVelocity = 0f;
     private float currentYVelocity = 0f;
@@ -20,12 +18,15 @@ public class FogMovement : MonoBehaviour
     private float realMaxXVelocity; // 실제 사용될 최대 X 속도
     private float realMaxYVelocity; // 실제 사용될 최대 Y 속도
 
+    private SpriteRenderer fogRenderer;
+    private bool IsGameOver = false;
+
    
 
 
     void Start()
     {
-        //깨어있던 시간에 의거한 어둠 이동 속도
+        //깨어있던 시간에 의거한 어둠 이동 속도 계산
         int awakeTime = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
         float speedConstant = 1f;
 
@@ -51,9 +52,8 @@ public class FogMovement : MonoBehaviour
 
     void Awake()
     {
-        initialPosition = transform.position;
+        fogRenderer = GetComponent<SpriteRenderer>();
     }
-
 
 
     public void SetIndex(int index)
@@ -64,53 +64,44 @@ public class FogMovement : MonoBehaviour
 
     void Update()
     {
-        Vector3 targetPosition;//목표지점
+        if (IsGameOver) return;
 
+        //가속 이동동
         currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, realMaxXVelocity);
         currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, realMaxYVelocity);
 
-
-        if (SpawnedIndex == 0 || SpawnedIndex == 1) //안개가 좌우 이동
+        // 방향에 따라 이동
+        if (SpawnedIndex == 0) // 오른쪽 → 왼쪽
         {
-
-            if (MapXSpawn.Instance != null && MapXSpawn.Instance.ExitPointXPosition != 0f)
-            {//목적지 있을때
-                targetPosition = new Vector3(MapXSpawn.Instance.ExitPointXPosition, transform.position.y, transform.position.z);
-            }
-            else
-            {//목적지 없을떄
-                float tempTargetX = initialPosition.x + (SpawnedIndex == 0 ? tempTargetXDistance : -tempTargetXDistance);
-                targetPosition = new Vector3(tempTargetX, transform.position.y, transform.position.z);
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentXVelocity * Time.deltaTime);
+            transform.position += Vector3.right * currentXVelocity * Time.deltaTime;
+        }
+        else if (SpawnedIndex == 1) // 왼쪽 → 오른쪽
+        {
+            transform.position += Vector3.left * currentXVelocity * Time.deltaTime;
+        }
+        else if (SpawnedIndex == 2) // 아래 → 위
+        {
+            transform.position += Vector3.up * currentYVelocity * Time.deltaTime;
         }
 
-
-        else if (SpawnedIndex == 2) //안개가 위 이동
+        // 카메라 화면 덮힘 판정
+        if (IsFogCoveringScreen())
         {
-            if (MapYSpawn.Instance != null && MapYSpawn.Instance.ExitPointYPosition != 0f)
-            {
-                targetPosition = new Vector3(transform.position.x, MapYSpawn.Instance.ExitPointYPosition, transform.position.z);
-            }
-            else
-            {
-                float tempTargetY = transform.position.y + tempTargetYDistance;
-                targetPosition = new Vector3(transform.position.x, tempTargetY, transform.position.z);
-            }
-
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, currentYVelocity * Time.deltaTime);
-        }
-
-    }
-
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {// 탈출구랑 닿았을 때
-        if (collision.collider.CompareTag("ExitDoor"))
-        {
+            IsGameOver = true;
             Debug.Log("게임오버!");
         }
     }
-}
 
+
+    bool IsFogCoveringScreen()
+    {
+        float margin = 5f; //여유 범위
+
+        Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 5)) - new Vector3(margin, margin, 0);
+        Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 5)) + new Vector3(margin, margin, 0);
+        Bounds fogBounds = fogRenderer.bounds;
+
+        //결과 반환, 안개가 화면을 모두 덮었다면
+        return fogBounds.Contains(bottomLeft) && fogBounds.Contains(topRight);
+    }
+}

@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      button_sfx_off_0: 4677893837666228905
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

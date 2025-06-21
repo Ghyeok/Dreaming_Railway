@@ -44,7 +44,22 @@ public class Player : MonoBehaviour
         }
         
     }
+
+    void LateUpdate()
+    {//플레이어가 카메라 화면 안에 있도록 
+        if (Camera.main == null) return;
+        Vector3 playerViewportPos = Camera.main.WorldToViewportPoint(transform.position);
+
+        if (playerViewportPos.x < 0f) playerViewportPos.x = 0f; // 화면 왼쪽 경계
+        if (playerViewportPos.x > 1f) playerViewportPos.x = 1f; // 화면 오른쪽 경계
+        if (playerViewportPos.y < 0f) playerViewportPos.y = 0f; // 화면 아래쪽 경계
+        if (playerViewportPos.y > 1f) playerViewportPos.y = 1f; // 화면 위쪽 경계
+
+        transform.position = Camera.main.ViewportToWorldPoint(playerViewportPos);
+    }
     
+
+
     void FixedUpdate() 
     {// UI 키와 키보드 입력을 동시에 처리(방향값 받기)
         float moveX = 0f;
