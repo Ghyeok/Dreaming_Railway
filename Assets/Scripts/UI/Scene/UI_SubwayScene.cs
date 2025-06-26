@@ -51,7 +51,6 @@ public class UI_SubwayScene : UI_Scene
     {
         SetTransferText();
         SetSlapText();
-        SubwayCharacterSleepingMotion();
     }
 
     public override void Init()
@@ -104,15 +103,6 @@ public class UI_SubwayScene : UI_Scene
         GetText((int)Texts.SlapText).text = $"{SubwayPlayerManager.Instance.slapNum}";
     }
 
-    private void SubwayCharacterSleepingMotion()
-    {
-        if (SubwayPlayerManager.Instance.subwayPlayer != null)
-        {
-            anim = GetImage((int)Images.PlayerImage).gameObject.GetComponent<Animator>();
-            anim.SetFloat("tired", TiredManager.Instance.currentTired);
-        }
-    }
-
     private void SetStandingButtonToSkip(PointerEventData data)
     {
         if (SubwayGameManager.Instance.standingCount == 0)
@@ -130,7 +120,7 @@ public class UI_SubwayScene : UI_Scene
             cg.blocksRaycasts = false;
 
             // 2. 스킵 버튼으로 변경, 이벤트 연결
-            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_stop"); // 임시
+            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_skip"); // 임시
             GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
