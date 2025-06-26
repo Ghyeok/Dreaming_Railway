@@ -7,6 +7,9 @@ public class UIManager : SingletonManagers<UIManager>
 {
     private GameObject _root;
 
+    public float canvasWidth = 1920f;
+    public float canvasHeight = 1080f;
+
     public static GameObject Root
     {
         get

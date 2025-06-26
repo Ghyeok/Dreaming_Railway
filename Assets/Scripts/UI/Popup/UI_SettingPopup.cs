@@ -15,7 +15,7 @@ public class UI_SettingPopup : UI_Popup
     [SerializeField]
     private float bgmRadius, sfxRadius;
     [SerializeField]
-    private RectTransform thumbPos, bgmCenter, sfxCenter, bgmBarStart, bgmBarEnd;
+    private RectTransform bgmThumbPos, sfxThumbPos, bgmCenter, sfxCenter, bgmBarStart, bgmBarEnd;
 
     public enum GameObjects
     {
@@ -28,6 +28,7 @@ public class UI_SettingPopup : UI_Popup
     public enum Images
     {
         BGMBar,
+        SFXBar,
     }
 
     public enum Buttons
@@ -35,7 +36,8 @@ public class UI_SettingPopup : UI_Popup
         ExitButton,
         BGMButton,
         SFXButton,
-        ThumbButton,
+        BGMThumbButton,
+        SFXThumbButton,
     }
 
     public enum Texts
@@ -72,23 +74,31 @@ public class UI_SettingPopup : UI_Popup
         GameObject sfx = GetButton((int)Buttons.SFXButton).gameObject;
         AddUIEvent(sfx, SFXButtonOnClicked);
 
-        GameObject thumb = GetButton((int)Buttons.ThumbButton).gameObject;
-        AddUIEvent(thumb, BGMThumbButtonDragBegin, Define.UIEvent.DragBegin);
-        AddUIEvent(thumb, BGMThumbButtonOnDrag, Define.UIEvent.Drag);
+        GameObject bgmThumb = GetButton((int)Buttons.BGMThumbButton).gameObject;
+        AddUIEvent(bgmThumb, BGMThumbButtonDragBegin, Define.UIEvent.DragBegin);
+        AddUIEvent(bgmThumb, BGMThumbButtonOnDrag, Define.UIEvent.Drag);
+
+        GameObject sfxThumb = GetButton((int)Buttons.SFXThumbButton).gameObject;
+        AddUIEvent(sfxThumb, SFXThumbButtonDragBegin, Define.UIEvent.DragBegin);
+        AddUIEvent(sfxThumb, SFXThumbButtonOnDrag, Define.UIEvent.Drag);
 
         UpdateSoundButtons();
 
-        thumbPos = GetButton((int)Buttons.ThumbButton).GetComponent<RectTransform>();
+        bgmThumbPos = GetButton((int)Buttons.BGMThumbButton).GetComponent<RectTransform>();
+        sfxThumbPos = GetButton((int)Buttons.SFXThumbButton).GetComponent<RectTransform>();
         bgmCenter = Get<GameObject>((int)GameObjects.BGMCenter).GetComponent<RectTransform>();
         sfxCenter = Get<GameObject>((int)GameObjects.SFXCenter).GetComponent<RectTransform>();
         bgmBarStart = Get<GameObject>((int)GameObjects.BGMBarStart).GetComponent<RectTransform>();
         bgmBarEnd = Get<GameObject>((int)GameObjects.BGMBarEnd).GetComponent<RectTransform>();
 
-        bgmRadius = Vector2.Distance(RectTransformUtility.WorldToScreenPoint(null, thumbPos.position),
+        bgmRadius = Vector2.Distance(RectTransformUtility.WorldToScreenPoint(null, bgmThumbPos.position),
                                      RectTransformUtility.WorldToScreenPoint(null, bgmCenter.position));
+        sfxRadius = Vector2.Distance(RectTransformUtility.WorldToScreenPoint(null, sfxThumbPos.position),
+                                     RectTransformUtility.WorldToScreenPoint(null, sfxCenter.position));
 
         UpdateSoundButtons();
-        SetThumbPositionByVolume(SoundManager.Instance.bgmVolume);
+        SetBGMThumbPositionByVolume(SoundManager.Instance.bgmVolume);
+        SetSFXThumbPositionByVolume(SoundManager.Instance.sfxVolume);
     }
 
     private void UpdateSoundButtons() // 팝업 창을 껐다 켜도 버튼 상태 유지
@@ -143,11 +153,22 @@ public class UI_SettingPopup : UI_Popup
 
     private void SetSFXText()
     {
-        GetText((int)Texts.BGMText).text = (SoundManager.Instance.sfxVolume * 100f).ToString();
+        GetText((int)Texts.SFXText).text = Mathf.RoundToInt((SoundManager.Instance.sfxVolume * 100f)).ToString();
     }
 
-    #region 원형 슬라이더 UI 구현
+    private struct ArcInfo // 각도 정보 저장 구조체
+    {
+        public float angleStart; // 시작 각도
+        public float angleEnd; // 끝 각도
+        public float totalArc; // 시작 ~ 끝 각도 범위
+    }
 
+    private float GetAngle(Vector2 screenDir) // 현재 방향 각도 계산
+    {
+        return (Mathf.Atan2(screenDir.y, screenDir.x) * Mathf.Rad2Deg + 360f) % 360f;
+    }
+
+    #region BGM 원형 슬라이더 UI 구현
     private void BGMThumbButtonDragBegin(PointerEventData data)
     {
 
@@ -158,14 +179,7 @@ public class UI_SettingPopup : UI_Popup
         UpdateBGMThumbPosition(data);
     }
 
-    private struct ArcInfo // 각도 정보 저장 구조체
-    {
-        public float angleStart; // 시작 각도
-        public float angleEnd; // 끝 각도
-        public float totalArc; // 시작 ~ 끝 각도 범위
-    }
-
-    private ArcInfo GetAngleArcInfo() // 기준이 되는 각도 계산
+    private ArcInfo GetBGMAngleArcInfo() // 기준이 되는 각도 계산
     {
         Vector2 screenCenter = RectTransformUtility.WorldToScreenPoint(null, bgmCenter.position);
         Vector2 screenStart = RectTransformUtility.WorldToScreenPoint(null, bgmBarStart.position);
@@ -181,18 +195,13 @@ public class UI_SettingPopup : UI_Popup
         return new ArcInfo { angleStart = angleStart, angleEnd = angleEnd, totalArc = totalArc };
     }
 
-    private float GetAngle(Vector2 screenDir) // 현재 방향 각도 계산
-    {
-        return (Mathf.Atan2(screenDir.y, screenDir.x) * Mathf.Rad2Deg + 360f) % 360f;
-    }
-
-    private Vector3 GetThumbWorldPosition(float angleDeg) // 현재 각도에 따른 ThumbButton의 월드 좌표 계산
+    private Vector3 GetBGMThumbWorldPosition(float angleDeg) // 현재 각도에 따른 ThumbButton의 월드 좌표 계산
     {
         Vector2 center = RectTransformUtility.WorldToScreenPoint(null, bgmCenter.position);
         float rad = angleDeg * Mathf.Deg2Rad;
         Vector2 screenPos = center + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * bgmRadius;
 
-        RectTransformUtility.ScreenPointToWorldPointInRectangle(thumbPos.parent as RectTransform, screenPos, null, out Vector3 worldPos);
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(bgmThumbPos.parent as RectTransform, screenPos, null, out Vector3 worldPos);
         return worldPos;
     }
 
@@ -203,12 +212,12 @@ public class UI_SettingPopup : UI_Popup
         SoundManager.Instance.bgmVolume = SoundManager.Instance.SetBGMVolume(1f - clampedFill);
         SetBGMText();
 
-        ArcInfo arc = GetAngleArcInfo();
+        ArcInfo arc = GetBGMAngleArcInfo();
         float angle = (arc.angleStart - arc.totalArc * clampedFill + 360f) % 360f;
-        thumbPos.position = GetThumbWorldPosition(angle);
+        bgmThumbPos.position = GetBGMThumbWorldPosition(angle);
     }
 
-    private void SetThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
+    private void SetBGMThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
     {
         ApplyBGMVolume(1 - volume);
     }
@@ -219,7 +228,7 @@ public class UI_SettingPopup : UI_Popup
         Vector2 thumb = data.position;
         Vector2 dir = (thumb - screenCenter).normalized;
 
-        ArcInfo arc = GetAngleArcInfo();
+        ArcInfo arc = GetBGMAngleArcInfo();
         float angle = GetAngle(dir);
         float curArc = (arc.angleStart - angle + 360f) % 360f;
 
@@ -229,5 +238,57 @@ public class UI_SettingPopup : UI_Popup
         float fill = curArc / arc.totalArc;
         ApplyBGMVolume(fill);
     }
+    #endregion
+
+
+    #region SFX 원형 슬라이더 구현
+    private void SFXThumbButtonDragBegin(PointerEventData data)
+    {
+
+    }
+
+    private void SFXThumbButtonOnDrag(PointerEventData data)
+    {
+        UpdateSFXThumbPosition(data);
+    }
+
+    private Vector3 GetSFXThumbWorldPosition(float angleDeg) // 현재 각도에 따른 ThumbButton의 월드 좌표 계산
+    {
+        Vector2 center = RectTransformUtility.WorldToScreenPoint(null, sfxCenter.position);
+        float rad = angleDeg * Mathf.Deg2Rad;
+        Vector2 screenPos = center + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * sfxRadius;
+
+        RectTransformUtility.ScreenPointToWorldPointInRectangle(sfxThumbPos.parent as RectTransform, screenPos, null, out Vector3 worldPos);
+        return worldPos;
+    }
+
+    private void ApplySFXVolume(float fill) // fill값을 통한 ThumbButton, Bar, Volume 설정
+    {
+        float clampedFill = Mathf.Clamp01(fill);
+        GetImage((int)Images.SFXBar).fillAmount = clampedFill;
+        SoundManager.Instance.sfxVolume = SoundManager.Instance.SetSFXVolume(clampedFill);
+        SetSFXText();
+
+        float angle = (360f * clampedFill) % 360f;
+        sfxThumbPos.position = GetSFXThumbWorldPosition(angle);
+    }
+
+    private void SetSFXThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
+    {
+        ApplySFXVolume(volume);
+    }
+
+    private void UpdateSFXThumbPosition(PointerEventData data)
+    {
+        Vector2 screenCenter = RectTransformUtility.WorldToScreenPoint(null, sfxCenter.position);
+        Vector2 thumb = data.position;
+        Vector2 dir = (thumb - screenCenter).normalized;
+
+        float angle = GetAngle(dir);
+        float fill = angle / 360f;
+
+        ApplySFXVolume(fill);
+    }
+
     #endregion
 }
