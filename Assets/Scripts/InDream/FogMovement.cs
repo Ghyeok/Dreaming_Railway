@@ -1,5 +1,5 @@
 using UnityEngine;
-using System;
+
 
 
 public class FogMovement : MonoBehaviour
@@ -7,8 +7,11 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float maxXVelocity;
     [SerializeField] private float maxYVelocity;
     [SerializeField] private float acceleration = 1f;
-    
-   
+    [SerializeField] private float delayAfterCover = 3f;
+    private bool isCounting = false;
+    private float coverTimer = 0f; //어둠 멈춤 딜레이
+
+
     private int SpawnedIndex;
 
 
@@ -20,8 +23,9 @@ public class FogMovement : MonoBehaviour
 
     private SpriteRenderer fogRenderer;
     private bool IsGameOver = false;
+    private bool gameOverTriggered = false; //한 번만 페이딩 함수 호출 하려고
 
-   
+
 
 
     void Start()
@@ -66,7 +70,7 @@ public class FogMovement : MonoBehaviour
     {
         if (IsGameOver) return;
 
-        //가속 이동동
+        //가속 이동
         currentXVelocity = Mathf.Min(currentXVelocity + acceleration * Time.deltaTime, realMaxXVelocity);
         currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, realMaxYVelocity);
 
@@ -84,24 +88,49 @@ public class FogMovement : MonoBehaviour
             transform.position += Vector3.up * currentYVelocity * Time.deltaTime;
         }
 
-        // 카메라 화면 덮힘 판정
-        if (IsFogCoveringScreen())
+
+        // 덮었으면 타이머 시작
+        if (!isCounting && IsFogCoveringScreen())
         {
-            IsGameOver = true;
-            Debug.Log("게임오버!");
+            isCounting = true;
+            Debug.Log("안개 도착, 게임오버!");
+            coverTimer = 0f;
         }
-    }
+
+        if (isCounting)
+        {//어둠 흰 선 때문에 게임 오버 후 일정 시간 후 멈추도록
+            coverTimer += Time.deltaTime;
+
+            if (coverTimer >= delayAfterCover)
+            {
+                IsGameOver = true;
+
+                if (IsGameOver && !gameOverTriggered)
+                {
+                    UI_GameOverPopup GameOverPopup = FindFirstObjectByType<UI_GameOverPopup>();
+                    GameOverPopup.TriggerGameOver();
+                    gameOverTriggered = true;
+                }
+            }
+        }
 
 
-    bool IsFogCoveringScreen()
-    {
-        float margin = 5f; //여유 범위
 
-        Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 5)) - new Vector3(margin, margin, 0);
-        Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 5)) + new Vector3(margin, margin, 0);
-        Bounds fogBounds = fogRenderer.bounds;
+        bool IsFogCoveringScreen()
+        {
+            float margin = 3f; //여유 범위
+            float z = transform.position.z;
 
-        //결과 반환, 안개가 화면을 모두 덮었다면
-        return fogBounds.Contains(bottomLeft) && fogBounds.Contains(topRight);
+            Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Mathf.Abs(Camera.main.transform.position.z - z))) - new Vector3(margin, margin, 0);
+            Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, Mathf.Abs(Camera.main.transform.position.z - z))) + new Vector3(margin, margin, 0);
+
+            bottomLeft.z = z;
+            topRight.z = z;
+
+            Bounds fogBounds = fogRenderer.bounds;
+
+            //결과 반환, 안개가 화면을 모두 덮었다면
+            return fogBounds.Contains(bottomLeft) && fogBounds.Contains(topRight);
+        }
     }
 }
