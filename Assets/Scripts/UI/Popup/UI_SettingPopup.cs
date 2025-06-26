@@ -273,6 +273,11 @@ public class UI_SettingPopup : UI_Popup
         sfxThumbPos.position = GetSFXThumbWorldPosition(angle);
     }
 
+    private void SetSFXThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
+    {
+        ApplySFXVolume(volume);
+    }
+
     private void UpdateSFXThumbPosition(PointerEventData data)
     {
         Vector2 screenCenter = RectTransformUtility.WorldToScreenPoint(null, sfxCenter.position);
@@ -283,11 +288,6 @@ public class UI_SettingPopup : UI_Popup
         float fill = angle / 360f;
 
         ApplySFXVolume(fill);
-    }
-
-    private void SetSFXThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
-    {
-        ApplySFXVolume(volume);
     }
 
     #endregion

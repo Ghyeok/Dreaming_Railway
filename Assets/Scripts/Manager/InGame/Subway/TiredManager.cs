@@ -19,8 +19,18 @@ public class TiredManager : SingletonManagers<TiredManager>
     // Update is called once per frame
     void Update()
     {
+        SubwayCharacterSleepingMotion();
         IncreaseTired();
         IsTiredHalf();
+    }
+
+    private void SubwayCharacterSleepingMotion()
+    {
+        if (SubwayPlayerManager.Instance.subwayPlayer != null)
+        {
+            Animator anim = SubwayPlayerManager.Instance.subwayPlayer.GetComponent<Animator>();
+            anim.SetFloat("tired", TiredManager.Instance.currentTired);
+        }
     }
 
     private void IsTiredHalf()

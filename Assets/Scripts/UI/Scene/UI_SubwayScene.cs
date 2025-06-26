@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UI_SubwayScene : UI_Scene
 {
+    public GameObject subwayPlayer;
+
     [SerializeField]
     Animator anim;
 
@@ -55,10 +57,13 @@ public class UI_SubwayScene : UI_Scene
     public override void Init()
     {
         base.Init();
-
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
+
+        subwayPlayer = GetImage((int)Images.PlayerImage).gameObject;
+        SubwayPlayerManager.Instance.subwayPlayer = subwayPlayer;
+        anim = subwayPlayer.GetComponent<Animator>();
 
         GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
         AddUIEvent(pause, PauseButtonOnClicked, Define.UIEvent.Click);
@@ -101,8 +106,11 @@ public class UI_SubwayScene : UI_Scene
 
     private void SubwayCharacterSleepingMotion()
     {
-        anim = GetImage((int)Images.PlayerImage).gameObject.GetComponent<Animator>();
-        anim.SetFloat("tired", TiredManager.Instance.currentTired);
+        if (SubwayPlayerManager.Instance.subwayPlayer != null)
+        {
+            anim = GetImage((int)Images.PlayerImage).gameObject.GetComponent<Animator>();
+            anim.SetFloat("tired", TiredManager.Instance.currentTired);
+        }
     }
 
     private void SetStandingButtonToSkip(PointerEventData data)

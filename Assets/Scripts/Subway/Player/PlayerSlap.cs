@@ -33,6 +33,10 @@ public class PlayerSlap : MonoBehaviour
             if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.SLAP)
             {
                 SoundManager.Instance.PlayAudioClip("slap", Define.Sounds.SFX);
+                if (SubwayPlayerManager.Instance.subwayPlayer != null)
+                {
+                    SubwayPlayerManager.Instance.subwayPlayer.GetComponent<Animator>().Play("PlayerSlap");
+                }
             }
 
             SubwayGameManager.Instance.isSlapCoolTime = true;

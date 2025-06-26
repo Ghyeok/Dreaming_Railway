@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: c447903c480ebca499e2ee68bddecee9
+guid: ac14fa7943b34934ea228ea1a35c21f2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2135819615747686384
-    second: LD_Sleep1_0
-  - first:
-      213: 7305196513824049903
-    second: LD_Sleep1_1
-  - first:
-      213: 2999035703767332412
-    second: LD_Sleep1_2
+      213: -3654034086566285563
+    second: LD_slap-15_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -56,7 +50,7 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
-  spritePivot: {x: 0.5, y: 0}
+  spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -102,43 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LD_Sleep1_0
+      name: LD_slap-15_0
       rect:
         serializedVersion: 2
-        x: 162
+        x: 160
         y: 0
-        width: 742
-        height: 1628
+        width: 758
+        height: 1569
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,52 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0ffb3fcdf94f3ad10800000000000000
-      internalID: 2135819615747686384
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LD_Sleep1_1
-      rect:
-        serializedVersion: 2
-        x: 222
-        y: 1625
-        width: 15
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fea87e45685416560800000000000000
-      internalID: 7305196513824049903
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LD_Sleep1_2
-      rect:
-        serializedVersion: 2
-        x: 910
-        y: 742
-        width: 31
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c36f3cf3517be9920800000000000000
-      internalID: 2999035703767332412
+      spriteID: 50f2c01bb534a4dc0800000000000000
+      internalID: -3654034086566285563
       vertices: []
       indices: 
       edges: []
@@ -211,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LD_Sleep1_0: 2135819615747686384
-      LD_Sleep1_1: 7305196513824049903
-      LD_Sleep1_2: 2999035703767332412
+      LD_slap-15_0: -3654034086566285563
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

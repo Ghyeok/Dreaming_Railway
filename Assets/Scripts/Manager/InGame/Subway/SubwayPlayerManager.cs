@@ -24,6 +24,8 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
         GETOFF, // 목적지에 내리기
     }
 
+    public GameObject subwayPlayer;
+
     public PlayerState playerState;
     public PlayerBehave playerBehave;
     public int slapNum;
