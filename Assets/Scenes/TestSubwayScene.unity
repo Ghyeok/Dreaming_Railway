@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61ffefe9f06d11444a5ad50c7c7e28de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  subwayPlayer: {fileID: 0}
   playerState: 0
   playerBehave: 0
   slapNum: 0
@@ -551,6 +552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c21ac3b13ef0d49bd0e3d92b220180, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasWidth: 0
+  canvasHeight: 0
 --- !u!4 &629289798
 Transform:
   m_ObjectHideFlags: 0
