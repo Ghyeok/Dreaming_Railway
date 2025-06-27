@@ -1,4 +1,4 @@
-using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,6 +11,8 @@ public class TransferManager : SingletonManagers<TransferManager>
 {
     public int curTransferCount;
     public int maxTransferCount;
+
+    public static event Action OnTransferSuccess;
 
     private bool hasTransfered = false;
     private bool hasArrived = false;
@@ -70,6 +72,8 @@ public class TransferManager : SingletonManagers<TransferManager>
             curTransferCount++;
             SubwayGameManager.Instance.standingCount++;
             StationManager.Instance.currentLineIdx++;
+
+            OnTransferSuccess?.Invoke();
         }
     }
 
@@ -84,6 +88,8 @@ public class TransferManager : SingletonManagers<TransferManager>
 
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
         SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
+
+        OnTransferSuccess?.Invoke();
     }
 
     private void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시

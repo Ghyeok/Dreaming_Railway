@@ -216,7 +216,7 @@ public class UI_PausePopup : UI_Popup
 
             if (target.gameObject == GetButton((int)Buttons.StationButton).gameObject)
             {
-                StationButtonOnClicked(data);
+                SubwayLinesButtonOnClicked(data);
             }
 
             if (target.gameObject == GetButton((int)Buttons.ResumeButton).gameObject)
@@ -243,9 +243,9 @@ public class UI_PausePopup : UI_Popup
     }
 
 
-    private void StationButtonOnClicked(PointerEventData data)
+    private void SubwayLinesButtonOnClicked(PointerEventData data)
     {
-
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SubwayLinePopup");
     }
 
     private void ResumeButtonOnclicked(PointerEventData data)
