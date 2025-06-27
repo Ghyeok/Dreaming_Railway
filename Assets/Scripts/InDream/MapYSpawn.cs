@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 public class MapYSpawn : SingletonManagers<MapYSpawn>
 {
-    public SubwayGameManager subwayGameManager;
+    //public SubwayGameManager subwayGameManager;
     public GameObject player;
     public List<GameObject> mapList;
 
@@ -49,7 +48,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
         {
             if (mapLength == 1)
             {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 8 +  SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 15 + 2* SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -57,7 +56,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 25 + 2*SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -103,7 +102,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
     {
         if (endMapSpawn)
         {
-            GameObject spawnedLastMap = Instantiate(mapList[9], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
+            GameObject spawnedLastMap = Instantiate(mapList[10], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
             
 
             // 프리팹 안의 "ExitDoor"를 찾기

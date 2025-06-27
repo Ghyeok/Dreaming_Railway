@@ -69,9 +69,6 @@ public class Player : MonoBehaviour
             moveX = -1f;
 
         
-        //방향 전환 시
-        if ((Speed < 0 && moveX > 0) || (Speed > 0 && moveX < 0))
-            Speed = -Speed/2; // 방향만 반전
 
 
         //방향 따라 플레이어 좌우 반전
@@ -81,30 +78,45 @@ public class Player : MonoBehaviour
             transform.localScale = new Vector3(-0.45f, 0.45f, 1);
 
 
+
         if (moveX != 0)
-        {//좌우 누르면
+        {//좌우 입력값이 있으면 
             if (!wasMovingLastFrame)
             {
-            // 정지 상태 -> 처음 입력됨 -> 4부터 시작
+                // 정지 상태 -> 처음 입력됨 -> 4부터 시작
                 Speed = moveX * 4f;
                 wasMovingLastFrame = true;
             }
 
             else
-            {
+            {//이동 중이었다면
+
+                //같은 방향일 경우 다시 눌렀을 때 기본 속도 4로 시작
+                if (Mathf.Sign(Speed) == Mathf.Sign(moveX) && Mathf.Abs(Speed) < 4f)
+                {
+                    Speed = moveX * 4f;
+                }
+                
+                //반대 방향 입력일 경우 방향만 반전 (크기 유지)
+                else if (Mathf.Sign(Speed) != Mathf.Sign(moveX))
+                {
+                    Speed = -Speed;
+                }
+
+            
                 // 가속 적용
                 Speed += moveX * acceleration * Time.fixedDeltaTime;
                 Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
             }
 
         }
-    
+
         else //안 누르면 감속
         {
-            Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
+            Speed = Mathf.MoveTowards(Speed, 0, 3 * acceleration * Time.fixedDeltaTime);
 
             wasMovingLastFrame = false;
-            
+
         }
 
 

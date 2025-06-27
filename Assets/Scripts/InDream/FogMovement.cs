@@ -8,6 +8,8 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float maxYVelocity;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float delayAfterCover = 3f;
+    [SerializeField] private float margin;
+
     private bool isCounting = false;
     public static bool fadeOutStarted = false; //기존 UI 페이드 아웃 위함
     private float coverTimer = 0f; //어둠 멈춤 딜레이

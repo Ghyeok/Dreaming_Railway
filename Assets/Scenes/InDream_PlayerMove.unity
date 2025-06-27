@@ -1034,9 +1034,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fog: {fileID: 2371902892865413948, guid: 1f72dc083141bbd4d8cf78342cab7d93, type: 3}
   spawnPositions:
-  - {x: -42, y: 0, z: -5}
-  - {x: 42, y: 0, z: -5}
-  - {x: 0, y: -35, z: -5}
+  - {x: -36, y: 0, z: -5}
+  - {x: 36, y: 0, z: -5}
+  - {x: 0, y: -30, z: -5}
 --- !u!4 &1392419009
 Transform:
   m_ObjectHideFlags: 0
@@ -1170,7 +1170,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: minSpeed
-      value: 1.8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: jumpPower
@@ -1186,11 +1186,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: stepDistance
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: wasMovingLastFrame
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1459,18 +1459,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f3cf61dd3456540944cde9870f66c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subwayGameManager: {fileID: 0}
   player: {fileID: 878937813}
   mapList:
   - {fileID: 1280388442073319779, guid: d8ee4940646e0db4fb247e0cdbd320da, type: 3}
-  - {fileID: 1280388442073319779, guid: ff28ba583ef5cb84da68337b7b29a0f4, type: 3}
+  - {fileID: 1280388442073319779, guid: f47e15fc48a15574b8dc28084adba037, type: 3}
   - {fileID: 1280388442073319779, guid: 6a8ca630f6b802e4b97ecf749c36ffd6, type: 3}
   - {fileID: 1280388442073319779, guid: 54fe7e3495225bb4d947917ef0696c97, type: 3}
-  - {fileID: 1280388442073319779, guid: 8945585ff47e1ea41a76720866969958, type: 3}
-  - {fileID: 1280388442073319779, guid: b3f5f1b02340eb5409db6d667ad1ad41, type: 3}
-  - {fileID: 1280388442073319779, guid: 99d4deedfc2db0b44af7c876ea294935, type: 3}
-  - {fileID: 1280388442073319779, guid: 959ca3487478dd241901d910b1e10cf2, type: 3}
-  - {fileID: 1280388442073319779, guid: 0049e6483cb3be74d8d00d12985544bc, type: 3}
+  - {fileID: 1280388442073319779, guid: f7c35f21213f15b4aa0c75257b7cd913, type: 3}
+  - {fileID: 1280388442073319779, guid: 8cc95b54ed071a34d9ee3733ad9d81fe, type: 3}
+  - {fileID: 1280388442073319779, guid: 35fd8db12e42d7a49a409d7fe581bc06, type: 3}
+  - {fileID: 1280388442073319779, guid: 151c257567f54da408af32e4cfb63646, type: 3}
+  - {fileID: 1280388442073319779, guid: 56bf96138312e8f40b36484bafd01176, type: 3}
+  - {fileID: 1280388442073319779, guid: e65f082cb066c8d40b962b9b607d9c56, type: 3}
   - {fileID: 1280388442073319779, guid: caecaf83b8a31fb418f23f313621e02f, type: 3}
   ExitPointYPosition: 0
 --- !u!1 &1638231952
@@ -1684,7 +1684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740896d68fb02a84686f24feccf9ef76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subwayGameManager: {fileID: 0}
   player: {fileID: 878937813}
   mapList:
   - {fileID: 5119156888014228460, guid: bf777bb20def0cc4c8bdf13b5b62a542, type: 3}

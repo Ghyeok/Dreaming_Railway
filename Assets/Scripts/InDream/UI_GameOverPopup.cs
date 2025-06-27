@@ -92,14 +92,14 @@ public class UI_GameOverPopup : MonoBehaviour
 
 
     public void GoToRetry()
-    {
+    {//이거는 리셋한 day 지하철 씬으로 가야하는디...
         SceneManager.LoadScene("TestSubwayScene");
     }
 
     public void GoToMainMenu()
     {
         //메뉴창
-        DarkBackGround.SetActive(true);
+        SceneManager.LoadScene("MainScene");
     }
 
     public void GoToOut()

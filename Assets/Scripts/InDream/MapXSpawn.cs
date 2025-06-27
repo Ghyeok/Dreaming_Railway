@@ -1,12 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
 
 
 
 public class MapXSpawn : SingletonManagers<MapXSpawn>
 {
-    public SubwayGameManager subwayGameManager;
+    //public SubwayGameManager subwayGameManager;
     public GameObject player;
     public List<GameObject> mapList;
 
