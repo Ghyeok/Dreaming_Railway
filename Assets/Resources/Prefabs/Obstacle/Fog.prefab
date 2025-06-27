@@ -132,7 +132,7 @@ MonoBehaviour:
   maxXVelocity: 5
   maxYVelocity: 2
   acceleration: 1
-  delayAfterCover: 1
+  delayAfterCover: 3
 --- !u!66 &5022238599266024563
 CompositeCollider2D:
   m_ObjectHideFlags: 0

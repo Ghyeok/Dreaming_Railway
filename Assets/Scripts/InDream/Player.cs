@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 
@@ -8,7 +7,7 @@ public class Player : MonoBehaviour
 { 
     [SerializeField] private float acceleration;  
     [SerializeField] private float MaxSpeed;      
-    [SerializeField] private Rigidbody2D rigid;
+    private Rigidbody2D rigid;
 
 //발소리를 위한
     private Vector2 lastFootstepPosition;
@@ -84,12 +83,13 @@ public class Player : MonoBehaviour
 
         if (moveX != 0)
         {//좌우 누르면
-            if (!wasMovingLastFrame && Mathf.Abs(Speed) < 0.1f)
+            if (!wasMovingLastFrame)
             {
             // 정지 상태 -> 처음 입력됨 -> 4부터 시작
                 Speed = moveX * 4f;
                 wasMovingLastFrame = true;
             }
+
             else
             {
                 // 가속 적용
@@ -103,10 +103,8 @@ public class Player : MonoBehaviour
         {
             Speed = Mathf.MoveTowards(Speed, 0, 3*acceleration * Time.fixedDeltaTime);
 
-            if (Mathf.Abs(Speed) < 0.01f)
-            {
-                wasMovingLastFrame = false;
-            }
+            wasMovingLastFrame = false;
+            
         }
 
 
@@ -114,13 +112,11 @@ public class Player : MonoBehaviour
         if (isInObstacle)
         {
             SoundManager.Instance.EnterFogSFX();
-            float absCurrentSpeed = Mathf.Abs(Speed);
-            float direction = Mathf.Sign(Speed);
-            float decelerationRate = (absCurrentSpeed - minSpeed) / 2f; // 2초 동안 줄어들도록
-
-    //(3초 후 최소속도 도달)
-            float absSlowSpeed = Mathf.MoveTowards(absCurrentSpeed, minSpeed, decelerationRate * Time.fixedDeltaTime);
-            Speed = direction * absSlowSpeed;
+            
+            if (Mathf.Abs(Speed) > minSpeed)
+            {
+                Speed = Mathf.Sign(Speed) * minSpeed; // 속도를 한 번에 minSpeed로 낮춤
+            }
         }
 
 
@@ -188,7 +184,7 @@ public class Player : MonoBehaviour
             isJump = false;
         }
 
-        //꿈 속 탈출구랑 닿았을 때 씬 넘어가기기
+        //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
         if (collision.collider.CompareTag("ExitDoor"))
         {
             SoundManager.Instance.ExitDreamSFX();

@@ -9,6 +9,7 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float delayAfterCover = 3f;
     private bool isCounting = false;
+    public static bool fadeOutStarted = false; //기존 UI 페이드 아웃 위함
     private float coverTimer = 0f; //어둠 멈춤 딜레이
 
 
@@ -93,6 +94,7 @@ public class FogMovement : MonoBehaviour
         if (!isCounting && IsFogCoveringScreen())
         {
             isCounting = true;
+            fadeOutStarted = true;
             Debug.Log("안개 도착, 게임오버!");
             coverTimer = 0f;
         }

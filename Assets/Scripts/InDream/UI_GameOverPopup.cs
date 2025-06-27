@@ -17,7 +17,7 @@ public class UI_GameOverPopup : MonoBehaviour
     private float uiFadeInTimer; //게임오버 후, 팝업 생성 전 타이머
     private float uiFadeOutTimer;
     private bool fadeInStarted = false;
-    private bool fadeOutStarted = false;
+    
 
 
     void Start()
@@ -34,7 +34,7 @@ public class UI_GameOverPopup : MonoBehaviour
     {
         Debug.Log("게임오버 페이딩 시작");
         isGameOverUIFading = true;//게임오버 팝업 생성될 것
-        fadeOutStarted = true;//기존 움직임 버튼 페이드 아웃
+        //fadeOutStarted = true;//기존 움직임 버튼 페이드 아웃
 
         uiFadeInTimer = 0f;
         uiFadeOutTimer = 0f;
@@ -53,7 +53,7 @@ public class UI_GameOverPopup : MonoBehaviour
         uiFadeOutTimer += Time.deltaTime;
 
         //기존 ui 페이드 아웃 
-        if (fadeOutStarted)
+        if (FogMovement.fadeOutStarted)
         {
             float k = Mathf.Clamp01(uiFadeOutTimer / uiFadeOutDuration);
             nonGameOverUI.alpha = 1 - k;
@@ -61,7 +61,7 @@ public class UI_GameOverPopup : MonoBehaviour
 
             if (k >= 1f)
             {
-                fadeOutStarted = false;
+                FogMovement.fadeOutStarted = false;
             }
 
         }
