@@ -1,13 +1,16 @@
 fileFormatVersion: 2
-guid: b5e84e48348de4c4aaf433569950de4e
+guid: 2da3c93b2d1fb724487d9e78ba0520f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1492394733844732605
-    second: LD_stand-13_0
+      213: -8808597941333316575
+    second: LD_sleep_fixx-10_0
   - first:
-      213: 8604525759336901164
-    second: LD_stand-13_1
+      213: 5490873780141837231
+    second: LD_sleep_fixx-10_1
+  - first:
+      213: 6708999726397342734
+    second: LD_sleep_fixx-10_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -99,17 +102,43 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LD_stand-13_0
+      name: LD_sleep_fixx-10_0
       rect:
         serializedVersion: 2
-        x: 79
-        y: 892
-        width: 15
-        height: 22
+        x: 162
+        y: 0
+        width: 742
+        height: 1632
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,20 +147,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 345658885e2f94be0800000000000000
-      internalID: -1492394733844732605
+      spriteID: 12c2791a7d291c580800000000000000
+      internalID: -8808597941333316575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LD_stand-13_1
+      name: LD_sleep_fixx-10_1
       rect:
         serializedVersion: 2
-        x: 113
-        y: 0
-        width: 471
-        height: 1052
+        x: 910
+        y: 742
+        width: 6
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +169,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c2a69f1e69a696770800000000000000
-      internalID: 8604525759336901164
+      spriteID: fab4cd37c90833c40800000000000000
+      internalID: 5490873780141837231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-10_2
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 744
+        width: 21
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e044b1294b72b1d50800000000000000
+      internalID: 6708999726397342734
       vertices: []
       indices: 
       edges: []
@@ -160,8 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LD_stand-13_0: -1492394733844732605
-      LD_stand-13_1: 8604525759336901164
+      LD_sleep_fixx-10_0: -8808597941333316575
+      LD_sleep_fixx-10_1: 5490873780141837231
+      LD_sleep_fixx-10_2: 6708999726397342734
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

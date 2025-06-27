@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 71b94cbd2bcbc7d4ab0f4ffb569701ca
+guid: 3cd00f17eabd14944b990decc5be1389
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6153996980929904746
-    second: button_mainmenu2_0
+      213: -5642920810789191292
+    second: LD_sleep_fixx-18_0
+  - first:
+      213: -9142644555074076412
+    second: LD_sleep_fixx-18_1
+  - first:
+      213: 4495183082600375929
+    second: LD_sleep_fixx-18_2
+  - first:
+      213: -2254279140471303468
+    second: LD_sleep_fixx-18_3
+  - first:
+      213: -497770403737597126
+    second: LD_sleep_fixx-18_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +58,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,13 +138,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_mainmenu2_0
+      name: LD_sleep_fixx-18_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 207
-        height: 207
+        x: 684
+        y: 1634
+        width: 6
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +153,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69fb8d2e95c989aa0800000000000000
-      internalID: -6153996980929904746
+      spriteID: 48140498b6150b1b0800000000000000
+      internalID: -5642920810789191292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-18_1
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 1302
+        width: 6
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 401862b873dce1180800000000000000
+      internalID: -9142644555074076412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-18_2
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 0
+        width: 742
+        height: 1620
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 976adb67239126e30800000000000000
+      internalID: 4495183082600375929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-18_3
+      rect:
+        serializedVersion: 2
+        x: 929
+        y: 769
+        width: 38
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d292afb01137b0e0800000000000000
+      internalID: -2254279140471303468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-18_4
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 742
+        width: 31
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3b848184709719f0800000000000000
+      internalID: -497770403737597126
       vertices: []
       indices: 
       edges: []
@@ -151,7 +251,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +261,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_mainmenu2_0: -6153996980929904746
+      LD_sleep_fixx-18_0: -5642920810789191292
+      LD_sleep_fixx-18_1: -9142644555074076412
+      LD_sleep_fixx-18_2: 4495183082600375929
+      LD_sleep_fixx-18_3: -2254279140471303468
+      LD_sleep_fixx-18_4: -497770403737597126
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

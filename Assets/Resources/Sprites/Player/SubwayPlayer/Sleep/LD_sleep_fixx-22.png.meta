@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 71b94cbd2bcbc7d4ab0f4ffb569701ca
+guid: 00851404186b4c248bfcb2d4501eb9fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6153996980929904746
-    second: button_mainmenu2_0
+      213: -7853932513699327396
+    second: LD_sleep_fixx-22_0
+  - first:
+      213: -5207398160932036236
+    second: LD_sleep_fixx-22_1
+  - first:
+      213: 7385984071388161272
+    second: LD_sleep_fixx-22_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +52,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -126,13 +132,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_mainmenu2_0
+      name: LD_sleep_fixx-22_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 162
         y: 0
-        width: 207
-        height: 207
+        width: 742
+        height: 1633
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +147,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69fb8d2e95c989aa0800000000000000
-      internalID: -6153996980929904746
+      spriteID: c529f0f9df9310390800000000000000
+      internalID: -7853932513699327396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-22_1
+      rect:
+        serializedVersion: 2
+        x: 910
+        y: 742
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 471af9d66fa9bb7b0800000000000000
+      internalID: -5207398160932036236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_sleep_fixx-22_2
+      rect:
+        serializedVersion: 2
+        x: 920
+        y: 747
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f4e8cb5169408660800000000000000
+      internalID: 7385984071388161272
       vertices: []
       indices: 
       edges: []
@@ -151,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_mainmenu2_0: -6153996980929904746
+      LD_sleep_fixx-22_0: -7853932513699327396
+      LD_sleep_fixx-22_1: -5207398160932036236
+      LD_sleep_fixx-22_2: 7385984071388161272
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
