@@ -89,7 +89,7 @@ public class UI_SubwayLinePopup : UI_Popup
             GetText((int)Texts.LastLineText).text = " ";
         }
 
-        GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx}역 뒤 환승";
+        GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx}역 뒤 환승";
 
         if (nextLineIdx < station.subwayLines.Count)
         {
