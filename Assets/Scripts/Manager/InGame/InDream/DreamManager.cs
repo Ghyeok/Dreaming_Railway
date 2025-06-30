@@ -3,6 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class DreamManager : SingletonManagers<DreamManager>
 {
+    public bool isInDream;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,6 +19,7 @@ public class DreamManager : SingletonManagers<DreamManager>
 
     private void InitScene()
     {
+        isInDream = true;
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
         SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
@@ -38,6 +41,7 @@ public class DreamManager : SingletonManagers<DreamManager>
         if (scene.name == "InDream_PlayerMove")
         {
             Debug.Log($"꿈속 씬 로드 : {scene.name}");
+            UIManager.Instance.ShowSceneUI<UI_Scene>("UI_NonGameOverScene");
             InitScene();
         }
     }

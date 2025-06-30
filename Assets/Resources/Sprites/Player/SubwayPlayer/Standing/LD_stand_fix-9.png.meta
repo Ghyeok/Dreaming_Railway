@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: dd6652bf71b69604e8ff95333e68e0b1
+guid: b95819268332ae94094b0a0f4019500c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3220199995019424904
-    second: UI_Zzz_0
+      213: -8441698159280338477
+    second: LD_stand_fix-9_0
   - first:
-      213: 4472026116059002474
-    second: UI_Zzz_1
+      213: -8312253799634157895
+    second: LD_stand_fix-9_1
   - first:
-      213: -6331231680457500060
-    second: UI_Zzz_2
+      213: 2233594907830737989
+    second: LD_stand_fix-9_2
   - first:
-      213: -2532529366549157845
-    second: UI_Zzz_3
+      213: -5423441323316958114
+    second: LD_stand_fix-9_3
+  - first:
+      213: 6189531445863010103
+    second: LD_stand_fix-9_4
+  - first:
+      213: -1079370064696743112
+    second: LD_stand_fix-9_5
+  - first:
+      213: 3569344282233879280
+    second: LD_stand_fix-9_6
+  - first:
+      213: 5898366891251642622
+    second: LD_stand_fix-9_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +69,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -81,7 +93,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -105,42 +117,38 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Zzz_0
+      name: LD_stand_fix-9_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 363
-        width: 14
+        x: 58
+        y: 2679
+        width: 30
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d9c60b004019da80800000000000000
+      internalID: -8441698159280338477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-9_1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 2704
+        width: 7
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 884f8d885d270bc20800000000000000
-      internalID: 3220199995019424904
+      spriteID: 9be3aed9531f4ac80800000000000000
+      internalID: -8312253799634157895
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Zzz_1
+      name: LD_stand_fix-9_2
       rect:
         serializedVersion: 2
-        x: 16
-        y: 56
-        width: 695
-        height: 352
+        x: 170
+        y: 0
+        width: 1343
+        height: 3171
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,20 +180,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a6677f90f04df0e30800000000000000
-      internalID: 4472026116059002474
+      spriteID: 54c5f5d0cb25ffe10800000000000000
+      internalID: 2233594907830737989
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Zzz_2
+      name: LD_stand_fix-9_3
       rect:
         serializedVersion: 2
-        x: 310
-        y: 34
-        width: 16
-        height: 17
+        x: 159
+        y: 2588
+        width: 11
+        height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 46a91a7b452f228a0800000000000000
-      internalID: -6331231680457500060
+      spriteID: e5ca48fd9d01cb4b0800000000000000
+      internalID: -5423441323316958114
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Zzz_3
+      name: LD_stand_fix-9_4
       rect:
         serializedVersion: 2
-        x: 358
-        y: 35
-        width: 14
-        height: 14
+        x: 168
+        y: 2570
+        width: 27
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +224,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b28a79385f5aadcd0800000000000000
-      internalID: -2532529366549157845
+      spriteID: 73f46c47e02a5e550800000000000000
+      internalID: 6189531445863010103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-9_5
+      rect:
+        serializedVersion: 2
+        x: 1505
+        y: 2007
+        width: 26
+        height: 82
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83b6f8815ae4501f0800000000000000
+      internalID: -1079370064696743112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-9_6
+      rect:
+        serializedVersion: 2
+        x: 1515
+        y: 1613
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0fa3f97a6bbd88130800000000000000
+      internalID: 3569344282233879280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-9_7
+      rect:
+        serializedVersion: 2
+        x: 1509
+        y: 1318
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ef0bafbcf653bd150800000000000000
+      internalID: 5898366891251642622
       vertices: []
       indices: 
       edges: []
@@ -236,10 +310,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UI_Zzz_0: 3220199995019424904
-      UI_Zzz_1: 4472026116059002474
-      UI_Zzz_2: -6331231680457500060
-      UI_Zzz_3: -2532529366549157845
+      LD_stand_fix-9_0: -8441698159280338477
+      LD_stand_fix-9_1: -8312253799634157895
+      LD_stand_fix-9_2: 2233594907830737989
+      LD_stand_fix-9_3: -5423441323316958114
+      LD_stand_fix-9_4: 6189531445863010103
+      LD_stand_fix-9_5: -1079370064696743112
+      LD_stand_fix-9_6: 3569344282233879280
+      LD_stand_fix-9_7: 5898366891251642622
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -19,7 +19,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -70,6 +70,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         isStopping = false;
         isSlapCoolTime = false;
         tiredDecreaseBySlap = 3f;
+
+        DreamManager.Instance.isInDream = false;
 
         timer.awakeTime = 0f;
 

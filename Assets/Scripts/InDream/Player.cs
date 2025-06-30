@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 
@@ -69,15 +70,11 @@ public class Player : MonoBehaviour
             moveX = -1f;
 
         
-
-
         //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
             transform.localScale = new Vector3(0.45f, 0.45f, 1);
         else if (moveX < 0)
             transform.localScale = new Vector3(-0.45f, 0.45f, 1);
-
-
 
         if (moveX != 0)
         {//좌우 입력값이 있으면 

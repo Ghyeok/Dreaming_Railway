@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 // 역 생성을 담당하는 매니저
 public class StationManager : SingletonManagers<StationManager>
 {
-    public float minTravelTime = 20f;
-    public float maxTravelTime = 30f;
-    public float minStopTime = 7f;
-    public float maxStopTime = 9f;
+    public float minTravelTime = 10f;
+    public float maxTravelTime = 15f;
+    public float minStopTime = 6f;
+    public float maxStopTime = 8f;
 
     public List<LineData> subwayLines = new List<LineData>();
 

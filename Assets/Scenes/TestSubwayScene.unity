@@ -659,10 +659,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 398efdebbf9729047b274081bf5df71e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minTravelTime: 20
-  maxTravelTime: 30
-  minStopTime: 7
-  maxStopTime: 9
+  minTravelTime: 10
+  maxTravelTime: 15
+  minStopTime: 6
+  maxStopTime: 8
   subwayLines: []
   currentLineIdx: 0
   currentStationIdx: 0

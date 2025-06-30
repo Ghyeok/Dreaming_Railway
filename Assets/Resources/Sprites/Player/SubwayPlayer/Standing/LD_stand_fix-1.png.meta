@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: ae281e91eb7be0f449e9e06dc72f507b
+guid: 1a36666a1ec8eb94db4adfccdc71041c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6013238052554073116
-    second: Button_Right_0
+      213: -4444285330176506490
+    second: LD_stand_fix-1_0
   - first:
-      213: 5826617125522494664
-    second: Button_Right_1
+      213: 1013648762163669793
+    second: LD_stand_fix-1_1
+  - first:
+      213: -3809451311937795683
+    second: LD_stand_fix-1_2
+  - first:
+      213: -4743060864625518701
+    second: LD_stand_fix-1_3
+  - first:
+      213: 2891309083094532901
+    second: LD_stand_fix-1_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +84,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -99,43 +108,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Button_Right_0
+      name: LD_stand_fix-1_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 167
-        width: 53
-        height: 37
+        x: 153
+        y: 0
+        width: 1240
+        height: 2655
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -144,20 +127,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c14e8583620537350800000000000000
-      internalID: 6013238052554073116
+      spriteID: 685895ef90ab252c0800000000000000
+      internalID: -4444285330176506490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Button_Right_1
+      name: LD_stand_fix-1_1
       rect:
         serializedVersion: 2
-        x: 16
-        y: 10
-        width: 281
-        height: 281
+        x: 1107
+        y: 2621
+        width: 7
+        height: 12
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,8 +149,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8c4d9f8a76d4cd050800000000000000
-      internalID: 5826617125522494664
+      spriteID: 12ba7cbbd24311e00800000000000000
+      internalID: 1013648762163669793
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-1_2
+      rect:
+        serializedVersion: 2
+        x: 1415
+        y: 1189
+        width: 25
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d994dc2173c122bc0800000000000000
+      internalID: -3809451311937795683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-1_3
+      rect:
+        serializedVersion: 2
+        x: 1395
+        y: 1165
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39750fff5434d2eb0800000000000000
+      internalID: -4743060864625518701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LD_stand_fix-1_4
+      rect:
+        serializedVersion: 2
+        x: 1441
+        y: 1175
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 523c5b1da4eff1820800000000000000
+      internalID: 2891309083094532901
       vertices: []
       indices: 
       edges: []
@@ -186,8 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Button_Right_0: 6013238052554073116
-      Button_Right_1: 5826617125522494664
+      LD_stand_fix-1_0: -4444285330176506490
+      LD_stand_fix-1_1: 1013648762163669793
+      LD_stand_fix-1_2: -3809451311937795683
+      LD_stand_fix-1_3: -4743060864625518701
+      LD_stand_fix-1_4: 2891309083094532901
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

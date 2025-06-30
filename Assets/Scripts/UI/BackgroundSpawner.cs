@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class BackgroundSpawner : MonoBehaviour
 {
+    public float startPos; // 대략 (960,0)
+    public float generatePos; // 대략 (-960,0) 
+    public float endPos; // 
+
     public enum BackgroundType
     {
         UNDERGROUND,
