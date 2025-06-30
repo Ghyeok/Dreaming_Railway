@@ -11,7 +11,7 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float margin;
 
     private bool isCounting = false;
-    public static bool fadeOutStarted = false; //기존 UI 페이드 아웃 위함
+    //public static bool fadeOutStart = false; //기존 UI 페이드 아웃 위함
     private float coverTimer = 0f; //어둠 멈춤 딜레이
 
 
@@ -96,10 +96,11 @@ public class FogMovement : MonoBehaviour
         if (!isCounting && IsFogCoveringScreen())
         {
             isCounting = true;
-            fadeOutStarted = true;
+            //fadeOutStart = true; //-> 게임오버UI 스크립트에서 전달
             Debug.Log("안개 도착, 게임오버!");
             coverTimer = 0f;
         }
+
 
         if (isCounting)
         {//어둠 흰 선 때문에 게임 오버 후 일정 시간 후 멈추도록
@@ -111,8 +112,12 @@ public class FogMovement : MonoBehaviour
 
                 if (IsGameOver && !gameOverTriggered)
                 {
-                    UI_GameOverPopup GameOverPopup = FindFirstObjectByType<UI_GameOverPopup>();
-                    GameOverPopup.TriggerGameOver();
+                    UI_GameOverInDreamPopup popup = UIManager.Instance.ShowPopupUI<UI_GameOverInDreamPopup>();
+                    CanvasGroup nonUI = GameObject.Find("NonGameOverUI")?.GetComponent<CanvasGroup>();
+                    CanvasGroup overUI = GameObject.Find("GameOverUI")?.GetComponent<CanvasGroup>();
+
+                    popup.Setup(nonUI, overUI);
+
                     gameOverTriggered = true;
                 }
             }
@@ -122,7 +127,6 @@ public class FogMovement : MonoBehaviour
 
         bool IsFogCoveringScreen()
         {
-            float margin = 3f; //여유 범위
             float z = transform.position.z;
 
             Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, Mathf.Abs(Camera.main.transform.position.z - z))) - new Vector3(margin, margin, 0);

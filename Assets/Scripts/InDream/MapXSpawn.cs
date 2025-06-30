@@ -150,7 +150,7 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
                 spawnPos = new Vector3(nextSpawnDistanceLeft, groundY, 0f);
             }
 
-            GameObject spawnedLastMap = Instantiate(mapList[7], spawnPos, Quaternion.identity);
+            GameObject spawnedLastMap = Instantiate(mapList[10], spawnPos, Quaternion.identity);
 
 
             // 프리팹 안의 "ExitDoor"를 찾기

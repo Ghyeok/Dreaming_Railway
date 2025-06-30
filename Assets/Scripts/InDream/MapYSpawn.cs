@@ -72,7 +72,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
         if (canSpawnToUp)
         {
             int randomint = Random.Range(0, mapList.Count - 1);
-            float randomX = Random.Range(-8f, 8f);
+            float randomX = Random.Range(-6f, 6f);
             Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
             //다음 생성 위치 설정
