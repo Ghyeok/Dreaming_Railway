@@ -77,7 +77,7 @@ public class UI_SubwayLinePopup : UI_Popup
         }
         else
         {
-            GetText((int)Texts.LastTwoLineText).text = " "; 
+            GetText((int)Texts.LastTwoLineText).text = " ";
         }
 
         if (lastLineIdx >= 0)
@@ -89,7 +89,14 @@ public class UI_SubwayLinePopup : UI_Popup
             GetText((int)Texts.LastLineText).text = " ";
         }
 
-        GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx}역 뒤 환승";
+        if (!DreamManager.Instance.isInDream)
+        {
+            GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx}역 뒤 환승";
+        }
+        else
+        {
+            GetText((int)Texts.CurrentLineText).text = $"앞으로 ???역 뒤 환승";
+        }
 
         if (nextLineIdx < station.subwayLines.Count)
         {

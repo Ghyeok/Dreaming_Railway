@@ -27,6 +27,7 @@ public class UI_SettingPopup : UI_Popup
 
     public enum Images
     {
+        BGMImage,
         BGMBar,
         SFXBar,
     }
@@ -34,6 +35,7 @@ public class UI_SettingPopup : UI_Popup
     public enum Buttons
     {
         ExitButton,
+        CreditButton,
         BGMButton,
         SFXButton,
         BGMThumbButton,
@@ -64,6 +66,11 @@ public class UI_SettingPopup : UI_Popup
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
+
+        GetImage((int)Images.BGMImage).sprite = DreamManager.Instance.isInDream ? Resources.Load<Sprite>("Arts/UIs/Dream/set_bg_2")
+                                                                                : Resources.Load<Sprite>("Arts/UIs/Subway/Pause/Settings/set_bg_1");
+        GameObject credit = GetButton((int)Buttons.CreditButton).gameObject;
+        AddUIEvent(credit, CreditButtonOnClicked);
 
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked);
@@ -111,6 +118,11 @@ public class UI_SettingPopup : UI_Popup
 
         Button sfx = GetButton((int)Buttons.SFXButton);
         sfx.image.sprite = isSFXOff ? sfxOffSprite : sfxOnSprite;
+    }
+
+    private void CreditButtonOnClicked(PointerEventData data)
+    {
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_CreditPopup");
     }
 
     private void ExitButtonOnClicked(PointerEventData data)
