@@ -239,9 +239,8 @@ public class UI_PausePopup : UI_Popup
     #region 실제로 동작하는 버튼 이벤트 함수들의 구현
     private void HowToButtonOnclicked(PointerEventData data)
     {
-
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_HowToDoPopup");
     }
-
 
     private void SubwayLinesButtonOnClicked(PointerEventData data)
     {
