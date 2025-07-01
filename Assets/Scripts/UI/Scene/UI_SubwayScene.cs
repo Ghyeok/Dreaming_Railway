@@ -90,10 +90,10 @@ public class UI_SubwayScene : UI_Scene
     private void SetTransferText()
     {
         int line = StationManager.Instance.currentLineIdx;
-        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx}</size>역";
+        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
 
         if ((line + 1) != StationManager.Instance.subwayLines.Count)
-            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line + 1].transferIdx}</size>역";
+            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line + 1].transferIdx + 1}</size>역";
         else
             GetText((int)Texts.NextTransferText).text = null;
     }
@@ -111,7 +111,7 @@ public class UI_SubwayScene : UI_Scene
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
             SoundManager.Instance.PlayAudioClip("Standing", Define.Sounds.SFX);
             TiredManager.Instance.currentTired = 99;
-            // 입석 Animation....
+            anim.SetTrigger("isStanding");
 
             // 1. 다른 버튼 비활성화
             CanvasGroup cg = GetButton((int)Buttons.FallAsleepButton).gameObject.AddComponent<CanvasGroup>();
@@ -120,7 +120,7 @@ public class UI_SubwayScene : UI_Scene
             cg.blocksRaycasts = false;
 
             // 2. 스킵 버튼으로 변경, 이벤트 연결
-            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip"); // 임시
+            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip");
             GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);

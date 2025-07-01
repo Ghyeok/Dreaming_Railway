@@ -63,28 +63,41 @@ public class TransferManager : SingletonManagers<TransferManager>
             return;
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && SubwayGameManager.Instance.isStopping && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
+            && SubwayGameManager.Instance.timer.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
+            && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasTransfered = true;
 
+            if (DreamManager.Instance.isInDream) // 환승해야 하는데 꿈 속에 있으면 게임오버
+            {
+                SubwayGameManager.Instance.isGameOver = true;
+            }
+
             SubwayGameManager.Instance.isStopping = false;
             Debug.Log("환승 성공!");
+
             curTransferCount++;
+            SubwayGameManager.Instance.timer.stationTime = 0f;
             SubwayGameManager.Instance.standingCount++;
             StationManager.Instance.currentLineIdx++;
+            StationManager.Instance.currentStationIdx = 0;
 
             OnTransferSuccess?.Invoke();
+
+            hasTransfered = false;
         }
     }
 
     public void ForceTransferByStanding()
     {
+        SubwayGameManager.Instance.isStopping = false;
         Debug.Log("입석 성공!");
 
         curTransferCount++;
+        SubwayGameManager.Instance.timer.stationTime = 0f;
         SubwayGameManager.Instance.standingCount++;
-        SubwayGameManager.Instance.isStopping = false;
         StationManager.Instance.currentLineIdx++;
+        StationManager.Instance.currentStationIdx = 0;
 
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
         SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
@@ -113,16 +126,6 @@ public class TransferManager : SingletonManagers<TransferManager>
         {
             Debug.Log("목적지 도착 실패..");
         }
-    }
-
-    private void ReturnTransferState()
-    {
-        hasTransfered = false;
-    }
-
-    private void ReturnArriveState()
-    {
-        hasArrived = false;
     }
 
     private void OnEnable()

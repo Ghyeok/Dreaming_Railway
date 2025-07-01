@@ -54,6 +54,21 @@ public class StationManager : SingletonManagers<StationManager>
         ChooseStationType();
     }
 
+    public float GetCurrentLineTotalTime()
+    {
+        float total = 0f;
+        var stations = subwayLines[currentLineIdx].stations;
+        int lastIdx = subwayLines[currentLineIdx].transferIdx;
+
+        for (int i = 0; i <= lastIdx; i++)
+        {
+            total += stations[i].travelTime;
+            total += stations[i].stopTime;
+        }
+
+        return total;
+    }
+
     private void ChooseStationType()
     {
         int transferCnt = 0;
@@ -114,9 +129,10 @@ public class StationManager : SingletonManagers<StationManager>
     public void CheckCurrentStation() // 현재 어느 역을 지나고 있는지 확인하는 함수
     {
         Timer timer = SubwayGameManager.Instance.timer;
+
         float accumulatedTime = 0f;
 
-        for (int i = 0; i < subwayLines[currentLineIdx].transferIdx; i++)
+        for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)
         {
             accumulatedTime += subwayLines[currentLineIdx].stations[i].travelTime;
             accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
@@ -134,7 +150,7 @@ public class StationManager : SingletonManagers<StationManager>
         Timer timer = SubwayGameManager.Instance.timer;
         float accumulatedTime = 0f;
 
-        for (int i = 0; i < subwayLines[currentLineIdx].transferIdx; i++)
+        for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)
         {
             accumulatedTime += subwayLines[currentLineIdx].stations[i].travelTime;
 

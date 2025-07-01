@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
     public float curTime; // 전체 게임의 시간
-    public float stationTime; // 역 한개를 지나는 시간
+    public float stationTime; // 역 한개를 지나는 시간, 환승하면 0으로 초기화
     public float awakeTime; // 깨어있던 시간
     public bool isStop { get; private set; }
 
