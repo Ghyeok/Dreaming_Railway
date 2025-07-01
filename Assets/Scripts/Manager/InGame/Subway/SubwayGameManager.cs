@@ -16,6 +16,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     [SerializeField]
     public Timer timer;
 
+    public bool isGameOver;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -82,6 +84,17 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
             standingCount = 0;
         }
 
+        if (isGameOver)
+        {
+            GameOver();
+        }
+
+    }
+
+    private void GameOver()
+    {
+        Time.timeScale = 0f;
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }
 
     private void OnEnable()
