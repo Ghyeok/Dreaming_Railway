@@ -30,11 +30,11 @@ public class Timer : MonoBehaviour
     {
         if (!isStop)
         {
-            curTime += Time.deltaTime;
+            curTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
+            stationTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
 
             if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
             {
-                stationTime += Time.deltaTime;
                 awakeTime += Time.deltaTime;
             }
 

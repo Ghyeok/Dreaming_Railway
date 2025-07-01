@@ -5,6 +5,10 @@ public class DreamManager : SingletonManagers<DreamManager>
 {
     public bool isInDream;
 
+    public float dreamTimeSpeed;
+    private float mindreamTimeSpeed;
+    private float maxdreamTimeSpeed;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,9 +21,23 @@ public class DreamManager : SingletonManagers<DreamManager>
         
     }
 
+    public void RandomDreamTimeSpeed()
+    {
+        mindreamTimeSpeed = 4f;
+        maxdreamTimeSpeed = 5f;
+
+        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+    }
+
+    public void SetDreamTimeSpeedNormal()
+    {
+        dreamTimeSpeed = 1f;
+    }
+
     private void InitScene()
     {
         isInDream = true;
+        RandomDreamTimeSpeed();
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
         SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);

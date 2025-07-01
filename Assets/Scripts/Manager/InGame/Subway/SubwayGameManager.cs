@@ -67,6 +67,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
         SoundManager.Instance.SubwayBGM();
 
+        DreamManager.Instance.SetDreamTimeSpeedNormal();
+
         isStopping = false;
         isSlapCoolTime = false;
         tiredDecreaseBySlap = 3f;
