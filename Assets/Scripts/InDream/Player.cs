@@ -57,10 +57,8 @@ public class Player : MonoBehaviour
 
         transform.position = Camera.main.ViewportToWorldPoint(playerViewportPos);
     }
-    
 
-
-    void FixedUpdate() 
+    void FixedUpdate()
     {// UI 키와 키보드 입력을 동시에 처리(방향값 받기)
         float moveX = 0f;
 
@@ -69,7 +67,7 @@ public class Player : MonoBehaviour
         else if (Input.GetKey(KeyCode.LeftArrow) || UimoveX < 0) // 왼쪽 키 또는 UI 입력
             moveX = -1f;
 
-        
+
         //방향 따라 플레이어 좌우 반전
         if (moveX > 0)
             transform.localScale = new Vector3(0.45f, 0.45f, 1);
@@ -84,7 +82,6 @@ public class Player : MonoBehaviour
                 Speed = moveX * 4f;
                 wasMovingLastFrame = true;
             }
-
             else
             {//이동 중이었다면
 
@@ -93,60 +90,51 @@ public class Player : MonoBehaviour
                 {
                     Speed = moveX * 4f;
                 }
-                
+
                 //반대 방향 입력일 경우 방향만 반전 (크기 유지)
                 else if (Mathf.Sign(Speed) != Mathf.Sign(moveX))
                 {
                     Speed = -Speed;
                 }
 
-            
                 // 가속 적용
                 Speed += moveX * acceleration * Time.fixedDeltaTime;
                 Speed = Mathf.Clamp(Speed, -MaxSpeed, MaxSpeed);
             }
-
         }
-
         else //안 누르면 감속
         {
             Speed = Mathf.MoveTowards(Speed, 0, 3 * acceleration * Time.fixedDeltaTime);
 
             wasMovingLastFrame = false;
-
         }
 
-
-    //장애물 감속
+        //장애물 감속
         if (isInObstacle)
         {
             SoundManager.Instance.EnterFogSFX();
-            
+
             if (Mathf.Abs(Speed) > minSpeed)
             {
                 Speed = Mathf.Sign(Speed) * minSpeed; // 속도를 한 번에 minSpeed로 낮춤
             }
         }
-
-
         rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
 
-
-
-    //발자국 소리
-       if ( (Speed != 0) && (!isJump) ) //속도가 0이 아니고 점프하고 있지 않을 때
-       {
-        float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
-        distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
+        //발자국 소리
+        if ((Speed != 0) && (!isJump)) //속도가 0이 아니고 점프하고 있지 않을 때
+        {
+            float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
+            distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
             if (distanceMovedSinceLastStep >= stepDistance)//마지막 발자국으로부터의 거리가 특정 거리 이상일 때
             {
                 if (isLeftFoot) //왼발 앞
                     SoundManager.Instance.Footstep1SFX();
                 else
                     SoundManager.Instance.Footstep2SFX();//오른발 앞
-                    isLeftFoot = !isLeftFoot;
-                    distanceMovedSinceLastStep = 0f;//거리 초기화
-                    lastFootstepPosition = transform.position;
+                isLeftFoot = !isLeftFoot;
+                distanceMovedSinceLastStep = 0f;//거리 초기화
+                lastFootstepPosition = transform.position;
             }
         }
         else
@@ -157,9 +145,8 @@ public class Player : MonoBehaviour
         MyAnimator.SetBool("IsRunning", Speed != 0);
     }
 
-
-//UI로의 이동
-    public void StartMoveRight() 
+    //UI로의 이동
+    public void StartMoveRight()
     {
         UimoveX = 1;
     }
@@ -171,9 +158,8 @@ public class Player : MonoBehaviour
     {
         UimoveX = 0f; //정지
     }
-    
 
-//점프 함수
+    //점프 함수
     public void Jump()
     {
         if (!isJump)
@@ -184,7 +170,8 @@ public class Player : MonoBehaviour
             rigid.AddForce(Vector3.up * jumpPower, ForceMode2D.Impulse);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision) 
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {// 바닥 윗 표면에 착지할 때만
         if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
         {
@@ -197,10 +184,9 @@ public class Player : MonoBehaviour
         if (collision.collider.CompareTag("ExitDoor"))
         {
             SoundManager.Instance.ExitDreamSFX();
-            SceneManager.LoadScene("TestSubwayScene"); 
+            SceneManager.LoadScene("TestSubwayScene");
         }
     }
-
 
     private void OnTriggerStay2D(Collider2D other)
     {   //장애물 감지
@@ -210,15 +196,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    
-
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Obstacle"))
         {
             isInObstacle = false;
         }
-    }  
-
+    }
 }
 

@@ -84,6 +84,14 @@ public abstract class UI_Base : MonoBehaviour
                 evt.onEndDraghandler -= action;
                 evt.onEndDraghandler += action;
                 break;
+            case Define.UIEvent.PointerDown:
+                evt.onPointerDownhandler -= action;
+                evt.onPointerDownhandler += action;
+                break;
+            case Define.UIEvent.PointerUp:
+                evt.onPointerUphandler -= action;
+                evt.onPointerUphandler += action;
+                break;
                 // 필요한 UI Event 추가...
         }
     }
@@ -97,7 +105,8 @@ public abstract class UI_Base : MonoBehaviour
             evt.onBeginDraghandler = null;
             evt.onBeginDraghandler = null;
             evt.onEndDraghandler = null;
-
+            evt.onPointerDownhandler = null;
+            evt.onPointerUphandler = null;
         }
     }
 

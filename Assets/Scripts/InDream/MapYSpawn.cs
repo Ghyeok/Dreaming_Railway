@@ -9,19 +9,16 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
 
     private float nextSpawnY = 0f;
     private float cameraHeight;
-
-    
+   
     private bool canSpawnToUp = true;
 
     private int spawnedCount; //맵길이 제한
     private bool endMapSpawn = false;
     public float ExitPointYPosition;
 
-
     void Start()
     {
         cameraHeight = Camera.main.orthographicSize * 1.5f;
-        
 
         //시작 시 3개 미리 생성
         for (int i = 0; i < 3; i++)
@@ -29,8 +26,6 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
             MapYSpawnToUp();
         }
     }
-
-
 
     void Update()
     {
@@ -43,12 +38,12 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
 
         // 맵 길이
         int mapLength = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
-        
+
         if (!endMapSpawn)
         {
             if (mapLength == 1)
             {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 15 + 2* SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 15 + 2 * SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -56,16 +51,13 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 25 + 2*SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 25 + 2 * SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
             }
         }
-
     }
-
-
 
     void MapYSpawnToUp()
     {
@@ -81,13 +73,10 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
             // 맵 생성 수 증가
             spawnedCount++;
         }
-        
+
     }
     
-
     //^^^기본 맵 로직
-
-
     void LimitMapSpawning()
     {
         endMapSpawn = true;    //탈출구 생성
@@ -95,15 +84,12 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
         SpawnExit();
     }
 
-
-
-
     void SpawnExit() //탈출
     {
         if (endMapSpawn)
         {
             GameObject spawnedLastMap = Instantiate(mapList[10], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
-            
+
 
             // 프리팹 안의 "ExitDoor"를 찾기
             Transform exitDoor = spawnedLastMap.transform.Find("ExitDoor");
@@ -114,8 +100,6 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
             }
         }
     }
-
-
 }
 
 

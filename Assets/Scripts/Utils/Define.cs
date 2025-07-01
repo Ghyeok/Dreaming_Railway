@@ -15,6 +15,8 @@ public class Define
         DragBegin,
         Drag,
         DragEnd,
+        PointerDown,
+        PointerUp,
     }
 
     public enum Sounds
