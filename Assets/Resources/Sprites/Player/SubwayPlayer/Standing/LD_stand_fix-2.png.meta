@@ -11,12 +11,6 @@ TextureImporter:
   - first:
       213: -6741349624051760054
     second: LD_stand_fix-2_2
-  - first:
-      213: -1917936137700922883
-    second: LD_stand_fix-2_3
-  - first:
-      213: -230801612835844466
-    second: LD_stand_fix-2_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -84,7 +78,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -108,6 +102,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -115,10 +135,10 @@ TextureImporter:
       name: LD_stand_fix-2_0
       rect:
         serializedVersion: 2
-        x: 153
+        x: 160
         y: 0
-        width: 1240
-        height: 2655
+        width: 746
+        height: 1624
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,10 +157,10 @@ TextureImporter:
       name: LD_stand_fix-2_1
       rect:
         serializedVersion: 2
-        x: 1107
-        y: 2621
-        width: 7
-        height: 12
+        x: 906
+        y: 728
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,10 +179,10 @@ TextureImporter:
       name: LD_stand_fix-2_2
       rect:
         serializedVersion: 2
-        x: 1415
-        y: 1189
-        width: 25
-        height: 33
+        x: 918
+        y: 734
+        width: 22
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,50 +193,6 @@ TextureImporter:
       bones: []
       spriteID: a448eafeb3ae172a0800000000000000
       internalID: -6741349624051760054
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LD_stand_fix-2_3
-      rect:
-        serializedVersion: 2
-        x: 1395
-        y: 1165
-        width: 12
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: df9a3729e3f1265e0800000000000000
-      internalID: -1917936137700922883
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: LD_stand_fix-2_4
-      rect:
-        serializedVersion: 2
-        x: 1441
-        y: 1175
-        width: 9
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8e055de7270cccf0800000000000000
-      internalID: -230801612835844466
       vertices: []
       indices: 
       edges: []
@@ -238,8 +214,6 @@ TextureImporter:
       LD_stand_fix-2_0: -4016706414175930914
       LD_stand_fix-2_1: -7175570979020511398
       LD_stand_fix-2_2: -6741349624051760054
-      LD_stand_fix-2_3: -1917936137700922883
-      LD_stand_fix-2_4: -230801612835844466
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

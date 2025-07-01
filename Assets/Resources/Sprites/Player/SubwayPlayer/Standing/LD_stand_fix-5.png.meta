@@ -81,7 +81,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -105,6 +105,32 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -112,10 +138,10 @@ TextureImporter:
       name: LD_stand_fix-5_0
       rect:
         serializedVersion: 2
-        x: 187
+        x: 180
         y: 0
-        width: 1174
-        height: 2847
+        width: 706
+        height: 1739
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -134,10 +160,10 @@ TextureImporter:
       name: LD_stand_fix-5_1
       rect:
         serializedVersion: 2
-        x: 1355
-        y: 1362
-        width: 12
-        height: 12
+        x: 882
+        y: 846
+        width: 8
+        height: 8
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,10 +182,10 @@ TextureImporter:
       name: LD_stand_fix-5_2
       rect:
         serializedVersion: 2
-        x: 1438
-        y: 1325
-        width: 15
-        height: 47
+        x: 932
+        y: 824
+        width: 10
+        height: 29
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -178,10 +204,10 @@ TextureImporter:
       name: LD_stand_fix-5_3
       rect:
         serializedVersion: 2
-        x: 1353
-        y: 1165
-        width: 18
-        height: 9
+        x: 881
+        y: 728
+        width: 12
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

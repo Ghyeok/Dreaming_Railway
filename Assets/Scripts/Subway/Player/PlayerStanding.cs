@@ -8,6 +8,9 @@ public class PlayerStanding : MonoBehaviour
 
     private void SkipStations() // 현재 위치에서 환승역까지의 시간을 더하는 함수
     {
+        Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
+        anim.SetTrigger("isSkip");
+
         int lindIdx = StationManager.Instance.currentLineIdx;
         int curIdx = StationManager.Instance.currentStationIdx;
         int transferIdx = StationManager.Instance.subwayLines[lindIdx].transferIdx;
