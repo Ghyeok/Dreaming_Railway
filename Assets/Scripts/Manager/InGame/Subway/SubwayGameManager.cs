@@ -10,6 +10,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public float tiredDecreaseBySlap;
     public int dayCount;
     public int standingCount;
+    public bool isCanRetry = false; //리겜용
 
     public bool isStopping; // 정차중
 
@@ -110,7 +111,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestSubwayScene")
+        if (!isCanRetry && scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
             InitScene();

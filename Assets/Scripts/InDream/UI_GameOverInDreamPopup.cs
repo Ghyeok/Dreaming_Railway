@@ -27,14 +27,14 @@ public class UI_GameOverInDreamPopup : UI_Popup
 
     void start()
     {
+        
 
-    
     }
 
 
     void Awake()
     {
-       
+        SubwayGameManager.Instance.isCanRetry = false;
     }
 
 /*
@@ -64,7 +64,7 @@ public class UI_GameOverInDreamPopup : UI_Popup
         if (isFadingOut) //페이드아웃 시작
         {
             timer += Time.deltaTime;
-            float k = Mathf.Clamp01(timer / uiFadeInDuration);
+            float k = Mathf.Clamp01(timer / uiFadeOutDuration);
             nonGameOverUI.alpha = 1f - k;
             nonGameOverUI.interactable = false;
             nonGameOverUI.blocksRaycasts = false;
@@ -78,9 +78,14 @@ public class UI_GameOverInDreamPopup : UI_Popup
         }
 
 
+
         else if (isFadingIn) //딜레이 후 페이드인 시작
         {
             timer += Time.deltaTime;
+
+            SoundManager.Instance.GameOverSFX();
+            SoundManager.Instance.SetBGMOff();
+
 
             if (timer >= uiFadeDelay)
             {    
@@ -92,6 +97,8 @@ public class UI_GameOverInDreamPopup : UI_Popup
                     gameOverUI.interactable = true;
                     gameOverUI.blocksRaycasts = true;
                     isFadingIn = false;
+
+                    SubwayGameManager.Instance.isCanRetry = true;
 
                     Debug.Log("[GameOverPopup] 연출 완료");
                 }

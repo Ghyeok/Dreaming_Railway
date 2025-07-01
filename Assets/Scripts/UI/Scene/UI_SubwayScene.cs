@@ -44,6 +44,7 @@ public class UI_SubwayScene : UI_Scene
     void Start()
     {
         Init();
+
     }
 
     // Update is called once per frame

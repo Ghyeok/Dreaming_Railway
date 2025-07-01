@@ -122,13 +122,19 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     public void EnterFogSFX()
     {
-        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.05f);
+        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.5f);
     }
 
     public void ExitDreamSFX()
     {
         PlayAudioClip("ExitDream", Define.Sounds.SFX);
     }
+
+    public void GameOverSFX()
+    {
+        PlayAudioClip("GameOver", Define.Sounds.SFX);
+    }
+
 
     public float SetSFXVolume(float volume)
     {

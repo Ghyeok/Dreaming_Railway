@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
                 //반대 방향 입력일 경우 방향만 반전 (크기 유지)
                 else if (Mathf.Sign(Speed) != Mathf.Sign(moveX))
                 {
-                    Speed = -Speed;
+                    Speed = -Speed/2;
                 }
 
                 // 가속 적용
