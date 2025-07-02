@@ -1817,7 +1817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.6
+      value: -0.7
       objectReference: {fileID: 0}
     - target: {fileID: 1757984856209644109, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1872,8 +1872,16 @@ PrefabInstance:
       value: 6.13
       objectReference: {fileID: 0}
     - target: {fileID: 5761860412416466949, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 71b23dbcdc03c854485797e8cb48e5dd, type: 2}
+    - target: {fileID: 5761860412416466949, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: m_GravityScale
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5761860412416466949, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8118554959565592736, guid: 3977d1ca6bf647b4c9ef71989c70c34e, type: 3}
       propertyPath: Speed
@@ -1992,6 +2000,7 @@ PolygonCollider2D:
       - {x: 0.615, y: -2.125}
       - {x: 0.695, y: -2.105}
       - {x: 0.79499996, y: -2.0449998}
+      - {x: 0.8649999, y: -1.9749998}
       - {x: 0.865, y: -1.9749999}
       - {x: 0.85499996, y: -1.8149999}
       - {x: 0.945, y: -1.685}
