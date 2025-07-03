@@ -122,7 +122,7 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     public void EnterFogSFX()
     {
-        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.5f);
+        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.25f);
     }
 
     public void ExitDreamSFX()

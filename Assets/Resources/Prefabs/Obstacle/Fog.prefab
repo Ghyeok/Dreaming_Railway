@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxXVelocity: 6.5
-  maxYVelocity: 3.5
+  maxYVelocity: 5
   acceleration: 1.5
   delayAfterCover: 3
   margin: 2

@@ -141,11 +141,11 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
         {
             Vector3 spawnPos = Vector3.zero;
 
-            if (canSpawnRight)
+            if (player.transform.position.x >= 0f)
             {
                 spawnPos = new Vector3(nextSpawnDistanceRight, groundY, 0f);
             }
-            else if (canSpawnLeft)
+            else
             {
                 spawnPos = new Vector3(nextSpawnDistanceLeft, groundY, 0f);
             }

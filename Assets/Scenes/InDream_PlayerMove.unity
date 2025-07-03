@@ -1753,9 +1753,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Fog: {fileID: 2371902892865413948, guid: 1f72dc083141bbd4d8cf78342cab7d93, type: 3}
   spawnPositions:
-  - {x: -36, y: 0, z: -5}
-  - {x: 36, y: 0, z: -5}
-  - {x: 0, y: -35, z: -5}
+  - {x: -36, y: 2, z: -5}
+  - {x: 36, y: 2, z: -5}
+  - {x: 0, y: -30, z: -5}
 --- !u!4 &1392419009
 Transform:
   m_ObjectHideFlags: 0
@@ -1948,7 +1948,7 @@ PolygonCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 71b23dbcdc03c854485797e8cb48e5dd, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
