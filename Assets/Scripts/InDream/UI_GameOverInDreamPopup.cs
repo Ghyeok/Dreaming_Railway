@@ -25,13 +25,6 @@ public class UI_GameOverInDreamPopup : UI_Popup
 
     }
 
-    void start()
-    {
-        
-
-    }
-
-
     void Awake()
     {
         SubwayGameManager.Instance.isCanRetry = false;

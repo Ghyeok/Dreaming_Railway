@@ -112,6 +112,12 @@ public class FogMovement : MonoBehaviour
 
                 if (IsGameOver && !gameOverTriggered)
                 {
+                    UI_GameOverPopup popup = UIManager.Instance.ShowPopupUI<UI_GameOverPopup>("UI_GameOverPopup");
+                    CanvasGroup nonUI = GameObject.Find("NonGameOverUI")?.GetComponent<CanvasGroup>();
+                    CanvasGroup overUI = GameObject.Find("GameOverUI")?.GetComponent<CanvasGroup>();
+
+                    //popup.Setup(nonUI, overUI);
+
                     gameOverTriggered = true;
                 }
             }
