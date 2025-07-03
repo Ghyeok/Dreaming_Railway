@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 
     private bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
+    private bool isGrounded = false; //발자국 소리 위함
 
     Animator MyAnimator;
 
@@ -122,7 +123,7 @@ public class Player : MonoBehaviour
         rigid.linearVelocity = new Vector2(Speed, rigid.linearVelocity.y);
 
         //발자국 소리
-        if ((Speed != 0) && (!isJump)) //속도가 0이 아니고 점프하고 있지 않을 때
+        if ((Speed != 0) && (isGrounded)) //속도가 0이 아니고 땅에 붙어있을 때
         {
             float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
             distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
@@ -130,13 +131,14 @@ public class Player : MonoBehaviour
             {
                 if (isLeftFoot) //왼발 앞
                     SoundManager.Instance.Footstep1SFX();
-                else
-                    SoundManager.Instance.Footstep2SFX();//오른발 앞
+                else //오른발 앞
+                    SoundManager.Instance.Footstep2SFX();
                 isLeftFoot = !isLeftFoot;
                 distanceMovedSinceLastStep = 0f;//거리 초기화
                 lastFootstepPosition = transform.position;
             }
         }
+
         else
         {// 멈추면 위치 갱신
             lastFootstepPosition = transform.position;
@@ -178,6 +180,7 @@ public class Player : MonoBehaviour
             SoundManager.Instance.LandSFX();
             MyAnimator.SetBool("IsJumping", false);
             isJump = false;
+            isGrounded = true;
         }
 
         //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
@@ -185,6 +188,14 @@ public class Player : MonoBehaviour
         {
             SoundManager.Instance.ExitDreamSFX();
             SceneManager.LoadScene("TestSubwayScene");
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Ground"))
+        {
+            isGrounded = false;
         }
     }
 
