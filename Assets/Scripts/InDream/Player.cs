@@ -1,7 +1,6 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-
+using System.Collections.Generic;
 
 
 public class Player : MonoBehaviour
@@ -10,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float MaxSpeed;      
     private Rigidbody2D rigid;
 
-//발소리를 위한
+    //발소리를 위한
     private Vector2 lastFootstepPosition;
     private float distanceMovedSinceLastStep = 0f;
     [SerializeField] private float stepDistance; // 발소리가 나는 최소 거리
@@ -26,6 +25,8 @@ public class Player : MonoBehaviour
     private bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
     private bool isGrounded = false; //발자국 소리 위함
+    private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();
+
 
     Animator MyAnimator;
 
@@ -113,8 +114,6 @@ public class Player : MonoBehaviour
         //장애물 감속
         if (isInObstacle)
         {
-            SoundManager.Instance.EnterFogSFX();
-
             if (Mathf.Abs(Speed) > minSpeed)
             {
                 Speed = Mathf.Sign(Speed) * minSpeed; // 속도를 한 번에 minSpeed로 낮춤
@@ -203,7 +202,15 @@ public class Player : MonoBehaviour
     {   //장애물 감지
         if (other.CompareTag("Obstacle"))
         {
+
             isInObstacle = true;
+
+            if (!triggeredObstacles.Contains(other))
+            {
+                SoundManager.Instance.EnterFogSFX();
+                triggeredObstacles.Add(other);
+            }
+            
         }
     }
 
@@ -211,7 +218,12 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            isInObstacle = false;
+            triggeredObstacles.Remove(other);
+
+            if (triggeredObstacles.Count == 0)
+            {
+                isInObstacle = false;
+            }
         }
     }
 }
