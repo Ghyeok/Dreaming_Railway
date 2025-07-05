@@ -198,8 +198,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {   //장애물 감지
+    
         if (other.CompareTag("Obstacle"))
         {
 
@@ -210,7 +211,7 @@ public class Player : MonoBehaviour
                 SoundManager.Instance.EnterFogSFX();
                 triggeredObstacles.Add(other);
             }
-            
+
         }
     }
 
@@ -223,6 +224,8 @@ public class Player : MonoBehaviour
             if (triggeredObstacles.Count == 0)
             {
                 isInObstacle = false;
+                distanceMovedSinceLastStep = 0f;
+                lastFootstepPosition = transform.position;
             }
         }
     }
