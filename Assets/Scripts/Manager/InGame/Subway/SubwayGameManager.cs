@@ -114,7 +114,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         {
             GameOver();
         }
-
     }
 
     private void GameOver()
