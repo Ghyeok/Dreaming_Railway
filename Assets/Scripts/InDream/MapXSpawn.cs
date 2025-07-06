@@ -81,7 +81,7 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
         {
             if (mapLength == 1)
             {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 8 + SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 4 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -89,7 +89,7 @@ public class MapXSpawn : SingletonManagers<MapXSpawn>
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 7 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }

@@ -51,7 +51,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 25 + 2 * SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 24 + 2 * SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -64,7 +64,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
         if (canSpawnToUp)
         {
             int randomint = Random.Range(0, mapList.Count - 1);
-            float randomX = Random.Range(-6f, 6f);
+            float randomX = Random.Range(-4f, 4f);
             Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
             //다음 생성 위치 설정

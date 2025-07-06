@@ -129,8 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ef36566016e7f49b6fa47ecc44ea22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxXVelocity: 6.5
-  maxYVelocity: 5
+  maxXVelocity: 7
+  maxYVelocity: 5.5
   acceleration: 1.5
   delayAfterCover: 3
   margin: 2

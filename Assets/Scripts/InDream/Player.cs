@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
 { 
     [SerializeField] private float acceleration;  
     [SerializeField] private float MaxSpeed;      
-    private Rigidbody2D rigid;
 
     //발소리를 위한
     private Vector2 lastFootstepPosition;
@@ -24,16 +23,21 @@ public class Player : MonoBehaviour
 
     private bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
-    private bool isGrounded = false; //발자국 소리 위함
+    private bool isGrounded; //발자국 소리 위함
     private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();
 
+    private Rigidbody2D rigid;
+    private Animator MyAnimator;
 
-    Animator MyAnimator;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         MyAnimator = GetComponent<Animator>();
+        lastFootstepPosition = transform.position;
+        distanceMovedSinceLastStep = 0f;
+        isGrounded = true;
+        MyAnimator.SetBool("IsGrounded", true);
         Speed = 0f;
     }
     
@@ -45,6 +49,10 @@ public class Player : MonoBehaviour
             Jump();
         }
         
+        // Animator에 y속도 전달
+        MyAnimator.SetFloat("yVelocity", rigid.linearVelocity.y);
+
+
     }
 
     void LateUpdate()
@@ -123,25 +131,26 @@ public class Player : MonoBehaviour
 
         //발자국 소리
         if ((Speed != 0) && (isGrounded)) //속도가 0이 아니고 땅에 붙어있을 때
-        {
+        {            
             float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
             distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
             if (distanceMovedSinceLastStep >= stepDistance)//마지막 발자국으로부터의 거리가 특정 거리 이상일 때
             {
-                if (isLeftFoot) //왼발 앞
+                if (isLeftFoot)
+                {//왼발 앞
                     SoundManager.Instance.Footstep1SFX();
-                else //오른발 앞
+                }
+
+                else
+                {//오른발 앞
                     SoundManager.Instance.Footstep2SFX();
+                }
                 isLeftFoot = !isLeftFoot;
                 distanceMovedSinceLastStep = 0f;//거리 초기화
                 lastFootstepPosition = transform.position;
             }
         }
 
-        else
-        {// 멈추면 위치 갱신
-            lastFootstepPosition = transform.position;
-        }
         //달리기 모션
         MyAnimator.SetBool("IsRunning", Speed != 0);
     }
@@ -176,8 +185,13 @@ public class Player : MonoBehaviour
     {// 바닥 윗 표면에 착지할 때만
         if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
         {
-            SoundManager.Instance.LandSFX();
+            if (!isGrounded)
+            {
+                SoundManager.Instance.LandSFX();
+            }
+            
             MyAnimator.SetBool("IsJumping", false);
+            MyAnimator.SetBool("IsGrounded", true);
             isJump = false;
             isGrounded = true;
         }
@@ -194,6 +208,7 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Ground"))
         {
+            MyAnimator.SetBool("IsGrounded", false);
             isGrounded = false;
         }
     }
@@ -230,4 +245,3 @@ public class Player : MonoBehaviour
         }
     }
 }
-
