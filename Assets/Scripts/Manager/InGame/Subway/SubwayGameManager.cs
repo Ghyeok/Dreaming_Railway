@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 {
     public bool isSlapCoolTime;
+    public float slapCoolTime;
     public float tiredDecreaseBySlap;
     public int dayCount;
     public int standingCount;
@@ -37,6 +38,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         dayCount = 1;
         standingCount = 0;
+        slapCoolTime = 5f;
 
         SoundManager.Instance.bgmVolume = 1f;
         SoundManager.Instance.sfxVolume = 1f;

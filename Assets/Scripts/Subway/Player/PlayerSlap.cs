@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerSlap : MonoBehaviour
 {
     public static event Action OnSlapButtonClicked;
+    public static event Action OnSlapSuccess;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,7 +29,8 @@ public class PlayerSlap : MonoBehaviour
     {      
         if (!SubwayGameManager.Instance.isSlapCoolTime && SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            Debug.Log("뺨 때리기!");
+            OnSlapSuccess?.Invoke();
+
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
             if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.SLAP)
             {
@@ -43,7 +45,7 @@ public class PlayerSlap : MonoBehaviour
             TiredManager.Instance.currentTired -= SubwayGameManager.Instance.tiredDecreaseBySlap;
             SubwayPlayerManager.Instance.slapNum++;
 
-            yield return new WaitForSeconds(5f); // 5초 쿨타임
+            yield return new WaitForSeconds(SubwayGameManager.Instance.slapCoolTime); // 5초 쿨타임
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
             SubwayGameManager.Instance.isSlapCoolTime = false;
         }

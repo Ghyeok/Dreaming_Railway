@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,6 +30,8 @@ public class UI_SubwayScene : UI_Scene
         BackgroundImage,
         BackgroundLineImage,
         TimerImage,
+        SlapCoolTimeImage,
+        StandingCoolTimeImage,
         // 필요한 이미지 추가..
     }
 
@@ -52,6 +56,17 @@ public class UI_SubwayScene : UI_Scene
     {
         SetTransferText();
         SetSlapText();
+    }
+
+    private void OnEnable()
+    {
+        PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
+        PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
+    }
+
+    private void OnDisable()
+    {
+        PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
     }
 
     public override void Init()
@@ -126,5 +141,29 @@ public class UI_SubwayScene : UI_Scene
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
         }
+    }
+
+    IEnumerator ShowSlapCoolTime()
+    {
+        float startTime = Time.time;
+        float coolTime = SubwayGameManager.Instance.slapCoolTime;
+        Image slap = GetImage((int)Images.SlapCoolTimeImage);
+
+        slap.fillAmount = 1f; // 뺨 때리기 누르면 1로 초기화
+
+        while (Time.time < startTime + coolTime)
+        {
+            float elapsed = Time.time - startTime;
+            float ratio =  1f - (elapsed / coolTime);
+            slap.fillAmount = ratio;
+            yield return null;
+        }
+
+        slap.fillAmount = 0f;
+    }
+
+    private void OnSlapButtonClicked()
+    {
+        StartCoroutine(ShowSlapCoolTime());
     }
 }
