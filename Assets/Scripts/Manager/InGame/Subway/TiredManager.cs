@@ -24,6 +24,12 @@ public class TiredManager : SingletonManagers<TiredManager>
         IsTiredHalf();
     }
 
+    public void ResetTiredManager()
+    {
+        currentTired = 30f;
+        maxTired = 100f;
+    }
+
     private void SubwayCharacterSleepingMotion()
     {
         if (SubwayPlayerManager.Instance.subwayPlayer != null)

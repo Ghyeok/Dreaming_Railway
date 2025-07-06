@@ -42,6 +42,13 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
         
     }
 
+    public void ResetPlayerManager()
+    {
+        slapNum = 0;
+        playerState = PlayerState.SLEEP;
+        playerBehave = PlayerBehave.NONE;
+    }
+
     private void InitScene()
     {
         slapNum = 0;

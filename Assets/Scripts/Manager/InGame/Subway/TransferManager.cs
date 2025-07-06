@@ -35,6 +35,11 @@ public class TransferManager : SingletonManagers<TransferManager>
         SuccessTransfer();
     }
 
+    public void ResetTransferManager()
+    {
+        curTransferCount = 0;
+    }
+
     private void DetermineMaxTransferCount()
     {
         switch (SubwayGameManager.Instance.dayCount)

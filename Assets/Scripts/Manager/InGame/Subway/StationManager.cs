@@ -33,6 +33,13 @@ public class StationManager : SingletonManagers<StationManager>
         IsSubwayStopped();
     }
 
+    public void ResetStationManager()
+    {
+        GenerateSubwayLines();
+        currentLineIdx = 0;
+        currentStationIdx = 0;
+    }
+
     public void GenerateSubwayLines()
     {
         subwayLines.Clear();
@@ -51,6 +58,7 @@ public class StationManager : SingletonManagers<StationManager>
             }
             subwayLines.Add(newLine);
         }
+
         ChooseStationType();
     }
 

@@ -11,7 +11,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public float tiredDecreaseBySlap;
     public int dayCount;
     public int standingCount;
-    public bool isCanRetry = false; //리겜용
+    public bool isCanRetry = false; // 리겜용
 
     public bool isStopping; // 정차중
 
@@ -32,6 +32,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     }
 
+
+
     public override void Awake()
     {
         base.Awake();
@@ -46,6 +48,27 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         timer = GetComponent<Timer>();
     }
 
+    private void ResetGameManager()
+    {
+        standingCount = 0;
+        slapCoolTime = 5f;
+        isGameOver = false;
+        tiredDecreaseBySlap = 3f;
+
+        timer.ResetTimer();
+
+        SoundManager.Instance.bgmVolume = 1f;
+        SoundManager.Instance.sfxVolume = 1f;
+    }
+
+    public void ResetGame()
+    {
+        SubwayGameManager.Instance.ResetGameManager();
+        StationManager.Instance.ResetStationManager();
+        SubwayPlayerManager.Instance.ResetPlayerManager();
+        TiredManager.Instance.ResetTiredManager();
+        TransferManager.Instance.ResetTransferManager();
+    }
 
     public int SetDreamMapLengthByAwakenTime()
     // 깨어있던 시간이 50초 이하면 1을 반환, 51초 이상-100초 이하이면 2를 반환

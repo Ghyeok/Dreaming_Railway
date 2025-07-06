@@ -46,6 +46,13 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public void ResetTimer()
+    {
+        curTime = 0f;
+        stationTime = 0f;
+        awakeTime = 0f;
+    }
+
     void StopTimer()
     {
         isStop = true;
