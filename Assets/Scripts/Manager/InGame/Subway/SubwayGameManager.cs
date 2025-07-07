@@ -57,6 +57,9 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         timer.ResetTimer();
 
+        SoundManager.Instance.SetBGMOn();
+        SoundManager.Instance.SetSFXOn();
+
         SoundManager.Instance.bgmVolume = 1f;
         SoundManager.Instance.sfxVolume = 1f;
     }
@@ -118,7 +121,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     private void GameOver()
     {
-        Time.timeScale = 0f;
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }
 

@@ -38,6 +38,10 @@ public class UI_GameOverPopup : UI_Popup
 
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked);
+
+        SoundManager.Instance.SetBGMOff();
+        SoundManager.Instance.SetSFXOff();
+        SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
     }
 
     private void RetryButtonOnClicked(PointerEventData data)
