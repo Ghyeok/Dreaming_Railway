@@ -42,6 +42,8 @@ public class UI_GameOverPopup : UI_Popup
         SoundManager.Instance.SetBGMOff();
         SoundManager.Instance.SetSFXOff();
         SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
+
+        TimerManager.Instance.StopTimer();
     }
 
     private void RetryButtonOnClicked(PointerEventData data)

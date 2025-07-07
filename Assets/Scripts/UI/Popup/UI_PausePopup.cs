@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [Serializable]
@@ -231,7 +232,7 @@ public class UI_PausePopup : UI_Popup
 
             if (target.gameObject == GetButton((int)Buttons.ExitButton).gameObject)
             {
-                ExitButtonOnclicked(data);
+                MainMenuButtonOnclicked(data);
             }
         }
     }
@@ -258,9 +259,10 @@ public class UI_PausePopup : UI_Popup
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SettingPopup");
     }
 
-    private void ExitButtonOnclicked(PointerEventData data)
+    private void MainMenuButtonOnclicked(PointerEventData data)
     {
-        UIManager.Instance.OnExitButton();
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainScene");
     }
     #endregion
 }

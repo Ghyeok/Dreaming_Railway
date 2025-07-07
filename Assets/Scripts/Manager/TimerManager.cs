@@ -1,8 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-// SubwayGameManager에서 관리하는 단 하나의 타이머
-public class Timer : MonoBehaviour
+public class TimerManager : SingletonManagers<TimerManager>
 {
     public TextMeshProUGUI timerText;
     public float curTime; // 전체 게임의 시간
@@ -14,11 +13,6 @@ public class Timer : MonoBehaviour
     private int sec;
     private int milSec;
 
-    private void Awake()
-    {
-
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,7 +22,12 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isStop)
+        FlowTime();
+    }
+
+    private void FlowTime()
+    {
+        if (!isStop && GameManager.Instance.gameState != GameManager.GameState.Main && GameManager.Instance.gameState != GameManager.GameState.DaySelect)
         {
             curTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
             stationTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
@@ -44,6 +43,10 @@ public class Timer : MonoBehaviour
 
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
         }
+        else if(GameManager.Instance.gameState == GameManager.GameState.Main || GameManager.Instance.gameState == GameManager.GameState.DaySelect)
+        {
+            ResetTimer();
+        }
     }
 
     public void ResetTimer()
@@ -53,18 +56,17 @@ public class Timer : MonoBehaviour
         awakeTime = 0f;
     }
 
-    void StopTimer()
+    public void StopTimer()
     {
         isStop = true;
     }
 
-    void StartTimer()
+    public void StartTimer()
     {
-        timerText = SubwayGameManager.Instance.timer.GetComponent<TextMeshProUGUI>();
         isStop = false;
     }
 
-    public void ForceAddTime(float time , float lerpSpeed)
+    public void ForceAddTime(float time, float lerpSpeed)
     {
         curTime = Mathf.Lerp(curTime, curTime + time, lerpSpeed); // 필요시 Time.deltaTime 곱하기
     }

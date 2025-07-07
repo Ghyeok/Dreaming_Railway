@@ -68,7 +68,7 @@ public class TransferManager : SingletonManagers<TransferManager>
             return;
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && SubwayGameManager.Instance.timer.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
+            && TimerManager.Instance.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
             && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasTransfered = true;
@@ -82,7 +82,7 @@ public class TransferManager : SingletonManagers<TransferManager>
             Debug.Log("환승 성공!");
 
             curTransferCount++;
-            SubwayGameManager.Instance.timer.stationTime = 0f;
+            TimerManager.Instance.stationTime = 0f;
             SubwayGameManager.Instance.standingCount++;
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
@@ -99,7 +99,7 @@ public class TransferManager : SingletonManagers<TransferManager>
         Debug.Log("입석 성공!");
 
         curTransferCount++;
-        SubwayGameManager.Instance.timer.stationTime = 0f;
+        TimerManager.Instance.stationTime = 0f;
         StationManager.Instance.currentLineIdx++;
         StationManager.Instance.currentStationIdx = 0;
 

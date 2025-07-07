@@ -16,7 +16,7 @@ public class PlayerStanding : MonoBehaviour
         int transferIdx = StationManager.Instance.subwayLines[lindIdx].transferIdx;
 
         float skipTime = 0f;
-        float curTime = SubwayGameManager.Instance.timer.curTime;
+        float curTime = TimerManager.Instance.curTime;
         float accumulated = 0f;
 
         for (int i = 0; i < transferIdx; i++)
@@ -45,7 +45,7 @@ public class PlayerStanding : MonoBehaviour
             accumulated += travel + stop;
         }
 
-        SubwayGameManager.Instance.timer.curTime += skipTime;
+        TimerManager.Instance.curTime += skipTime;
 
         TransferManager.Instance.ForceTransferByStanding();
     }

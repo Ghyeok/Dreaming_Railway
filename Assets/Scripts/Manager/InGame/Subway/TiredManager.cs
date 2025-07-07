@@ -54,11 +54,11 @@ public class TiredManager : SingletonManagers<TiredManager>
 
     public void SetTiredAfterDream() // 잠에 들때 피로도 재설정
     {
-        if (SubwayGameManager.Instance.timer.awakeTime <= 100f)
+        if (TimerManager.Instance.awakeTime <= 100f)
         {
             currentTired /= 2f;
         }
-        else if (SubwayGameManager.Instance.timer.awakeTime > 100f)
+        else if (TimerManager.Instance.awakeTime > 100f)
         {
             currentTired = (currentTired / 2f) * 3f;
         }

@@ -136,7 +136,7 @@ public class StationManager : SingletonManagers<StationManager>
 
     public void CheckCurrentStation() // 현재 어느 역을 지나고 있는지 확인하는 함수
     {
-        Timer timer = SubwayGameManager.Instance.timer;
+        TimerManager timer = TimerManager.Instance;
 
         float accumulatedTime = 0f;
 
@@ -155,7 +155,7 @@ public class StationManager : SingletonManagers<StationManager>
 
     public void IsSubwayStopped()
     {
-        Timer timer = SubwayGameManager.Instance.timer;
+        TimerManager timer = TimerManager.Instance;
         float accumulatedTime = 0f;
 
         for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)

@@ -15,9 +15,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     public bool isStopping; // 정차중
 
-    [SerializeField]
-    public Timer timer;
-
     public bool isGameOver;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,8 +29,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     }
 
-
-
     public override void Awake()
     {
         base.Awake();
@@ -44,8 +39,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         SoundManager.Instance.bgmVolume = 1f;
         SoundManager.Instance.sfxVolume = 1f;
-
-        timer = GetComponent<Timer>();
     }
 
     private void ResetGameManager()
@@ -55,7 +48,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         isGameOver = false;
         tiredDecreaseBySlap = 3f;
 
-        timer.ResetTimer();
+        TimerManager.Instance.ResetTimer();
 
         SoundManager.Instance.SetBGMOn();
         SoundManager.Instance.SetSFXOn();
@@ -77,13 +70,13 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     // 깨어있던 시간이 50초 이하면 1을 반환, 51초 이상-100초 이하이면 2를 반환
     // 101초-125초 사이면 3을 반환, 126초 이상이면 4를 반환
     {
-        if (timer.awakeTime <= 50f && timer.awakeTime >= 0f)
+        if (TimerManager.Instance.awakeTime <= 50f && TimerManager.Instance.awakeTime >= 0f)
             return 1;
-        else if (timer.awakeTime <= 100f && timer.awakeTime > 50f)
+        else if (TimerManager.Instance.awakeTime <= 100f && TimerManager.Instance.awakeTime > 50f)
             return 2;
-        else if (timer.awakeTime <= 125f && timer.awakeTime > 100f)
+        else if (TimerManager.Instance.awakeTime <= 125f && TimerManager.Instance.awakeTime > 100f)
             return 3;
-        else if (timer.awakeTime > 125f)
+        else if (TimerManager.Instance.awakeTime > 125f)
             return 4;
 
         else
@@ -95,6 +88,10 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     private void InitScene()
     {
+        TimerManager.Instance.StartTimer();
+
+        GameManager.Instance.gameState = GameManager.GameState.Subway;
+
         UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
         SoundManager.Instance.SubwayBGM();
 
@@ -106,7 +103,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         DreamManager.Instance.isInDream = false;
 
-        timer.awakeTime = 0f;
+        TimerManager.Instance.awakeTime = 0f;
 
         if(standingCount == 2)
         {
@@ -137,7 +134,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (!isCanRetry && scene.name == "TestSubwayScene")
+        if (scene.name == "TestSubwayScene")
         {
             Debug.Log($"지하철 씬 로드 : {gameObject.name}");
             InitScene();

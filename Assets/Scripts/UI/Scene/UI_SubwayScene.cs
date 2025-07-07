@@ -48,7 +48,6 @@ public class UI_SubwayScene : UI_Scene
     void Start()
     {
         Init();
-
     }
 
     // Update is called once per frame
@@ -93,7 +92,7 @@ public class UI_SubwayScene : UI_Scene
         AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), Define.UIEvent.Click);
 
         TextMeshProUGUI timerText = GetText((int)Texts.TimerText);
-        SubwayGameManager.Instance.timer.timerText = timerText;
+        TimerManager.Instance.timerText = timerText;
     }
 
     private void PauseButtonOnClicked(PointerEventData data)
