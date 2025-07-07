@@ -36,6 +36,8 @@ public class DreamManager : SingletonManagers<DreamManager>
 
     private void InitScene()
     {
+        GameManager.Instance.gameState = GameManager.GameState.Dream;
+
         isInDream = true;
         RandomDreamTimeSpeed();
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
