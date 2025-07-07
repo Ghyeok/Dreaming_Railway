@@ -100,7 +100,6 @@ public class TransferManager : SingletonManagers<TransferManager>
 
         curTransferCount++;
         SubwayGameManager.Instance.timer.stationTime = 0f;
-        SubwayGameManager.Instance.standingCount++;
         StationManager.Instance.currentLineIdx++;
         StationManager.Instance.currentStationIdx = 0;
 
