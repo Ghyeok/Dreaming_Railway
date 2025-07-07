@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 8781145749040677627}
   - component: {fileID: 2965549453506674078}
   - component: {fileID: 1328607177620928031}
+  - component: {fileID: 82064065650786424}
   m_Layer: 0
   m_Name: Combine
   m_TagString: Ground
@@ -203,7 +204,7 @@ CompositeCollider2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
@@ -211,16 +212,6 @@ CompositeCollider2D:
   m_GenerationType: 0
   m_EdgeRadius: 0
   m_ColliderPaths:
-  - m_Collider: {fileID: 2882082542982825155}
-    m_ColliderPaths:
-    - - X: 106899952
-        Y: -14981308
-      - X: 38999944
-        Y: -14981308
-      - X: 38999944
-        Y: -18481308
-      - X: 106899952
-        Y: -18481308
   - m_Collider: {fileID: 672482302881471160}
     m_ColliderPaths:
     - - X: 6899943
@@ -241,6 +232,16 @@ CompositeCollider2D:
         Y: -18481308
       - X: 56899944
         Y: -18481308
+  - m_Collider: {fileID: 2882082542982825155}
+    m_ColliderPaths:
+    - - X: 106899952
+        Y: -14981308
+      - X: 38999944
+        Y: -14981308
+      - X: 38999944
+        Y: -18481308
+      - X: 106899952
+        Y: -18481308
   m_CompositePaths:
     m_Paths:
     - - {x: 10.689965, y: -1.8481308}
@@ -251,6 +252,25 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 5527095146963264373}
+--- !u!251 &82064065650786424
+PlatformEffector2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527095146963264373}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RotationalOffset: 0
+  m_UseOneWay: 1
+  m_UseOneWayGrouping: 1
+  m_SurfaceArc: 155
+  m_UseSideFriction: 0
+  m_UseSideBounce: 0
+  m_SideArc: 1
 --- !u!1001 &2224471712292680001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -437,6 +457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1929086248719303257, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
+    - {fileID: 8883323543317379459, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -509,6 +530,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1929086248719303257, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
+    - {fileID: 8883323543317379459, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -647,6 +669,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1929086248719303257, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
+    - {fileID: 8883323543317379459, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
