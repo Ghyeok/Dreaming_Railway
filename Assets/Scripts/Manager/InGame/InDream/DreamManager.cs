@@ -23,8 +23,8 @@ public class DreamManager : SingletonManagers<DreamManager>
 
     public void RandomDreamTimeSpeed()
     {
-        mindreamTimeSpeed = 4f;
-        maxdreamTimeSpeed = 5f;
+        mindreamTimeSpeed = 3f;
+        maxdreamTimeSpeed = 4f;
 
         dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
     }
