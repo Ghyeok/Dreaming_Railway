@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class UIManager : SingletonManagers<UIManager>
