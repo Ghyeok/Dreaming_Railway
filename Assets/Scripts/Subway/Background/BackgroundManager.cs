@@ -33,7 +33,7 @@ public class BackgroundManager : MonoBehaviour
         undergroundLayer.scrollSpeed = canvasWidth / station.GetCurrentLineTotalTime() * station.subwayLines[station.currentLineIdx].transferIdx * 30f;
 
         // 한강 스크롤 속도
-        hangangLayer.scrollSpeed = canvasWidth / station.GetCurrentLineTotalTime();
+        hangangLayer.scrollSpeed = canvasWidth / station.GetCurrentLineTotalTime() * 4f;
 
         // 정차역 스크롤 속도
         stationLayer.scrollSpeed = undergroundLayer.scrollSpeed;

@@ -804,7 +804,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1453932065}
   - component: {fileID: 1453932066}
-  - component: {fileID: 1453932067}
   m_Layer: 0
   m_Name: '@SubwayGameManager'
   m_TagString: Untagged
@@ -840,28 +839,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSlapCoolTime: 0
+  slapCoolTime: 0
   tiredDecreaseBySlap: 0
   dayCount: 0
   standingCount: 0
+  isCanRetry: 0
   isStopping: 0
-  timer: {fileID: 0}
   isGameOver: 0
---- !u!114 &1453932067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1453932063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6d23481464ca854399808c822da9a61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerText: {fileID: 0}
-  curTime: 0
-  stationTime: 0
-  awakeTime: 0
 --- !u!1 &1709475327
 GameObject:
   m_ObjectHideFlags: 0
@@ -965,8 +949,8 @@ SceneRoots:
   - {fileID: 1138007194}
   - {fileID: 1709475328}
   - {fileID: 723479782}
+  - {fileID: 1453932065}
   - {fileID: 205246077}
   - {fileID: 1917781426}
   - {fileID: 716528648}
   - {fileID: 629289798}
-  - {fileID: 1453932065}
