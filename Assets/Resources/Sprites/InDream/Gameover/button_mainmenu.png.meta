@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 71b94cbd2bcbc7d4ab0f4ffb569701ca
+guid: 25772f02353a69440b59429db070bcf6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6153996980929904746
-    second: button_mainmenu2_0
+      213: -4532008464231585777
+    second: button_mainmenu2 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,43 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: button_mainmenu2_0
+      name: button_mainmenu2 1_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 207
-        height: 207
+        width: 208
+        height: 208
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69fb8d2e95c989aa0800000000000000
-      internalID: -6153996980929904746
+      spriteID: f08a96a30521b11c0800000000000000
+      internalID: -4532008464231585777
       vertices: []
       indices: 
       edges: []
@@ -161,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      button_mainmenu2_0: -6153996980929904746
+      button_mainmenu2 1_0: -4532008464231585777
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
