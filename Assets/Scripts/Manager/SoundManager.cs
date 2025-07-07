@@ -40,7 +40,7 @@ public class SoundManager : SingletonManagers<SoundManager>
 
     private void Start()
     {
-        SubwayBGM();
+
     }
 
     // Update is called once per frame

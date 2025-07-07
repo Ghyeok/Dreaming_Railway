@@ -26,7 +26,7 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
         if (_instance == null)
         {
             GameObject go = new GameObject();
-            go.name = typeof(T).Name;
+            go.name = "@" + typeof(T).Name;
             _instance = go.AddComponent<T>();
             DontDestroyOnLoad(go);
         }
