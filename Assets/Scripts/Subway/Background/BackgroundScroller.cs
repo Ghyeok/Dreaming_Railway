@@ -7,6 +7,7 @@ public class BackgroundScroller : MonoBehaviour
     {
         Underground,
         Hangang,
+        Grass,
         Station,
         Connecter,
     }

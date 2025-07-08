@@ -37,8 +37,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         standingCount = 0;
         slapCoolTime = 5f;
 
-        SoundManager.Instance.bgmVolume = 1f;
-        SoundManager.Instance.sfxVolume = 1f;
+        SoundManager.Instance.bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME");
+        SoundManager.Instance.sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME");
     }
 
     private void ResetGameManager()

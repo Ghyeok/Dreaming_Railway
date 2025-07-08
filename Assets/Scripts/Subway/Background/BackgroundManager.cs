@@ -5,6 +5,7 @@ public class BackgroundManager : MonoBehaviour
 {
     public BackgroundScroller undergroundLayer;
     public BackgroundScroller hangangLayer;
+    public BackgroundScroller grassLayer;
     public BackgroundScroller stationLayer;
 
     public RectTransform canvasRect;

@@ -89,8 +89,6 @@ public class UI_SettingPopup : UI_Popup
         AddUIEvent(sfxThumb, SFXThumbButtonDragBegin, Define.UIEvent.DragBegin);
         AddUIEvent(sfxThumb, SFXThumbButtonOnDrag, Define.UIEvent.Drag);
 
-        UpdateSoundButtons();
-
         bgmThumbPos = GetButton((int)Buttons.BGMThumbButton).GetComponent<RectTransform>();
         sfxThumbPos = GetButton((int)Buttons.SFXThumbButton).GetComponent<RectTransform>();
         bgmCenter = Get<GameObject>((int)GameObjects.BGMCenter).GetComponent<RectTransform>();
@@ -231,7 +229,7 @@ public class UI_SettingPopup : UI_Popup
 
     private void SetBGMThumbPositionByVolume(float volume) // 팝업 창을 껐다 켜도 볼륨 상태 유지
     {
-        ApplyBGMVolume(1 - volume);
+        ApplyBGMVolume(1f - volume);
     }
 
     private void UpdateBGMThumbPosition(PointerEventData data) // ThumbButton 위치 실시간 업데이트

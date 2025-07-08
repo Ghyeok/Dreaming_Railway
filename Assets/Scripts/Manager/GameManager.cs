@@ -10,7 +10,16 @@ public class GameManager : SingletonManagers<GameManager>
         Dream,
     }
 
+    public enum GameMode
+    {
+        None,
+        Tutorial,
+        Normal,
+        Infinite
+    }
+
     public GameState gameState;
+    public GameMode gameMode;  
 
     public override void Awake()
     {
