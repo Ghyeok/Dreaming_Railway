@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,13 @@ public class UI_GameOverPopup : UI_Popup
         ExitButton,
 
     }
+
+    public enum Texts
+    {
+        TimeText,
+        StationText,
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,6 +37,7 @@ public class UI_GameOverPopup : UI_Popup
         base.Init();
 
         Bind<Button>(typeof(Buttons));
+        Bind<TextMeshProUGUI>(typeof(Texts));
 
         GameObject retry = GetButton((int)Buttons.RetryButton).gameObject;
         AddUIEvent(retry, RetryButtonOnClicked);
@@ -40,10 +49,10 @@ public class UI_GameOverPopup : UI_Popup
         AddUIEvent(exit, ExitButtonOnClicked);
 
         SoundManager.Instance.SetBGMOff();
-        SoundManager.Instance.SetSFXOff();
         SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
 
         TimerManager.Instance.StopTimer();
+        ShowPlayTime();
     }
 
     private void RetryButtonOnClicked(PointerEventData data)
@@ -63,5 +72,16 @@ public class UI_GameOverPopup : UI_Popup
     private void ExitButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.OnExitButton();
+    }
+
+    private void ShowPlayTime()
+    {
+        float curTime = TimerManager.Instance.curTime;
+
+        int min = Mathf.FloorToInt(curTime / 60);
+        int sec = Mathf.FloorToInt(curTime % 60);
+        int milSec = Mathf.FloorToInt((curTime * 100f) % 100);
+
+        GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
     }
 }
