@@ -9,7 +9,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public bool isSlapCoolTime;
     public float slapCoolTime;
     public float tiredDecreaseBySlap;
-    public int dayCount;
     public int standingCount;
     public bool isCanRetry = false; // 리겜용
 
@@ -33,7 +32,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     {
         base.Awake();
 
-        dayCount = 1;
         standingCount = 0;
         slapCoolTime = 5f;
 
@@ -41,7 +39,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         SoundManager.Instance.sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME");
     }
 
-    private void ResetGameManager()
+    public void ResetGameManager()
     {
         standingCount = 0;
         slapCoolTime = 5f;
@@ -55,15 +53,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
         SoundManager.Instance.bgmVolume = 1f;
         SoundManager.Instance.sfxVolume = 1f;
-    }
-
-    public void ResetGame()
-    {
-        SubwayGameManager.Instance.ResetGameManager();
-        StationManager.Instance.ResetStationManager();
-        SubwayPlayerManager.Instance.ResetPlayerManager();
-        TiredManager.Instance.ResetTiredManager();
-        TransferManager.Instance.ResetTransferManager();
     }
 
     public int SetDreamMapLengthByAwakenTime()

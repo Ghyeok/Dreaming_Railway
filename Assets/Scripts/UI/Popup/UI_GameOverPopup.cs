@@ -58,7 +58,7 @@ public class UI_GameOverPopup : UI_Popup
     private void RetryButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
-        SubwayGameManager.Instance.ResetGame();
+        GameManager.Instance.ResetGame();
         SceneManager.LoadScene("TestSubwayScene");
     }
 

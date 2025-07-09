@@ -105,7 +105,7 @@ public class UI_MainMenuScene : UI_Scene
     private void NormalModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
-        SceneManager.LoadScene("TestSubwayScene");
+        SceneManager.LoadScene("StageSelect");
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
