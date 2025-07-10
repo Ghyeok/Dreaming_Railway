@@ -132,7 +132,7 @@ MonoBehaviour:
   maxXVelocity: 7
   maxYVelocity: 5.5
   acceleration: 1.5
-  delayAfterCover: 3
+  delayAfterCover: 2
   margin: 2
 --- !u!66 &5022238599266024563
 CompositeCollider2D:

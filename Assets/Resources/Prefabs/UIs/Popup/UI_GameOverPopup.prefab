@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 828508202049788065}
   - component: {fileID: 5852590765035695649}
   - component: {fileID: 871815182353515198}
+  - component: {fileID: 2424163433896187648}
   m_Layer: 5
   m_Name: UI_GameOverPopup
   m_TagString: Untagged
@@ -317,6 +318,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockerPanel: {fileID: 9157614079591554462}
+  canvasGroup: {fileID: 2424163433896187648}
+  fadeInDuration: 2
+--- !u!225 &2424163433896187648
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3924965383167498622}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4849919086983920077
 GameObject:
   m_ObjectHideFlags: 0

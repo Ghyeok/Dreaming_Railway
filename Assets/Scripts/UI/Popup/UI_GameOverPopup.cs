@@ -3,9 +3,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UI_GameOverPopup : UI_Popup
 {
+    public GameObject blockerPanel;
+    public CanvasGroup canvasGroup;
+    private MonoBehaviour playerInputScript;
+    [SerializeField] private float fadeInDuration = 1f;
+
     public enum Buttons
     {
         RetryButton,
@@ -24,12 +30,16 @@ public class UI_GameOverPopup : UI_Popup
     void Start()
     {
         Init();
+        if (blockerPanel != null)
+        {
+            blockerPanel.SetActive(false);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public override void Init()
@@ -83,5 +93,43 @@ public class UI_GameOverPopup : UI_Popup
         int milSec = Mathf.FloorToInt((curTime * 100f) % 100);
 
         GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
+    }
+
+    void OnEnable()
+    {
+        // 블로커 패널 활성화
+        if (blockerPanel != null)
+        {
+            blockerPanel.SetActive(true);
+        }
+
+        //플레이어 움직임 비활성화
+        GameObject player = GameObject.FindWithTag("Player");
+        playerInputScript = player.GetComponent<Player>();
+        playerInputScript.enabled = false;
+
+        StartCoroutine(FadeInCoroutine(fadeInDuration));
+
+
+    }
+
+    void OnDisable()
+    {
+        StopAllCoroutines();
+        blockerPanel.SetActive(false);
+        playerInputScript.enabled = true;
+    }
+
+    private IEnumerator FadeInCoroutine(float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / duration);
+            yield return null;
+        }
+
+        canvasGroup.alpha = 1f;
     }
 }

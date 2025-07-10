@@ -7,7 +7,7 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float maxXVelocity;
     [SerializeField] private float maxYVelocity;
     [SerializeField] private float acceleration = 1f;
-    [SerializeField] private float delayAfterCover = 3f;
+    [SerializeField] private float delayAfterCover;
     [SerializeField] private float margin;
 
     private bool isCounting = false;
@@ -27,6 +27,7 @@ public class FogMovement : MonoBehaviour
     private SpriteRenderer fogRenderer;
     private bool IsGameOver = false;
     private bool gameOverTriggered = false; //한 번만 페이딩 함수 호출 하려고
+    private Camera_move cameraMoveScript;
 
 
 
@@ -60,6 +61,10 @@ public class FogMovement : MonoBehaviour
     void Awake()
     {
         fogRenderer = GetComponent<SpriteRenderer>();
+        if (Camera.main != null)
+        {
+            cameraMoveScript = Camera.main.GetComponent<Camera_move>();
+        }
     }
 
 
@@ -95,7 +100,6 @@ public class FogMovement : MonoBehaviour
         if (!isCounting && IsFogCoveringScreen())
         {
             isCounting = true;
-            //fadeOutStart = true; //-> 게임오버UI 스크립트에서 전달
             Debug.Log("안개 도착, 게임오버!");
             coverTimer = 0f;
         }
@@ -111,16 +115,13 @@ public class FogMovement : MonoBehaviour
 
                 if (IsGameOver && !gameOverTriggered)
                 {
-                    UI_GameOverPopup popup = UIManager.Instance.ShowPopupUI<UI_GameOverPopup>("UI_GameOverPopup");
-                    CanvasGroup nonUI = GameObject.Find("NonGameOverUI")?.GetComponent<CanvasGroup>();
-                    CanvasGroup overUI = GameObject.Find("GameOverUI")?.GetComponent<CanvasGroup>();
-
-                    //popup.Setup(nonUI, overUI);
-
+                    UIManager.Instance.ShowPopupUI<UI_GameOverPopup>("UI_GameOverPopup");
+                    cameraMoveScript.enabled = false;
                     gameOverTriggered = true;
                 }
             }
         }
+    }
 
 
 
@@ -139,5 +140,4 @@ public class FogMovement : MonoBehaviour
             //결과 반환, 안개가 화면을 모두 덮었다면
             return fogBounds.Contains(bottomLeft) && fogBounds.Contains(topRight);
         }
-    }
 }
