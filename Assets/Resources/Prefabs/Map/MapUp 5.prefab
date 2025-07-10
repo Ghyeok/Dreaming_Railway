@@ -210,30 +210,30 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 5330955594952171572}
     m_ColliderPaths:
-    - - X: 123328536
+    - - X: 103328536
         Y: -14981308
-      - X: 55428528
+      - X: 35428528
         Y: -14981308
-      - X: 55428528
+      - X: 35428528
         Y: -18481308
-      - X: 123328536
+      - X: 103328536
         Y: -18481308
   - m_Collider: {fileID: 3488668224545629312}
     m_ColliderPaths:
-    - - X: 73328528
+    - - X: 53328528
         Y: -14981308
-      - X: 5428529
+      - X: -14571471
         Y: -14981308
-      - X: 5428529
+      - X: -14571471
         Y: -18481308
-      - X: 73328528
+      - X: 53328528
         Y: -18481308
   m_CompositePaths:
     m_Paths:
-    - - {x: 12.332824, y: -1.8481308}
-      - {x: 12.332824, y: -1.4981308}
-      - {x: 0.5428529, y: -1.4981601}
-      - {x: 0.5428822, y: -1.8481308}
+    - - {x: 10.332824, y: -1.8481308}
+      - {x: 10.332824, y: -1.4981308}
+      - {x: -1.4571471, y: -1.4981601}
+      - {x: -1.4571178, y: -1.8481308}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -275,7 +275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944024935524281159, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.937853
+      value: 6.937853
       objectReference: {fileID: 0}
     - target: {fileID: 8944024935524281159, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
       propertyPath: m_LocalPosition.y
@@ -348,7 +348,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8944024935524281159, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.9378529
+      value: 1.9378529
       objectReference: {fileID: 0}
     - target: {fileID: 8944024935524281159, guid: 118822330f8224b4294b104fbfa16d24, type: 3}
       propertyPath: m_LocalPosition.y
