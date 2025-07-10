@@ -31,19 +31,23 @@ public class TransferManager : SingletonManagers<TransferManager>
     // Update is called once per frame
     void Update()
     {
-        DetermineMaxTransferCount();
         SuccessTransfer();
+        SuccessGetOff();
     }
 
     public void ResetTransferManager()
     {
         curTransferCount = 0;
+        DetermineMaxTransferCount();
     }
 
     private void DetermineMaxTransferCount()
     {
-        switch (SubwayGameManager.Instance.dayCount)
+        switch (StageSelectManager.Instance.currentStage)
         {
+            case 0: // 튜토리얼
+                maxTransferCount = 1;
+                break;
             case 1: // Day 1
                 maxTransferCount = 3;
                 break;
@@ -109,26 +113,26 @@ public class TransferManager : SingletonManagers<TransferManager>
         OnTransferSuccess?.Invoke();
     }
 
-    private void SuccessGetOff(PointerEventData data) // 목적지 도착 성공시
+    private void SuccessGetOff() // 목적지 도착 성공시
     {
         if (hasArrived)
             return;
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && SubwayGameManager.Instance.isStopping && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
+            && TimerManager.Instance.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
+            && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasArrived = true;
 
             SubwayGameManager.Instance.isStopping = false;
-            SubwayGameManager.Instance.dayCount++;
             StationManager.Instance.currentLineIdx = 0;
             Debug.Log("목적지 도착!");
 
+            StageSelectManager.Instance.currentStage++;
+            SceneManager.LoadScene("StageSelect");
             StationManager.Instance.GenerateSubwayLines(); // Day가 바뀌면서 새로운 노선 생성
-        }
-        else
-        {
-            Debug.Log("목적지 도착 실패..");
+
+            hasArrived = false; 
         }
     }
 

@@ -73,7 +73,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (lastTwoLineIdx >= 0)
         {
-            GetText((int)Texts.LastTwoLineText).text = $"{station.subwayLines[lastTwoLineIdx].transferIdx}역 이동";
+            GetText((int)Texts.LastTwoLineText).text = $"{station.subwayLines[lastTwoLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -82,7 +82,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (lastLineIdx >= 0)
         {
-            GetText((int)Texts.LastLineText).text = $"{station.subwayLines[lastLineIdx].transferIdx}역 이동";
+            GetText((int)Texts.LastLineText).text = $"{station.subwayLines[lastLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -91,7 +91,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (!DreamManager.Instance.isInDream)
         {
-            GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx}역 뒤 환승";
+            GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx + 1}역 뒤 환승";
         }
         else
         {
@@ -100,7 +100,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (nextLineIdx < station.subwayLines.Count)
         {
-            GetText((int)Texts.NextLineText).text = $"{station.subwayLines[nextLineIdx].transferIdx}역 뒤 환승";
+            GetText((int)Texts.NextLineText).text = $"{station.subwayLines[nextLineIdx].transferIdx + 1}역 뒤 환승";
         }
         else
         {
