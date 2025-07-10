@@ -22,7 +22,7 @@ public class FogSpawn : MonoBehaviour
         else if (randomIndex == 1) //우
             transform.rotation = Quaternion.Euler(0, 0, 180);
 
-        else if(randomIndex == 2) //하
+        else if (randomIndex == 2) //하
             transform.rotation = Quaternion.Euler(0, 0, 90);
 
         //안개 생성
@@ -34,6 +34,12 @@ public class FogSpawn : MonoBehaviour
         if (movement != null)
         {
             movement.SetIndex(randomIndex);
+        }
+
+        Camera_move cameraMove = Camera.main.GetComponent<Camera_move>();
+        if (cameraMove != null)
+        {
+            cameraMove.SetIndex(randomIndex);
         }
     }
 }

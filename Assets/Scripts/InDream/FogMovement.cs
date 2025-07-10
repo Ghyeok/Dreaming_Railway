@@ -65,9 +65,8 @@ public class FogMovement : MonoBehaviour
 
     public void SetIndex(int index)
     {
-        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
+        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼으로, 1이 오로, 2가 아래
     }
-
 
     void Update()
     {
@@ -78,15 +77,15 @@ public class FogMovement : MonoBehaviour
         currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, realMaxYVelocity);
 
         // 방향에 따라 이동
-        if (SpawnedIndex == 0) // 오른쪽 → 왼쪽
+        if (SpawnedIndex == 0) // (어둠이) 왼 -> 오 / 플레이어는 오른쪽으로 이동
         {
             transform.position += Vector3.right * currentXVelocity * Time.deltaTime;
         }
-        else if (SpawnedIndex == 1) // 왼쪽 → 오른쪽
+        else if (SpawnedIndex == 1) // 오 -> 왼 / 플레이어는 왼쪽으로 이동
         {
             transform.position += Vector3.left * currentXVelocity * Time.deltaTime;
         }
-        else if (SpawnedIndex == 2) // 아래 → 위
+        else if (SpawnedIndex == 2) // 아래 -> 위
         {
             transform.position += Vector3.up * currentYVelocity * Time.deltaTime;
         }

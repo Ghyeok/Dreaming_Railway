@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8118554959565592736}
   m_Layer: 0
   m_Name: InDreamPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 1
   MaxSpeed: 7
-  rigid: {fileID: 0}
   stepDistance: 12
   Speed: 4
   jumpPower: 9
