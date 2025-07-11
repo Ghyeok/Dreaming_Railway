@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class FogSpawn : SingletonManagers<FogSpawn> 
+public class FogSpawn : MonoBehaviour 
 {
     public GameObject Fog;
     public Vector3[] spawnPositions = new Vector3[3];
-    public int randomIndex;
+    private int randomIndex;
 
 
     void Start () 
@@ -27,6 +27,20 @@ public class FogSpawn : SingletonManagers<FogSpawn>
 
         //안개 생성
         GameObject FogClone = Instantiate(Fog, spawnPositions[randomIndex], transform.rotation);
+
+
+        //랜덤인덱스값 전달
+        FogMovement movement = FogClone.GetComponent<FogMovement>();
+        if (movement != null)
+        {
+            movement.SetIndex(randomIndex);
+        }
+
+        Camera_move cameraMove = Camera.main.GetComponent<Camera_move>();
+        if (cameraMove != null)
+        {
+            cameraMove.SetIndex(randomIndex);
+        }
     }
 }
 

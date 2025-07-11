@@ -14,6 +14,10 @@ public class FogMovement : MonoBehaviour
     //public static bool fadeOutStart = false; //기존 UI 페이드 아웃 위함
     private float coverTimer = 0f; //어둠 멈춤 딜레이
 
+
+    private int SpawnedIndex;
+
+
     private float currentXVelocity = 0f;
     private float currentYVelocity = 0f;
 
@@ -63,6 +67,12 @@ public class FogMovement : MonoBehaviour
         }
     }
 
+
+    public void SetIndex(int index)
+    {
+        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼으로, 1이 오로, 2가 아래
+    }
+
     void Update()
     {
         if (IsGameOver) return;
@@ -72,15 +82,15 @@ public class FogMovement : MonoBehaviour
         currentYVelocity = Mathf.Min(currentYVelocity + acceleration * Time.deltaTime, realMaxYVelocity);
 
         // 방향에 따라 이동
-        if (FogSpawn.Instance.randomIndex == 0) // (어둠이) 왼 -> 오 / 플레이어는 오른쪽으로 이동
+        if (SpawnedIndex == 0) // (어둠이) 왼 -> 오 / 플레이어는 오른쪽으로 이동
         {
             transform.position += Vector3.right * currentXVelocity * Time.deltaTime;
         }
-        else if (FogSpawn.Instance.randomIndex == 1) // 오 -> 왼 / 플레이어는 왼쪽으로 이동
+        else if (SpawnedIndex == 1) // 오 -> 왼 / 플레이어는 왼쪽으로 이동
         {
             transform.position += Vector3.left * currentXVelocity * Time.deltaTime;
         }
-        else if (FogSpawn.Instance.randomIndex == 2) // 아래 -> 위
+        else if (SpawnedIndex == 2) // 아래 -> 위
         {
             transform.position += Vector3.up * currentYVelocity * Time.deltaTime;
         }

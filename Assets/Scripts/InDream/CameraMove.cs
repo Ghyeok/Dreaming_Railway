@@ -6,6 +6,7 @@ public class Camera_move : MonoBehaviour
     public Transform target;
     public float speed;
     public float minY = 1f;
+    private int SpawnedIndex;
     private float initialX;
 
 
@@ -16,6 +17,11 @@ public class Camera_move : MonoBehaviour
         {
             initialX = target.position.x;
         }
+    }
+
+    public void SetIndex(int index)
+    {
+        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
     }
 
     void Update()
@@ -32,11 +38,11 @@ public class Camera_move : MonoBehaviour
         float newX = desiredPosition.x;
 
         // 어둠 생성 방향에 따라 카메라 이동 제한
-        if (FogSpawn.Instance.randomIndex == 0) // 왼 -> 오 /플레이어 오른쪽으로
+        if (SpawnedIndex == 0) // 왼 -> 오 /플레이어 오른쪽으로
         {
             newX = Mathf.Max(desiredPosition.x, initialX);
         }
-        else if (FogSpawn.Instance.randomIndex == 1) // 오 -> 왼 
+        else if (SpawnedIndex == 1) // 오 -> 왼 
         {
             newX = Mathf.Min(desiredPosition.x, initialX);
         }

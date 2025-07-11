@@ -16,23 +16,14 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
     private bool endMapSpawn = false;
     public float ExitPointYPosition;
 
-
     void Start()
     {
-        if (FogSpawn.Instance.randomIndex == 0 || FogSpawn.Instance.randomIndex == 1)
-        {
-            canSpawnToUp = false;
-        }
-        
-        if (FogSpawn.Instance.randomIndex == 2)
-        {
-            cameraHeight = Camera.main.orthographicSize * 1.5f;
+        cameraHeight = Camera.main.orthographicSize * 1.5f;
 
-            //시작 시 3개 미리 생성
-            for (int i = 0; i < 3; i++)
-            {
-                MapYSpawnToUp();
-            }
+        //시작 시 3개 미리 생성
+        for (int i = 0; i < 3; i++)
+        {
+            MapYSpawnToUp();
         }
     }
 
@@ -73,7 +64,7 @@ public class MapYSpawn : SingletonManagers<MapYSpawn>
         if (canSpawnToUp)
         {
             int randomint = Random.Range(0, mapList.Count - 1);
-            float randomX = Random.Range(-5f, 5f);
+            float randomX = Random.Range(-4f, 4f);
             Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
             //다음 생성 위치 설정
