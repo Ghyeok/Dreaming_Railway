@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 
 
-public class MapXSpawn : SingletonManagers<MapXSpawn>
-{
-    //public SubwayGameManager subwayGameManager;
-    public GameObject player;
+public class MapXSpawn : MonoBehaviour
+{    public GameObject player;
     public List<GameObject> mapList;
 
 
