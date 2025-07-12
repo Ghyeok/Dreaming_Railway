@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private bool isLeftFoot = true;
     public bool isJump = false;
 
-    private bool isInObstacle = false;
+    public bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
     private bool isGrounded; //발자국 소리 위함
     private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();

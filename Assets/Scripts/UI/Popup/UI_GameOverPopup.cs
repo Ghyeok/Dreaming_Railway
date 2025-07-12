@@ -9,7 +9,7 @@ public class UI_GameOverPopup : UI_Popup
 {
     public GameObject blockerPanel;
     public CanvasGroup canvasGroup;
-    private MonoBehaviour playerInputScript;
+    private Player playerInputScript;
     [SerializeField] private float fadeInDuration = 1f;
 
     public enum Buttons
@@ -30,6 +30,7 @@ public class UI_GameOverPopup : UI_Popup
     void Start()
     {
         Init();
+        playerInputScript = GameObject.Find("Player").GetComponent<Player>();
         if (blockerPanel != null)
         {
             blockerPanel.SetActive(false);
@@ -104,10 +105,9 @@ public class UI_GameOverPopup : UI_Popup
         }
 
         //플레이어 움직임 비활성화
-        GameObject player = GameObject.FindWithTag("Player");
-        playerInputScript = player.GetComponent<Player>();
         playerInputScript.enabled = false;
-
+        playerInputScript.isInObstacle = false;
+        
         StartCoroutine(FadeInCoroutine(fadeInDuration));
 
 
