@@ -1,0 +1,10 @@
+# ninja log v5
+60	5191	7739536574597867	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	19df142790000c16
+126	5257	7739536574677868	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	600533e7723b8fca
+1	5318	7739536574797873	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	b1f412bc883f8fc3
+334	5321	7739536575062948	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	6e64bc5f0abbf575
+20	5327	7739536575412949	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	d5733056a14f3b9c
+204	5329	7739536575752954	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	8ccafd72382c26d3
+84	5656	7739536579339754	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	b93f52e738762837
+39	5797	7739536580775316	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	636650b3317751bf
+5797	6034	7739536583215041	C:/Unity/Dreaming_Railway/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/f5g5b30n/obj/arm64-v8a/libgame.so	fdf8911cd703c1f0

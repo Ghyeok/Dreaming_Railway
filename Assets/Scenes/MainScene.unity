@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
+  gameMode: 0
 --- !u!4 &1443910598
 Transform:
   m_ObjectHideFlags: 0
@@ -436,6 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1807480478}
   - component: {fileID: 1807480479}
+  - component: {fileID: 1807480480}
   m_Layer: 0
   m_Name: '@UIManager'
   m_TagString: Untagged
@@ -472,6 +474,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasWidth: 1920
   canvasHeight: 1080
+--- !u!114 &1807480480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807480477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c810a340f652944ca53b6eb1ac36824, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
