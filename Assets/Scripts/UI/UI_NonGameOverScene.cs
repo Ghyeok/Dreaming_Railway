@@ -49,7 +49,7 @@ public class UI_NonGameOverScene : UI_Scene
         AddUIEvent(right, StopMoveOnPointerUp, Define.UIEvent.PointerUp);
 
         GameObject jump = GetButton((int)Buttons.JumpButton).gameObject;
-        AddUIEvent(jump, JumpButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(jump, JumpButtonOnClicked, Define.UIEvent.PointerDown);
     }
 
     private void PauseButtonOnClicked(PointerEventData data)
