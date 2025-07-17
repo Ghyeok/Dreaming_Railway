@@ -16,8 +16,8 @@ public class MapXSpawn : MonoBehaviour
     float nextSpawnDistanceLeft;  // 왼쪽 스폰 기준점
 
 
-    private bool canSpawnRight = false;
-    private bool canSpawnLeft = false; //기본맵 생성
+    public bool canSpawnRight = false;
+    public bool canSpawnLeft = false; //기본맵 생성
 
    
     private bool mapLengthLogged = false; //맵 길이 디버그 위함
