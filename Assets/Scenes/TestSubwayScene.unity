@@ -841,7 +841,6 @@ MonoBehaviour:
   isSlapCoolTime: 0
   slapCoolTime: 0
   tiredDecreaseBySlap: 0
-  dayCount: 0
   standingCount: 0
   isCanRetry: 0
   isStopping: 0

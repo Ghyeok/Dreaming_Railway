@@ -49,7 +49,7 @@ public class Camera_move : MonoBehaviour
         }
         else if (SpawnedIndex == 2) // 하 -> 상
         {
-            newX = Mathf.Clamp(desiredPosition.x, -7f, 7f);
+            newX = Mathf.Clamp(desiredPosition.x, -6f, 6f);
         }
         else
         {
