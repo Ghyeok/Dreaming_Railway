@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class UI_StageSelectScene : UI_Scene
 {
+    public enum GameObjects
+    {
+        ButtonRoot,
+    }
+
     public enum Buttons
     {
         Stage0,
@@ -26,7 +31,8 @@ public class UI_StageSelectScene : UI_Scene
         base.Init();
 
         Bind<Button>(typeof(Buttons));   
-        Bind<Image>(typeof(Images));   
+        Bind<Image>(typeof(Images));
+        Bind<GameObject>(typeof(GameObjects));
 
         GameObject stage0 = GetButton((int)Buttons.Stage0).gameObject;
         AddUIEvent(stage0, Stage0ButtonOnClicked);
@@ -45,6 +51,8 @@ public class UI_StageSelectScene : UI_Scene
 
         GameObject stage5 = GetButton((int)Buttons.Stage5).gameObject;
         AddUIEvent(stage5, Stage5ButtonOnClicked);
+
+        SetActiveTrueButtons();
     }
 
 
@@ -57,15 +65,26 @@ public class UI_StageSelectScene : UI_Scene
     // Update is called once per frame
     void Update()
     {
-        
+      
+    }
+
+    private void SetActiveFalaseButtons()
+    {
+        Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(false);
+    }
+    
+    private void SetActiveTrueButtons()
+    {
+        Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(true);
     }
 
     IEnumerator EnterToSubway()
     {
         Animator anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("ButtonClicked");
+        SetActiveFalaseButtons();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         SceneManager.LoadScene("TestSubwayScene");
     }
