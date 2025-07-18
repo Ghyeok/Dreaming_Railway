@@ -2,28 +2,27 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-
 public class Player : MonoBehaviour
-{ 
-    [SerializeField] private float acceleration;  
-    [SerializeField] private float MaxSpeed;      
+{
+    [SerializeField] private float acceleration;
+    [SerializeField] private float MaxSpeed;
 
     //발소리를 위한
     private Vector2 lastFootstepPosition;
     private float distanceMovedSinceLastStep = 0f;
     [SerializeField] private float stepDistance; // 발소리가 나는 최소 거리
-    
+
     public float Speed;
     public float jumpPower;
-    private float UimoveX;    
-    
+    private float UimoveX;
+
     public float minSpeed;
     private bool isLeftFoot = true;
     public bool isJump = false;
 
     public bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
-    private bool isGrounded; //발자국 소리 위함
+    private bool isGrounded;
     private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();
 
     private Rigidbody2D rigid;
@@ -40,15 +39,15 @@ public class Player : MonoBehaviour
         MyAnimator.SetBool("IsGrounded", true);
         Speed = 0f;
     }
-    
-    void Update() 
+
+    void Update()
     {
-        
+
         if (Input.GetKeyDown(KeyCode.Space)) //점프
         {
             Jump();
         }
-        
+
         // Animator에 y속도 전달
         MyAnimator.SetFloat("yVelocity", rigid.linearVelocity.y);
 
@@ -104,7 +103,7 @@ public class Player : MonoBehaviour
                 //반대 방향 입력일 경우 방향만 반전 (크기 유지)
                 else if (Mathf.Sign(Speed) != Mathf.Sign(moveX))
                 {
-                    Speed = -Speed/2;
+                    Speed = -Speed / 2;
                 }
 
                 // 가속 적용
@@ -131,7 +130,7 @@ public class Player : MonoBehaviour
 
         //발자국 소리
         if ((Speed != 0) && (isGrounded)) //속도가 0이 아니고 땅에 붙어있을 때
-        {            
+        {
             float moved = Vector2.Distance(transform.position, lastFootstepPosition);//움직인 거리
             distanceMovedSinceLastStep += moved; //마지막 발자국으로부터의 거리 갱신
             if (distanceMovedSinceLastStep >= stepDistance)//마지막 발자국으로부터의 거리가 특정 거리 이상일 때
@@ -172,7 +171,7 @@ public class Player : MonoBehaviour
     //점프 함수
     public void Jump()
     {
-        if (!isJump)
+        if (!isJump && isGrounded)
         {
             SoundManager.Instance.JumpSFX();
             MyAnimator.SetBool("IsJumping", true);
@@ -189,7 +188,7 @@ public class Player : MonoBehaviour
             {
                 SoundManager.Instance.LandSFX();
             }
-            
+
             MyAnimator.SetBool("IsJumping", false);
             MyAnimator.SetBool("IsGrounded", true);
             isJump = false;
@@ -201,6 +200,7 @@ public class Player : MonoBehaviour
         {
             SoundManager.Instance.ExitDreamSFX();
             SceneManager.LoadScene("TestSubwayScene");
+
         }
     }
 
@@ -215,7 +215,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {   //장애물 감지
-    
+
         if (other.CompareTag("Obstacle"))
         {
 

@@ -30,11 +30,15 @@ public class UI_GameOverPopup : UI_Popup
     void Start()
     {
         Init();
-        playerInputScript = GameObject.Find("Player").GetComponent<Player>();
         if (blockerPanel != null)
         {
             blockerPanel.SetActive(false);
         }
+    }
+
+    void Awake()
+    {
+        playerInputScript = GameObject.Find("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame
