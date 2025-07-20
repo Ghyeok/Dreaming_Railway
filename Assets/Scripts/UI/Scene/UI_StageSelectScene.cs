@@ -108,29 +108,33 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 2;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 2;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage3ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 3;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 3;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage4ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 4;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 4;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage5ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 5;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 5;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 }
