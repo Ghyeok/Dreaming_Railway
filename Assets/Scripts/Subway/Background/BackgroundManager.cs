@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static BackgroundScroller;
 
 public class BackgroundManager : MonoBehaviour
@@ -10,7 +12,7 @@ public class BackgroundManager : MonoBehaviour
 
     public RectTransform canvasRect;
 
-    private Coroutine decelerateRoutine;
+    public Queue<BackgroundType> backgroundQueue = new Queue<BackgroundType>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -38,5 +40,10 @@ public class BackgroundManager : MonoBehaviour
 
         // 정차역 스크롤 속도
         stationLayer.scrollSpeed = undergroundLayer.scrollSpeed;
+    }
+
+    public void EnqueueBackgroundType()
+    {
+
     }
 }
