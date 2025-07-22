@@ -70,9 +70,19 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         if(newSoundType == Define.Sounds.BGM)
         {
-            // BGM 재생 로직..
+            if (BGMSource.clip == clip && BGMSource.isPlaying)
+            {
+                return;
+            }
+            else if (BGMSource.clip == clip && !BGMSource.isPlaying)
+            {
+                BGMSource.UnPause();
+                return;
+            }
+
             BGMSource.clip = clip;
             BGMSource.Play();
+            return;
         }
 
         if (newSoundType == Define.Sounds.SFX)

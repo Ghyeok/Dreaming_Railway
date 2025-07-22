@@ -55,6 +55,10 @@ public class UI_StageSelectScene : UI_Scene
         SetActiveTrueButtons();
     }
 
+    private void OnEnable()
+    {
+        SoundManager.Instance.MainBGM();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +72,7 @@ public class UI_StageSelectScene : UI_Scene
       
     }
 
-    private void SetActiveFalaseButtons()
+    private void SetActiveFalseButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(false);
     }
@@ -82,8 +86,9 @@ public class UI_StageSelectScene : UI_Scene
     {
         Animator anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("ButtonClicked");
-        SetActiveFalaseButtons();
+        SetActiveFalseButtons();
 
+        StageSelectManager.Instance.InvokeStageSelect();
         yield return new WaitForSeconds(4f);
 
         SceneManager.LoadScene("TestSubwayScene");
