@@ -67,8 +67,6 @@ public class UI_MainMenuScene : UI_Scene
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked);
 
-        SoundManager.Instance.PlayAudioClip("TitleTheme", Define.Sounds.BGM);
-
         targetPos = GetImage((int)Images.TapToStart).rectTransform.anchoredPosition;
         hiddenPos = new Vector2(targetPos.x, targetPos.y - 1080f);
         rect = GetImage((int)Images.MainMenu).rectTransform;

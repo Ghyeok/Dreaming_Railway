@@ -48,6 +48,8 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         SetBGMOnOffState();
         SetSFXOnOffState();
+
+        MainBGM();
     }
 
     private void Start()
@@ -100,6 +102,11 @@ public class SoundManager : SingletonManagers<SoundManager>
         }
 
         return clip;
+    }
+
+    public void MainBGM()
+    {
+        PlayAudioClip("TitleTheme", Define.Sounds.BGM);
     }
 
     public void SubwayBGM()
