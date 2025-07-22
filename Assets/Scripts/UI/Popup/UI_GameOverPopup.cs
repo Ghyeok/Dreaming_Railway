@@ -91,11 +91,11 @@ public class UI_GameOverPopup : UI_Popup
 
     private void ShowPlayTime()
     {
-        float curTime = TimerManager.Instance.curTime;
+        float playTime = TimerManager.Instance.playTime;
 
-        int min = Mathf.FloorToInt(curTime / 60);
-        int sec = Mathf.FloorToInt(curTime % 60);
-        int milSec = Mathf.FloorToInt((curTime * 100f) % 100);
+        int min = Mathf.FloorToInt(playTime / 60);
+        int sec = Mathf.FloorToInt(playTime % 60);
+        int milSec = Mathf.FloorToInt((playTime * 100f) % 100);
 
         GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
     }
