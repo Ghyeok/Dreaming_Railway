@@ -55,6 +55,7 @@ public class UI_SubwayScene : UI_Scene
     {
         SetTransferText();
         SetSlapText();
+        ShowStandingCoolDown();
     }
 
     private void OnEnable()
@@ -120,7 +121,8 @@ public class UI_SubwayScene : UI_Scene
 
     private void SetStandingButtonToSkip(PointerEventData data)
     {
-        if (SubwayGameManager.Instance.standingCount == 0)
+        if (!SubwayGameManager.Instance.isStandingCoolDown && StationManager.Instance.currentStationIdx 
+                                                             != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx)
         {
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
@@ -159,6 +161,17 @@ public class UI_SubwayScene : UI_Scene
         }
 
         slap.fillAmount = 0f;
+    }
+
+    private void ShowStandingCoolDown()
+    {
+        Image stand = GetImage((int)Images.StandingCoolTimeImage);
+        stand.fillAmount = (SubwayGameManager.Instance.standingCount - 1) * 0.5f;
+
+        if (SubwayGameManager.Instance.standingCount >= 3)
+        {
+            stand.fillAmount = 0f;
+        }
     }
 
     private void OnSlapButtonClicked()

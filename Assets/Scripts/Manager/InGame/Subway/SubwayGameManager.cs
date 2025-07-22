@@ -12,6 +12,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public int standingCount;
     public bool isCanRetry = false; // 리겜용
 
+    public bool isStandingCoolDown; // 입석 쿨타임?
     public bool isStopping; // 정차중
 
     public bool isGameOver;
@@ -33,6 +34,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         base.Awake();
 
         standingCount = 0;
+        isStandingCoolDown = false;
         slapCoolTime = 5f;
 
         SoundManager.Instance.bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME");
@@ -45,8 +47,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
         slapCoolTime = 5f;
         isGameOver = false;
         tiredDecreaseBySlap = 3f;
-
-        TimerManager.Instance.ResetTimer();
 
         SoundManager.Instance.SetBGMOn();
         SoundManager.Instance.SetSFXOn();

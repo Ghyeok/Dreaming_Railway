@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
- /* AudioClip : 실제로 재생되는 사운드 파일
- *  AudioSource : 해당 클립을 관리하는 역할
- */
+/* AudioClip : 실제로 재생되는 사운드 파일
+*  AudioSource : 해당 클립을 관리하는 역할
+*/
 
 public class SoundManager : SingletonManagers<SoundManager>
 {
@@ -221,5 +222,25 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         PlayerPrefs.SetInt("BGM_MUTE", 0);
         PlayerPrefs.Save();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainScene")
+        {
+            Debug.Log($"메인 씬 로드 : {gameObject.name}");
+            MainBGM();
+        }
     }
 }
