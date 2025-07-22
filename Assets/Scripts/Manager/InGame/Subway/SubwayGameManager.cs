@@ -44,6 +44,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     public void ResetGameManager()
     {
         standingCount = 0;
+        isStandingCoolDown = false;
         slapCoolTime = 5f;
         isGameOver = false;
         tiredDecreaseBySlap = 3f;
@@ -114,11 +115,16 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
+        StageSelectManager.StageSelected += GameManager.Instance.OnSelectInfiniteMode;
+
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

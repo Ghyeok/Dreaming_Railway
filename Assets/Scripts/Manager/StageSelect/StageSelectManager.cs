@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,10 +8,17 @@ public class StageSelectManager : SingletonManagers<StageSelectManager>
     public int currentStage;
     public int maxClearStage;
 
+    public static event Action StageSelected;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
+    }
+
+    public void InvokeStageSelect()
+    {
+        StageSelected?.Invoke();
     }
 
     public override void Awake()

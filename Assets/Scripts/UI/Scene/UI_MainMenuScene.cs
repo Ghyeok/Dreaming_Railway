@@ -109,6 +109,7 @@ public class UI_MainMenuScene : UI_Scene
     private void InfiniteModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.gameMode = GameManager.GameMode.Infinite;
+        StageSelectManager.Instance.InvokeStageSelect();
         SceneManager.LoadScene("TestSubwayScene");
     }
 

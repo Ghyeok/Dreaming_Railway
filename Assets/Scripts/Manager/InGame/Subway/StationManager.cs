@@ -18,7 +18,7 @@ public class StationManager : SingletonManagers<StationManager>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GenerateSubwayLines();
+        //GenerateSubwayLines();
     }
 
     private void InitScene()
@@ -44,7 +44,9 @@ public class StationManager : SingletonManagers<StationManager>
     {
         subwayLines.Clear();
 
-        int lineCount = TransferManager.Instance.maxTransferCount + 1;
+        int lineCount = 0;
+        lineCount = TransferManager.Instance.maxTransferCount + 1;
+
         int stationPerLine = 20; // 넉넉하게
 
         for (int i = 0; i < lineCount; i++)
@@ -80,55 +82,114 @@ public class StationManager : SingletonManagers<StationManager>
     private void ChooseStationType()
     {
         int transferCnt = 0;
-        for (int i = 0; i < subwayLines.Count; i++)
+
+        if (GameManager.Instance.gameMode != GameManager.GameMode.Infinite)
         {
-            if (i < subwayLines.Count - 1)
+            for (int i = 0; i < subwayLines.Count; i++)
             {
-                if (transferCnt >= 0 && transferCnt <= 3)
+                if (i < subwayLines.Count - 1)
                 {
-                    int transferStationIdx = Random.Range(10, 15);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = false;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    if (transferCnt >= 0 && transferCnt <= 3)
+                    {
+                        int transferStationIdx = Random.Range(10, 15);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    else if (transferCnt >= 4 && transferCnt <= 6)
+                    {
+                        int transferStationIdx = Random.Range(6, 11);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    else if (transferCnt >= 7)
+                    {
+                        int transferStationIdx = Random.Range(3, 7);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    transferCnt++;
                 }
-                else if (transferCnt >= 4 && transferCnt <= 6)
+                else if (i == subwayLines.Count - 1)
                 {
-                    int transferStationIdx = Random.Range(6, 11);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = false;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    if (transferCnt >= 0 && transferCnt <= 3)
+                    {
+                        int transferStationIdx = Random.Range(10, 15);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
+                    else if (transferCnt >= 4 && transferCnt <= 6)
+                    {
+                        int transferStationIdx = Random.Range(6, 11);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
+                    else if (transferCnt >= 7)
+                    {
+                        int transferStationIdx = Random.Range(3, 7);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
                 }
-                else if (transferCnt >= 7)
-                {
-                    int transferStationIdx = Random.Range(3, 7);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = false;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                }
-                transferCnt++;
             }
-            else if (i == subwayLines.Count - 1)
+        }
+        else if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
+        {
+            for (int i = 0; i < subwayLines.Count; i++)
             {
-                if (transferCnt >= 0 && transferCnt <= 3)
+                if (i < subwayLines.Count - 1)
                 {
-                    int transferStationIdx = Random.Range(10, 15);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = true;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    if (transferCnt >= 0 && transferCnt <= 3)
+                    {
+                        int transferStationIdx = Random.Range(8, 13);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    else if (transferCnt >= 4 && transferCnt <= 6)
+                    {
+                        int transferStationIdx = Random.Range(5, 9);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    else if (transferCnt >= 7)
+                    {
+                        int transferStationIdx = Random.Range(2, 6);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = false;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
+                    }
+                    transferCnt++;
                 }
-                else if (transferCnt >= 4 && transferCnt <= 6)
+                else if (i == subwayLines.Count - 1)
                 {
-                    int transferStationIdx = Random.Range(6, 11);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = true;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                }
-                else if (transferCnt >= 7)
-                {
-                    int transferStationIdx = Random.Range(3, 7);
-                    subwayLines[i].transferIdx = transferStationIdx;
-                    subwayLines[i].hasDestination = true;
-                    subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    if (transferCnt >= 0 && transferCnt <= 3)
+                    {
+                        int transferStationIdx = Random.Range(10, 15);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
+                    else if (transferCnt >= 4 && transferCnt <= 6)
+                    {
+                        int transferStationIdx = Random.Range(6, 11);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
+                    else if (transferCnt >= 7)
+                    {
+                        int transferStationIdx = Random.Range(3, 7);
+                        subwayLines[i].transferIdx = transferStationIdx;
+                        subwayLines[i].hasDestination = true;
+                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
+                    }
                 }
             }
         }
