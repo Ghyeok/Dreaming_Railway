@@ -30,10 +30,7 @@ public class MapYSpawn : MonoBehaviour
         if (SpawnedIndex == 2)
         {
             cameraHeight = Camera.main.orthographicSize * 1.5f;
-
-            mapXSpawn.canSpawnRight = false;
-            mapXSpawn.canSpawnLeft = false;
-
+            
             //시작 시 3개 미리 생성
             for (int i = 0; i < 3; i++)
             {

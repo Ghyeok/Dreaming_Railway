@@ -27,6 +27,8 @@ public class MapXSpawn : MonoBehaviour
 
     private int spawnedCount;  //맵 길이 제한
     public float ExitPointXPosition; //카메라, 안개 제한 위함
+    private int SpawnedIndex;
+
 
 
     void Start()
@@ -36,34 +38,46 @@ public class MapXSpawn : MonoBehaviour
         nextSpawnDistanceLeft = -tileLength;
         spawnedCount = 0;
 
+        if (SpawnedIndex == 2)
+        {
+            canSpawnRight = false;
+            canSpawnLeft = false;
+        }
+    }
+
+    public void SetIndex(int index)
+    {
+        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
     }
 
 
     void Update()
     {
-
-        // 오른쪽 이동 및 스폰
-        if (!canSpawnRight && player.transform.position.x > startSpawnOffset)
+        if (SpawnedIndex == 0 || SpawnedIndex == 1)
         {
-            canSpawnRight = true;
-            Debug.Log("오른쪽 스폰 시작");
-        }
+            // 오른쪽 이동 및 스폰
+            if (!canSpawnRight && player.transform.position.x > startSpawnOffset)
+            {
+                canSpawnRight = true;
+                Debug.Log("오른쪽 스폰 시작");
+            }
 
-        if (!lastRandomMapSpawn && canSpawnRight && player.transform.position.x + 15f > nextSpawnDistanceRight - tileLength /2f)
-        {
-            MapXSpawnToRight();
-        }
+            if (!lastRandomMapSpawn && canSpawnRight && player.transform.position.x + 20f > nextSpawnDistanceRight - tileLength /2f)
+            {
+                MapXSpawnToRight();
+            }
 
-        // 왼쪽 이동 및 스폰
-        if (!canSpawnLeft && player.transform.position.x < -startSpawnOffset)
-        {
-            canSpawnLeft = true;
-            Debug.Log("왼쪽 스폰 시작");
-        }
+            // 왼쪽 이동 및 스폰
+            if (!canSpawnLeft && player.transform.position.x < -startSpawnOffset)
+            {
+                canSpawnLeft = true;
+                Debug.Log("왼쪽 스폰 시작");
+            }
 
-        if (!lastRandomMapSpawn && canSpawnLeft && player.transform.position.x - 15f < nextSpawnDistanceLeft + tileLength /2f)
-        {
-            MapXSpawnToLeft();
+            if (!lastRandomMapSpawn && canSpawnLeft && player.transform.position.x - 20f < nextSpawnDistanceLeft + tileLength /2f)
+            {
+                MapXSpawnToLeft();
+            }
         }
 
         // 맵 길이

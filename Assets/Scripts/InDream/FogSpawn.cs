@@ -47,6 +47,12 @@ public class FogSpawn : MonoBehaviour
         {
             MapYMove.SetIndex(randomIndex);
         }
+
+        MapXSpawn MapXMove = GameObject.Find("MapXSpawner").GetComponent<MapXSpawn>();
+        if (MapXMove != null)
+        {
+            MapXMove.SetIndex(randomIndex);
+        }
     }
 }
 
