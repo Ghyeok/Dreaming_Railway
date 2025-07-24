@@ -1342,7 +1342,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInDream: 0
   dreamTimeSpeed: 0
-  WhiatePanel: {fileID: 0}
 --- !u!4 &933381922
 Transform:
   m_ObjectHideFlags: 0
@@ -2480,7 +2479,7 @@ MonoBehaviour:
   - {fileID: 5119156888014228460, guid: 34060d861c790194481d1ab61eb6f0fd, type: 3}
   groundY: 0
   tileLength: 30
-  startSpawnOffset: 2
+  startSpawnOffset: 1
   canSpawnRight: 0
   canSpawnLeft: 0
   ExitPointXPosition: 0
