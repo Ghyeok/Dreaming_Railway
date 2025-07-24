@@ -11,6 +11,8 @@ public class PlayerStanding : MonoBehaviour
         Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
         anim.SetTrigger("isSkip");
 
+        SubwayGameManager.Instance.standingCount++;
+
         int lindIdx = StationManager.Instance.currentLineIdx;
         int curIdx = StationManager.Instance.currentStationIdx;
         int transferIdx = StationManager.Instance.subwayLines[lindIdx].transferIdx;

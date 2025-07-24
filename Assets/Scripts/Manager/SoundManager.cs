@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
- /* AudioClip : 실제로 재생되는 사운드 파일
- *  AudioSource : 해당 클립을 관리하는 역할
- */
+/* AudioClip : 실제로 재생되는 사운드 파일
+*  AudioSource : 해당 클립을 관리하는 역할
+*/
 
 public class SoundManager : SingletonManagers<SoundManager>
 {
@@ -48,6 +49,8 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         SetBGMOnOffState();
         SetSFXOnOffState();
+
+        MainBGM();
     }
 
     private void Start()
@@ -67,9 +70,19 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         if(newSoundType == Define.Sounds.BGM)
         {
-            // BGM 재생 로직..
+            if (BGMSource.clip == clip && BGMSource.isPlaying)
+            {
+                return;
+            }
+            else if (BGMSource.clip == clip && !BGMSource.isPlaying)
+            {
+                BGMSource.UnPause();
+                return;
+            }
+
             BGMSource.clip = clip;
             BGMSource.Play();
+            return;
         }
 
         if (newSoundType == Define.Sounds.SFX)
@@ -100,6 +113,11 @@ public class SoundManager : SingletonManagers<SoundManager>
         }
 
         return clip;
+    }
+
+    public void MainBGM()
+    {
+        PlayAudioClip("TitleTheme", Define.Sounds.BGM);
     }
 
     public void SubwayBGM()
@@ -214,5 +232,25 @@ public class SoundManager : SingletonManagers<SoundManager>
 
         PlayerPrefs.SetInt("BGM_MUTE", 0);
         PlayerPrefs.Save();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainScene")
+        {
+            Debug.Log($"메인 씬 로드 : {gameObject.name}");
+            MainBGM();
+        }
     }
 }

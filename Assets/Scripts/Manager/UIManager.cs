@@ -9,6 +9,15 @@ public class UIManager : SingletonManagers<UIManager>
     public float canvasWidth = 1920f;
     public float canvasHeight = 1080f;
 
+    public override void Awake()
+    {
+        base.Awake();
+
+#if UNITY_ANDROID
+        Screen.SetResolution(1920, 1080, true);
+#endif
+    }
+
     public static GameObject Root
     {
         get

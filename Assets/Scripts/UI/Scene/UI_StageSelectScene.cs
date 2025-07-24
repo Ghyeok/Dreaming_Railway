@@ -55,6 +55,10 @@ public class UI_StageSelectScene : UI_Scene
         SetActiveTrueButtons();
     }
 
+    private void OnEnable()
+    {
+        SoundManager.Instance.MainBGM();
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +72,7 @@ public class UI_StageSelectScene : UI_Scene
       
     }
 
-    private void SetActiveFalaseButtons()
+    private void SetActiveFalseButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(false);
     }
@@ -82,8 +86,9 @@ public class UI_StageSelectScene : UI_Scene
     {
         Animator anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("ButtonClicked");
-        SetActiveFalaseButtons();
+        SetActiveFalseButtons();
 
+        StageSelectManager.Instance.InvokeStageSelect();
         yield return new WaitForSeconds(4f);
 
         SceneManager.LoadScene("TestSubwayScene");
@@ -108,29 +113,33 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 2;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 2;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage3ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 3;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 3;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage4ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 4;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 4;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 
     private void Stage5ButtonOnClicked(PointerEventData data)
     {
-        //StageSelectManager.Instance.currentStage = 5;
-        //GameManager.Instance.ResetGame();
-        //SceneManager.LoadScene("TestSubwayScene");
+        StageSelectManager.Instance.currentStage = 5;
+        GameManager.Instance.ResetGame();
+
+        StartCoroutine(EnterToSubway());
     }
 }

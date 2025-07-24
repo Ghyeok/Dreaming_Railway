@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BackgroundScroller : MonoBehaviour
@@ -16,6 +17,7 @@ public class BackgroundScroller : MonoBehaviour
     public RectTransform canvasRect;
     public RectTransform image1;
     public RectTransform image2;
+    private RectTransform currentImage;
 
     public float scrollSpeed;
 
@@ -45,26 +47,63 @@ public class BackgroundScroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(scrollSpeed == 0)
-            return;
-
-        float deltaX = scrollSpeed * Time.deltaTime;
-        ScrollBackground(image1,deltaX);
-        ScrollBackground(image2,deltaX);
-
-
-        if(image1.anchoredPosition.x <= -leftX)
+        if (GameManager.Instance.gameState == GameManager.GameState.Subway)
         {
-            image1.anchoredPosition = image2.anchoredPosition + new Vector2(imageWidth, 0);
+            if (scrollSpeed == 0)
+                return;
+
+            float deltaX = scrollSpeed * Time.deltaTime;
+            ScrollBackground(image1, deltaX);
+            ScrollBackground(image2, deltaX);
+
+            if (image1.anchoredPosition.x <= -leftX)
+            {
+                currentImage = image2;
+                image1.anchoredPosition = image2.anchoredPosition + new Vector2(imageWidth, 0);
+            }
+            if (image2.anchoredPosition.x <= -leftX)
+            {
+                currentImage = image1;
+                image2.anchoredPosition = image1.anchoredPosition + new Vector2(imageWidth, 0);
+            }
         }
-        if (image2.anchoredPosition.x <= -leftX)
-        {
-            image2.anchoredPosition = image1.anchoredPosition + new Vector2(imageWidth, 0);
-        }
+
+        ShowStationBackground();
     }
 
     private void ScrollBackground(RectTransform rect, float delta)
     {
         rect.anchoredPosition -= new Vector2(delta, 0);
+    }
+
+    private void ShowStationBackground()
+    {
+        StationManager station = StationManager.Instance;
+        if (type == BackgroundType.Underground)
+        {
+            if (SubwayGameManager.Instance.isStopping) // 정차중이라면
+            {
+                gameObject.SetActive(false);
+                //float stopTime = station.subwayLines[station.currentLineIdx].stations[station.currentStationIdx].stopTime;
+
+                //if (currentImage == image1)
+                //{
+
+                //}
+                //else if (currentImage == image2)
+                //{
+
+                //}
+            }
+        }
+    }
+
+    private void ShowConnecter()
+    {
+        if (type == BackgroundType.Hangang)
+        {
+
+
+        }
     }
 }

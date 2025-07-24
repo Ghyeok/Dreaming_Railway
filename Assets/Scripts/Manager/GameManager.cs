@@ -15,11 +15,13 @@ public class GameManager : SingletonManagers<GameManager>
         None,
         Tutorial,
         Normal,
-        Infinite
+        Infinite,
     }
 
     public GameState gameState;
-    public GameMode gameMode;  
+    public GameMode gameMode;
+
+    public int infiniteCount;
 
     public override void Awake()
     {
@@ -35,6 +37,13 @@ public class GameManager : SingletonManagers<GameManager>
         StationManager.Instance.ResetStationManager();
         SubwayPlayerManager.Instance.ResetPlayerManager();
         TiredManager.Instance.ResetTiredManager();
+        TimerManager.Instance.ResetTimer();
         TransferManager.Instance.ResetTransferManager();
+    }
+
+    public void OnSelectInfiniteMode()
+    {
+        TransferManager.Instance.ResetTransferManager();
+        StationManager.Instance.ResetStationManager();
     }
 }

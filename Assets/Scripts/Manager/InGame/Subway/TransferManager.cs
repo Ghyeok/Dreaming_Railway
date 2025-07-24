@@ -43,26 +43,33 @@ public class TransferManager : SingletonManagers<TransferManager>
 
     private void DetermineMaxTransferCount()
     {
-        switch (StageSelectManager.Instance.currentStage)
+        if (GameManager.Instance.gameMode != GameManager.GameMode.Infinite)
         {
-            case 0: // 튜토리얼
-                maxTransferCount = 1;
-                break;
-            case 1: // Day 1
-                maxTransferCount = 3;
-                break;
-            case 2: // Day 2
-                maxTransferCount = 4;
-                break;
-            case 3: // Day 3
-                maxTransferCount = 5;
-                break;
-            case 4: // Day 4
-                maxTransferCount = 7;
-                break;
-            case 5: // Day 5
-                maxTransferCount = 9;
-                break;
+            switch (StageSelectManager.Instance.currentStage)
+            {
+                case 0: // 튜토리얼
+                    maxTransferCount = 1;
+                    break;
+                case 1: // Day 1
+                    maxTransferCount = 3;
+                    break;
+                case 2: // Day 2
+                    maxTransferCount = 4;
+                    break;
+                case 3: // Day 3
+                    maxTransferCount = 5;
+                    break;
+                case 4: // Day 4
+                    maxTransferCount = 7;
+                    break;
+                case 5: // Day 5
+                    maxTransferCount = 9;
+                    break;
+            }
+        }
+        else
+        {
+            maxTransferCount = 99;
         }
     }
 
@@ -87,7 +94,17 @@ public class TransferManager : SingletonManagers<TransferManager>
 
             curTransferCount++;
             TimerManager.Instance.stationTime = 0f;
-            SubwayGameManager.Instance.standingCount++;
+
+            if (SubwayGameManager.Instance.isStandingCoolDown)
+            {
+                SubwayGameManager.Instance.standingCount++;
+                if(SubwayGameManager.Instance.standingCount >= 3)
+                {
+                    SubwayGameManager.Instance.isStandingCoolDown = false;
+                    SubwayGameManager.Instance.standingCount = 0;
+                }
+            }
+
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
 
@@ -103,6 +120,7 @@ public class TransferManager : SingletonManagers<TransferManager>
         Debug.Log("입석 성공!");
 
         curTransferCount++;
+        SubwayGameManager.Instance.isStandingCoolDown = true; // 쿨다운 시작
         TimerManager.Instance.stationTime = 0f;
         StationManager.Instance.currentLineIdx++;
         StationManager.Instance.currentStationIdx = 0;
@@ -120,7 +138,8 @@ public class TransferManager : SingletonManagers<TransferManager>
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
             && TimerManager.Instance.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
-            && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
+            && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination
+            && GameManager.Instance.gameState != GameManager.GameState.Dream)
         {
             hasArrived = true;
 
@@ -130,7 +149,6 @@ public class TransferManager : SingletonManagers<TransferManager>
 
             StageSelectManager.Instance.currentStage++;
             SceneManager.LoadScene("StageSelect");
-            StationManager.Instance.GenerateSubwayLines(); // Day가 바뀌면서 새로운 노선 생성
 
             hasArrived = false; 
         }
