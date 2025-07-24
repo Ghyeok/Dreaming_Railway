@@ -111,7 +111,7 @@ public class SoundManager : SingletonManagers<SoundManager>
     {
         PlayAudioClip("DreamMusic", Define.Sounds.BGM);
     }
-  
+    
     public void JumpSFX()
     {
         PlayAudioClip("JumpSound", Define.Sounds.SFX);

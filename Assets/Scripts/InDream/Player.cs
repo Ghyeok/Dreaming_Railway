@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 public class Player : MonoBehaviour
@@ -23,6 +22,8 @@ public class Player : MonoBehaviour
     public bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
     private bool isGrounded;
+    private bool isTouchedExit = false;
+
     private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();
 
     private Rigidbody2D rigid;
@@ -184,7 +185,7 @@ public class Player : MonoBehaviour
     {// 바닥 윗 표면에 착지할 때만
         if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
         {
-            if (!isGrounded)
+            if (!isGrounded && isJump)
             {
                 SoundManager.Instance.LandSFX();
             }
@@ -196,10 +197,11 @@ public class Player : MonoBehaviour
         }
 
         //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
-        if (collision.collider.CompareTag("ExitDoor"))
+        if (collision.collider.CompareTag("ExitDoor") && !isTouchedExit)
         {
+            isTouchedExit = true;
             SoundManager.Instance.ExitDreamSFX();
-            SceneManager.LoadScene("TestSubwayScene");
+            FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
 
         }
     }
