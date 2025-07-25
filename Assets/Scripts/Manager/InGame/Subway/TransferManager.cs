@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 // 환승 로직을 담당하는 매니저
 public class TransferManager : SingletonManagers<TransferManager>, IManager
 {
+    public bool isInitialized = false;
+
     public int curTransferCount;
     public int maxTransferCount;
 
@@ -19,7 +21,8 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
     public void Init()
     {
-
+        isInitialized = true;
+        DetermineMaxTransferCount();
     }
 
     private void InitScene()
@@ -30,6 +33,8 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     // Update is called once per frame
     void Update()
     {
+        if (!isInitialized || !StationManager.Instance.isInitialized) return;
+
         SuccessTransfer();
         SuccessGetOff();
     }

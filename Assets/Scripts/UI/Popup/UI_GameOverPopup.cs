@@ -113,8 +113,6 @@ public class UI_GameOverPopup : UI_Popup
         playerInputScript.isInObstacle = false;
         
         StartCoroutine(FadeInCoroutine(fadeInDuration));
-
-
     }
 
     void OnDisable()

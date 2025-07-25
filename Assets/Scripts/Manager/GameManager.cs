@@ -25,7 +25,6 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
     public void Init()
     {
-        UIManager.Instance.ShowSceneUI<UI_Scene>("UI_MainMenuScene");
         gameState = GameState.Main; // 메인에서 시작
     }
 

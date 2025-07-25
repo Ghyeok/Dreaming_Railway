@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 // 역 생성을 담당하는 매니저
 public class StationManager : SingletonManagers<StationManager>, IManager
 {
+    public bool isInitialized = false;  
+
     public float minTravelTime = 10f;
     public float maxTravelTime = 15f;
     public float minStopTime = 6f;
@@ -18,7 +20,8 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
     {
-
+        isInitialized = true;
+        GenerateSubwayLines();
     }
 
     private void InitScene()
@@ -29,6 +32,8 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     // Update is called once per frame
     void Update()
     {
+        if(!isInitialized || !TransferManager.Instance.isInitialized) return;
+
         CheckCurrentStation();
         IsSubwayStopped();
     }
