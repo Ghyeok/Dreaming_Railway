@@ -166,7 +166,11 @@ public class UI_SubwayScene : UI_Scene
     private void ShowStandingCoolDown()
     {
         Image stand = GetImage((int)Images.StandingCoolTimeImage);
-        stand.fillAmount = (SubwayGameManager.Instance.standingCount - 1) * 0.5f;
+
+        if (SubwayGameManager.Instance.isStandingCoolDown)
+        {
+            stand.fillAmount = 1 - (SubwayGameManager.Instance.standingCount - 1) * 0.5f;
+        }
 
         if (SubwayGameManager.Instance.standingCount >= 3)
         {
