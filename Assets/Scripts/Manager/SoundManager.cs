@@ -26,10 +26,13 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public void Init()
     {
-        bgmObject = new GameObject("BGM");
-        bgmObject.transform.parent = this.transform;
-        audioSources[(int)Define.Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
-        audioSources[(int)Define.Sounds.BGM].loop = true;
+        if (transform.Find("BGM") == null)
+        {
+            bgmObject = new GameObject("BGM");
+            bgmObject.transform.parent = this.transform;
+            audioSources[(int)Define.Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
+            audioSources[(int)Define.Sounds.BGM].loop = true;
+        }
 
         sfxObject = new GameObject("SFX");
         sfxObject.transform.parent = this.transform;
