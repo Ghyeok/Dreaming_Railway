@@ -96,7 +96,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }

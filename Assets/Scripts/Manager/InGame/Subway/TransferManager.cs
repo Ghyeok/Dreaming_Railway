@@ -91,6 +91,8 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             if (DreamManager.Instance.isInDream) // 환승해야 하는데 꿈 속에 있으면 게임오버
             {
                 SubwayGameManager.Instance.isGameOver = true;
+                SubwayGameManager.Instance.GameOver();
+                return;
             }
 
             SubwayGameManager.Instance.isStopping = false;
