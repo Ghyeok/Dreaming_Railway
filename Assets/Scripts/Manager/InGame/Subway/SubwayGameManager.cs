@@ -27,6 +27,40 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         SoundManager.Instance.sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME");
     }
 
+    private void InitScene()
+    {
+        TimerManager.Instance.StartTimer();
+
+        GameManager.Instance.gameState = GameManager.GameState.Subway;
+
+        UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
+        SoundManager.Instance.SubwayBGM();
+
+        DreamManager.Instance.SetDreamTimeSpeedNormal();
+
+        isStopping = false;
+        isSlapCoolTime = false;
+
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
+            tiredDecreaseBySlap = 4f;
+        else
+            tiredDecreaseBySlap = 3f;
+
+        DreamManager.Instance.isInDream = false;
+
+        TimerManager.Instance.awakeTime = 0f;
+
+        if (standingCount == 2)
+        {
+            standingCount = 0;
+        }
+
+        if (isGameOver)
+        {
+            GameOver();
+        }
+    }
+
     public void ResetGameManager()
     {
         standingCount = 0;
@@ -59,36 +93,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         {
             Debug.Log("깨어있던 시간이 음수입니다.");
             return 0;
-        }
-    }
-
-    private void InitScene()
-    {
-        TimerManager.Instance.StartTimer();
-
-        GameManager.Instance.gameState = GameManager.GameState.Subway;
-
-        UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
-        SoundManager.Instance.SubwayBGM();
-
-        DreamManager.Instance.SetDreamTimeSpeedNormal();
-
-        isStopping = false;
-        isSlapCoolTime = false;
-        tiredDecreaseBySlap = 3f;
-
-        DreamManager.Instance.isInDream = false;
-
-        TimerManager.Instance.awakeTime = 0f;
-
-        if(standingCount == 2)
-        {
-            standingCount = 0;
-        }
-
-        if (isGameOver)
-        {
-            GameOver();
         }
     }
 
