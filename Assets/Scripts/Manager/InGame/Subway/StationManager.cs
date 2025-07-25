@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // 역 생성을 담당하는 매니저
-public class StationManager : SingletonManagers<StationManager>
+public class StationManager : SingletonManagers<StationManager>, IManager
 {
     public float minTravelTime = 10f;
     public float maxTravelTime = 15f;
@@ -16,9 +16,9 @@ public class StationManager : SingletonManagers<StationManager>
     public int currentStationIdx; // 현재역 인덱스
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
-        //GenerateSubwayLines();
+
     }
 
     private void InitScene()

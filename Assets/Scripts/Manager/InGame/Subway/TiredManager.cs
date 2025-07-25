@@ -2,18 +2,16 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TiredManager : SingletonManagers<TiredManager>
-{
+public class TiredManager : SingletonManagers<TiredManager>, IManager
+{ 
     public float maxTired;
     public float currentTired;
 
     public bool isTiredHalf; // true면 조는 모션, false면 멀쩡한 모션
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
-        
+
     }
 
     // Update is called once per frame

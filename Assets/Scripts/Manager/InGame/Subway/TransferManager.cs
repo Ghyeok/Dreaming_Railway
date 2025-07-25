@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 
 // 환승 로직을 담당하는 매니저
-public class TransferManager : SingletonManagers<TransferManager>
+public class TransferManager : SingletonManagers<TransferManager>, IManager
 {
     public int curTransferCount;
     public int maxTransferCount;
@@ -17,15 +17,14 @@ public class TransferManager : SingletonManagers<TransferManager>
     private bool hasTransfered = false;
     private bool hasArrived = false;
 
+    public void Init()
+    {
+
+    }
+
     private void InitScene()
     {
         DetermineMaxTransferCount();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
     }
 
     // Update is called once per frame

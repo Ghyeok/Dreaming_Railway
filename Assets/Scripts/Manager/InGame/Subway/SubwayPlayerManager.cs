@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 
 // 지하철 내 플레이어의 행동, 상태를 관리하는 매니저이다.
-public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
+public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>, IManager
 {
     public enum PlayerState
     {
@@ -30,16 +30,9 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>
     public PlayerBehave playerBehave;
     public int slapNum;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void ResetPlayerManager()

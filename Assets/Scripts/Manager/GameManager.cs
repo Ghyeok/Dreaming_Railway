@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : SingletonManagers<GameManager>
+public class GameManager : SingletonManagers<GameManager>, IManager
 {
     public enum GameState
     {
@@ -23,10 +23,8 @@ public class GameManager : SingletonManagers<GameManager>
 
     public int infiniteCount;
 
-    public override void Awake()
+    public void Init()
     {
-        base.Awake();
-
         UIManager.Instance.ShowSceneUI<UI_Scene>("UI_MainMenuScene");
         gameState = GameState.Main; // 메인에서 시작
     }

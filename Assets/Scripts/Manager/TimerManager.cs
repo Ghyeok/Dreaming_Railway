@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class TimerManager : SingletonManagers<TimerManager>
+public class TimerManager : SingletonManagers<TimerManager>, IManager
 {
     public TextMeshProUGUI timerText;
     public float curTime; // 전체 게임의 시간
@@ -14,8 +14,7 @@ public class TimerManager : SingletonManagers<TimerManager>
     private int sec;
     private int milSec;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
         StartTimer();
     }

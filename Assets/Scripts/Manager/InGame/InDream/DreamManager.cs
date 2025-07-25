@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DreamManager : SingletonManagers<DreamManager>
+public class DreamManager : SingletonManagers<DreamManager>, IManager
 {
     public bool isInDream;
 
@@ -9,24 +9,19 @@ public class DreamManager : SingletonManagers<DreamManager>
     private float mindreamTimeSpeed;
     private float maxdreamTimeSpeed;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void RandomDreamTimeSpeed()
     {
-        mindreamTimeSpeed = 3f;
-        maxdreamTimeSpeed = 4f;
+        {
+            mindreamTimeSpeed = 3f;
+            maxdreamTimeSpeed = 4f;
 
-        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+            dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+        }
     }
 
     public void SetDreamTimeSpeedNormal()

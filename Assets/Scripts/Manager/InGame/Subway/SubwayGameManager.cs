@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 /* 플레이어가 지하철에 있을 때의 전체적인 흐름을 관리하는 매니저이다.
  * 게임 모드, 뺨 치기 쿨타임, 뺨 치기 피로도 감소량, 현재 Day 몇인지 등등을 다룬다.
  */
-public class SubwayGameManager : SingletonManagers<SubwayGameManager>
+public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 {
     public bool isSlapCoolTime;
     public float slapCoolTime;
@@ -17,22 +17,8 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>
 
     public bool isGameOver;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-
         standingCount = 0;
         isStandingCoolDown = false;
         slapCoolTime = 5f;

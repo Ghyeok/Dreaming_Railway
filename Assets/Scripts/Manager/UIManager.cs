@@ -2,17 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIManager : SingletonManagers<UIManager>
+public class UIManager : SingletonManagers<UIManager>, IManager
 {
     private GameObject _root;
 
     public float canvasWidth = 1920f;
     public float canvasHeight = 1080f;
 
-    public override void Awake()
+    public void Init()
     {
-        base.Awake();
-
 #if UNITY_ANDROID
         Screen.SetResolution(1920, 1080, true);
 #endif

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 *  AudioSource : 해당 클립을 관리하는 역할
 */
 
-public class SoundManager : SingletonManagers<SoundManager>
+public class SoundManager : SingletonManagers<SoundManager>, IManager
 {
     private AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
@@ -24,11 +24,8 @@ public class SoundManager : SingletonManagers<SoundManager>
     public float bgmVolume;
     public float sfxVolume;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override void Awake()
+    public void Init()
     {
-        base.Awake();
-
         bgmObject = new GameObject("BGM");
         bgmObject.transform.parent = this.transform;
         audioSources[(int)Define.Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
@@ -51,17 +48,6 @@ public class SoundManager : SingletonManagers<SoundManager>
         SetSFXOnOffState();
 
         MainBGM();
-    }
-
-    private void Start()
-    {
-
-    }
-      
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void PlayAudioClip(string path, Define.Sounds newSoundType, float volumeScale = 1f)

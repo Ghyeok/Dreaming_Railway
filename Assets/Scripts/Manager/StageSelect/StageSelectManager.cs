@@ -3,29 +3,21 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StageSelectManager : SingletonManagers<StageSelectManager>
+public class StageSelectManager : SingletonManagers<StageSelectManager>, IManager
 {
     public int currentStage;
     public int maxClearStage;
 
     public static event Action StageSelected;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init()
     {
-        
+        maxClearStage = PlayerPrefs.GetInt("MaxClearStage", 0);
     }
 
     public void InvokeStageSelect()
     {
         StageSelected?.Invoke();
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        maxClearStage = PlayerPrefs.GetInt("MaxClearStage", 0);
     }
 
     // Update is called once per frame
