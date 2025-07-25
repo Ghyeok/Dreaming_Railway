@@ -11,12 +11,22 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
 
     public void Init()
     {
+        currentTired = 30f;
+        maxTired = 100f;
+    }
+
+    private void InitScene()
+    {
 
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.gameState != GameManager.GameState.Subway &&
+            GameManager.Instance.gameState != GameManager.GameState.Dream)
+            return;
+
         SubwayCharacterSleepingMotion();
         IncreaseTired();
         IsTiredHalf();
@@ -72,18 +82,6 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
                 SceneManager.LoadScene("InDream_PlayerMove");
             }
         }
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-        currentTired = 30f;
-        maxTired = 100f;
-    }
-
-    private void InitScene()
-    {
-
     }
 
     private void OnEnable()
