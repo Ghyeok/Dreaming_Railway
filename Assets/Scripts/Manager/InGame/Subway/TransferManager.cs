@@ -154,6 +154,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             Debug.Log("목적지 도착!");
 
             StageSelectManager.Instance.currentStage++;
+            GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             SceneManager.LoadScene("StageSelect");
 
             hasArrived = false; 
