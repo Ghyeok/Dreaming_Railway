@@ -71,9 +71,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
         SoundManager.Instance.SetBGMOn();
         SoundManager.Instance.SetSFXOn();
-
-        SoundManager.Instance.bgmVolume = 1f;
-        SoundManager.Instance.sfxVolume = 1f;
     }
 
     public int SetDreamMapLengthByAwakenTime()
