@@ -19,6 +19,7 @@ public class UI_StageSelectScene : UI_Scene
         Stage3,
         Stage4,
         Stage5,
+        BackButton,
     }
 
     public enum Images
@@ -51,6 +52,9 @@ public class UI_StageSelectScene : UI_Scene
 
         GameObject stage5 = GetButton((int)Buttons.Stage5).gameObject;
         AddUIEvent(stage5, Stage5ButtonOnClicked);
+
+        GameObject back = GetButton((int)Buttons.BackButton).gameObject;
+        AddUIEvent(back, BackButtonOnClicked);
 
         SetActiveTrueButtons();
     }
@@ -92,6 +96,11 @@ public class UI_StageSelectScene : UI_Scene
         yield return new WaitForSeconds(4f);
 
         SceneManager.LoadScene("TestSubwayScene");
+    }
+
+    private void BackButtonOnClicked(PointerEventData data)
+    {
+        SceneManager.LoadScene("MainScene");
     }
 
     private void Stage0ButtonOnClicked(PointerEventData data)
