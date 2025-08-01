@@ -13,9 +13,9 @@ public class UIManager : SingletonManagers<UIManager>, IManager
     {
         ShowSceneUI<UI_Scene>("UI_MainMenuScene");
 
-#if UNITY_ANDROID
-        Screen.SetResolution(1920, 1080, true);
-#endif
+//#if UNITY_ANDROID
+//        Screen.SetResolution(1920, 1080, true);
+//#endif
     }
 
     public static GameObject Root

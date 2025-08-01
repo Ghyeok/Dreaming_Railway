@@ -8,6 +8,7 @@ public class ManagerInitializer : MonoBehaviour
         List<IManager> managersInOrder = new()
         {
             GameManager.Instance,
+            ResolutionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
             StageSelectManager.Instance,
