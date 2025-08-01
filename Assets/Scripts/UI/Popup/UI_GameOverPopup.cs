@@ -80,6 +80,7 @@ public class UI_GameOverPopup : UI_Popup
     private void MainMenuButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
+        GameManager.Instance.ResetGame();
         SubwayGameManager.Instance.isGameOver = false;
         SceneManager.LoadScene("MainScene");
     }

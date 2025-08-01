@@ -14,14 +14,18 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     }
 
+    public void ResetDreamManager()
+    {
+        isInDream = false;
+    }
+
     public void RandomDreamTimeSpeed()
     {
-        {
-            mindreamTimeSpeed = 3f;
-            maxdreamTimeSpeed = 4f;
+        mindreamTimeSpeed = 3f;
+        maxdreamTimeSpeed = 4f;
 
-            dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
-        }
+        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+
     }
 
     public void SetDreamTimeSpeedNormal()

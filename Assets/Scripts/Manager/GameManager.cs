@@ -36,6 +36,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         TiredManager.Instance.ResetTiredManager();
         TimerManager.Instance.ResetTimer();
         TransferManager.Instance.ResetTransferManager();
+        DreamManager.Instance.ResetDreamManager();
     }
 
     public void OnSelectInfiniteMode()
