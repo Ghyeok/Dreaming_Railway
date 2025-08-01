@@ -24,11 +24,6 @@ public class StationManager : SingletonManagers<StationManager>, IManager
         GenerateSubwayLines();
     }
 
-    private void InitScene()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -172,30 +167,6 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                     }
                     transferCnt++;
                 }
-                else if (i == subwayLines.Count - 1)
-                {
-                    if (transferCnt >= 0 && transferCnt <= 3)
-                    {
-                        int transferStationIdx = Random.Range(10, 15);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                    else if (transferCnt >= 4 && transferCnt <= 6)
-                    {
-                        int transferStationIdx = Random.Range(6, 11);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                    else if (transferCnt >= 7)
-                    {
-                        int transferStationIdx = Random.Range(3, 7);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                }
             }
         }
     }
@@ -236,26 +207,6 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 SubwayGameManager.Instance.isStopping = (timer.curTime > stopStart && timer.curTime < stopEnd);
             }
             accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
-        }
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "TestSubwayScene")
-        {
-            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
-            InitScene();
         }
     }
 }
