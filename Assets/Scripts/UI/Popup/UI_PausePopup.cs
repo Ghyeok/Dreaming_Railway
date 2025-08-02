@@ -256,7 +256,14 @@ public class UI_PausePopup : UI_Popup
 
     private void SettingButtonOnClicked(PointerEventData data)
     {
-        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SettingPopup");
+        if (!DreamManager.Instance.isInDream)
+        {
+            UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SettingPopup");
+        }
+        else if (DreamManager.Instance.isInDream)
+        {
+            UIManager.Instance.ShowPopupUI<UI_Popup>("UI_DreamSettingPopup");
+        }
     }
 
     private void MainMenuButtonOnclicked(PointerEventData data)
