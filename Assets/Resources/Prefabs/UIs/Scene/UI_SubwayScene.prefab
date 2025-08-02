@@ -2143,7 +2143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54d262b0ca5c7047823558bca8d5997, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
+  type: 3
   canvasRect: {fileID: 6414106059898829346}
   image1: {fileID: 5743346159987648016}
   image2: {fileID: 8203145073334026110}
