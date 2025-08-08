@@ -93,7 +93,7 @@ public class UI_StageSelectScene : UI_Scene
         SetActiveFalseButtons();
 
         StageSelectManager.Instance.InvokeStageSelect();
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(6.7f);
 
         SceneManager.LoadScene("TestSubwayScene");
     }
