@@ -30,14 +30,14 @@ public class UI_FadeBlackPanel : UI_Popup
         isInited = true;
     }
 
-    private void SetAlpha(float alpha)
+    public void SetAlpha(float alpha)
     {
         if (_canvasGroup != null)
         _canvasGroup.alpha = alpha;
     }
 
-    //페이드 인 (검은 화면 보여주다가 닫기)
-    public void StartFadeIn(float duration, float waitTime)
+    //페이드 아웃 (검은 화면 보여주다가 닫기)
+    public void StartFadeOut(float duration, float waitTime)
     {
         if (!isInited)
         {
@@ -47,8 +47,8 @@ public class UI_FadeBlackPanel : UI_Popup
         StartCoroutine(FadeAndDestroy(0f, 1f, duration, waitTime));
     }
     
-    //페이드 아웃
-    public void StartFadeOut(float duration)
+    //페이드 인  (밝아지는거)
+    public void StartFadeIn(float duration)
     {
         if (!isInited)
         {
@@ -69,26 +69,26 @@ public class UI_FadeBlackPanel : UI_Popup
     }
     
     //페이드 인+아웃 코루틴
-    private IEnumerator FadeRoutine(float duration, float waitTime)
+    public IEnumerator FadeRoutine(float duration, float waitTime)
     {
-        yield return StartCoroutine(FadeIn(duration));
-        yield return new WaitForSeconds(waitTime);
         yield return StartCoroutine(FadeOut(duration));
+        yield return new WaitForSeconds(waitTime);
+        yield return StartCoroutine(FadeIn(duration));
         ClosePopupUI();
     }
 
-    public IEnumerator FadeIn(float duration)
+    public IEnumerator FadeOut(float duration)
     {
         yield return StartCoroutine(Fade(0f, 1f, duration));
     }
 
-    public IEnumerator FadeOut(float duration)
+    public IEnumerator FadeIn(float duration)
     {
         yield return StartCoroutine(Fade(1f, 0f, duration));
     }
 
     //페이드 인/ 아웃 따로
-    private IEnumerator FadeAndDestroy(float from, float to, float duration, float waitTime)
+    public IEnumerator FadeAndDestroy(float from, float to, float duration, float waitTime)
     {
         yield return StartCoroutine(Fade(from, to, duration));
 
@@ -101,7 +101,7 @@ public class UI_FadeBlackPanel : UI_Popup
     }
 
     //페이드 구현
-    private IEnumerator Fade(float from, float to, float duration)
+    public IEnumerator Fade(float from, float to, float duration)
     {
         float timer = 0f;
         while (timer < duration)
