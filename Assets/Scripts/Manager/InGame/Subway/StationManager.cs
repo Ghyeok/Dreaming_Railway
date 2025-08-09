@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 // 역 생성을 담당하는 매니저
 public class StationManager : SingletonManagers<StationManager>, IManager
 {
-    public bool isInitialized = false;  
+    public bool isInitialized = false;
 
     public float minTravelTime = 10f;
     public float maxTravelTime = 15f;
@@ -27,7 +27,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     // Update is called once per frame
     void Update()
     {
-        if(!isInitialized || !TransferManager.Instance.isInitialized) return;
+        if (!isInitialized || !TransferManager.Instance.isInitialized) return;
 
         CheckCurrentStation();
         IsSubwayStopped();
@@ -207,6 +207,15 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 SubwayGameManager.Instance.isStopping = (timer.curTime > stopStart && timer.curTime < stopEnd);
             }
             accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
+        }
+    }
+
+    public void CheckLastLine() // 마지막 노선일 경우
+    {
+        if (currentLineIdx == TransferManager.Instance.maxTransferCount && GameManager.Instance.gameState == GameManager.GameState.Subway)
+        {
+            SubwayGameManager.Instance.isStandingCoolDown = true; // 환승 방지
+            SoundManager.Instance.LastLineSFX();
         }
     }
 }

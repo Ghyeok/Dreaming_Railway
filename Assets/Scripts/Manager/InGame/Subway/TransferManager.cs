@@ -109,8 +109,6 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             if (DreamManager.Instance.isInDream)
             {
                 SubwayGameManager.Instance.isGameOver = true;
-                SubwayGameManager.Instance.GameOver();
-                return;
             }
 
             SubwayGameManager.Instance.isStopping = false;
@@ -187,11 +185,13 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
+        OnTransferSuccess += StationManager.Instance.CheckLastLine;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        OnTransferSuccess -= StationManager.Instance.CheckLastLine;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
