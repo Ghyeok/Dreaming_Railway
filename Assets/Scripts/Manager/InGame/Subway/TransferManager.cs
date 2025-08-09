@@ -83,7 +83,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             return;
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && TimerManager.Instance.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
+            && TimerManager.Instance.lineTime >= StationManager.Instance.GetCurrentLineTotalTime()
             && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
         {
             hasTransfered = true;
@@ -99,7 +99,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             Debug.Log("환승 성공!");
 
             curTransferCount++;
-            TimerManager.Instance.stationTime = 0f;
+            TimerManager.Instance.lineTime = 0f;
 
             if (SubwayGameManager.Instance.isStandingCoolDown)
             {
@@ -127,7 +127,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
         curTransferCount++;
         SubwayGameManager.Instance.isStandingCoolDown = true; // 쿨다운 시작
-        TimerManager.Instance.stationTime = 0f;
+        TimerManager.Instance.lineTime = 0f;
         StationManager.Instance.currentLineIdx++;
         StationManager.Instance.currentStationIdx = 0;
 
@@ -143,7 +143,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             return;
 
         if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && TimerManager.Instance.stationTime >= StationManager.Instance.GetCurrentLineTotalTime()
+            && TimerManager.Instance.lineTime >= StationManager.Instance.GetCurrentLineTotalTime()
             && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination
             && GameManager.Instance.gameState != GameManager.GameState.Dream)
         {
