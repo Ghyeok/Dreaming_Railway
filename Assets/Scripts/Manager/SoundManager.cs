@@ -169,14 +169,9 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
         PlayAudioClip("GameOver", Define.Sounds.SFX);
     }
 
-    private void SetBGMOnOffState()
+    public void LastLineSFX()
     {
-        audioSources[(int)Define.Sounds.BGM].mute = IsBGMOff;
-    }
-
-    private void SetSFXOnOffState()
-    {
-        audioSources[(int)Define.Sounds.SFX].mute = IsSFXOff;
+        PlayAudioClip("LastLine", Define.Sounds.SFX);
     }
 
     public float SetSFXVolume(float volume)
