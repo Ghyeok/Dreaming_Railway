@@ -9,7 +9,7 @@ public class UI_GameOverPopup : UI_Popup
 {
     public GameObject blockerPanel;
     public CanvasGroup canvasGroup;
-    private Player playerInputScript;
+    private GameObject playerInputScript;
     [SerializeField] private float fadeInDuration = 1f;
 
     public enum Buttons
@@ -30,6 +30,7 @@ public class UI_GameOverPopup : UI_Popup
     void Start()
     {
         Init();
+
         if (blockerPanel != null)
         {
             blockerPanel.SetActive(false);
@@ -38,7 +39,9 @@ public class UI_GameOverPopup : UI_Popup
 
     void Awake()
     {
-        playerInputScript = GameObject.Find("Player").GetComponent<Player>();
+        var player = FindAnyObjectByType<Player>();
+        if (player != null)
+            playerInputScript = player.gameObject;
     }
 
     // Update is called once per frame
@@ -63,7 +66,6 @@ public class UI_GameOverPopup : UI_Popup
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked);
 
-        SoundManager.Instance.SetBGMOff();
         SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
 
         TimerManager.Instance.StopTimer();
@@ -73,6 +75,7 @@ public class UI_GameOverPopup : UI_Popup
     private void RetryButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
+        SubwayGameManager.Instance.isGameOver = false;
         GameManager.Instance.ResetGame();
         SceneManager.LoadScene("TestSubwayScene");
     }
@@ -110,17 +113,9 @@ public class UI_GameOverPopup : UI_Popup
         }
 
         //플레이어 움직임 비활성화
-        playerInputScript.enabled = false;
-        playerInputScript.isInObstacle = false;
+        playerInputScript.SetActive(false);
         
         StartCoroutine(FadeInCoroutine(fadeInDuration));
-    }
-
-    void OnDisable()
-    {
-        StopAllCoroutines();
-        blockerPanel.SetActive(false);
-        playerInputScript.enabled = true;
     }
 
     private IEnumerator FadeInCoroutine(float duration)
