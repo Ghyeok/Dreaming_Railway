@@ -115,9 +115,7 @@ AnimationClip:
     - time: 4.75
       value: {fileID: 6696850576463018377, guid: d9e7bf2907f0489459b5923b90d42042, type: 3}
     - time: 4.8333335
-      value: {fileID: -8313025922545682947, guid: eadd470800f24e6429811c5aeda605d2, type: 3}
-    - time: 4.9166665
-      value: {fileID: 4662415311845509367, guid: 0b84766cc7c57c848ba7a26316633c6a, type: 3}
+      value: {fileID: 6696850576463018377, guid: d9e7bf2907f0489459b5923b90d42042, type: 3}
     attribute: m_Sprite
     path: 
     classID: 114
@@ -187,14 +185,13 @@ AnimationClip:
     - {fileID: 4725084426916735363, guid: 298544ba0211b4f4caa4686b095a3b36, type: 3}
     - {fileID: -1354138305090372265, guid: 0d23d4dfa0a4db84abc325473170fa16, type: 3}
     - {fileID: 6696850576463018377, guid: d9e7bf2907f0489459b5923b90d42042, type: 3}
-    - {fileID: -8313025922545682947, guid: eadd470800f24e6429811c5aeda605d2, type: 3}
-    - {fileID: 4662415311845509367, guid: 0b84766cc7c57c848ba7a26316633c6a, type: 3}
+    - {fileID: 6696850576463018377, guid: d9e7bf2907f0489459b5923b90d42042, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 5
+    m_StopTime: 4.916667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -214,7 +211,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 3.1666667
+  - time: 3.25
     functionName: CallFadeOut
     data: 
     objectReferenceParameter: {fileID: 0}

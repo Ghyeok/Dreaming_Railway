@@ -68,6 +68,8 @@ public class UI_StageSelectScene : UI_Scene
     void Start()
     {
         Init();
+        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+        fadePanel.StartFadeIn(0.3f);
     }
 
     // Update is called once per frame
@@ -93,14 +95,14 @@ public class UI_StageSelectScene : UI_Scene
         SetActiveFalseButtons();
 
         StageSelectManager.Instance.InvokeStageSelect();
-        yield return new WaitForSeconds(6.7f);
+        yield return new WaitForSeconds(6.5f);
 
         SceneManager.LoadScene("TestSubwayScene");
     }
 
     private void BackButtonOnClicked(PointerEventData data)
     {
-        SceneManager.LoadScene("MainScene");
+        StartCoroutine(FadeAndLoadScene("MainScene"));
     }
 
     private void Stage0ButtonOnClicked(PointerEventData data)
@@ -150,5 +152,27 @@ public class UI_StageSelectScene : UI_Scene
         GameManager.Instance.ResetGame();
 
         StartCoroutine(EnterToSubway());
+    }
+
+    IEnumerator FadeAndLoadScene(string sceneName)
+    {
+        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+
+        fadePanel.Init();
+        yield return fadePanel.Fade(0f, 1f, 0.3f); //페이드아웃
+        
+        // 비동기 씬 로드
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false; // 페이드아웃 끝난 뒤 활성화
+
+        //씬이 거의 다 로드될 때까지 대기
+        while (async.progress < 0.9f)
+        {
+            yield return null;
+        }
+        async.allowSceneActivation = true;
+
+
+        yield return null;
     }
 }

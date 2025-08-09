@@ -48,6 +48,8 @@ public class UI_SubwayScene : UI_Scene
     void Start()
     {
         Init();
+        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+        fadePanel.StartFadeIn(0.3f);
     }
 
     // Update is called once per frame
