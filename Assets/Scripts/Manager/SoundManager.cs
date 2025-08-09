@@ -26,6 +26,12 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public void Init()
     {
+        if (!PlayerPrefs.HasKey("BGM_VOLUME")) PlayerPrefs.SetFloat("BGM_VOLUME", 1.0f);
+        if (!PlayerPrefs.HasKey("SFX_VOLUME")) PlayerPrefs.SetFloat("SFX_VOLUME", 1.0f);
+        if (!PlayerPrefs.HasKey("BGM_MUTE")) PlayerPrefs.SetInt("BGM_MUTE", 0);
+        if (!PlayerPrefs.HasKey("SFX_MUTE")) PlayerPrefs.SetInt("SFX_MUTE", 0);
+        PlayerPrefs.Save();
+
         if (transform.Find("BGM") == null)
         {
             bgmObject = new GameObject("BGM");
@@ -40,17 +46,26 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
         bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1.0f);
         sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1.0f);
-
-        audioSources[(int)Define.Sounds.BGM].volume = bgmVolume;
-        audioSources[(int)Define.Sounds.SFX].volume = sfxVolume;
-
         IsBGMOff = PlayerPrefs.GetInt("BGM_MUTE", 0) == 1;
         IsSFXOff = PlayerPrefs.GetInt("SFX_MUTE", 0) == 1;
 
-        SetBGMOnOffState();
-        SetSFXOnOffState();
+        ApplyMuteAndVolume();
 
         MainBGM();
+    }
+
+    private void ApplyMuteAndVolume()
+    {
+        if (audioSources[(int)Define.Sounds.BGM] != null)
+        {
+            audioSources[(int)Define.Sounds.BGM].volume = Mathf.Clamp01(bgmVolume);
+            audioSources[(int)Define.Sounds.BGM].mute = IsBGMOff;
+        }
+        if (audioSources[(int)Define.Sounds.SFX] != null)
+        {
+            audioSources[(int)Define.Sounds.SFX].volume = Mathf.Clamp01(sfxVolume);
+            audioSources[(int)Define.Sounds.SFX].mute = IsSFXOff;
+        }
     }
 
     public void PlayAudioClip(string path, Define.Sounds newSoundType, float volumeScale = 1f)
@@ -167,60 +182,51 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
     public float SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
-        SFXSource.volume = sfxVolume;
-
         PlayerPrefs.SetFloat("SFX_VOLUME", sfxVolume);
         PlayerPrefs.Save();
-
+        ApplyMuteAndVolume();
         return sfxVolume;
-
     }
 
     public float SetBGMVolume(float volume)
     {
         bgmVolume = Mathf.Clamp01(volume);
-        BGMSource.volume = bgmVolume;
-
         PlayerPrefs.SetFloat("BGM_VOLUME", bgmVolume);
         PlayerPrefs.Save();
-
+        ApplyMuteAndVolume();
         return bgmVolume;
     }
 
     public void SetSFXOff()
     {
         IsSFXOff = true;
-        SFXSource.mute = true;
-
         PlayerPrefs.SetInt("SFX_MUTE", 1);
         PlayerPrefs.Save();
+        ApplyMuteAndVolume();
     }
 
     public void SetSFXOn()
     {
         IsSFXOff = false;
-        SFXSource.mute = false;
-
         PlayerPrefs.SetInt("SFX_MUTE", 0);
         PlayerPrefs.Save();
+        ApplyMuteAndVolume();
     }
 
     public void SetBGMOff()
     {
         IsBGMOff = true;
-        BGMSource.mute = true;
-
         PlayerPrefs.SetInt("BGM_MUTE", 1);
         PlayerPrefs.Save();
+        ApplyMuteAndVolume();
     }
 
     public void SetBGMOn()
     {
         IsBGMOff = false;
-        BGMSource.mute = false;
-
         PlayerPrefs.SetInt("BGM_MUTE", 0);
         PlayerPrefs.Save();
+        ApplyMuteAndVolume();
     }
 
     private void OnEnable()
@@ -238,7 +244,6 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
     {
         if (scene.name == "MainScene")
         {
-            Debug.Log($"메인 씬 로드 : {gameObject.name}");
             MainBGM();
         }
     }

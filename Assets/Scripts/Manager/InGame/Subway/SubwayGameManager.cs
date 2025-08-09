@@ -23,39 +23,37 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         isStandingCoolDown = false;
         slapCoolTime = 5f;
 
-        SoundManager.Instance.bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME");
-        SoundManager.Instance.sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME");
+        SoundManager.Instance.SetBGMVolume(PlayerPrefs.GetFloat("BGM_VOLUME", 1f));
+        SoundManager.Instance.SetSFXVolume(PlayerPrefs.GetFloat("SFX_VOLUME", 1f));
     }
 
     private void InitScene()
     {
-        TimerManager.Instance.StartTimer();
+        TimerManager.Instance.StartTimer(); // 타이머 시작
+        GameManager.Instance.gameState = GameManager.GameState.Subway; // 게임 상태를 지하철로
 
-        GameManager.Instance.gameState = GameManager.GameState.Subway;
+        UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene"); // 지하철 UI 출력
+        SoundManager.Instance.SubwayBGM(); // 지하철 BGM 재생
 
-        UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene");
-        SoundManager.Instance.SubwayBGM();
-
-        DreamManager.Instance.SetDreamTimeSpeedNormal();
+        DreamManager.Instance.SetDreamTimeSpeedNormal(); // 시간 흐름 속도 1로 초기화
 
         isStopping = false;
         isSlapCoolTime = false;
 
         if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
-            tiredDecreaseBySlap = 4f;
-        else
-            tiredDecreaseBySlap = 3f;
-
-        DreamManager.Instance.isInDream = false;
-
-        TimerManager.Instance.awakeTime = 0f;
-
-        if (standingCount == 2)
         {
-            standingCount = 0;
+            tiredDecreaseBySlap = 4f;
+        }
+        else
+        {
+            tiredDecreaseBySlap = 3f;
         }
 
-        if (isGameOver)
+        DreamManager.Instance.isInDream = false; // 꿈 속이 아니므로
+
+        TimerManager.Instance.awakeTime = 0f; // 지하철 씬이 로드되는 순간 깨어있는 시간 0으로 초기화
+
+        if (isGameOver && GameManager.Instance.gameState == GameManager.GameState.Subway) // 꿈 속에서 지하철로 돌아 왔을때, 환승역을 지나친 상태라면 게임오버 판정
         {
             GameOver();
         }
@@ -68,9 +66,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         slapCoolTime = 5f;
         isGameOver = false;
         tiredDecreaseBySlap = 3f;
-
-        SoundManager.Instance.SetBGMOn();
-        SoundManager.Instance.SetSFXOn();
     }
 
     public int SetDreamMapLengthByAwakenTime()
@@ -103,22 +98,29 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
-        StageSelectManager.StageSelected += GameManager.Instance.OnSelectInfiniteMode;
-
+        var gm = FindAnyObjectByType<GameManager>();
+        if (gm != null)
+        {
+            StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
+            StageSelectManager.StageSelected += GameManager.Instance.OnSelectInfiniteMode;
+        }
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
+
+        var gm = FindAnyObjectByType<GameManager>();
+        if (gm != null)
+        {
+            StageSelectManager.StageSelected -= GameManager.Instance.OnSelectInfiniteMode;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "TestSubwayScene")
         {
-            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
             InitScene();
         }
     }
