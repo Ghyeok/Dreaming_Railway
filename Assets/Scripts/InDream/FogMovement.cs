@@ -28,6 +28,8 @@ public class FogMovement : MonoBehaviour
     private bool IsGameOver = false;
     private bool gameOverTriggered = false; //한 번만 페이딩 함수 호출 하려고
     private Camera_move cameraMoveScript;
+    private Player player;
+    private bool playerMoveStarted = false;
 
 
 
@@ -65,6 +67,7 @@ public class FogMovement : MonoBehaviour
         {
             cameraMoveScript = Camera.main.GetComponent<Camera_move>();
         }
+        player = FindFirstObjectByType<Player>();
     }
 
 
@@ -75,6 +78,18 @@ public class FogMovement : MonoBehaviour
 
     void Update()
     {
+        if (!playerMoveStarted && player != null)
+        {
+           if (player.Speed != 0)
+            {
+                playerMoveStarted = true;
+            }
+            else
+            {
+                return; // 아직 안 움직였으면 안개 안 움직임
+            }
+        }
+        
         if (IsGameOver) return;
 
         //가속 이동

@@ -194,16 +194,7 @@ public class Player : MonoBehaviour
             MyAnimator.SetBool("IsGrounded", true);
             isJump = false;
             isGrounded = true;
-        }
-
-        //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
-        if (collision.collider.CompareTag("ExitDoor") && !isTouchedExit)
-        {
-            isTouchedExit = true;
-            SoundManager.Instance.ExitDreamSFX();
-            FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
-
-        }
+        }        
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -216,8 +207,8 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {   //장애물 감지
-
+    {   
+        //장애물 감지
         if (other.CompareTag("Obstacle"))
         {
 
@@ -229,6 +220,14 @@ public class Player : MonoBehaviour
                 triggeredObstacles.Add(other);
             }
 
+        }
+        
+        //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
+        if (other.CompareTag("ExitDoor") && !isTouchedExit)
+        {
+            isTouchedExit = true;
+            SoundManager.Instance.ExitDreamSFX();
+            FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
         }
     }
 

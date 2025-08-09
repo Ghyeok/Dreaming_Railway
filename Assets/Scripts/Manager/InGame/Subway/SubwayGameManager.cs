@@ -10,8 +10,6 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     public float slapCoolTime;
     public float tiredDecreaseBySlap;
     public int standingCount;
-    public bool isCanRetry = false; // 리겜용
-
     public bool isStandingCoolDown; // 입석 쿨타임?
     public bool isStopping; // 정차중
 
