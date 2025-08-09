@@ -64,7 +64,6 @@ public class SubwayPlayerManager : SingletonManagers<SubwayPlayerManager>, IMana
     {
         if (scene.name == "TestSubwayScene")
         {
-            Debug.Log($"지하철 씬 로드: {gameObject.name}");
             InitScene();
         }
     }

@@ -96,7 +96,6 @@ public class UI_MainMenuScene : UI_Scene
     {
         if (scene.name == "MainScene")
         {
-            Debug.Log($"메인 씬 로드 : {gameObject.name}");
             InitScene();
         }
     }

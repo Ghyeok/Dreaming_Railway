@@ -5,7 +5,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 {
     public TextMeshProUGUI timerText;
     public float curTime; // 전체 게임의 시간
-    public float stationTime; // 역 한개를 지나는 시간, 환승하면 0으로 초기화
+    public float lineTime; // 노선 한개를 지나는 시간, 환승하면 0으로 초기화
     public float awakeTime; // 깨어있던 시간
     public float playTime; // 실제 플레이 타임
     public bool isStop { get; private set; }
@@ -31,7 +31,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
         {
             playTime += Time.deltaTime;
             curTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
-            stationTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
+            lineTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
 
             if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
             {
@@ -53,7 +53,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
     public void ResetTimer()
     {
         curTime = 0f;
-        stationTime = 0f;
+        lineTime = 0f;
         awakeTime = 0f;
         playTime = 0f;
     }

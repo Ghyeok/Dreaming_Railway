@@ -46,7 +46,6 @@ public class StageSelectManager : SingletonManagers<StageSelectManager>, IManage
     {
         if (scene.name == "StageSelect")
         {
-            Debug.Log($"스테이지 씬 로드 : {scene.name}");
             UIManager.Instance.ShowSceneUI<UI_Scene>("UI_StageSelectScene");
             InitScene();
         }

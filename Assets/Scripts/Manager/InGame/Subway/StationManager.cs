@@ -182,7 +182,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
             accumulatedTime += subwayLines[currentLineIdx].stations[i].travelTime;
             accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
 
-            if (timer.stationTime < accumulatedTime)
+            if (timer.lineTime < accumulatedTime)
             {
                 currentStationIdx = i;
                 break;

@@ -116,6 +116,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage1ButtonOnClicked(PointerEventData data)
     {
+        GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 1;
         GameManager.Instance.ResetGame();
 
@@ -124,6 +125,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
+        GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 2;
         GameManager.Instance.ResetGame();
 
@@ -132,6 +134,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage3ButtonOnClicked(PointerEventData data)
     {
+        GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 3;
         GameManager.Instance.ResetGame();
 
@@ -140,6 +143,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage4ButtonOnClicked(PointerEventData data)
     {
+        GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 4;
         GameManager.Instance.ResetGame();
 
@@ -148,6 +152,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void Stage5ButtonOnClicked(PointerEventData data)
     {
+        GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 5;
         GameManager.Instance.ResetGame();
 
