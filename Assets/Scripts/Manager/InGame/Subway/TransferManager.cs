@@ -77,18 +77,36 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         }
     }
 
-    private void SuccessTransfer() // 환승 성공 시 1번만 실행
+    private float GetTimeToStationEnd(int lineIdx, int stationIdx)
     {
+        var line = StationManager.Instance.subwayLines[lineIdx];
+        float acc = 0f;
+        for (int i = 0; i <= stationIdx; i++)
+            acc += line.stations[i].travelTime + line.stations[i].stopTime;
+        return acc;
+    }
+
+    private void SuccessTransfer()
+    {
+        // 1. 현재역이 환승역일때
+        // 2. 현재 노선에서 흐른 시간이 현재 노선 전체 시간보다 커질때
+        // 3. 도착역이 아닐때
+
         if (hasTransfered)
             return;
 
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && TimerManager.Instance.lineTime >= StationManager.Instance.GetCurrentLineTotalTime()
-            && !StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination)
+        int lineIdx = StationManager.Instance.currentLineIdx;
+        var line = StationManager.Instance.subwayLines[lineIdx];
+
+        bool atTransfer = (StationManager.Instance.currentStationIdx == line.transferIdx);
+        bool timeReached = (TimerManager.Instance.lineTime >= GetTimeToStationEnd(lineIdx, line.transferIdx));
+        bool notDestinationLine = !line.hasDestination;
+
+        if (atTransfer && timeReached && notDestinationLine)
         {
             hasTransfered = true;
 
-            if (DreamManager.Instance.isInDream) // 환승해야 하는데 꿈 속에 있으면 게임오버
+            if (DreamManager.Instance.isInDream)
             {
                 SubwayGameManager.Instance.isGameOver = true;
                 SubwayGameManager.Instance.GameOver();
@@ -96,15 +114,13 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             }
 
             SubwayGameManager.Instance.isStopping = false;
-            Debug.Log("환승 성공!");
-
             curTransferCount++;
             TimerManager.Instance.lineTime = 0f;
 
             if (SubwayGameManager.Instance.isStandingCoolDown)
             {
                 SubwayGameManager.Instance.standingCount++;
-                if(SubwayGameManager.Instance.standingCount >= 3)
+                if (SubwayGameManager.Instance.standingCount >= 2)
                 {
                     SubwayGameManager.Instance.isStandingCoolDown = false;
                     SubwayGameManager.Instance.standingCount = 0;
@@ -113,10 +129,40 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
-
             OnTransferSuccess?.Invoke();
-
             hasTransfered = false;
+        }
+    }
+
+    private void SuccessGetOff()
+    {
+        // 1. 현재역이 도착역일때
+        // 2. 현재 노선에서 흐른 시간이 현재 노선 전체 시간보다 커질때
+        // 3. 꿈 속이 아닐때
+
+        if (hasArrived)
+            return;
+
+        int lineIdx = StationManager.Instance.currentLineIdx;
+        var line = StationManager.Instance.subwayLines[lineIdx];
+
+        bool atDest = (StationManager.Instance.currentStationIdx == line.transferIdx);
+        bool timeReached = (TimerManager.Instance.lineTime >= GetTimeToStationEnd(lineIdx, line.transferIdx));
+        bool isDestinationLine = line.hasDestination;
+        bool notInDream = (GameManager.Instance.gameState != GameManager.GameState.Dream);
+
+        if (atDest && timeReached && isDestinationLine && notInDream)
+        {
+            hasArrived = true;
+
+            SubwayGameManager.Instance.isStopping = false;
+            StationManager.Instance.currentLineIdx = 0;
+
+            StageSelectManager.Instance.currentStage++;
+            GameManager.Instance.gameState = GameManager.GameState.DaySelect;
+            SceneManager.LoadScene("StageSelect");
+
+            hasArrived = false;
         }
     }
 
@@ -137,30 +183,6 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         OnTransferSuccess?.Invoke();
     }
 
-    private void SuccessGetOff() // 목적지 도착 성공시
-    {
-        if (hasArrived)
-            return;
-
-        if (StationManager.Instance.currentStationIdx == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx
-            && TimerManager.Instance.lineTime >= StationManager.Instance.GetCurrentLineTotalTime()
-            && StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].hasDestination
-            && GameManager.Instance.gameState != GameManager.GameState.Dream)
-        {
-            hasArrived = true;
-
-            SubwayGameManager.Instance.isStopping = false;
-            StationManager.Instance.currentLineIdx = 0;
-            Debug.Log("목적지 도착!");
-
-            StageSelectManager.Instance.currentStage++;
-            GameManager.Instance.gameState = GameManager.GameState.DaySelect;
-            SceneManager.LoadScene("StageSelect");
-
-            hasArrived = false; 
-        }
-    }
-
     private void OnEnable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -176,7 +198,6 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     {
         if (scene.name == "TestSubwayScene")
         {
-            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
             InitScene();
         }
     }
