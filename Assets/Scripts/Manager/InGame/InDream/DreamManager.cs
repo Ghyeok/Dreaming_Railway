@@ -59,7 +59,6 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
     {
         if (scene.name == "InDream_PlayerMove")
         {
-            Debug.Log($"꿈속 씬 로드 : {scene.name}");
             UIManager.Instance.ShowSceneUI<UI_Scene>("UI_NonGameOverScene");
             InitScene();
         }

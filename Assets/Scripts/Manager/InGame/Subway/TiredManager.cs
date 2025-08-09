@@ -99,7 +99,6 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
     {
         if (scene.name == "TestSubwayScene")
         {
-            Debug.Log($"지하철 씬 로드 : {gameObject.name}");
             InitScene();
         }
     }
