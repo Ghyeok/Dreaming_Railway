@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 5506817986920301376}
   - component: {fileID: 6455081772410103311}
   - component: {fileID: 5041037274439843980}
-  - component: {fileID: 6116677333776166209}
+  - component: {fileID: 9029338405109612080}
   m_Layer: 5
   m_Name: UI_NonGameOverScene
   m_TagString: Untagged
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6116677333776166209
+--- !u!114 &9029338405109612080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

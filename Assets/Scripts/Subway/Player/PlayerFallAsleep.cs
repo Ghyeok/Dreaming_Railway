@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
+
 
 public class PlayerFallAsleep : MonoBehaviour
 {
@@ -25,7 +27,7 @@ public class PlayerFallAsleep : MonoBehaviour
 
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP)
         {
-            SceneManager.LoadScene("InDream_PlayerMove");
+            StartCoroutine(FadeAndLoadScene("InDream_PlayerMove"));
         }
     }
 
@@ -42,5 +44,27 @@ public class PlayerFallAsleep : MonoBehaviour
     private void OnDisable()
     {
         OnFallAsleepButtonClicked -= EnterToDream;
+    }
+
+    IEnumerator FadeAndLoadScene(string sceneName)
+    {
+        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+
+        fadePanel.Init();
+        yield return fadePanel.Fade(0f, 1f, 0.3f); //페이드아웃
+        
+        // 비동기 씬 로드
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false; // 페이드아웃 끝난 뒤 활성화
+
+        //씬이 거의 다 로드될 때까지 대기
+        while (async.progress < 0.9f)
+        {
+            yield return null;
+        }
+        async.allowSceneActivation = true;
+
+
+        yield return null;
     }
 }
