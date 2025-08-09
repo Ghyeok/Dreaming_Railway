@@ -169,10 +169,9 @@ public class UI_SubwayScene : UI_Scene
 
         if (SubwayGameManager.Instance.isStandingCoolDown)
         {
-            stand.fillAmount = 1 - (SubwayGameManager.Instance.standingCount - 1) * 0.5f;
+            stand.fillAmount = 1 - SubwayGameManager.Instance.standingCount * 0.5f;
         }
-
-        if (SubwayGameManager.Instance.standingCount >= 3)
+        else
         {
             stand.fillAmount = 0f;
         }
