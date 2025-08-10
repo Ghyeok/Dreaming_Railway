@@ -74,7 +74,7 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
 
     private void IncreaseTired()
     {
-        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP || SubwayGameManager.Instance.isGameOver)
+        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP && !SubwayGameManager.Instance.isGameOver)
         {
             currentTired += Time.deltaTime;
             if (currentTired >= maxTired)
