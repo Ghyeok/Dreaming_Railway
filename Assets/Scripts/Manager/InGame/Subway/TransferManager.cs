@@ -149,7 +149,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         bool isDestinationLine = line.hasDestination;
         bool notInDream = (GameManager.Instance.gameState != GameManager.GameState.Dream);
 
-        if (atDest && timeReached && isDestinationLine && notInDream)
+        if (atDest && timeReached && isDestinationLine && notInDream && !SubwayGameManager.Instance.isGameOver)
         {
             hasArrived = true;
 
