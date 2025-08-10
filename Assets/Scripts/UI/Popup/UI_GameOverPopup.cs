@@ -104,7 +104,7 @@ public class UI_GameOverPopup : UI_Popup
         GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         // 블로커 패널 활성화
         if (blockerPanel != null)
@@ -114,7 +114,7 @@ public class UI_GameOverPopup : UI_Popup
 
         //플레이어 움직임 비활성화
         playerInputScript.SetActive(false);
-        
+
         StartCoroutine(FadeInCoroutine(fadeInDuration));
     }
 

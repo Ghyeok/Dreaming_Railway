@@ -22,6 +22,8 @@ public class UI_FadeBlackPanel : UI_Popup
 
     public override void Init()
     {
+        base.Init();
+
         if (isInited) return;
 
         _canvasGroup = GetComponent<CanvasGroup>();
@@ -74,7 +76,7 @@ public class UI_FadeBlackPanel : UI_Popup
         yield return StartCoroutine(FadeOut(duration));
         yield return new WaitForSeconds(waitTime);
         yield return StartCoroutine(FadeIn(duration));
-        ClosePopupUI();
+        UIManager.Instance.ClosePopupUI(this);
     }
 
     public IEnumerator FadeOut(float duration)
@@ -97,7 +99,7 @@ public class UI_FadeBlackPanel : UI_Popup
             yield return new WaitForSeconds(waitTime);
         }
 
-        ClosePopupUI();
+        UIManager.Instance.ClosePopupUI(this);
     }
 
     //페이드 구현

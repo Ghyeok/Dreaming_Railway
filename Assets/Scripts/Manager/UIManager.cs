@@ -92,7 +92,6 @@ public class UIManager : SingletonManagers<UIManager>, IManager
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true;
 
-
         if (sort)
         {
             canvas.sortingOrder = _order;
