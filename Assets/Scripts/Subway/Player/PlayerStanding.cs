@@ -53,6 +53,7 @@ public class PlayerStanding : MonoBehaviour
         }
 
         TimerManager.Instance.curTime += skipTime;
+        StationManager.Instance.passedStations += StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx;
 
         TransferManager.Instance.ForceTransferByStanding();
     }
