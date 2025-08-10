@@ -104,14 +104,12 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
         if (atTransfer && timeReached && notDestinationLine)
         {
-            hasTransfered = true;
-
             if (DreamManager.Instance.isInDream)
             {
                 SubwayGameManager.Instance.isGameOver = true;
             }
 
-            SubwayGameManager.Instance.isStopping = false;
+            hasTransfered = true;
             curTransferCount++;
             TimerManager.Instance.lineTime = 0f;
 
@@ -128,6 +126,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
             OnTransferSuccess?.Invoke();
+
             hasTransfered = false;
         }
     }
@@ -142,20 +141,28 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             return;
 
         int lineIdx = StationManager.Instance.currentLineIdx;
-        var line = StationManager.Instance.subwayLines[lineIdx];
+        var lines = StationManager.Instance.subwayLines;
+        if (lines == null || lineIdx < 0 || lineIdx >= lines.Count) return;
+
+        var line = lines[lineIdx];
 
         bool atDest = (StationManager.Instance.currentStationIdx == line.transferIdx);
         bool timeReached = (TimerManager.Instance.lineTime >= GetTimeToStationEnd(lineIdx, line.transferIdx));
         bool isDestinationLine = line.hasDestination;
-        bool notInDream = (GameManager.Instance.gameState != GameManager.GameState.Dream);
 
-        if (atDest && timeReached && isDestinationLine && notInDream && !SubwayGameManager.Instance.isGameOver)
+        if (atDest && timeReached && isDestinationLine)
         {
+            if (DreamManager.Instance.isInDream)
+            {
+                SubwayGameManager.Instance.isGameOver = true;
+                return;
+            }
+
+            if (SubwayGameManager.Instance.isGameOver)
+                return;
+
             hasArrived = true;
-
-            SubwayGameManager.Instance.isStopping = false;
             StationManager.Instance.currentLineIdx = 0;
-
             StageSelectManager.Instance.currentStage++;
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             SceneManager.LoadScene("StageSelect");
