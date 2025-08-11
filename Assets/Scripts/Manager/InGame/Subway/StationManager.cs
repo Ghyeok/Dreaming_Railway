@@ -16,6 +16,9 @@ public class StationManager : SingletonManagers<StationManager>, IManager
 
     public int currentLineIdx; // 현재 노선 인덱스
     public int currentStationIdx; // 현재역 인덱스
+    private int lastStationIdx = -1;
+
+    public int passedStations;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -38,6 +41,8 @@ public class StationManager : SingletonManagers<StationManager>, IManager
         GenerateSubwayLines();
         currentLineIdx = 0;
         currentStationIdx = 0;
+        passedStations = 0;
+        ResetLastStationIdx();
     }
 
     public void GenerateSubwayLines()
@@ -185,9 +190,19 @@ public class StationManager : SingletonManagers<StationManager>, IManager
             if (timer.lineTime < accumulatedTime)
             {
                 currentStationIdx = i;
+                if (lastStationIdx < currentStationIdx)
+                {
+                    lastStationIdx = currentStationIdx;
+                    passedStations++;
+                }
                 break;
             }
         }
+    }
+
+    public void ResetLastStationIdx()
+    {
+        lastStationIdx = -1;
     }
 
     public void IsSubwayStopped()

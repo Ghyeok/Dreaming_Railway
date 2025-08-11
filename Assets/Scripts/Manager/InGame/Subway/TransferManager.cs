@@ -170,6 +170,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
             hasArrived = true;
             StationManager.Instance.currentLineIdx = 0;
+            StationManager.Instance.ResetLastStationIdx();
             StageSelectManager.Instance.currentStage++;
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             SceneManager.LoadScene("StageSelect");
@@ -188,6 +189,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         TimerManager.Instance.lineTime = 0f;
         StationManager.Instance.currentLineIdx++;
         StationManager.Instance.currentStationIdx = 0;
+        StationManager.Instance.ResetLastStationIdx();
 
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
         SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
