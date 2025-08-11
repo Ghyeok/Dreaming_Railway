@@ -3,11 +3,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TiredManager : SingletonManagers<TiredManager>, IManager
-{ 
+{
     public float maxTired;
     public float currentTired;
 
     public bool isTiredHalf; // true면 조는 모션, false면 멀쩡한 모션
+    private bool isSceneLoading = false;
 
     public void Init()
     {
@@ -49,7 +50,7 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
 
     private void IsTiredHalf()
     {
-        if(currentTired < maxTired / 2)
+        if (currentTired < maxTired / 2)
         {
             isTiredHalf = false;
         }
@@ -77,9 +78,10 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP && !SubwayGameManager.Instance.isGameOver)
         {
             currentTired += Time.deltaTime;
-            if (currentTired >= maxTired)
+            if (!isSceneLoading && currentTired >= maxTired)
             {
-                SceneManager.LoadScene("InDream_PlayerMove");
+                isSceneLoading = true;
+                StartCoroutine(FadeAndLoadScene("InDream_PlayerMove"));
             }
         }
     }
@@ -100,6 +102,30 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
         if (scene.name == "TestSubwayScene")
         {
             InitScene();
+            isSceneLoading = false;
+
         }
+    }
+
+    IEnumerator FadeAndLoadScene(string sceneName)
+    {
+        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+
+        fadePanel.Init();
+        yield return fadePanel.Fade(0f, 1f, 0.3f); //페이드아웃
+        
+        // 비동기 씬 로드
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        async.allowSceneActivation = false; // 페이드아웃 끝난 뒤 활성화
+
+        //씬이 거의 다 로드될 때까지 대기
+        while (async.progress < 0.9f)
+        {
+            yield return null;
+        }
+        async.allowSceneActivation = true;
+
+
+        yield return null;
     }
 }

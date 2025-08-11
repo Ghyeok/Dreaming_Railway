@@ -127,6 +127,13 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StationManager.Instance.currentStationIdx = 0;
             OnTransferSuccess?.Invoke();
 
+            string currentScene = SceneManager.GetActiveScene().name;
+            if (currentScene == "TestSubwayScene")
+            {
+                Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
+                anim.SetTrigger("isTransfer");
+            }
+            
             hasTransfered = false;
         }
     }

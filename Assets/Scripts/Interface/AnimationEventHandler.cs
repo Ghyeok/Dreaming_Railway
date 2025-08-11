@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class AnimationEventHandler : MonoBehaviour
 {
-    private UI_FadeBlackPanel _fadePanel;
-
     public void CallFadeOut()
     {
         var fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
