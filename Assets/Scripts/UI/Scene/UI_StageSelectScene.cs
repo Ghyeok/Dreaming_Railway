@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class UI_StageSelectScene : UI_Scene
 {
+    private SubwayMiniMove subwayMiniMove;
+
     public enum GameObjects
     {
         ButtonRoot,
@@ -31,9 +33,11 @@ public class UI_StageSelectScene : UI_Scene
     {
         base.Init();
 
-        Bind<Button>(typeof(Buttons));   
+        Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
+
+        subwayMiniMove = GetImage((int)Images.SubwayMini).GetComponent<SubwayMiniMove>();
 
         GameObject stage0 = GetButton((int)Buttons.Stage0).gameObject;
         AddUIEvent(stage0, Stage0ButtonOnClicked);
@@ -70,19 +74,21 @@ public class UI_StageSelectScene : UI_Scene
         Init();
         UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
         fadePanel.StartFadeIn(0.3f);
+
+        LoadSubwayPosition(); //저장된 게임 정보
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
     }
 
     private void SetActiveFalseButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(false);
     }
-    
+
     private void SetActiveTrueButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(true);
@@ -90,12 +96,14 @@ public class UI_StageSelectScene : UI_Scene
 
     IEnumerator EnterToSubway()
     {
+        yield return new WaitForSeconds(3f);
+
         Animator anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("ButtonClicked");
         SetActiveFalseButtons();
 
         StageSelectManager.Instance.InvokeStageSelect();
-        yield return new WaitForSeconds(6.5f);
+        yield return new WaitForSeconds(6.4f);
 
         SceneManager.LoadScene("TestSubwayScene");
     }
@@ -111,6 +119,9 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 0;
         GameManager.Instance.ResetGame();
 
+        SaveSubwayPosition(subwayMiniMove.position0.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position0);
+
         StartCoroutine(EnterToSubway());
     }
 
@@ -119,6 +130,9 @@ public class UI_StageSelectScene : UI_Scene
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 1;
         GameManager.Instance.ResetGame();
+
+        SaveSubwayPosition(subwayMiniMove.position1.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position1);
 
         StartCoroutine(EnterToSubway());
     }
@@ -129,6 +143,9 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 2;
         GameManager.Instance.ResetGame();
 
+        SaveSubwayPosition(subwayMiniMove.position2.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position2);
+
         StartCoroutine(EnterToSubway());
     }
 
@@ -137,6 +154,9 @@ public class UI_StageSelectScene : UI_Scene
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 3;
         GameManager.Instance.ResetGame();
+
+        SaveSubwayPosition(subwayMiniMove.position3.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position3);
 
         StartCoroutine(EnterToSubway());
     }
@@ -147,6 +167,9 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 4;
         GameManager.Instance.ResetGame();
 
+        SaveSubwayPosition(subwayMiniMove.position4.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position4);
+
         StartCoroutine(EnterToSubway());
     }
 
@@ -155,6 +178,9 @@ public class UI_StageSelectScene : UI_Scene
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
         StageSelectManager.Instance.currentStage = 5;
         GameManager.Instance.ResetGame();
+
+        SaveSubwayPosition(subwayMiniMove.position5.anchoredPosition);
+        subwayMiniMove.MoveToPosition(subwayMiniMove.position5);
 
         StartCoroutine(EnterToSubway());
     }
@@ -165,7 +191,7 @@ public class UI_StageSelectScene : UI_Scene
 
         fadePanel.Init();
         yield return fadePanel.Fade(0f, 1f, 0.3f); //페이드아웃
-        
+
         // 비동기 씬 로드
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         async.allowSceneActivation = false; // 페이드아웃 끝난 뒤 활성화
@@ -179,5 +205,27 @@ public class UI_StageSelectScene : UI_Scene
 
 
         yield return null;
+    }
+    
+    private void SaveSubwayPosition(Vector2 position)
+    {
+        PlayerPrefs.SetFloat("SubwayPosX", position.x); //x값만 저장
+        PlayerPrefs.Save();
+    }
+
+    private void LoadSubwayPosition()
+    {
+        // 저장된 위치 정보가 있는지 확인
+        if (PlayerPrefs.HasKey("SubwayPosX"))
+        {
+            float x = PlayerPrefs.GetFloat("SubwayPosX");
+            Vector2 savedPosition = new Vector2(x,464f);
+
+            subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = savedPosition;
+        }
+        else
+        {
+            subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = subwayMiniMove.position0.anchoredPosition;
+        }
     }
 }

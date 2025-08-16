@@ -103,7 +103,6 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
         {
             InitScene();
             isSceneLoading = false;
-
         }
     }
 

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class SubwayMiniMove : MonoBehaviour
 {
@@ -11,29 +13,34 @@ public class SubwayMiniMove : MonoBehaviour
     public RectTransform position4;
     public RectTransform position5;
 
-    //버튼 클릭시 좌표 선정
-    public void MoveToPositionDay0()
+    private Coroutine moveCoroutine;
+    public float duration;
+
+    public void MoveToPosition(RectTransform GoalPos)
     {
-        targetImage.anchoredPosition = position0.anchoredPosition;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+
+        Vector2 GoalPosition = new Vector2(GoalPos.anchoredPosition.x, targetImage.anchoredPosition.y);
+        moveCoroutine = StartCoroutine(MoveRoutine(GoalPosition));
     }
-    public void MoveToPositionDay1()
+
+    private IEnumerator MoveRoutine(Vector2 GoalPosition)
     {
-        targetImage.anchoredPosition = position1.anchoredPosition;
-    }
-    public void MoveToPositionDay2()
-    {
-        targetImage.anchoredPosition = position2.anchoredPosition;
-    }
-    public void MoveToPositionDay3()
-    {
-        targetImage.anchoredPosition = position3.anchoredPosition;
-    }
-    public void MoveToPositionDay4()
-    {
-        targetImage.anchoredPosition = position4.anchoredPosition;
-    }
-    public void MoveToPositionDay5()
-    {
-        targetImage.anchoredPosition = position5.anchoredPosition;
+        Vector2 start = targetImage.anchoredPosition;
+        float time = 0f;
+
+        while (time < 1f)
+        {
+            time += Time.deltaTime / duration;
+
+            float MovingTime = Mathf.SmoothStep(0, 1, time);
+            targetImage.anchoredPosition = Vector2.Lerp(start, GoalPosition, MovingTime);
+            yield return null;
+        }
+
+        targetImage.anchoredPosition = GoalPosition;
     }
 }
