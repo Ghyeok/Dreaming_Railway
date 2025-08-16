@@ -28,14 +28,12 @@ public class WhitePanelSpawn : MonoBehaviour
     
     private IEnumerator FadeInAndLoadScene()
     {
-        yield return null;
-
         float time = 0f;
         while (time < fadeDuration)
         {
             float alpha = Mathf.Lerp(0f, 1f, time / fadeDuration);
             whitePanel.color = new Color(1, 1, 1, alpha);
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
 
