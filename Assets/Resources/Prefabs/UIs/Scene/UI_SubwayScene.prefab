@@ -737,8 +737,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 256, y: -17}
-  m_SizeDelta: {x: 456, y: 720}
+  m_AnchoredPosition: {x: 252, y: -17}
+  m_SizeDelta: {x: 500, y: 1000}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &5542368261741802658
 CanvasRenderer:
@@ -1067,6 +1067,7 @@ GameObject:
   - component: {fileID: 3943959556754928432}
   - component: {fileID: 7419685321482178730}
   - component: {fileID: 8386239268681252449}
+  - component: {fileID: 4712122780470274861}
   m_Layer: 5
   m_Name: UI_SubwayScene
   m_TagString: Untagged
@@ -1172,6 +1173,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4712122780470274861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869184938817729609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cbab521f7d6f1a44b4137040327fa69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subwayPlayer: {fileID: 3638816473671594684}
+  playerStanding: {fileID: 0}
+  anim: {fileID: 8620190004519165009}
 --- !u!1 &4977798085076984914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,7 +2028,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: be5a6718111c67048a05981b086c3ab5, type: 3}
+  m_Sprite: {fileID: -7366338008810656002, guid: 5d978c0e29df3b0468d9f59cf5b84ff5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

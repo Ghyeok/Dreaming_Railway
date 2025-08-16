@@ -67,43 +67,10 @@ public class BackgroundScroller : MonoBehaviour
                 image2.anchoredPosition = image1.anchoredPosition + new Vector2(imageWidth, 0);
             }
         }
-
-        ShowStationBackground();
     }
 
     private void ScrollBackground(RectTransform rect, float delta)
     {
         rect.anchoredPosition -= new Vector2(delta, 0);
-    }
-
-    private void ShowStationBackground()
-    {
-        StationManager station = StationManager.Instance;
-        if (type == BackgroundType.Underground)
-        {
-            if (SubwayGameManager.Instance.isStopping) // 정차중이라면
-            {
-                gameObject.SetActive(false);
-                //float stopTime = station.subwayLines[station.currentLineIdx].stations[station.currentStationIdx].stopTime;
-
-                //if (currentImage == image1)
-                //{
-
-                //}
-                //else if (currentImage == image2)
-                //{
-
-                //}
-            }
-        }
-    }
-
-    private void ShowConnecter()
-    {
-        if (type == BackgroundType.Hangang)
-        {
-
-
-        }
     }
 }
