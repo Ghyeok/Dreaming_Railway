@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -47,6 +48,11 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
             tiredDecreaseBySlap = 3f;
         }
 
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            StartCoroutine(LoadTutorialOverlay());
+        }
+
         DreamManager.Instance.isInDream = false; // 꿈 속이 아니므로
 
         TimerManager.Instance.awakeTime = 0f; // 지하철 씬이 로드되는 순간 깨어있는 시간 0으로 초기화
@@ -89,6 +95,16 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     public void GameOverInSubway()
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup2");
+    }
+
+    private IEnumerator LoadTutorialOverlay()
+    {
+        // 튜토리얼 전용 씬을 추가로 올림
+        var op = SceneManager.LoadSceneAsync("TutorialScene", LoadSceneMode.Additive);
+        yield return op;
+
+        // 튜토리얼 팝업 띄우기
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
     }
 
     private void OnEnable()

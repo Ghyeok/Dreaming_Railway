@@ -111,7 +111,7 @@ public class UI_MainMenuScene : UI_Scene
     {
         GameManager.Instance.gameMode = GameManager.GameMode.Infinite;
         StageSelectManager.Instance.InvokeStageSelect();
-
+        GameManager.Instance.ResetGame();
         StartCoroutine(FadeAndLoadScene("TestSubwayScene"));
     }
 

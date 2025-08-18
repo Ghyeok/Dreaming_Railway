@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class UI_TutorialPopup : UI_Popup
 {
-    private string[] SubwaytutorialDialogs =
+    [Header("튜토리얼 스크립트")]
+    [SerializeField]
+    private string[] subwayTutorialDialogs =
     {
         // 지하철 씬
         "휴… 운 좋게 자리는 있네… 피곤하니 앉아서 가야지",
@@ -35,6 +37,7 @@ public class UI_TutorialPopup : UI_Popup
         "오늘은 들어가면 일찍 자야지…"
     };
 
+    [SerializeField]
     private string[] dreamTutorialDialog =
     {
         // 꿈 속 씬
@@ -48,6 +51,7 @@ public class UI_TutorialPopup : UI_Popup
 
     };
 
+    [SerializeField]
     private string[] gameoverTutorialDialog =
     {
         // 꿈 속 게임오버 시
@@ -58,9 +62,10 @@ public class UI_TutorialPopup : UI_Popup
         "내려야 할 역… 놓쳐버렸네…",
     };
 
-    private int subwayIdx;
-    private int dreamIdx;
-    private int gameoverIdx;
+    [Header("스크립트 진행도")]
+    [SerializeField] private int subwayIdx;
+    [SerializeField] private int dreamIdx;
+    [SerializeField] private int gameoverIdx;
 
     public enum Images
     {
@@ -81,6 +86,18 @@ public class UI_TutorialPopup : UI_Popup
 
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="emotion"> anger, base, confusion, mouthopen, sigh, slap, smile, thinking 중 하나 선택</param>
+    private void ChangeEmotion(string emotion)
+    {
+        string path = "Sprites/Player/Tutorial/LD_face_";
+        Sprite sprite = Resources.Load<Sprite>(path + emotion);
+
+        GetImage((int)Images.Player).sprite = sprite;
     }
 
     private void ShowDialog()
