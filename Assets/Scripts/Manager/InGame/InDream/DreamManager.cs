@@ -33,6 +33,11 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         dreamTimeSpeed = 1f;
     }
 
+    public void GameOverInDream()
+    {
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
+    }
+
     private void InitScene()
     {
         GameManager.Instance.gameState = GameManager.GameState.Dream;

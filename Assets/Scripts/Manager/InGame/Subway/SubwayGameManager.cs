@@ -53,7 +53,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
         if (isGameOver && GameManager.Instance.gameState == GameManager.GameState.Subway) // 꿈 속에서 지하철로 돌아 왔을때, 환승역을 지나친 상태라면 게임오버 판정
         {
-            GameOver();
+            GameOverInSubway();
         }
     }
 
@@ -86,9 +86,9 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         }
     }
 
-    public void GameOver()
+    public void GameOverInSubway()
     {
-        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
+        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup2");
     }
 
     private void OnEnable()

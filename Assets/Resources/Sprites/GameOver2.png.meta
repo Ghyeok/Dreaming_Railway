@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 7b0d6169853433446bbb4a9ae4b12c2e
+guid: 796b0ba4a9c2a634691394b452ba1de2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5478719019828294593
-    second: gameover_bg_2_0
+      213: -9072224358155954978
+    second: GameOver2_0
+  - first:
+      213: 6443662537973288495
+    second: GameOver2_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +129,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gameover_bg_2_0
+      name: GameOver2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 486
-        height: 938
+        x: 122
+        y: 49
+        width: 636
+        height: 665
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +144,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f3c45f6341ea7f3b0800000000000000
-      internalID: -5478719019828294593
+      spriteID: ed4d771530cf81280800000000000000
+      internalID: -9072224358155954978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GameOver2_1
+      rect:
+        serializedVersion: 2
+        x: 749
+        y: 421
+        width: 19
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2ec36430fc7c6950800000000000000
+      internalID: 6443662537973288495
       vertices: []
       indices: 
       edges: []
@@ -160,8 +185,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      gameover_bg_2_0: -5478719019828294593
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

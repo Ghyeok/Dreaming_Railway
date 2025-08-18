@@ -1,29 +1,25 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
-public class UI_GameOverPopup : UI_Popup
+public class UI_GameClearPopup : UI_Popup
 {
     public GameObject blockerPanel;
     public CanvasGroup canvasGroup;
-    private GameObject playerInputScript;
     [SerializeField] private float fadeInDuration = 1f;
 
     public enum Buttons
     {
-        RetryButton,
-        MainMenuButton,
-        ExitButton,
-
+        LobbyButton,
     }
 
     public enum Texts
     {
         TimeText,
-        StationText,
+        DayText,
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -39,9 +35,7 @@ public class UI_GameOverPopup : UI_Popup
 
     void Awake()
     {
-        var player = FindAnyObjectByType<Player>();
-        if (player != null)
-            playerInputScript = player.gameObject;
+
     }
 
     // Update is called once per frame
@@ -57,40 +51,22 @@ public class UI_GameOverPopup : UI_Popup
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        GameObject retry = GetButton((int)Buttons.RetryButton).gameObject;
-        AddUIEvent(retry, RetryButtonOnClicked);
-
-        GameObject main = GetButton((int)Buttons.MainMenuButton).gameObject;
-        AddUIEvent(main, MainMenuButtonOnClicked);
-
-        GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
-        AddUIEvent(exit, ExitButtonOnClicked);
-
-        SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
+        GameObject lobby = GetButton((int)Buttons.LobbyButton).gameObject;
+        AddUIEvent(lobby, LobbyButtonOnClicked);
 
         TimerManager.Instance.StopTimer();
         ShowPlayTime();
+        ShowDayText();
     }
 
-    private void RetryButtonOnClicked(PointerEventData data)
+    private void LobbyButtonOnClicked(PointerEventData data)
     {
-        UIManager.Instance.ClosePopupUI(this);
-        SubwayGameManager.Instance.isGameOver = false;
-        GameManager.Instance.ResetGame();
-        SceneManager.LoadScene("TestSubwayScene");
+        SceneManager.LoadScene("StageSelect");
     }
 
-    private void MainMenuButtonOnClicked(PointerEventData data)
+    private void ShowDayText()
     {
-        UIManager.Instance.ClosePopupUI(this);
-        GameManager.Instance.ResetGame();
-        SubwayGameManager.Instance.isGameOver = false;
-        SceneManager.LoadScene("MainScene");
-    }
-
-    private void ExitButtonOnClicked(PointerEventData data)
-    {
-        UIManager.Instance.OnExitButton();
+        GetText((int)Texts.DayText).text = "Day " + StageSelectManager.Instance.currentStage; 
     }
 
     private void ShowPlayTime()
@@ -111,13 +87,6 @@ public class UI_GameOverPopup : UI_Popup
         {
             blockerPanel.SetActive(true);
         }
-
-        if (playerInputScript != null)
-        {
-            //플레이어 움직임 비활성화
-            playerInputScript.SetActive(false);
-        }
-
         StartCoroutine(FadeInCoroutine(fadeInDuration));
     }
 

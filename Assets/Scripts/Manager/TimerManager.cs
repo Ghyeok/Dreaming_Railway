@@ -44,10 +44,10 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
         }
-        else if(GameManager.Instance.gameState == GameManager.GameState.Main || GameManager.Instance.gameState == GameManager.GameState.DaySelect)
-        {
-            ResetTimer();
-        }
+        //else if(GameManager.Instance.gameState == GameManager.GameState.Main || GameManager.Instance.gameState == GameManager.GameState.DaySelect)
+        //{
+        //    ResetTimer();
+        //}
     }
 
     public void ResetTimer()

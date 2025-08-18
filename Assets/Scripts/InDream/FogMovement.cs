@@ -130,7 +130,7 @@ public class FogMovement : MonoBehaviour
 
                 if (IsGameOver && !gameOverTriggered)
                 {
-                    UIManager.Instance.ShowPopupUI<UI_GameOverPopup>("UI_GameOverPopup");
+                    DreamManager.Instance.GameOverInDream();
                     cameraMoveScript.enabled = false;
                     gameOverTriggered = true;
                 }

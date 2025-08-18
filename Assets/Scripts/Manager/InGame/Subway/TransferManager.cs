@@ -169,11 +169,12 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
                 return;
 
             hasArrived = true;
+
             StationManager.Instance.currentLineIdx = 0;
             StationManager.Instance.ResetLastStationIdx();
             StageSelectManager.Instance.currentStage++;
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
-            SceneManager.LoadScene("StageSelect");
+            UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameClearPopup");
 
             hasArrived = false;
         }
