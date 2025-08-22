@@ -23,6 +23,8 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
     public int infiniteCount;
 
+    public bool isStopped;
+
     public void Init()
     {
         gameState = GameState.Main; // 메인에서 시작
@@ -43,5 +45,17 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     {
         TransferManager.Instance.ResetTransferManager();
         StationManager.Instance.ResetStationManager();
+    }
+
+    public void StopGame()
+    {
+        Time.timeScale = 0f;
+        isStopped = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        isStopped = false;
     }
 }
