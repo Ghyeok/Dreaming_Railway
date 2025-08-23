@@ -13,7 +13,7 @@ public class UI_TutorialPopup : UI_Popup
         "음… 뭔가 꽉 차면 자버릴 것만 같이 생긴 막대기야… 내 피로도인가…?",
         "내려야 할 정거장까지 남은 정거장 수… 일어나 있을 땐 언제든 알 수 있을 거야",
         "음… 근데 자버리면… 아마 감으로 때려맞춰야겠지…?",
-        "너무 피곤한데… 내 뺨따구라도 때려서 잠을 좀 깨봐야 하나…?", // 팝업 내려감
+        "너무 피곤한데… 내 뺨따구라도 때려서 잠을 좀 깨봐야 하나…?", // 팝업 내려감, idx = 4
 
         // 게임 플레이, 뺨 때리기 버튼만 활성화
         "아얏…! 아프다… 너무 자주 때리지는 않고 싶은데…",
@@ -127,9 +127,23 @@ public class UI_TutorialPopup : UI_Popup
 
     private void Update()
     {
+        SetTutorialTrigger();
+
         if (Input.GetMouseButtonDown(0))
         {
-            AdvanceDialog();
+            if (subwayIdx == TutorialManager.Instance.slapIdx ||
+                subwayIdx == TutorialManager.Instance.standingIdx ||
+                subwayIdx == TutorialManager.Instance.skipIdx)
+            {
+                GameManager.Instance.ResumeGame();
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+                GameManager.Instance.StopGame();
+                this.gameObject.SetActive(true);
+                AdvanceDialog();
+            }
         }
     }
 
@@ -148,9 +162,6 @@ public class UI_TutorialPopup : UI_Popup
         GameManager.Instance.StopGame();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="emotion"> anger, base, confusion, mouthopen, sigh, slap, smile, thinking 중 하나 선택</param>
     private Sprite ChangeEmotion(string emotion)
     {
@@ -225,6 +236,24 @@ public class UI_TutorialPopup : UI_Popup
                     UIManager.Instance.ClosePopupUI(this);
                 }
                 break;
+        }
+    }
+
+    public void SetTutorialTrigger()
+    {
+        TutorialManager tm = TutorialManager.Instance;
+
+        if(subwayIdx == tm.slapIdx)
+        {
+            tm.isSlapTutorial = true;
+        }
+        if (subwayIdx == tm.standingIdx)
+        {
+            tm.isStandingTutorial = true;
+        }
+        if (subwayIdx == tm.skipIdx)
+        {
+            tm.isSkipTutorial = true;
         }
     }
 }

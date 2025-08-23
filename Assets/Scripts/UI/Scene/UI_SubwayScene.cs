@@ -18,6 +18,7 @@ public class UI_SubwayScene : UI_Scene
         FallAsleepButton,
         SlapButton,
         PauseButton,
+        MaxCount,
         // 필요한 버튼 추가..
     }
 
@@ -58,6 +59,7 @@ public class UI_SubwayScene : UI_Scene
         SetTransferText();
         SetSlapText();
         ShowStandingCoolDown();
+        TutorialButtonBlocker();
     }
 
     private void OnEnable()
@@ -182,5 +184,45 @@ public class UI_SubwayScene : UI_Scene
     private void OnSlapButtonClicked()
     {
         StartCoroutine(ShowSlapCoolTime());
+    }
+
+    private void TutorialButtonBlocker()
+    {
+        if (TutorialManager.Instance.isSlapTutorial)
+        {
+            for (int i = 0; i < (int)Buttons.MaxCount; i++)
+            {
+                GetButton(i).interactable = false;
+                if (i == (int)Buttons.SlapButton)
+                {
+                    GetButton(i).interactable = true;
+                }
+            }
+            GetButton((int)Buttons.PauseButton).interactable = true;
+        }
+        else if (TutorialManager.Instance.isStandingTutorial)
+        {
+            for (int i = 0; i < (int)Buttons.MaxCount; i++)
+            {
+                GetButton(i).interactable = false;
+                if (i == (int)Buttons.StandingButton)
+                {
+                    GetButton(i).interactable = true;
+                }
+            }
+            GetButton((int)Buttons.PauseButton).interactable = true;
+        }
+        else if (TutorialManager.Instance.isSkipTutorial)
+        {
+            for (int i = 0; i < (int)Buttons.MaxCount; i++)
+            {
+                GetButton(i).interactable = false;
+                if (i == (int)Buttons.StandingButton)
+                {
+                    GetButton(i).interactable = true;
+                }
+            }
+            GetButton((int)Buttons.PauseButton).interactable = true;
+        }
     }
 }

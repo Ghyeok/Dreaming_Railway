@@ -48,6 +48,11 @@ public class PlayerSlap : MonoBehaviour
             yield return new WaitForSeconds(SubwayGameManager.Instance.slapCoolTime); // 5초 쿨타임
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
             SubwayGameManager.Instance.isSlapCoolTime = false;
+
+            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
+            {
+                UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
+            }
         }
     }
 
