@@ -94,16 +94,27 @@ public class UI_StageSelectScene : UI_Scene
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(true);
     }
 
-    IEnumerator EnterToSubway()
+    IEnumerator EnterToSubway(RectTransform newPositionTransform)
     {
-        yield return new WaitForSeconds(3f);
+        Vector2 newPosition = newPositionTransform.anchoredPosition; //벡터 형태로 수정
+
+        float priorPosX = PlayerPrefs.HasKey("SubwayPosX") ? PlayerPrefs.GetFloat("SubwayPosX") : subwayMiniMove.position0.anchoredPosition.x;
+
+        if (Mathf.Abs(priorPosX - newPosition.x) > 10f) //저장된 위치와 새로 입력된 위치가 다르다면
+        {
+            subwayMiniMove.MoveToPosition(newPositionTransform);
+
+            yield return new WaitForSeconds(3f); // 미니 버스 움직이는 시간
+        }
+
+        SaveSubwayPosition(newPosition);
 
         Animator anim = GetComponentInChildren<Animator>();
         anim.SetTrigger("ButtonClicked");
         SetActiveFalseButtons();
 
         StageSelectManager.Instance.InvokeStageSelect();
-        yield return new WaitForSeconds(6.4f);
+        yield return new WaitForSeconds(6.4f); //애니매이션 연출 시간
 
         SceneManager.LoadScene("TestSubwayScene");
     }
@@ -119,10 +130,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 0;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position0.anchoredPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position0);
-
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(subwayMiniMove.position0)); //위치 정보 전달
     }
 
     private void Stage1ButtonOnClicked(PointerEventData data)
@@ -131,11 +139,18 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 1;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position1.anchoredPosition);
+        StartCoroutine(EnterToSubway(subwayMiniMove.position1)); //위치 정보 전달
+    }
+
+    /*
+    Vector2 newPosition = subwayMiniMove.position1.anchoredPosition;
+        SaveSubwayPosition(newPosition);
         subwayMiniMove.MoveToPosition(subwayMiniMove.position1);
 
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(newPosition)); //위치 정보 전달
     }
+
+    */
 
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
@@ -143,10 +158,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 2;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position2.anchoredPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position2);
-
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(subwayMiniMove.position2)); //위치 정보 전달
     }
 
     private void Stage3ButtonOnClicked(PointerEventData data)
@@ -155,10 +167,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 3;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position3.anchoredPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position3);
-
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(subwayMiniMove.position3)); //위치 정보 전달
     }
 
     private void Stage4ButtonOnClicked(PointerEventData data)
@@ -167,10 +176,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 4;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position4.anchoredPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position4);
-
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(subwayMiniMove.position4)); //위치 정보 전달
     }
 
     private void Stage5ButtonOnClicked(PointerEventData data)
@@ -179,10 +185,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 5;
         GameManager.Instance.ResetGame();
 
-        SaveSubwayPosition(subwayMiniMove.position5.anchoredPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position5);
-
-        StartCoroutine(EnterToSubway());
+        StartCoroutine(EnterToSubway(subwayMiniMove.position5)); //위치 정보 전달
     }
 
     IEnumerator FadeAndLoadScene(string sceneName)
