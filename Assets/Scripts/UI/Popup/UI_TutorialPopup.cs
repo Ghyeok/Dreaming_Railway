@@ -19,7 +19,7 @@ public class UI_TutorialPopup : UI_Popup
         "아예 안 자면서 가다간 진짜로 쓰러져버릴지도 모르니… <b>적당히 자면서 가볼까?</b>",
         "<b>내려야 할 역만 안 놓치면 되니까</b>… 흐아암",
 
-        "음… 뭔가 꽉 차면 자버릴 것만 같이 생긴 막대기야… 내 피로도인가…?",
+        "음… <b>뭔가 꽉 차면 자버릴 것만 같이 생긴 막대기</b>야… 내 피로도인가…?",
         "내려야 할 정거장까지 남은 정거장 수… <b>일어나 있을 땐 언제든지 확인할수 있을거야</b>",
         "음… 근데 자버리면… <b>아마 감으로 때려맞춰야겠지…?</b>",
         "근데 진짜 너무 피곤한데… " ,
@@ -168,6 +168,7 @@ public class UI_TutorialPopup : UI_Popup
                 TutorialManager.Instance.isSkipTutorial)
             {
                 GameManager.Instance.ResumeGame();
+                TimerManager.Instance.StopTimer();
                 this.gameObject.SetActive(false);
                 return;
             }

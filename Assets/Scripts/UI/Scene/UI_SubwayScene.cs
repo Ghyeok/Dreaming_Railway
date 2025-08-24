@@ -125,8 +125,8 @@ public class UI_SubwayScene : UI_Scene
 
     private void SetStandingButtonToSkip(PointerEventData data)
     {
-        if (!SubwayGameManager.Instance.isStandingCoolDown && StationManager.Instance.currentStationIdx 
-                                                             != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx)
+        if (!SubwayGameManager.Instance.isStandingCoolDown &&
+            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx)
         {
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;

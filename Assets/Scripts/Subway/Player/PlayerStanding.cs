@@ -13,6 +13,13 @@ public class PlayerStanding : MonoBehaviour
 
         if (SubwayGameManager.Instance.isStandingCoolDown) return;
 
+        if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            TutorialManager.Instance.isStandingTutorial = false;
+            TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
+            TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+        }
+
         skipLock = true;
 
         Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
