@@ -51,7 +51,13 @@ public class PlayerSlap : MonoBehaviour
 
             if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
             {
-                UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
+                if (TutorialManager.Instance.tutorialPopup != null)
+                {
+                    TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+                    GameManager.Instance.StopGame();
+                    TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
+                    TutorialManager.Instance.isSlapTutorial = false;
+                }
             }
         }
     }

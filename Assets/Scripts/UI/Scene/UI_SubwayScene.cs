@@ -192,37 +192,37 @@ public class UI_SubwayScene : UI_Scene
         {
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
-                GetButton(i).interactable = false;
+                GetButton(i).image.raycastTarget = false;
                 if (i == (int)Buttons.SlapButton)
                 {
-                    GetButton(i).interactable = true;
+                    GetButton(i).image.raycastTarget = true;
                 }
             }
-            GetButton((int)Buttons.PauseButton).interactable = true;
+            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
         }
         else if (TutorialManager.Instance.isStandingTutorial)
         {
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
-                GetButton(i).interactable = false;
+                GetButton(i).image.raycastTarget = false;
                 if (i == (int)Buttons.StandingButton)
                 {
-                    GetButton(i).interactable = true;
+                    GetButton(i).image.raycastTarget = true;
                 }
             }
-            GetButton((int)Buttons.PauseButton).interactable = true;
+            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
         }
         else if (TutorialManager.Instance.isSkipTutorial)
         {
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
-                GetButton(i).interactable = false;
+                GetButton(i).image.raycastTarget = false;
                 if (i == (int)Buttons.StandingButton)
                 {
-                    GetButton(i).interactable = true;
+                    GetButton(i).image.raycastTarget = true;
                 }
             }
-            GetButton((int)Buttons.PauseButton).interactable = true;
+            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
         }
     }
 }
