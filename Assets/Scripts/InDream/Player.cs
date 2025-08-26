@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float acceleration;
     [SerializeField] private float MaxSpeed;
 
+    [SerializeField] private LayerMask exitLayerMask;
+    private float exitDetectRadius = 4f;
+
     //발소리를 위한
     private Vector2 lastFootstepPosition;
     private float distanceMovedSinceLastStep = 0f;
@@ -28,12 +31,14 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rigid;
     private Animator MyAnimator;
+    private Collider2D col;
 
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         MyAnimator = GetComponent<Animator>();
+        col = GetComponent<Collider2D>();
         lastFootstepPosition = transform.position;
         distanceMovedSinceLastStep = 0f;
         isGrounded = true;
@@ -52,7 +57,7 @@ public class Player : MonoBehaviour
         // Animator에 y속도 전달
         MyAnimator.SetFloat("yVelocity", rigid.linearVelocity.y);
 
-
+        DetectExitCircle();
     }
 
     void LateUpdate()
@@ -181,6 +186,23 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void DetectExitCircle()
+    {
+        if (isTouchedExit) return;
+
+        // 플레이어 중심을 원점으로 원형 오버랩
+        Collider2D hit = Physics2D.OverlapCircle((Vector2)transform.position, exitDetectRadius, exitLayerMask);
+        if (hit == null) return;
+        if(TutorialManager.Instance.isMoveTutorial && hit != null)
+        {
+            GameManager.Instance.StopGame();
+            TutorialManager.Instance.isMoveTutorial = false;
+            TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
+            TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+        }
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {// 바닥 윗 표면에 착지할 때만
         if (collision.collider.CompareTag("Ground") && collision.contacts[0].normal.y > 0.8f)
@@ -228,6 +250,15 @@ public class Player : MonoBehaviour
             isTouchedExit = true;
             SoundManager.Instance.ExitDreamSFX();
             FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
+
+            if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            {
+                TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
+                TutorialManager.Instance.isDreamTutorial = false;
+                TutorialManager.Instance.isExitTutorial = false;
+                TutorialManager.Instance.isSubwayTutorial = true;
+            }
+
         }
     }
 
@@ -245,4 +276,16 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+#if UNITY_EDITOR
+private void OnDrawGizmosSelected()
+{
+    // 원 중심: 콜라이더 중심이 있으면 그 위치, 없으면 트랜스폼 위치
+    var col = GetComponent<Collider2D>();
+    Vector3 center = col != null ? col.bounds.center : transform.position;
+
+    Gizmos.color = Color.yellow;                 // 보기 쉬운 색상
+    Gizmos.DrawWireSphere(center, exitDetectRadius); // 원(와이어) 그리기
+}
+#endif
 }

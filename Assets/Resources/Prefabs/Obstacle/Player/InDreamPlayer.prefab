@@ -130,9 +130,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 1
   MaxSpeed: 7
+  exitLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   stepDistance: 12
   Speed: 4
   jumpPower: 9
   minSpeed: 1.8
   isJump: 0
+  isInObstacle: 0
   wasMovingLastFrame: 1

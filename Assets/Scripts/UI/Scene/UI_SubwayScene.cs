@@ -131,7 +131,7 @@ public class UI_SubwayScene : UI_Scene
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
             SoundManager.Instance.PlayAudioClip("Standing", Define.Sounds.SFX);
-            TiredManager.Instance.currentTired = 100;
+            TiredManager.Instance.currentTired = 99.9f;
             anim.SetTrigger("isStanding");
 
             // 1. 다른 버튼 비활성화
