@@ -57,6 +57,8 @@ public class UI_GameClearPopup : UI_Popup
         TimerManager.Instance.StopTimer();
         ShowPlayTime();
         ShowDayText();
+
+        SoundManager.Instance.GameClearSFX();
     }
 
     private void LobbyButtonOnClicked(PointerEventData data)

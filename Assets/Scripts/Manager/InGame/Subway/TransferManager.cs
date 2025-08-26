@@ -202,13 +202,13 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        OnTransferSuccess += StationManager.Instance.CheckLastLine;
+        //OnTransferSuccess += StationManager.Instance.CheckLastLine;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        OnTransferSuccess -= StationManager.Instance.CheckLastLine;
+        //OnTransferSuccess -= StationManager.Instance.CheckLastLine;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

@@ -169,7 +169,7 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
         PlayAudioClip("GameOver", Define.Sounds.SFX);
     }
 
-    public void LastLineSFX()
+    public void GameClearSFX()
     {
         PlayAudioClip("LastLine", Define.Sounds.SFX);
     }

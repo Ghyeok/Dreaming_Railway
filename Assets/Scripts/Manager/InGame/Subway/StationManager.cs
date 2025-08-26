@@ -225,12 +225,12 @@ public class StationManager : SingletonManagers<StationManager>, IManager
         }
     }
 
-    public void CheckLastLine() // 마지막 노선일 경우
-    {
-        if (currentLineIdx == TransferManager.Instance.maxTransferCount && GameManager.Instance.gameState == GameManager.GameState.Subway)
-        {
-            SubwayGameManager.Instance.isStandingCoolDown = true; // 환승 방지
-            SoundManager.Instance.LastLineSFX();
-        }
-    }
+    //public void CheckLastLine() // 마지막 노선일 경우
+    //{
+    //    if (currentLineIdx == TransferManager.Instance.maxTransferCount && GameManager.Instance.gameState == GameManager.GameState.Subway)
+    //    {
+    //        SubwayGameManager.Instance.isStandingCoolDown = true; // 환승 방지
+    //        SoundManager.Instance.LastLineSFX();
+    //    }
+    //}
 }
