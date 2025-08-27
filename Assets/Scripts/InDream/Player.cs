@@ -193,7 +193,8 @@ public class Player : MonoBehaviour
         // 플레이어 중심을 원점으로 원형 오버랩
         Collider2D hit = Physics2D.OverlapCircle((Vector2)transform.position, exitDetectRadius, exitLayerMask);
         if (hit == null) return;
-        if(TutorialManager.Instance.isMoveTutorial && hit != null)
+
+        if (TutorialManager.Instance.isMoveTutorial && hit != null)
         {
             GameManager.Instance.StopGame();
             TutorialManager.Instance.isMoveTutorial = false;
@@ -251,14 +252,22 @@ public class Player : MonoBehaviour
             SoundManager.Instance.ExitDreamSFX();
             FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
 
-            if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial &&
+               TutorialManager.Instance.subwayIdx < TutorialManager.Instance.subwayEndIdx)
             {
-                TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
-                TutorialManager.Instance.isDreamTutorial = false;
-                TutorialManager.Instance.isExitTutorial = false;
-                TutorialManager.Instance.isSubwayTutorial = true;
-            }
+                if (!GameManager.Instance.isGameOverInDream)
+                {
+                    TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
+                    TutorialManager.Instance.isDreamTutorial = false;
+                    TutorialManager.Instance.isExitTutorial = false;
+                    TutorialManager.Instance.isSubwayTutorial = true;
+                    TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+                }
+                else
+                {
 
+                }
+            }
         }
     }
 

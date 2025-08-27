@@ -68,7 +68,6 @@ public class UI_TutorialPopup : UI_Popup
     private string[] gameoverTutorialDialog =
     {
         // 꿈 속 게임오버 시
-        "아, 아직 어떻게 나가는지도 모르는데… 시야가 점점 까매져…",
         "우잉… 너무 잘 자버렸잖아…",
 
         // 늦게 일어나 게임오버 시
@@ -127,11 +126,8 @@ public class UI_TutorialPopup : UI_Popup
     "close"      // (1)
 };
 
-    [Header("스크립트 진행도")]
-    [SerializeField] private DialogState dialogState;
-    [SerializeField] private int subwayIdx;
-    [SerializeField] private int dreamIdx;
-    [SerializeField] private int gameoverIdx;
+    [SerializeField]
+    private GameObject TirednessUI;
 
     [Header("표정, 스크립드 참조")]
     [SerializeField] private Image playerEmotion;
@@ -141,34 +137,37 @@ public class UI_TutorialPopup : UI_Popup
     {
         Player,
         Script,
-
     }
 
     public enum Texts
     {
         Dialog,
-
-    }
-
-    public enum DialogState
-    {
-        Subway,
-        Dream,
-        Gameover,
+        TransferText,
+        NextTransferText,
     }
 
     private void Update()
     {
-        SetTutorialTrigger();
+        SetTransferText();
+        TutorialManager.Instance.SetTutorialTrigger();
 
         if (Input.GetMouseButtonDown(0))
         {
+            TutorialManager.Instance.IncreaseIdx();
+
             if (TutorialManager.Instance.isSlapTutorial ||
                 TutorialManager.Instance.isStandingTutorial ||
-                TutorialManager.Instance.isSkipTutorial)
-            {
+                TutorialManager.Instance.isSkipTutorial ||
+                TutorialManager.Instance.isEnterDreamTutorial ||
+                TutorialManager.Instance.isSubwayTutorialEnd ||
+                TutorialManager.Instance.isGameClearTutorial ||
+                TutorialManager.Instance.isEnterDreamTutorial ||
+                TutorialManager.Instance.isMoveTutorial ||
+                TutorialManager.Instance.isExitTutorial ||
+                TutorialManager.Instance.isDarkGameOverTutorial ||
+                TutorialManager.Instance.isPassedGameOverTutorial)
+            { 
                 GameManager.Instance.ResumeGame();
-                TimerManager.Instance.StopTimer();
                 this.gameObject.SetActive(false);
                 return;
             }
@@ -178,6 +177,24 @@ public class UI_TutorialPopup : UI_Popup
                 GameManager.Instance.StopGame();
                 this.gameObject.SetActive(true);
             }
+        }
+
+        if(TutorialManager.Instance.subwayIdx == 8 || TutorialManager.Instance.subwayIdx == 9)
+        {
+            ShowTirednessUI();
+        }
+        else
+        {
+            HideTirednessUI();
+        }
+
+        if (!TutorialManager.Instance.startFlowTime)
+        {
+            TimerManager.Instance.StopTimer();
+        }
+        else
+        {
+            TimerManager.Instance.StartTimer();
         }
     }
 
@@ -191,10 +208,27 @@ public class UI_TutorialPopup : UI_Popup
         playerEmotion = GetImage((int)Images.Player);
         dialog = GetText((int)Texts.Dialog);
 
-        dialog.text = subwayTutorialDialog[0];
-        playerEmotion.sprite = ChangeEmotion("sigh");
-        GameManager.Instance.StopGame();
+        if (!TutorialManager.Instance.isSubwayTutorialEnd)
+        {
+            GameManager.Instance.StopGame();
+            AdvanceDialog();
+        }
+
         TutorialManager.Instance.tutorialPopup = this;
+    }
+
+    private void ShowTirednessUI() { TirednessUI.SetActive(true); }
+    private void HideTirednessUI() { TirednessUI.SetActive(false); }
+
+    private void SetTransferText()
+    {
+        int line = StationManager.Instance.currentLineIdx;
+        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
+
+        if ((line + 1) != StationManager.Instance.subwayLines.Count)
+            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line + 1].transferIdx + 1}</size>역";
+        else
+            GetText((int)Texts.NextTransferText).text = null;
     }
 
     /// <param name="emotion"> anger, base, confusion, mouthopen, sigh, slap, smile, thinking 중 하나 선택</param>
@@ -211,78 +245,50 @@ public class UI_TutorialPopup : UI_Popup
 
     private void ShowSubwayDialog()
     {
-        IncreaseIdx();
-        dialogState = DialogState.Subway;
-        dialog.text = subwayTutorialDialog[subwayIdx];
-        playerEmotion.sprite = ChangeEmotion(subwayEmotions[subwayIdx]);
+        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
+        dialog.text = subwayTutorialDialog[TutorialManager.Instance.subwayIdx];
+        playerEmotion.sprite = ChangeEmotion(subwayEmotions[TutorialManager.Instance.subwayIdx]);
 
     }
 
     private void ShowDreamDialog()
     {
-        IncreaseIdx();
-        dialogState = DialogState.Dream;
-        dialog.text = dreamTutorialDialog[dreamIdx];
-        playerEmotion.sprite = ChangeEmotion(dreamEmotions[dreamIdx]);
+        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
+        dialog.text = dreamTutorialDialog[TutorialManager.Instance.dreamIdx];
+        playerEmotion.sprite = ChangeEmotion(dreamEmotions[TutorialManager.Instance.dreamIdx]);
     }
 
     private void ShowGameOverDialog()
     {
-        IncreaseIdx();
-        dialogState = DialogState.Gameover;
-        dialog.text = gameoverTutorialDialog[gameoverIdx];
-        playerEmotion.sprite = ChangeEmotion(gameoverEmotions[gameoverIdx]);
+        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
+        dialog.text = gameoverTutorialDialog[TutorialManager.Instance.gameoverIdx];
+        playerEmotion.sprite = ChangeEmotion(gameoverEmotions[TutorialManager.Instance.gameoverIdx]);
     }
 
     public void AdvanceDialog()
     {
-        switch (dialogState)
+        switch (TutorialManager.Instance.dialogState)
         {
-            case DialogState.Subway:
-                if (subwayIdx < subwayTutorialDialog.Length)
+            case TutorialManager.DialogState.Subway:
+                if (TutorialManager.Instance.subwayIdx < subwayTutorialDialog.Length)
                 {
-                    ShowSubwayDialog(); // 필요시 인덱스별 감정 키로 교체
+                    ShowSubwayDialog();
                 }
                 break;
 
-            case DialogState.Dream:
-                if (dreamIdx < dreamTutorialDialog.Length)
+            case TutorialManager.DialogState.Dream:
+                if (TutorialManager.Instance.dreamIdx < dreamTutorialDialog.Length)
                 {
                     ShowDreamDialog();
                 }
                 break;
-
-            case DialogState.Gameover:
-                if (gameoverIdx < gameoverTutorialDialog.Length)
+        
+            case TutorialManager.DialogState.Gameover:
+                if (TutorialManager.Instance.gameoverIdx < gameoverTutorialDialog.Length)
                 {
                     ShowGameOverDialog();
                 }
                 break;
         }
-    }
-
-    public void SetTutorialTrigger()
-    {
-        TutorialManager tm = TutorialManager.Instance;
-
-        if(subwayIdx == tm.slapIdx)
-        {
-            tm.isSlapTutorial = true;
-        }
-        if (subwayIdx == tm.standingIdx)
-        {
-            tm.isStandingTutorial = true;
-        }
-        if (subwayIdx == tm.skipIdx)
-        {
-            tm.isSkipTutorial = true;
-        }
-    }
-
-    public void IncreaseIdx()
-    {
-        if (dialogState == DialogState.Subway) subwayIdx++;
-        if (dialogState == DialogState.Dream) dreamIdx++;
-        if (dialogState == DialogState.Gameover) gameoverIdx++;
     }
 }

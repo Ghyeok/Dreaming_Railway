@@ -68,8 +68,9 @@ public class UI_GameOverPopup : UI_Popup
 
         SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
 
-        TimerManager.Instance.StopTimer();
         ShowPlayTime();
+        GameOverTutorial();
+        TimerManager.Instance.StopTimer();
     }
 
     private void RetryButtonOnClicked(PointerEventData data)
@@ -83,6 +84,7 @@ public class UI_GameOverPopup : UI_Popup
     private void MainMenuButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
+        GameManager.Instance.ResetGame();
         SubwayGameManager.Instance.isGameOver = false;
         SceneManager.LoadScene("MainScene");
     }
@@ -101,6 +103,36 @@ public class UI_GameOverPopup : UI_Popup
         int milSec = Mathf.FloorToInt((playTime * 100f) % 100);
 
         GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
+    }
+
+    private void GameOverTutorial()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
+            TutorialManager.Instance.isGameoverTutorial = true;
+
+            if (GameManager.Instance.isGameOverInDream)
+            {
+                TutorialManager.Instance.isDarkGameOverTutorial = true;
+                TutorialManager.Instance.gameoverIdx = 0;
+            }
+            else if (GameManager.Instance.isGameOverInSubway)
+            {
+                TutorialManager.Instance.isPassedGameOverTutorial = true;
+                TutorialManager.Instance.gameoverIdx = 1;
+            }
+
+            if (TutorialManager.Instance.tutorialPopup != null)
+            {
+                TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
+                TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+            }
+            else
+            {
+                UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+            }
+        }
     }
 
     private void OnEnable()

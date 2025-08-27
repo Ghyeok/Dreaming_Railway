@@ -103,6 +103,7 @@ public class UI_MainMenuScene : UI_Scene
     private void NormalModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
+        GameManager.Instance.gameState = GameManager.GameState.DaySelect;
 
         StartCoroutine(FadeAndLoadScene("StageSelect"));
     }

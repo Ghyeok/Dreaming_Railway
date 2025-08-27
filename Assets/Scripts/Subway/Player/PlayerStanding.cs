@@ -1,4 +1,6 @@
+using NUnit.Framework.Constraints;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -13,11 +15,16 @@ public class PlayerStanding : MonoBehaviour
 
         if (SubwayGameManager.Instance.isStandingCoolDown) return;
 
-        if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
         {
             TutorialManager.Instance.isStandingTutorial = false;
             TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
             TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+
+            if (!TutorialManager.Instance.isSkipTutorial)
+            {
+                TimerManager.Instance.StartTimer();
+            }
         }
 
         skipLock = true;

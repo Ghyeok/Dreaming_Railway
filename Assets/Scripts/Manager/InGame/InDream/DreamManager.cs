@@ -35,6 +35,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     public void GameOverInDream()
     {
+        GameManager.Instance.isGameOverInDream = true;
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }
 
@@ -47,6 +48,16 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
         SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
+
+        if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            TutorialManager.Instance.isSubwayTutorial = false;
+            TutorialManager.Instance.isDreamTutorial = true;
+            TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
+
+            if (TutorialManager.Instance.dreamIdx < TutorialManager.Instance.exitIdx)
+                TutorialManager.Instance.tutorialPopup = UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+        }
     }
 
     private void OnEnable()

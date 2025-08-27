@@ -63,7 +63,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         }
     }
 
-    public void ResetGameManager()
+    public void ResetSubwayGameManager()
     {
         standingCount = 0;
         isStandingCoolDown = false;
@@ -94,6 +94,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
     public void GameOverInSubway()
     {
+        GameManager.Instance.isGameOverInSubway = true;
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup2");
     }
 
@@ -103,8 +104,15 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         var op = SceneManager.LoadSceneAsync("TutorialScene", LoadSceneMode.Additive);
         yield return op;
 
-        // 튜토리얼 팝업 띄우기
-        UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
+        if (!TutorialManager.Instance.isSubwayTutorialEnd)
+        {
+            // 튜토리얼 팝업 띄우기
+            UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
+        }
+
+        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
+        TutorialManager.Instance.isSubwayTutorial = true;
+        TutorialManager.Instance.isDreamTutorial = false;
     }
 
     private void OnEnable()

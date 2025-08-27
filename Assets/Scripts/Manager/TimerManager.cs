@@ -27,7 +27,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 
     private void FlowTime()
     {
-        if (!isStop && GameManager.Instance.gameState != GameManager.GameState.Main && GameManager.Instance.gameState != GameManager.GameState.DaySelect)
+        if (!SubwayGameManager.Instance.isGameOver && !isStop && GameManager.Instance.gameState != GameManager.GameState.Main && GameManager.Instance.gameState != GameManager.GameState.DaySelect)
         {
             playTime += Time.deltaTime;
             curTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
@@ -44,10 +44,6 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
         }
-        //else if(GameManager.Instance.gameState == GameManager.GameState.Main || GameManager.Instance.gameState == GameManager.GameState.DaySelect)
-        //{
-        //    ResetTimer();
-        //}
     }
 
     public void ResetTimer()

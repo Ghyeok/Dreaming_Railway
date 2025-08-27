@@ -57,6 +57,7 @@ public class UI_GameClearPopup : UI_Popup
         TimerManager.Instance.StopTimer();
         ShowPlayTime();
         ShowDayText();
+        GameClearTutorial();
 
         SoundManager.Instance.GameClearSFX();
     }
@@ -68,7 +69,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void ShowDayText()
     {
-        GetText((int)Texts.DayText).text = "Day " + StageSelectManager.Instance.currentStage; 
+        GetText((int)Texts.DayText).text = "Day " + StageSelectManager.Instance.currentStage;
     }
 
     private void ShowPlayTime()
@@ -80,6 +81,15 @@ public class UI_GameClearPopup : UI_Popup
         int milSec = Mathf.FloorToInt((playTime * 100f) % 100);
 
         GetText((int)Texts.TimeText).text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
+    }
+
+    private void GameClearTutorial()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            TutorialManager.Instance.isSubwayTutorialEnd = false;
+            UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+        }
     }
 
     private void OnEnable()

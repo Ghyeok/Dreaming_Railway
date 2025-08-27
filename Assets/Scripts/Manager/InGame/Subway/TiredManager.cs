@@ -75,21 +75,16 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
 
     private void IncreaseTired()
     {
-        if (!TutorialManager.Instance.isSlapTutorial &&
-            !TutorialManager.Instance.isSkipTutorial &&
-            !TutorialManager.Instance.isStandingTutorial &&
-            SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP &&
-            !SubwayGameManager.Instance.isGameOver)
+        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP &&
+            !SubwayGameManager.Instance.isGameOver &&
+            TutorialManager.Instance.startFlowTime)
         {
             currentTired += Time.deltaTime;
 
             if (!isSceneLoading && currentTired >= maxTired)
             {
-                if (!TutorialManager.Instance.isSkipTutorial)
-                {
-                    isSceneLoading = true;
-                    StartCoroutine(FadeAndLoadScene("InDream_PlayerMove"));
-                }
+                isSceneLoading = true;
+                StartCoroutine(FadeAndLoadScene("InDream_PlayerMove"));
             }
         }
     }

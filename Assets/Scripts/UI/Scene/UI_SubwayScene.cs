@@ -145,6 +145,26 @@ public class UI_SubwayScene : UI_Scene
             GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
+
+            StartCoroutine(StandingTutorial());
+        }
+    }
+
+
+    IEnumerator StandingTutorial()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        {
+            CanvasGroup cg = GetButton((int)Buttons.StandingButton).gameObject.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+
+            yield return new WaitForSecondsRealtime(2f);
+
+            cg.blocksRaycasts = true;
+
+            TutorialManager.Instance.isStandingTutorial = false;
+            TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
+            TutorialManager.Instance.tutorialPopup.AdvanceDialog();
         }
     }
 

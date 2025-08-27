@@ -25,20 +25,32 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
     public bool isStopped;
 
+    public bool isGameOverInDream;
+    public bool isGameOverInSubway;
+
     public void Init()
     {
         gameState = GameState.Main; // 메인에서 시작
     }
 
+    private void ResetGameManager()
+    {
+        infiniteCount = 0;
+        isGameOverInDream = false;
+        isGameOverInSubway = false;
+    }
+
     public void ResetGame()
     {
-        SubwayGameManager.Instance.ResetGameManager();
+        ResetGameManager();
+        SubwayGameManager.Instance.ResetSubwayGameManager();
         StationManager.Instance.ResetStationManager();
         SubwayPlayerManager.Instance.ResetPlayerManager();
         TiredManager.Instance.ResetTiredManager();
         TimerManager.Instance.ResetTimer();
         TransferManager.Instance.ResetTransferManager();
         DreamManager.Instance.ResetDreamManager();
+        TutorialManager.Instance.ResetTutorial();
     }
 
     public void OnSelectInfiniteMode()
