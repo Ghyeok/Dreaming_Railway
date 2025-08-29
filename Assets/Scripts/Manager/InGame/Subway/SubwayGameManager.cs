@@ -104,7 +104,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         var op = SceneManager.LoadSceneAsync("TutorialScene", LoadSceneMode.Additive);
         yield return op;
 
-        if (!TutorialManager.Instance.isSubwayTutorialEnd)
+        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isPassedGameOverTutorial)
         {
             // 튜토리얼 팝업 띄우기
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");

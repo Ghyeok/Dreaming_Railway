@@ -111,6 +111,7 @@ public class UI_GameOverPopup : UI_Popup
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;
+            TutorialManager.Instance.startIncreaseTired = false;
 
             if (GameManager.Instance.isGameOverInDream)
             {
@@ -127,10 +128,6 @@ public class UI_GameOverPopup : UI_Popup
             {
                 TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
                 TutorialManager.Instance.tutorialPopup.AdvanceDialog();
-            }
-            else
-            {
-                UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
             }
         }
     }

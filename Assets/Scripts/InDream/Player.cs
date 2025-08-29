@@ -217,7 +217,7 @@ public class Player : MonoBehaviour
             MyAnimator.SetBool("IsGrounded", true);
             isJump = false;
             isGrounded = true;
-        }        
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -302,4 +302,5 @@ private void OnDrawGizmosSelected()
     Gizmos.DrawWireSphere(center, exitDetectRadius); // 원(와이어) 그리기
 }
 #endif
+
 }

@@ -125,4 +125,12 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
         if (dreamIdx == exitIdx) isExitTutorial = true;
         else isExitTutorial= false;
     }
+
+    private void StopIncreaseTired()
+    {
+        if(dialogState == DialogState.Gameover)
+        {
+            startIncreaseTired = false;
+        }
+    }
 }
