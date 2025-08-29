@@ -66,6 +66,9 @@ public class UI_SubwayScene : UI_Scene
     {
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
         PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
+
+        // 현재 눌린 UI 상태 초기화
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void OnDisable()

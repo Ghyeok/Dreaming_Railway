@@ -142,16 +142,6 @@ public class UI_StageSelectScene : UI_Scene
         StartCoroutine(EnterToSubway(subwayMiniMove.position1)); //위치 정보 전달
     }
 
-    /*
-    Vector2 newPosition = subwayMiniMove.position1.anchoredPosition;
-        SaveSubwayPosition(newPosition);
-        subwayMiniMove.MoveToPosition(subwayMiniMove.position1);
-
-        StartCoroutine(EnterToSubway(newPosition)); //위치 정보 전달
-    }
-
-    */
-
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.gameMode = GameManager.GameMode.Normal;
@@ -228,7 +218,7 @@ public class UI_StageSelectScene : UI_Scene
         }
         else
         {
-            subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = subwayMiniMove.position0.anchoredPosition;
+            subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(subwayMiniMove.position0.anchoredPosition.x, 464f);
         }
     }
 }

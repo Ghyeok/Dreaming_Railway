@@ -80,5 +80,5 @@ public class UI_NonGameOverScene : UI_Scene
     {
         dreamPlayer.StopMove();
     }
-}
 
+}

@@ -11,7 +11,6 @@ public class FogMovement : MonoBehaviour
     [SerializeField] private float margin;
 
     private bool isCounting = false;
-    //public static bool fadeOutStart = false; //기존 UI 페이드 아웃 위함
     private float coverTimer = 0f; //어둠 멈춤 딜레이
 
 
@@ -80,7 +79,7 @@ public class FogMovement : MonoBehaviour
     {
         if (!playerMoveStarted && player != null)
         {
-           if (player.Speed != 0)
+           if ((player.Speed != 0) || (!player.isGrounded))
             {
                 playerMoveStarted = true;
             }

@@ -24,8 +24,8 @@ public class Player : MonoBehaviour
 
     public bool isInObstacle = false;
     public bool wasMovingLastFrame = false;
-    private bool isGrounded;
-    private bool isTouchedExit = false;
+    public bool isGrounded;
+    public bool isTouchedExit = false;
 
     private HashSet<Collider2D> triggeredObstacles = new HashSet<Collider2D>();
 
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
             }
 
         }
-        
+
         //꿈 속 탈출구랑 닿았을 때 씬 넘어가기
         if (other.CompareTag("ExitDoor") && !isTouchedExit)
         {
