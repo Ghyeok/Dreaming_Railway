@@ -137,6 +137,8 @@ public class UI_GameOverPopup : UI_Popup
 
     private void OnEnable()
     {
+        SoundManager.Instance.SetBGMOff();
+
         // 블로커 패널 활성화
         if (blockerPanel != null)
         {
@@ -150,6 +152,11 @@ public class UI_GameOverPopup : UI_Popup
         }
 
         StartCoroutine(FadeInCoroutine(fadeInDuration));
+    }
+
+    private void OnDisable()
+    {
+        SoundManager.Instance.SetBGMOn();
     }
 
     private IEnumerator FadeInCoroutine(float duration)
