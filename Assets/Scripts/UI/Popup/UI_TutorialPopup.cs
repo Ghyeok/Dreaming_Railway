@@ -128,6 +128,10 @@ public class UI_TutorialPopup : UI_Popup
 
     [SerializeField]
     private GameObject TirednessUI;
+    [SerializeField]
+    private GameObject transferText;
+    [SerializeField]
+    private GameObject nextTransferText;
 
     [Header("표정, 스크립드 참조")]
     [SerializeField] private Image playerEmotion;
@@ -179,13 +183,20 @@ public class UI_TutorialPopup : UI_Popup
             }
         }
 
-        if(TutorialManager.Instance.subwayIdx == 8 || TutorialManager.Instance.subwayIdx == 9)
+        if(TutorialManager.Instance.subwayIdx == 8)
         {
             ShowTirednessUI();
+            HideTransferText();
+        }
+        else if (TutorialManager.Instance.subwayIdx == 9)
+        {
+            ShowTransferText();
+            HideTirednessUI();
         }
         else
         {
             HideTirednessUI();
+            HideTransferText();
         }
 
         if (!TutorialManager.Instance.startFlowTime)
@@ -218,7 +229,10 @@ public class UI_TutorialPopup : UI_Popup
     }
 
     private void ShowTirednessUI() { TirednessUI.SetActive(true); }
+    private void ShowTransferText() { transferText.SetActive(true); nextTransferText.SetActive(true); }
     private void HideTirednessUI() { TirednessUI.SetActive(false); }
+    private void HideTransferText() { transferText.SetActive(false); nextTransferText.SetActive(false); }
+
 
     private void SetTransferText()
     {

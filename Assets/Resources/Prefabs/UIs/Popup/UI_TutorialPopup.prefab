@@ -352,15 +352,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3969724944932297566}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -16.855251}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1504527172147270466}
+  m_Father: {fileID: 6414106059898829346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 108.33185, y: 437.86658}
+  m_AnchoredPosition: {x: 0.000061035156, y: -100}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &5899481519036822241
@@ -488,15 +488,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4072955229895220408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -16.855251}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1504527172147270466}
+  m_Father: {fileID: 6414106059898829346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 108.33185, y: 512.8666}
+  m_AnchoredPosition: {x: 0.000061035156, y: -25}
   m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6910300065820039828
@@ -709,6 +709,8 @@ RectTransform:
   - {fileID: 8183536582843107990}
   - {fileID: 5326688542866681529}
   - {fileID: 1504527172147270466}
+  - {fileID: 5263066936164554506}
+  - {fileID: 6769422177970897481}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -792,6 +794,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TirednessUI: {fileID: 5022065870005655730}
+  transferText: {fileID: 4072955229895220408}
+  nextTransferText: {fileID: 3969724944932297566}
   playerEmotion: {fileID: 0}
   dialog: {fileID: 0}
 --- !u!1 &5022065870005655730
@@ -827,8 +831,6 @@ Transform:
   - {fileID: 4790251609091926046}
   - {fileID: 3112667326705701531}
   - {fileID: 8705570595428440166}
-  - {fileID: 5263066936164554506}
-  - {fileID: 6769422177970897481}
   m_Father: {fileID: 6414106059898829346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7766871559161589050
