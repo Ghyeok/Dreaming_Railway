@@ -33,6 +33,9 @@ public class UI_SubwayScene : UI_Scene
         TimerImage,
         SlapCoolTimeImage,
         StandingCoolTimeImage,
+        TutorialFallAsleepImage,
+        TutorialSlapImage,
+        TutorialStandingImage,
         // 필요한 이미지 추가..
     }
 
@@ -59,7 +62,9 @@ public class UI_SubwayScene : UI_Scene
         SetTransferText();
         SetSlapText();
         ShowStandingCoolDown();
-        TutorialButtonBlocker();
+
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            TutorialButtonBlocker();
     }
 
     private void OnEnable()
@@ -213,11 +218,16 @@ public class UI_SubwayScene : UI_Scene
     {
         if (TutorialManager.Instance.isSlapTutorial)
         {
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialStandingImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
+
                 if (i == (int)Buttons.SlapButton)
                 {
+                    GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
@@ -225,11 +235,16 @@ public class UI_SubwayScene : UI_Scene
         }
         else if (TutorialManager.Instance.isStandingTutorial)
         {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
+
                 if (i == (int)Buttons.StandingButton)
                 {
+                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
@@ -237,15 +252,25 @@ public class UI_SubwayScene : UI_Scene
         }
         else if (TutorialManager.Instance.isSkipTutorial)
         {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
                 if (i == (int)Buttons.StandingButton)
                 {
+                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
             GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
+        }
+        else
+        {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 0f;
+            GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
         }
     }
 }
