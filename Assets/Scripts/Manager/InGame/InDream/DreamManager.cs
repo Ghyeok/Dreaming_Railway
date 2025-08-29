@@ -53,6 +53,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;
+            TutorialManager.Instance.startIncreaseTired = false;
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
 
             if (TutorialManager.Instance.dreamIdx < TutorialManager.Instance.exitIdx)

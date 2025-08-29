@@ -23,6 +23,7 @@ public class PlayerStanding : MonoBehaviour
 
             if (!TutorialManager.Instance.isSkipTutorial)
             {
+                TutorialManager.Instance.startIncreaseTired = true;
                 TimerManager.Instance.StartTimer();
             }
         }

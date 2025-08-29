@@ -230,7 +230,7 @@ public class Player : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {   
+    {
         //장애물 감지
         if (other.CompareTag("Obstacle"))
         {
@@ -252,20 +252,25 @@ public class Player : MonoBehaviour
             SoundManager.Instance.ExitDreamSFX();
             FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
 
-            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial &&
-               TutorialManager.Instance.subwayIdx < TutorialManager.Instance.subwayEndIdx)
+            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
             {
-                if (!GameManager.Instance.isGameOverInDream)
-                {
-                    TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
-                    TutorialManager.Instance.isDreamTutorial = false;
-                    TutorialManager.Instance.isExitTutorial = false;
-                    TutorialManager.Instance.isSubwayTutorial = true;
-                    TutorialManager.Instance.tutorialPopup.AdvanceDialog();
-                }
-                else
-                {
+                TutorialManager.Instance.startFlowTime = true; // 꿈 속에서 나갈때는 항상 시간 흐르게
+                TutorialManager.Instance.startIncreaseTired = true; // 꿈 속에서 나갈때는 항상 피로도 흐르게
 
+                if (TutorialManager.Instance.subwayIdx < TutorialManager.Instance.subwayEndIdx)
+                {
+                    if (!GameManager.Instance.isGameOverInDream)
+                    {
+                        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
+                        TutorialManager.Instance.isDreamTutorial = false;
+                        TutorialManager.Instance.isExitTutorial = false;
+                        TutorialManager.Instance.isSubwayTutorial = true;
+                        TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         }
