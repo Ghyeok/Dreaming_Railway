@@ -96,21 +96,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = Random.Range(10, 15);
+                        int transferStationIdx = Random.Range(8, 11);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = Random.Range(6, 11);
+                        int transferStationIdx = Random.Range(6, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = Random.Range(3, 7);
+                        int transferStationIdx = Random.Range(4, 7);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
@@ -121,21 +121,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = Random.Range(10, 15);
+                        int transferStationIdx = Random.Range(8, 11);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = Random.Range(6, 11);
+                        int transferStationIdx = Random.Range(6, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = Random.Range(3, 7);
+                        int transferStationIdx = Random.Range(4, 7);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;

@@ -55,19 +55,19 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
                     maxTransferCount = 1;
                     break;
                 case 1: // Day 1
-                    maxTransferCount = 3;
+                    maxTransferCount = 2;
                     break;
                 case 2: // Day 2
-                    maxTransferCount = 4;
+                    maxTransferCount = 3;
                     break;
                 case 3: // Day 3
-                    maxTransferCount = 5;
+                    maxTransferCount = 4;
                     break;
                 case 4: // Day 4
-                    maxTransferCount = 7;
+                    maxTransferCount = 6;
                     break;
                 case 5: // Day 5
-                    maxTransferCount = 9;
+                    maxTransferCount = 7;
                     break;
             }
         }
@@ -173,8 +173,9 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StationManager.Instance.currentLineIdx = 0;
             StationManager.Instance.ResetLastStationIdx();
             StageSelectManager.Instance.maxClearStage++;
+
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
-            UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameClearPopup");
+            UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
 
             hasArrived = false;
         }
