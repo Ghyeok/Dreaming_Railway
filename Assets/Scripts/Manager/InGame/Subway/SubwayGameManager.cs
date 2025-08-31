@@ -52,6 +52,10 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         {
             StartCoroutine(LoadTutorialOverlay());
         }
+        else if(GameManager.Instance.gameMode == GameManager.GameMode.Normal)
+        {
+            StartCoroutine(LoadScriptOverlay());  
+        }
 
         DreamManager.Instance.isInDream = false; // 꿈 속이 아니므로
 
@@ -104,7 +108,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         var op = SceneManager.LoadSceneAsync("TutorialScene", LoadSceneMode.Additive);
         yield return op;
 
-        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isPassedGameOverTutorial)
+        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isPassedGameOverTutorial || GameManager.Instance.isGameOverInSubway)
         {
             // 튜토리얼 팝업 띄우기
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");
@@ -113,6 +117,18 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
         TutorialManager.Instance.isSubwayTutorial = true;
         TutorialManager.Instance.isDreamTutorial = false;
+    }
+
+    private IEnumerator LoadScriptOverlay()
+    {
+        var op = SceneManager.LoadSceneAsync("ScriptScene", LoadSceneMode.Additive);
+        yield return op;
+
+        // 스크립트 팝업이 뜨는 경우는 처음 시작했을 때와 게임을 클리어 했을 때
+        if (ScriptManager.Instance.isStart)
+        {
+            UIManager.Instance.ShowPopupUI<UI_ScriptPopup>("UI_ScriptPopup");
+        }
     }
 
     private void OnEnable()

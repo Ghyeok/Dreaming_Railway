@@ -13,6 +13,7 @@ public class ManagerInitializer : MonoBehaviour
             UIManager.Instance,
             StageSelectManager.Instance,
             TutorialManager.Instance,
+            ScriptManager.Instance,
             TransferManager.Instance,
             StationManager.Instance,
             TiredManager.Instance,

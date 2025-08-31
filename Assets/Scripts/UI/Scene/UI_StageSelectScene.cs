@@ -139,6 +139,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 1;
         GameManager.Instance.ResetGame();
 
+        ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position1)); //위치 정보 전달
     }
 
@@ -148,6 +149,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 2;
         GameManager.Instance.ResetGame();
 
+        ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position2)); //위치 정보 전달
     }
 
@@ -157,6 +159,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 3;
         GameManager.Instance.ResetGame();
 
+        ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position3)); //위치 정보 전달
     }
 
@@ -166,6 +169,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 4;
         GameManager.Instance.ResetGame();
 
+        ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position4)); //위치 정보 전달
     }
 
@@ -175,6 +179,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 5;
         GameManager.Instance.ResetGame();
 
+        //ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position5)); //위치 정보 전달
     }
 

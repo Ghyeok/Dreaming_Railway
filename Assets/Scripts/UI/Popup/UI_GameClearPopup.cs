@@ -58,6 +58,7 @@ public class UI_GameClearPopup : UI_Popup
         ShowPlayTime();
         ShowDayText();
         GameClearTutorial();
+        GameClearNormalMode();
 
         SoundManager.Instance.GameClearSFX();
     }
@@ -89,6 +90,15 @@ public class UI_GameClearPopup : UI_Popup
         {
             TutorialManager.Instance.isSubwayTutorialEnd = false;
             UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+        }
+    }
+
+    private void GameClearNormalMode()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Normal)
+        {
+            ScriptManager.Instance.isClear = true;
+            UIManager.Instance.ShowPopupUI<UI_ScriptPopup>("UI_ScriptPopup");
         }
     }
 

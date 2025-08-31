@@ -219,7 +219,7 @@ public class UI_TutorialPopup : UI_Popup
         playerEmotion = GetImage((int)Images.Player);
         dialog = GetText((int)Texts.Dialog);
 
-        if (!TutorialManager.Instance.isSubwayTutorialEnd)
+        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isGameoverTutorial)
         {
             GameManager.Instance.StopGame();
             AdvanceDialog();

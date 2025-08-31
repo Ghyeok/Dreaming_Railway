@@ -51,6 +51,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         TransferManager.Instance.ResetTransferManager();
         DreamManager.Instance.ResetDreamManager();
         TutorialManager.Instance.ResetTutorial();
+        ScriptManager.Instance.ResetScript();
     }
 
     public void OnSelectInfiniteMode()

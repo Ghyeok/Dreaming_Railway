@@ -78,6 +78,7 @@ public class UI_GameOverPopup : UI_Popup
         UIManager.Instance.ClosePopupUI(this);
         SubwayGameManager.Instance.isGameOver = false;
         GameManager.Instance.ResetGame();
+        ScriptManager.Instance.isStart = true;
         SceneManager.LoadScene("TestSubwayScene");
     }
 

@@ -118,6 +118,8 @@ public class UI_SubwayScene : UI_Scene
     private void SetTransferText()
     {
         int line = StationManager.Instance.currentLineIdx;
+
+
         GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
 
         if ((line + 1) != StationManager.Instance.subwayLines.Count)
