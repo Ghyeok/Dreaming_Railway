@@ -172,7 +172,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
             StationManager.Instance.currentLineIdx = 0;
             StationManager.Instance.ResetLastStationIdx();
-            StageSelectManager.Instance.currentStage++;
+            StageSelectManager.Instance.maxClearStage++;
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameClearPopup");
 
