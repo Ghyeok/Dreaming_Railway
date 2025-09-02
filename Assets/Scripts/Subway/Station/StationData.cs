@@ -16,15 +16,15 @@ public class StationData
 
     public StationData(float minTravelTime, float maxTravelTime, float minStopTime, float maxStopTime)
     {
-        this.travelTime = Random.Range(minTravelTime, maxTravelTime);
-        this.stopTime = Random.Range(minStopTime, maxStopTime);
+        this.travelTime = UnityEngine.Random.Range(minTravelTime, maxTravelTime);
+        this.stopTime = UnityEngine.Random.Range(minStopTime, maxStopTime);
         this.stationType = StationType.Normal;
     }
 
     public StationData(float minTravelTime, float maxTravelTime, float minStopTime, float maxStopTime, StationType type)
     {
-        this.travelTime = Random.Range(minTravelTime, maxTravelTime);
-        this.stopTime = Random.Range(minStopTime, maxStopTime);
+        this.travelTime = UnityEngine.Random.Range(minTravelTime, maxTravelTime);
+        this.stopTime = UnityEngine.Random.Range(minStopTime, maxStopTime);
         this.stationType = type;
     }
 }

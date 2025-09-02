@@ -14,7 +14,7 @@ public class FogSpawn : MonoBehaviour
 
     void SpawnRandomPosition()
     {   //안개 생성 위치 랜덤 지정
-        randomIndex = Random.Range(0, spawnPositions.Length);
+        randomIndex = UnityEngine.Random.Range(0, spawnPositions.Length);
 
         if (randomIndex == 0) //좌
             transform.rotation = Quaternion.identity;

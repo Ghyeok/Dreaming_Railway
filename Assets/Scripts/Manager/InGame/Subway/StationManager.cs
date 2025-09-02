@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 // 역 생성을 담당하는 매니저
 public class StationManager : SingletonManagers<StationManager>, IManager
@@ -19,6 +19,8 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     private int lastStationIdx = -1;
 
     public int passedStations;
+
+    public static event Action OnStationStop;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Init()
@@ -96,21 +98,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = Random.Range(8, 11);
+                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = Random.Range(6, 9);
+                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = Random.Range(4, 7);
+                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
@@ -121,21 +123,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = Random.Range(8, 11);
+                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = Random.Range(6, 9);
+                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = Random.Range(4, 7);
+                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = true;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
@@ -151,21 +153,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = Random.Range(8, 13);
+                        int transferStationIdx = UnityEngine.Random.Range(8, 13);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = Random.Range(5, 9);
+                        int transferStationIdx = UnityEngine.Random.Range(5, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = Random.Range(2, 6);
+                        int transferStationIdx = UnityEngine.Random.Range(2, 6);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
@@ -219,18 +221,17 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 float stopStart = accumulatedTime;
                 float stopEnd = accumulatedTime + subwayLines[currentLineIdx].stations[i].stopTime;
 
-                SubwayGameManager.Instance.isStopping = (timer.curTime > stopStart && timer.curTime < stopEnd);
+                if (timer.curTime > stopStart && timer.curTime < stopEnd)
+                {
+                    SubwayGameManager.Instance.isStopping = true;
+                    OnStationStop?.Invoke();
+                }
+                else
+                {
+                    SubwayGameManager.Instance.isStopping = false;
+                }
             }
             accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
         }
     }
-
-    //public void CheckLastLine() // 마지막 노선일 경우
-    //{
-    //    if (currentLineIdx == TransferManager.Instance.maxTransferCount && GameManager.Instance.gameState == GameManager.GameState.Subway)
-    //    {
-    //        SubwayGameManager.Instance.isStandingCoolDown = true; // 환승 방지
-    //        SoundManager.Instance.LastLineSFX();
-    //    }
-    //}
 }

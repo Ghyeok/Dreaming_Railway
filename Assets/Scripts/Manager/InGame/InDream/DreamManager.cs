@@ -24,7 +24,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         mindreamTimeSpeed = 3f;
         maxdreamTimeSpeed = 4f;
 
-        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+        dreamTimeSpeed = UnityEngine.Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
 
     }
 
