@@ -136,7 +136,8 @@ public class UI_SubwayScene : UI_Scene
     private void SetStandingButtonToSkip(PointerEventData data)
     {
         if (!SubwayGameManager.Instance.isStandingCoolDown &&
-            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx)
+            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx &&
+            TransferManager.Instance.curTransferCount != TransferManager.Instance.maxTransferCount)
         {
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
@@ -156,7 +157,10 @@ public class UI_SubwayScene : UI_Scene
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
 
-            StartCoroutine(StandingTutorial());
+            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            {
+                StartCoroutine(StandingTutorial());
+            }
         }
     }
 
@@ -207,7 +211,14 @@ public class UI_SubwayScene : UI_Scene
         }
         else
         {
-            stand.fillAmount = 0f;
+            if (TransferManager.Instance.curTransferCount == TransferManager.Instance.maxTransferCount)
+            {
+                stand.fillAmount = 1f;
+            }
+            else
+            {
+                stand.fillAmount = 0f;
+            }
         }
     }
 
