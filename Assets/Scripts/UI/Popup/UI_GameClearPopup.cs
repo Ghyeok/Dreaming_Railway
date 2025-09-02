@@ -97,9 +97,21 @@ public class UI_GameClearPopup : UI_Popup
     {
         if (GameManager.Instance.gameMode == GameManager.GameMode.Normal)
         {
-            ScriptManager.Instance.isClear = true;
-            UIManager.Instance.ShowPopupUI<UI_ScriptPopup>("UI_ScriptPopup");
-        }
+            if (ScriptManager.Instance.HasClearDialog(StageSelectManager.Instance.currentStage))
+            {
+                ScriptManager.Instance.isClear = true;
+
+                if (ScriptManager.Instance.scriptPopup != null)
+                {
+                    ScriptManager.Instance.scriptPopup.gameObject.SetActive(true);
+                    ScriptManager.Instance.ShowDialog(StageSelectManager.Instance.currentStage);
+                }
+                else
+                {
+                    UIManager.Instance.ShowPopupUI<UI_ScriptPopup>("UI_ScriptPopup");
+                }
+            }
+        }   
     }
 
     private void OnEnable()

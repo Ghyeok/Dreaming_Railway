@@ -124,6 +124,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         var op = SceneManager.LoadSceneAsync("ScriptScene", LoadSceneMode.Additive);
         yield return op;
 
+        ScriptManager.Instance.SetScriptTrigger();
         // 스크립트 팝업이 뜨는 경우는 처음 시작했을 때와 게임을 클리어 했을 때
         if (ScriptManager.Instance.isStart)
         {

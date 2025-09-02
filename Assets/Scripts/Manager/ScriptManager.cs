@@ -233,4 +233,9 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
             }
         }
     }
+
+    public bool HasClearDialog(int day)
+    {
+        return day == 1 || day == 3 || day == 4 || day == 5;
+    }
 }

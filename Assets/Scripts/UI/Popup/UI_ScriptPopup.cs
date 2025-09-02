@@ -37,11 +37,6 @@ public class UI_ScriptPopup : UI_Popup
             GameManager.Instance.StopGame();
             this.gameObject.SetActive(true);
         }
-        else
-        {
-            GameManager.Instance.ResumeGame();
-            this.gameObject.SetActive(false);
-        }
     }
 
     private void Update()

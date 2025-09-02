@@ -64,10 +64,10 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
                     maxTransferCount = 4;
                     break;
                 case 4: // Day 4
-                    maxTransferCount = 6;
+                    maxTransferCount = 5;
                     break;
                 case 5: // Day 5
-                    maxTransferCount = 7;
+                    maxTransferCount = 6;
                     break;
             }
         }

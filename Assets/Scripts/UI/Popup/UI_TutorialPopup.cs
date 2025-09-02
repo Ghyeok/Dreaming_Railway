@@ -229,7 +229,7 @@ public class UI_TutorialPopup : UI_Popup
     }
 
     private void ShowTirednessUI() { TirednessUI.SetActive(true); }
-    private void ShowTransferText() { transferText.SetActive(true); nextTransferText.SetActive(true); }
+    private void ShowTransferText() { transferText.SetActive(true); nextTransferText.SetActive(true);}
     private void HideTirednessUI() { TirednessUI.SetActive(false); }
     private void HideTransferText() { transferText.SetActive(false); nextTransferText.SetActive(false); }
 

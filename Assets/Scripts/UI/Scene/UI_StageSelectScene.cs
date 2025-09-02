@@ -179,7 +179,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.currentStage = 5;
         GameManager.Instance.ResetGame();
 
-        //ScriptManager.Instance.isStart = true;
+        ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position5)); //위치 정보 전달
     }
 
