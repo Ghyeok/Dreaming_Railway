@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3176, y: 0}
+  m_AnchoredPosition: {x: -1248, y: 0}
   m_SizeDelta: {x: 4460, y: 725.18555}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8437172986722318074
@@ -740,7 +740,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3202, y: 0}
+  m_AnchoredPosition: {x: 3229, y: 0}
   m_SizeDelta: {x: 4460, y: 725.18555}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9044255145188365211
@@ -831,7 +831,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   undergroundLayer: {fileID: 4977798085076984914}
-  outsideLayer: {fileID: 0}
   underground: {fileID: 21300000, guid: 52f247c2ea1627248af75724be8f7bac, type: 3}
   station: {fileID: 21300000, guid: e78ce91d552702242bdd82a74841db03, type: 3}
   connectR: {fileID: 21300000, guid: 1fd60846ddf88f748ae899c7c73a30dc, type: 3}
@@ -839,6 +838,8 @@ MonoBehaviour:
   hangang: {fileID: 21300000, guid: 7d92741496bac97459bea5a1a953f7a2, type: 3}
   grass: {fileID: 21300000, guid: 0dcf081fc49c90844b8c0d225bb3af12, type: 3}
   needConnector: 0
+  isHangangShown: 0
+  isGrassShown: 0
   currentType: 0
 --- !u!1 &4869184938817729609
 GameObject:
@@ -1033,6 +1034,7 @@ MonoBehaviour:
   canvasRect: {fileID: 6414106059898829346}
   image1: {fileID: 1729463421537386629}
   image2: {fileID: 8889573464777333570}
+  outside: {fileID: 0}
   bm: {fileID: 0}
   scrollSpeed: 100
   leftX: 0

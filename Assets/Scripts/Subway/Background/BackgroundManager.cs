@@ -22,8 +22,15 @@ public class BackgroundManager : MonoBehaviour
         ConnectL,
     }
 
-    public Queue<BackgroundType> backgroundQueue;
+    [SerializeField] public Queue<BackgroundType> backgroundQueue;
+
     public bool needConnector;
+    public bool isHangangShown;
+    public bool isGrassShown;
+    public bool isTransferRecently;
+
+    public float lastSpeedBeforeStation;
+
     public BackgroundType currentType;
 
     void Awake()
@@ -36,6 +43,8 @@ public class BackgroundManager : MonoBehaviour
             backgroundQueue.Enqueue(BackgroundType.Underground);
             currentType = BackgroundType.Underground;
         }
+
+        isTransferRecently = false;
     }
 
     /*
@@ -66,26 +75,39 @@ public class BackgroundManager : MonoBehaviour
         int rand = Random.Range(1, 101); // 1 ~ 100의 랜덤한 숫자
 
         // 1. 배경이 바뀌는 순간에 남은 역이 1개이고 정차 구간이라면
-        if (remain <= 1 && SubwayGameManager.Instance.isStopping)
+        if (remain <= 0 && SubwayGameManager.Instance.isStopping)
         {
+            lastSpeedBeforeStation = SetScrollSpeed(currentType);
             backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Station);
         }
-        else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장
+        else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게
         {
-            if (rand <= 5)
-                backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Hangang);
-            else if (rand > 5 && rand <= 10)
-                backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Grass);
+            if (rand <= 10 && !isTransferRecently)
+            {
+                if (!isHangangShown && rand <= 5)
+                {
+                    isHangangShown = true;
+                    backgroundQueue.Enqueue(BackgroundType.ConnectR);
+                    backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Hangang);
+                    backgroundQueue.Enqueue(BackgroundType.ConnectL);
+                }
+                else if (!isGrassShown && rand > 5 && rand <= 10)
+                {
+                    isGrassShown = true;
+                    backgroundQueue.Enqueue(BackgroundType.ConnectR);
+                    backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Grass);
+                    backgroundQueue.Enqueue(BackgroundType.ConnectL);
+                }
+            }
             else
+            {
                 backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Underground);
+            }
         }
 
         SettingNextBackground();
     }
 
-    /// <summary>
-    /// 다음 배경이 한강 또는 풀 이면 커넥터 플래그를 세우고, 다음 배경 스크롤 속도를 설정
-    /// </summary>
     private void SettingNextBackground()
     {
         if (backgroundQueue.Count > 0)
@@ -93,11 +115,11 @@ public class BackgroundManager : MonoBehaviour
             BackgroundType nextType = backgroundQueue.Peek();
             currentType = backgroundQueue.Peek();
 
-            if (nextType == BackgroundType.Hangang || nextType == BackgroundType.Grass)
+            if (nextType == BackgroundType.ConnectR)
             {
                 needConnector = true;
             }
-            else
+            else if (nextType == BackgroundType.ConnectL)
             {
                 needConnector = false;
             }
@@ -117,14 +139,22 @@ public class BackgroundManager : MonoBehaviour
         else return null;
     }
 
+    private void ResetOutsideBackground()
+    {
+        isGrassShown = false;
+        isHangangShown = false;
+    }
+
 
     private void OnEnable()
     {
         BackgroundScroller.OnBackgroundChange += DecideNextBackground;
+        TransferManager.OnTransferSuccess += ResetOutsideBackground;
     }
 
     private void OnDisable()
     {
         BackgroundScroller.OnBackgroundChange -= DecideNextBackground;
+        TransferManager.OnTransferSuccess -= ResetOutsideBackground;
     }
 }   

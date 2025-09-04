@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Resources;
 using UnityEngine;
 using UnityEngine.UI;
+using static BackgroundManager;
 
 public class BackgroundScroller : MonoBehaviour
 {
@@ -12,7 +15,6 @@ public class BackgroundScroller : MonoBehaviour
      * 
      * 
      */
-
 
     [SerializeField]
     private RectTransform canvasRect;
@@ -27,7 +29,6 @@ public class BackgroundScroller : MonoBehaviour
     private const float EPS = 0.0001f; // 경계 떨림 방지용
 
     public float scrollSpeed;
-
     public static event Action OnBackgroundChange;
 
     [SerializeField]
@@ -78,7 +79,10 @@ public class BackgroundScroller : MonoBehaviour
         {
             OnBackgroundChange?.Invoke();
             image2.GetComponent<Image>().sprite = bm.ReturnBackgroundImage();
-            scrollSpeed = bm.SetScrollSpeed(bm.currentType);
+
+            if (bm.currentType == BackgroundManager.BackgroundType.ConnectL)
+                scrollSpeed = bm.SetScrollSpeed(bm.currentType);
+
         }
 
         bool crossed2 = (prevX2 > -rightX + EPS) && (image2.anchoredPosition.x <= -rightX + EPS);
@@ -86,7 +90,9 @@ public class BackgroundScroller : MonoBehaviour
         {
             OnBackgroundChange?.Invoke();
             image1.GetComponent<Image>().sprite = bm.ReturnBackgroundImage();
-            scrollSpeed = bm.SetScrollSpeed(bm.currentType);
+
+            if (bm.currentType == BackgroundManager.BackgroundType.ConnectL)
+                scrollSpeed = bm.SetScrollSpeed(bm.currentType);
         }
 
         if (image1.anchoredPosition.x <= -leftX)
@@ -94,16 +100,59 @@ public class BackgroundScroller : MonoBehaviour
             image1.anchoredPosition = image2.anchoredPosition + new Vector2(imageWidth, 0);
             prevX1 = image1.anchoredPosition.x;
 
+            if (bm.currentType != BackgroundManager.BackgroundType.ConnectL)
+                scrollSpeed = bm.SetScrollSpeed(bm.currentType);
+
         }
         if (image2.anchoredPosition.x <= -leftX)
         {
             image2.anchoredPosition = image1.anchoredPosition + new Vector2(imageWidth, 0);
             prevX2 = image2.anchoredPosition.x;
 
+            if (bm.currentType != BackgroundManager.BackgroundType.ConnectL)
+                scrollSpeed = bm.SetScrollSpeed(bm.currentType);
         }
 
         prevX1 = image1.anchoredPosition.x;
         prevX2 = image2.anchoredPosition.x;
+    }
+
+    private void StopScrollSpeed()
+    {
+        if (bm.currentType == BackgroundType.Station)
+        {
+            StartCoroutine(StationStopRoutine(bm.lastSpeedBeforeStation, StationManager.Instance.GetCurrentStationStoppingTime()));
+        }
+    }
+
+    private IEnumerator StationStopRoutine(float speed, float time)
+    {
+        yield return LerpSpeed(speed, 0f, time);
+
+        yield return LerpSpeed(0f, speed, time, true);
+    }
+
+    private IEnumerator LerpSpeed(float from, float to, float duration, bool isEnd = false)
+    {
+        if (duration < 0f)
+        {
+            scrollSpeed = to;
+            yield break;
+        }
+
+        float t = 0f;
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float k = Mathf.Clamp01(t / duration);
+            scrollSpeed = Mathf.SmoothStep(from, to, k);
+            yield return null;
+        }
+
+        scrollSpeed = to;
+
+        if(isEnd) bm.isTransferRecently = false;
+        else bm.isTransferRecently = true;  
     }
 
     private void ScrollBackground(RectTransform rect, float delta)
@@ -113,11 +162,11 @@ public class BackgroundScroller : MonoBehaviour
 
     private void OnEnable()
     {
-
+         OnBackgroundChange += StopScrollSpeed;
     }
 
     private void OnDisable()
     {
-        
+        OnBackgroundChange -= StopScrollSpeed;
     }
 }
