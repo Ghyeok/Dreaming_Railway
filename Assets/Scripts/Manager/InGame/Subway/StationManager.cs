@@ -85,6 +85,11 @@ public class StationManager : SingletonManagers<StationManager>, IManager
 
         return total;
     }
+    
+    public float GetCurrentStationStoppingTime()
+    {
+        return subwayLines[currentLineIdx].stations[currentStationIdx].stopTime;
+    }
 
     private void ChooseStationType()
     {
@@ -210,6 +215,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     public void IsSubwayStopped()
     {
         TimerManager timer = TimerManager.Instance;
+        float tLine = timer.lineTime;
         float accumulatedTime = 0f;
 
         for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)
@@ -221,7 +227,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 float stopStart = accumulatedTime;
                 float stopEnd = accumulatedTime + subwayLines[currentLineIdx].stations[i].stopTime;
 
-                if (timer.curTime > stopStart && timer.curTime < stopEnd)
+                if (timer.lineTime > stopStart && timer.lineTime < stopEnd)
                 {
                     SubwayGameManager.Instance.isStopping = true;
                     OnStationStop?.Invoke();
