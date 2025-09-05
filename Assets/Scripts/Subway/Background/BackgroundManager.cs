@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour
 {
-    public GameObject undergroundLayer;
-
     [SerializeField] private Sprite underground;
     [SerializeField] private Sprite station;
     [SerializeField] private Sprite connectR;
@@ -24,7 +22,6 @@ public class BackgroundManager : MonoBehaviour
 
     [SerializeField] public Queue<BackgroundType> backgroundQueue;
 
-    public bool needConnector;
     public bool isHangangShown;
     public bool isGrassShown;
     public bool isTransferRecently;
@@ -60,25 +57,31 @@ public class BackgroundManager : MonoBehaviour
         if (type == BackgroundType.Station) return 3000f;
         if (type == BackgroundType.ConnectL) return 3000f;
         if (type == BackgroundType.ConnectR) return 3000f;
-        if (type == BackgroundType.Hangang) return 200f;
-        if (type == BackgroundType.Grass) return 200f;
+        if (type == BackgroundType.Hangang) return 75f;
+        if (type == BackgroundType.Grass) return 3000f;
 
         return 0;
     }
 
-    /// <summary>
-    /// 현재 출력되고 있는 배경이 사라지는 순간 호출
-    /// </summary>
     public void DecideNextBackground()
     {
         int remain = StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx - StationManager.Instance.currentStationIdx;
         int rand = Random.Range(1, 101); // 1 ~ 100의 랜덤한 숫자
 
+        bool isOutside = (currentType == BackgroundType.ConnectR ||
+                          currentType == BackgroundType.Hangang ||
+                          currentType == BackgroundType.Grass ||
+                          currentType == BackgroundType.ConnectL);
+
+        Debug.Log($"현재 큐 길이 : {backgroundQueue.Count}");
+
+        if (isOutside) return;
+
         // 1. 배경이 바뀌는 순간에 남은 역이 1개이고 정차 구간이라면
         if (remain <= 0 && SubwayGameManager.Instance.isStopping)
         {
             lastSpeedBeforeStation = SetScrollSpeed(currentType);
-            backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Station);
+            backgroundQueue.Enqueue(BackgroundType.Station);
         }
         else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게
         {
@@ -88,40 +91,26 @@ public class BackgroundManager : MonoBehaviour
                 {
                     isHangangShown = true;
                     backgroundQueue.Enqueue(BackgroundType.ConnectR);
-                    backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Hangang);
+                    backgroundQueue.Enqueue(BackgroundType.Hangang);
                     backgroundQueue.Enqueue(BackgroundType.ConnectL);
+                    backgroundQueue.Enqueue(BackgroundType.Underground);
                 }
                 else if (!isGrassShown && rand > 5 && rand <= 10)
                 {
                     isGrassShown = true;
                     backgroundQueue.Enqueue(BackgroundType.ConnectR);
-                    backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Grass);
+                    backgroundQueue.Enqueue(BackgroundType.Grass);
                     backgroundQueue.Enqueue(BackgroundType.ConnectL);
+                    backgroundQueue.Enqueue(BackgroundType.Underground);
+                }
+                else // 한강, 풀 배경이 모두 나온적 있다면 지하 배경을 채워줌
+                {
+                    backgroundQueue.Enqueue(BackgroundType.Underground);
                 }
             }
             else
             {
-                backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Underground);
-            }
-        }
-
-        SettingNextBackground();
-    }
-
-    private void SettingNextBackground()
-    {
-        if (backgroundQueue.Count > 0)
-        {
-            BackgroundType nextType = backgroundQueue.Peek();
-            currentType = backgroundQueue.Peek();
-
-            if (nextType == BackgroundType.ConnectR)
-            {
-                needConnector = true;
-            }
-            else if (nextType == BackgroundType.ConnectL)
-            {
-                needConnector = false;
+                backgroundQueue.Enqueue(BackgroundType.Underground);
             }
         }
     }
@@ -129,6 +118,7 @@ public class BackgroundManager : MonoBehaviour
     public Sprite ReturnBackgroundImage()
     {
         BackgroundType type = backgroundQueue.Dequeue();
+        currentType = type;
 
         if (type == BackgroundType.Underground) return underground;
         if (type == BackgroundType.Station) return station;
@@ -144,7 +134,6 @@ public class BackgroundManager : MonoBehaviour
         isGrassShown = false;
         isHangangShown = false;
     }
-
 
     private void OnEnable()
     {
