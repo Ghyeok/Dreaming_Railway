@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     public bool isStopping; // 정차중
 
     public bool isGameOver;
+    public static event Action OnSubwayGameOver;
 
     public void Init()
     {
@@ -63,6 +65,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
         if (isGameOver && GameManager.Instance.gameState == GameManager.GameState.Subway) // 꿈 속에서 지하철로 돌아 왔을때, 환승역을 지나친 상태라면 게임오버 판정
         {
+            OnSubwayGameOver?.Invoke();
             GameOverInSubway();
         }
     }

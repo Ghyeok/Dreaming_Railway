@@ -6,13 +6,6 @@ using static BackgroundManager;
 
 public class BackgroundScroller : MonoBehaviour
 {
-    /*
-     * 남은 일 
-     * 1. 커넥터 연결 - 차라리 커넥터 확률을 5퍼로 두고, 커넥터가 나오면 반드시 한강 혹은 풀이 따라 나오는 구조로?
-     * 2. 정차 구간 속도 줄이기 - 환승까지 1정거장 남았을 때, 약 10초간 점점 느려지다 멈추고 다시 빨라지는 구조?
-     * 
-     * 
-     */
     [Header("참조")]
     [SerializeField]
     private RectTransform canvasRect;
@@ -218,7 +211,7 @@ public class BackgroundScroller : MonoBehaviour
         hasExecutedThisFrame = false;
     }
 
-    private void StopScrollSpeed()
+    private void StopScrollSpeed() // 정차역이면 배경 스크롤 속도를 감소시킴
     {
         if (bm.currentType == BackgroundType.Station && !stationLerpRunning)
         {
@@ -264,13 +257,24 @@ public class BackgroundScroller : MonoBehaviour
         rect.anchoredPosition -= new Vector2(delta, 0);
     }
 
+    public void OnDisableScroller()
+    {
+        this.enabled = false;
+    }
+
     private void OnEnable()
     {
         OnBackgroundChange += StopScrollSpeed;
+
+        SubwayGameManager.OnSubwayGameOver += OnDisableScroller;
+        TransferManager.OnGetOffSuccess += OnDisableScroller;
     }
 
     private void OnDisable()
     {
         OnBackgroundChange -= StopScrollSpeed;
+
+        SubwayGameManager.OnSubwayGameOver -= OnDisableScroller;
+        TransferManager.OnGetOffSuccess -= OnDisableScroller;
     }
 }

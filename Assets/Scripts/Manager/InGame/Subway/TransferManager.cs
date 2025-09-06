@@ -15,6 +15,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     public int maxTransferCount;
 
     public static event Action OnTransferSuccess;
+    public static event Action OnGetOffSuccess;
 
     private bool hasTransfered = false;
     private bool hasArrived = false;
@@ -175,6 +176,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StageSelectManager.Instance.maxClearStage++;
 
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
+            OnGetOffSuccess?.Invoke();
             UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
 
             hasArrived = false;

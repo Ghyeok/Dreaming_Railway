@@ -71,4 +71,33 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         Time.timeScale = 1f;
         isStopped = false;
     }
+
+    public void GameOverOrClear()
+    {
+        // 1. 배경 움직임 멈춤
+        // 2. 플레이어 애니메이션 멈춤
+        // 3. 시간 멈춤
+        // 4. 피로도 증가 멈춤
+
+        // 1. BackgroundScroller에서 이벤트 구독으로 처리
+        // 2. UI_SubwayScene에서 이벤트 구독으로 처리
+        // 3. 시간 멈춤
+        TimerManager.Instance.StopTimer();
+        // 4. 피로도는 SubwayGameManager.Instance.isGameOver가 true면 증가하지 않음
+        SubwayGameManager.Instance.isGameOver = true;
+    }
+
+    private void OnEnable()
+    {
+        SubwayGameManager.OnSubwayGameOver += GameOverOrClear;
+        TransferManager.OnGetOffSuccess += GameOverOrClear;
+        FogMovement.OnDreamGameOver += GameOverOrClear;
+    }
+
+    private void OnDisable()
+    {
+        SubwayGameManager.OnSubwayGameOver -= GameOverOrClear;
+        TransferManager.OnGetOffSuccess += GameOverOrClear;
+        FogMovement.OnDreamGameOver -= GameOverOrClear;
+    }
 }

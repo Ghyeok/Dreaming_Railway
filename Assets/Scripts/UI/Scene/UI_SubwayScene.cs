@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_SubwayScene : UI_Scene
@@ -69,6 +70,9 @@ public class UI_SubwayScene : UI_Scene
 
     private void OnEnable()
     {
+        SubwayGameManager.OnSubwayGameOver += OnDisableAnimator;
+        TransferManager.OnGetOffSuccess += OnDisableAnimator;
+
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
         PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
 
@@ -78,6 +82,9 @@ public class UI_SubwayScene : UI_Scene
 
     private void OnDisable()
     {
+        SubwayGameManager.OnSubwayGameOver -= OnDisableAnimator;
+        TransferManager.OnGetOffSuccess -= OnDisableAnimator;
+
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
     }
 
@@ -106,6 +113,11 @@ public class UI_SubwayScene : UI_Scene
 
         TextMeshProUGUI timerText = GetText((int)Texts.TimerText);
         TimerManager.Instance.timerText = timerText;
+    }
+
+    private void OnDisableAnimator()
+    {
+        anim.enabled = false;
     }
 
     private void PauseButtonOnClicked(PointerEventData data)
@@ -163,7 +175,6 @@ public class UI_SubwayScene : UI_Scene
             }
         }
     }
-
 
     IEnumerator StandingTutorial()
     {
