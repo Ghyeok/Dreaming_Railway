@@ -23,8 +23,8 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] public Queue<BackgroundType> backgroundQueue;
 
     public bool isHangangShown;
+    private int grassLoop = 6;
     public bool isGrassShown;
-    public int grassCount;
     public bool isTransferRecently;
 
     public float lastSpeedBeforeStation;
@@ -98,14 +98,9 @@ public class BackgroundManager : MonoBehaviour
                 }
                 else if (!isGrassShown && rand > 5 && rand <= 10)
                 {
-                    if (grassCount >= 4)
-                    {
-                        isGrassShown = true;
-                    }
-
-                    grassCount++;
                     backgroundQueue.Enqueue(BackgroundType.ConnectR);
-                    backgroundQueue.Enqueue(BackgroundType.Grass);
+                    for (int i = 0; i < grassLoop; i++)
+                        backgroundQueue.Enqueue(BackgroundType.Grass);
                     backgroundQueue.Enqueue(BackgroundType.ConnectL);
                     backgroundQueue.Enqueue(BackgroundType.Underground);
                 }
@@ -137,7 +132,6 @@ public class BackgroundManager : MonoBehaviour
 
     private void ResetOutsideBackground()
     {
-        grassCount = 0;
         isGrassShown = false;
         isHangangShown = false;
     }
