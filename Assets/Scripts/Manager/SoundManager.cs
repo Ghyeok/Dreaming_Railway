@@ -156,7 +156,7 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public void EnterFogSFX()
     {
-        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.5f);
+        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.6f);
     }
 
     public void ExitDreamSFX()

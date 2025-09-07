@@ -60,7 +60,7 @@ public class MapYSpawn : MonoBehaviour
         {
             if (mapLength == 1)
             {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 15 + 2 * SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -68,7 +68,7 @@ public class MapYSpawn : MonoBehaviour
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 24 + 2 * SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 22 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }

@@ -101,7 +101,7 @@ public class MapXSpawn : MonoBehaviour
 
             else if (mapLength >= 2)
             {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 7 + SubwayPlayerManager.Instance.slapNum)
+                if (spawnedCount >= 6 + SubwayPlayerManager.Instance.slapNum)
                 {
                     LimitMapSpawning();
                 }
