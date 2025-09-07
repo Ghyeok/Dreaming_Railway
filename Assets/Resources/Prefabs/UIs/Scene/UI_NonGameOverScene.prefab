@@ -241,6 +241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dreamPlayer: {fileID: 0}
+  R_Button: {fileID: 8758861251420551203}
+  L_Button: {fileID: 8980037735618770048}
 --- !u!1 &1991910780618450206
 GameObject:
   m_ObjectHideFlags: 0

@@ -2372,6 +2372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   whitePanel: {fileID: 1323353781}
+  uiNonGameOverScene: {fileID: 9029338405109612080, guid: 4506d974532675445aa21442877f7506, type: 3}
   fadeDuration: 0.2
   sceneDelay: 0.1
 --- !u!1 &2141137973
