@@ -58,6 +58,7 @@ public class UI_GameClearPopup : UI_Popup
         ShowPlayTime();
         ShowDayText();
         GameClearTutorial();
+        GameClearNormalMode();
 
         SoundManager.Instance.GameClearSFX();
     }
@@ -92,14 +93,42 @@ public class UI_GameClearPopup : UI_Popup
         }
     }
 
+    private void GameClearNormalMode()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Normal)
+        {
+            if (ScriptManager.Instance.HasClearDialog(StageSelectManager.Instance.currentStage))
+            {
+                ScriptManager.Instance.isClear = true;
+
+                if (ScriptManager.Instance.scriptPopup != null)
+                {
+                    ScriptManager.Instance.scriptPopup.gameObject.SetActive(true);
+                    ScriptManager.Instance.ShowDialog(StageSelectManager.Instance.currentStage);
+                }
+                else
+                {
+                    UIManager.Instance.ShowPopupUI<UI_ScriptPopup>("UI_ScriptPopup");
+                }
+            }
+        }   
+    }
+
     private void OnEnable()
     {
+        SoundManager.Instance.SetBGMOff();
+
         // 블로커 패널 활성화
         if (blockerPanel != null)
         {
             blockerPanel.SetActive(true);
         }
         StartCoroutine(FadeInCoroutine(fadeInDuration));
+    }
+
+    private void OnDisable()
+    {
+        SoundManager.Instance.SetBGMOn();
     }
 
     private IEnumerator FadeInCoroutine(float duration)

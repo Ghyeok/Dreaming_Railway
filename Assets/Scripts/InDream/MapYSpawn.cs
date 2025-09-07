@@ -80,8 +80,8 @@ public class MapYSpawn : MonoBehaviour
     {
         if (canSpawnToUp)
         {
-            int randomint = Random.Range(0, mapList.Count - 1);
-            float randomX = Random.Range(-5f, 5f);
+            int randomint = UnityEngine.Random.Range(0, mapList.Count - 1);
+            float randomX = UnityEngine.Random.Range(-5f, 5f);
             Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
             //다음 생성 위치 설정

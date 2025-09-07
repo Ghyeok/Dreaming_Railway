@@ -78,6 +78,7 @@ public class UI_GameOverPopup : UI_Popup
         UIManager.Instance.ClosePopupUI(this);
         SubwayGameManager.Instance.isGameOver = false;
         GameManager.Instance.ResetGame();
+        ScriptManager.Instance.isStart = true;
         SceneManager.LoadScene("TestSubwayScene");
     }
 
@@ -111,6 +112,7 @@ public class UI_GameOverPopup : UI_Popup
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;
+            TutorialManager.Instance.startIncreaseTired = false;
 
             if (GameManager.Instance.isGameOverInDream)
             {
@@ -128,15 +130,13 @@ public class UI_GameOverPopup : UI_Popup
                 TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
                 TutorialManager.Instance.tutorialPopup.AdvanceDialog();
             }
-            else
-            {
-                UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
-            }
         }
     }
 
     private void OnEnable()
     {
+        SoundManager.Instance.SetBGMOff();
+
         // 블로커 패널 활성화
         if (blockerPanel != null)
         {
@@ -150,6 +150,11 @@ public class UI_GameOverPopup : UI_Popup
         }
 
         StartCoroutine(FadeInCoroutine(fadeInDuration));
+    }
+
+    private void OnDisable()
+    {
+        SoundManager.Instance.SetBGMOn();
     }
 
     private IEnumerator FadeInCoroutine(float duration)

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_SubwayScene : UI_Scene
@@ -33,6 +34,9 @@ public class UI_SubwayScene : UI_Scene
         TimerImage,
         SlapCoolTimeImage,
         StandingCoolTimeImage,
+        TutorialFallAsleepImage,
+        TutorialSlapImage,
+        TutorialStandingImage,
         // 필요한 이미지 추가..
     }
 
@@ -59,11 +63,16 @@ public class UI_SubwayScene : UI_Scene
         SetTransferText();
         SetSlapText();
         ShowStandingCoolDown();
-        TutorialButtonBlocker();
+
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            TutorialButtonBlocker();
     }
 
     private void OnEnable()
     {
+        SubwayGameManager.OnSubwayGameOver += OnDisableAnimator;
+        TransferManager.OnGetOffSuccess += OnDisableAnimator;
+
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
         PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
 
@@ -73,6 +82,9 @@ public class UI_SubwayScene : UI_Scene
 
     private void OnDisable()
     {
+        SubwayGameManager.OnSubwayGameOver -= OnDisableAnimator;
+        TransferManager.OnGetOffSuccess -= OnDisableAnimator;
+
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
     }
 
@@ -103,6 +115,11 @@ public class UI_SubwayScene : UI_Scene
         TimerManager.Instance.timerText = timerText;
     }
 
+    private void OnDisableAnimator()
+    {
+        anim.enabled = false;
+    }
+
     private void PauseButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_PausePopup");
@@ -113,6 +130,8 @@ public class UI_SubwayScene : UI_Scene
     private void SetTransferText()
     {
         int line = StationManager.Instance.currentLineIdx;
+
+
         GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
 
         if ((line + 1) != StationManager.Instance.subwayLines.Count)
@@ -129,7 +148,8 @@ public class UI_SubwayScene : UI_Scene
     private void SetStandingButtonToSkip(PointerEventData data)
     {
         if (!SubwayGameManager.Instance.isStandingCoolDown &&
-            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx)
+            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx &&
+            TransferManager.Instance.curTransferCount != TransferManager.Instance.maxTransferCount)
         {
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
@@ -149,10 +169,12 @@ public class UI_SubwayScene : UI_Scene
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
 
-            StartCoroutine(StandingTutorial());
+            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            {
+                StartCoroutine(StandingTutorial());
+            }
         }
     }
-
 
     IEnumerator StandingTutorial()
     {
@@ -200,7 +222,14 @@ public class UI_SubwayScene : UI_Scene
         }
         else
         {
-            stand.fillAmount = 0f;
+            if (TransferManager.Instance.curTransferCount == TransferManager.Instance.maxTransferCount)
+            {
+                stand.fillAmount = 1f;
+            }
+            else
+            {
+                stand.fillAmount = 0f;
+            }
         }
     }
 
@@ -213,11 +242,16 @@ public class UI_SubwayScene : UI_Scene
     {
         if (TutorialManager.Instance.isSlapTutorial)
         {
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialStandingImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
+
                 if (i == (int)Buttons.SlapButton)
                 {
+                    GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
@@ -225,11 +259,16 @@ public class UI_SubwayScene : UI_Scene
         }
         else if (TutorialManager.Instance.isStandingTutorial)
         {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
+
                 if (i == (int)Buttons.StandingButton)
                 {
+                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
@@ -237,15 +276,25 @@ public class UI_SubwayScene : UI_Scene
         }
         else if (TutorialManager.Instance.isSkipTutorial)
         {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
+
             for (int i = 0; i < (int)Buttons.MaxCount; i++)
             {
                 GetButton(i).image.raycastTarget = false;
                 if (i == (int)Buttons.StandingButton)
                 {
+                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
                     GetButton(i).image.raycastTarget = true;
                 }
             }
             GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
+        }
+        else
+        {
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 0f;
+            GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
         }
     }
 }

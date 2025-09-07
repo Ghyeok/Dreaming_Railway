@@ -112,7 +112,7 @@ public class MapXSpawn : MonoBehaviour
 
     void MapXSpawnToRight() // 오른쪽으로 맵 생성
     {
-        int randomint = Random.Range(0, mapList.Count - 1);
+        int randomint = UnityEngine.Random.Range(0, mapList.Count - 1);
         Vector3 spawnPos = new Vector3(nextSpawnDistanceRight, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
         nextSpawnDistanceRight += tileLength;
@@ -124,7 +124,7 @@ public class MapXSpawn : MonoBehaviour
 
     void MapXSpawnToLeft() // 왼쪽으로 맵 생성
     {
-        int randomint = Random.Range(0, mapList.Count - 1);
+        int randomint = UnityEngine.Random.Range(0, mapList.Count - 1);
         Vector3 spawnPos = new Vector3(nextSpawnDistanceLeft, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
         nextSpawnDistanceLeft -= tileLength;

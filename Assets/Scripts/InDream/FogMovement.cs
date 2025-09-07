@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -30,8 +31,7 @@ public class FogMovement : MonoBehaviour
     private Player player;
     private bool playerMoveStarted = false;
 
-
-
+    public static event Action OnDreamGameOver;
 
     void Start()
     {
@@ -129,6 +129,7 @@ public class FogMovement : MonoBehaviour
 
                 if (IsGameOver && !gameOverTriggered)
                 {
+                    OnDreamGameOver?.Invoke();
                     DreamManager.Instance.GameOverInDream();
                     cameraMoveScript.enabled = false;
                     gameOverTriggered = true;

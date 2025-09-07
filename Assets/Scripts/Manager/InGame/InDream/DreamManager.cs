@@ -24,7 +24,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         mindreamTimeSpeed = 3f;
         maxdreamTimeSpeed = 4f;
 
-        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+        dreamTimeSpeed = UnityEngine.Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
 
     }
 
@@ -53,6 +53,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;
+            TutorialManager.Instance.startIncreaseTired = false;
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
 
             if (TutorialManager.Instance.dreamIdx < TutorialManager.Instance.exitIdx)

@@ -13,6 +13,7 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 
     public DialogState dialogState;
     public bool startFlowTime;
+    public bool startIncreaseTired;
 
     [Header("스크립트 진행도")]
     public int subwayIdx;
@@ -63,6 +64,7 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
     {
         dialogState = DialogState.Subway;
         startFlowTime = false;
+        startIncreaseTired = false;
 
         isSubwayTutorial = true;
         isSlapTutorial = false;
@@ -105,7 +107,11 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
         if (subwayIdx == enterDreamIdx) isEnterDreamTutorial = true;
         else isEnterDreamTutorial = false;
 
-        if (subwayIdx == enterDreamIdx) startFlowTime = true;
+        if (subwayIdx == enterDreamIdx)
+        {
+            startFlowTime = true;
+            startIncreaseTired = true;
+        }
 
         if (subwayIdx == subwayEndIdx) isSubwayTutorialEnd = true;
         else isSubwayTutorialEnd = false;
@@ -118,5 +124,13 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 
         if (dreamIdx == exitIdx) isExitTutorial = true;
         else isExitTutorial= false;
+    }
+
+    private void StopIncreaseTired()
+    {
+        if(dialogState == DialogState.Gameover)
+        {
+            startIncreaseTired = false;
+        }
     }
 }
