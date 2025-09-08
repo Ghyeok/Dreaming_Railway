@@ -8,6 +8,9 @@ public class UI_StageSelectScene : UI_Scene
 {
     private SubwayMiniMove subwayMiniMove;
 
+    [SerializeField] private Sprite stageLock;
+    [SerializeField] private Sprite stageUnlock;
+
     public enum GameObjects
     {
         ButtonRoot,
@@ -76,6 +79,7 @@ public class UI_StageSelectScene : UI_Scene
         fadePanel.StartFadeIn(0.3f);
 
         LoadSubwayPosition(); //저장된 게임 정보
+        LoadStageLock();
     }
 
     // Update is called once per frame
@@ -224,6 +228,38 @@ public class UI_StageSelectScene : UI_Scene
         else
         {
             subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = new Vector2(subwayMiniMove.position0.anchoredPosition.x, 464f);
+        }
+    }
+
+    private void SaveStageLock()
+    {
+        PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
+        PlayerPrefs.Save();
+    }
+
+    private void LoadStageLock()
+    {
+        SaveStageLock();
+
+        if (PlayerPrefs.HasKey("MaxClearStage"))
+        {
+            for (int i = PlayerPrefs.GetInt("MaxClearStage") + 1; i <= 5; i++) // 버튼 잠금
+            {
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().sprite = stageLock;
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().raycastTarget = false;
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Button>().interactable = false;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = false;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = false;
+            }
+
+            for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제
+            {
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().sprite = stageUnlock;
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().raycastTarget = true;
+                GetButton((int)Buttons.Stage0 + i).GetComponent<Button>().interactable = true;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = true;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = true;
+            }
         }
     }
 }

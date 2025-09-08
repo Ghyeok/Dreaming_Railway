@@ -9,13 +9,15 @@ public class UI_MainMenuScene : UI_Scene
     private float blinkSpeed = 0.8f;
     private float bilnkTimer;
 
-    [SerializeField]
-    private Vector2 targetPos;
-    [SerializeField]
-    private Vector2 hiddenPos;
+
+    [SerializeField] private Vector2 targetPos;
+    [SerializeField] private Vector2 hiddenPos;
     private RectTransform rect;
     private float slideSpeed = 3000f;
     private bool isTapped;
+
+    [SerializeField] private Sprite stageLock;
+    [SerializeField] private Sprite stageUnlock;
 
     public enum Buttons
     {
@@ -73,6 +75,7 @@ public class UI_MainMenuScene : UI_Scene
         rect = GetImage((int)Images.MainMenu).rectTransform;
         rect.anchoredPosition = hiddenPos;
 
+        LoadInfiniteModeLock();
     }
 
     private void InitScene()
@@ -173,7 +176,31 @@ public class UI_MainMenuScene : UI_Scene
         }
         async.allowSceneActivation = true;
 
-
         yield return null;
+    }
+
+    private void LoadInfiniteModeLock()
+    {
+        int stage = PlayerPrefs.GetInt("MaxClearStage");
+
+        if (PlayerPrefs.HasKey("MaxClearStage"))
+        {
+            if (stage != 5)
+            {
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().sprite = stageLock;
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().raycastTarget = false;
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Button>().interactable = false;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).blocksRaycasts = false;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).interactable = false;
+            }
+            else if (stage == 5)
+            {
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().sprite = stageUnlock;
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().raycastTarget = true;
+                GetButton((int)Buttons.InfiniteModeButton).GetComponent<Button>().interactable = true;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).blocksRaycasts = true;
+                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).interactable = true;
+            }
+        }
     }
 }
