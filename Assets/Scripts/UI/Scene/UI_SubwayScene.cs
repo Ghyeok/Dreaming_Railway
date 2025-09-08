@@ -49,6 +49,7 @@ public class UI_SubwayScene : UI_Scene
         NextTransferText,
         TimerText,
         SlapText,
+        PassedStationText,
         // 필요한 텍스트 추가..
     }
 
@@ -65,6 +66,7 @@ public class UI_SubwayScene : UI_Scene
     {
         SetTransferText();
         SetSlapText();
+        SetStationText();
         ShowStandingCoolDown();
 
         if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
@@ -152,6 +154,19 @@ public class UI_SubwayScene : UI_Scene
     private void SetSlapText()
     {
         GetText((int)Texts.SlapText).text = $"{SubwayPlayerManager.Instance.slapNum}";
+    }
+
+    private void SetStationText()
+    {
+        if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
+        {
+            GetText((int)Texts.PassedStationText).gameObject.SetActive(true);   
+            GetText((int)Texts.PassedStationText).text = $"지나온 역 : {StationManager.Instance.passedStations}";
+        }
+        else
+        {
+            GetText((int)Texts.PassedStationText).gameObject.SetActive(false);
+        }
     }
 
     private void SetStandingButtonToSkip(PointerEventData data)
