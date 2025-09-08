@@ -29,6 +29,11 @@ public class UI_StageSelectScene : UI_Scene
 
     public enum Images
     {
+        UnderBar,
+        UnderBar1,
+        UnderBar2,
+        UnderBar3,
+        UnderBar4,
         SubwayMini,
     }
 
@@ -251,6 +256,11 @@ public class UI_StageSelectScene : UI_Scene
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = false;
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = false;
             }
+            for (int i = PlayerPrefs.GetInt("MaxClearStage") + 1; i <= 4; i++) // 버튼 잠금
+            {
+                GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+
+            }
 
             for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제
             {
@@ -259,6 +269,10 @@ public class UI_StageSelectScene : UI_Scene
                 GetButton((int)Buttons.Stage0 + i).GetComponent<Button>().interactable = true;
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = true;
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = true;
+            }
+            for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제
+            {
+                GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(1f, 1f, 1f);
             }
         }
     }
