@@ -1123,6 +1123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   subwayPlayer: {fileID: 3638816473671594684}
   anim: {fileID: 8620190004519165009}
+  tirednessUI: {fileID: 8687578747276116672}
 --- !u!1 &4977798085076984914
 GameObject:
   m_ObjectHideFlags: 0

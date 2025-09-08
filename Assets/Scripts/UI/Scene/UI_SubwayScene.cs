@@ -11,7 +11,10 @@ public class UI_SubwayScene : UI_Scene
     public GameObject subwayPlayer;
 
     [SerializeField]
-    Animator anim;
+    private Animator anim;
+
+    [SerializeField]
+    private GameObject tirednessUI;
 
     public enum Buttons
     {
@@ -72,6 +75,8 @@ public class UI_SubwayScene : UI_Scene
     {
         SubwayGameManager.OnSubwayGameOver += OnDisableAnimator;
         TransferManager.OnGetOffSuccess += OnDisableAnimator;
+        TransferManager.OnGetOffSuccess += HideTirednessUI;
+        SubwayGameManager.OnSubwayGameOver += HideTirednessUI;
 
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
         PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
@@ -84,6 +89,8 @@ public class UI_SubwayScene : UI_Scene
     {
         SubwayGameManager.OnSubwayGameOver -= OnDisableAnimator;
         TransferManager.OnGetOffSuccess -= OnDisableAnimator;
+        TransferManager.OnGetOffSuccess -= HideTirednessUI;
+        SubwayGameManager.OnSubwayGameOver -= HideTirednessUI;
 
         PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
     }
@@ -131,11 +138,13 @@ public class UI_SubwayScene : UI_Scene
     {
         int line = StationManager.Instance.currentLineIdx;
 
+        if (GetText((int)Texts.TransferText) == null) return;
+        if (GetText((int)Texts.NextTransferText) == null) return;
 
-        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
+        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{Mathf.Max(0, StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1)}</size>역";
 
         if ((line + 1) != StationManager.Instance.subwayLines.Count)
-            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line + 1].transferIdx + 1}</size>역";
+            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{Mathf.Max(0, StationManager.Instance.subwayLines[line + 1].transferIdx + 1)}</size>역";
         else
             GetText((int)Texts.NextTransferText).text = null;
     }
@@ -296,5 +305,10 @@ public class UI_SubwayScene : UI_Scene
             GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 0f;
             GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
         }
+    }
+
+    private void HideTirednessUI()
+    {
+        tirednessUI.SetActive(false);
     }
 }

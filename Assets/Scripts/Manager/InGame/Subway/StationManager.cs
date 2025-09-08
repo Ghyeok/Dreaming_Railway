@@ -158,21 +158,21 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 {
                     if (transferCnt >= 0 && transferCnt <= 3)
                     {
-                        int transferStationIdx = UnityEngine.Random.Range(8, 13);
+                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 4 && transferCnt <= 6)
                     {
-                        int transferStationIdx = UnityEngine.Random.Range(5, 9);
+                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
                     }
                     else if (transferCnt >= 7)
                     {
-                        int transferStationIdx = UnityEngine.Random.Range(2, 6);
+                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
                         subwayLines[i].transferIdx = transferStationIdx;
                         subwayLines[i].hasDestination = false;
                         subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
@@ -197,7 +197,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
             if (timer.lineTime < accumulatedTime)
             {
                 currentStationIdx = i;
-                if (lastStationIdx < currentStationIdx)
+                if (i != 0 && lastStationIdx < currentStationIdx)
                 {
                     lastStationIdx = currentStationIdx;
                     passedStations++;

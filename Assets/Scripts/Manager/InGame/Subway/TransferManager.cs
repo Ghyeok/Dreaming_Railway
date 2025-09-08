@@ -56,7 +56,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
                     maxTransferCount = 1;
                     break;
                 case 1: // Day 1
-                    maxTransferCount = 1;
+                    maxTransferCount = 2;
                     break;
                 case 2: // Day 2
                     maxTransferCount = 3;
