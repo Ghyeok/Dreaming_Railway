@@ -259,7 +259,6 @@ public class UI_StageSelectScene : UI_Scene
             for (int i = PlayerPrefs.GetInt("MaxClearStage") + 1; i <= 4; i++) // 버튼 잠금
             {
                 GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
-
             }
 
             for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제

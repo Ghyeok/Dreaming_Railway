@@ -185,7 +185,7 @@ public class UI_MainMenuScene : UI_Scene
 
         if (PlayerPrefs.HasKey("MaxClearStage"))
         {
-            if (stage != 5)
+            if (stage < 5)
             {
                 GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().sprite = stageLock;
                 GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().raycastTarget = false;
@@ -193,7 +193,7 @@ public class UI_MainMenuScene : UI_Scene
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).blocksRaycasts = false;
                 Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.InfiniteModeButton).gameObject).interactable = false;
             }
-            else if (stage == 5)
+            else if (stage >= 5)
             {
                 GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().sprite = stageUnlock;
                 GetButton((int)Buttons.InfiniteModeButton).GetComponent<Image>().raycastTarget = true;

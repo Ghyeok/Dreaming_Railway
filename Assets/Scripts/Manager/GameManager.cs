@@ -20,9 +20,6 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
     public GameState gameState;
     public GameMode gameMode;
-
-    public int infiniteCount;
-
     public bool isStopped;
 
     public bool isGameOverInDream;
@@ -31,11 +28,16 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     public void Init()
     {
         gameState = GameState.Main; // 메인에서 시작
+
+        if (!PlayerPrefs.HasKey("MaxClearStage"))
+        {
+            PlayerPrefs.SetInt("MaxClearStage", 0);
+            PlayerPrefs.Save();
+        }
     }
 
     private void ResetGameManager()
     {
-        infiniteCount = 0;
         isGameOverInDream = false;
         isGameOverInSubway = false;
     }

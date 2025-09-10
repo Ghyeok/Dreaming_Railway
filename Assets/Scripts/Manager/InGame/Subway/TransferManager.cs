@@ -173,7 +173,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
             StationManager.Instance.currentLineIdx = 0;
             StationManager.Instance.ResetLastStationIdx();
-            StageSelectManager.Instance.maxClearStage++;
+            StageSelectManager.Instance.maxClearStage = Mathf.Max(StageSelectManager.Instance.currentStage, StageSelectManager.Instance.maxClearStage);
 
             GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             OnGetOffSuccess?.Invoke();
