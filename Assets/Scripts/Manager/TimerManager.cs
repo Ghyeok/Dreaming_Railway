@@ -29,6 +29,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
         if (!SubwayGameManager.Instance.isGameOver && !isStop && GameManager.Instance.gameState != GameManager.GameState.Main && GameManager.Instance.gameState != GameManager.GameState.DaySelect)
         {
             playTime += Time.deltaTime;
+
             lineTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
 
             if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)

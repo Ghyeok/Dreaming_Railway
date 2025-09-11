@@ -182,6 +182,8 @@ public class UI_SubwayScene : UI_Scene
             cg.blocksRaycasts = false;
             cg = GetButton((int)Buttons.SlapButton).gameObject.AddComponent<CanvasGroup>();
             cg.blocksRaycasts = false;
+            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
+            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
 
             // 2. 스킵 버튼으로 변경, 이벤트 연결
             GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip");

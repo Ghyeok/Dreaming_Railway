@@ -93,6 +93,9 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         // 2. 현재 노선에서 흐른 시간이 현재 노선 전체 시간보다 커질때
         // 3. 도착역이 아닐때
 
+        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.STANDING)
+            return;
+
         if (hasTransfered)
             return;
 
@@ -126,6 +129,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
+            StationManager.Instance.passedStations++;
             OnTransferSuccess?.Invoke();
 
             string currentScene = SceneManager.GetActiveScene().name;

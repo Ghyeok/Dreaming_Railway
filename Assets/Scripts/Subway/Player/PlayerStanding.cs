@@ -33,7 +33,7 @@ public class PlayerStanding : MonoBehaviour
         Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
         anim.SetTrigger("isSkip");
 
-        StationManager.Instance.passedStations += StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx;
+        StationManager.Instance.passedStations += StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx + 1;
         TransferManager.Instance.ForceTransferByStanding();
     }
 
