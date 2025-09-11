@@ -270,6 +270,7 @@ public class UI_PausePopup : UI_Popup
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainScene");
+        DreamManager.Instance.isInDream = false;
     }
     #endregion
 }
