@@ -23,7 +23,7 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] public Queue<BackgroundType> backgroundQueue;
 
     public bool isHangangShown;
-    private int grassLoop = 6;
+    private int grassLoop = 4;
     public bool isGrassShown;
     public bool isTransferRecently;
 
@@ -54,10 +54,10 @@ public class BackgroundManager : MonoBehaviour
     */
     public float SetScrollSpeed(BackgroundType type)
     {
-        if (type == BackgroundType.Underground) return 3000f;
-        if (type == BackgroundType.Station) return 3000f;
-        if (type == BackgroundType.ConnectL) return 3000f;
-        if (type == BackgroundType.ConnectR) return 3000f;
+        if (type == BackgroundType.Underground) return 6000f;
+        if (type == BackgroundType.Station) return 6000f;
+        if (type == BackgroundType.ConnectL) return 6000f;
+        if (type == BackgroundType.ConnectR) return 6000f;
         if (type == BackgroundType.Hangang) return 75f;
         if (type == BackgroundType.Grass) return 3000f;
 

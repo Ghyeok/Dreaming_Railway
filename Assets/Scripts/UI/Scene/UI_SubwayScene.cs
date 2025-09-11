@@ -40,6 +40,7 @@ public class UI_SubwayScene : UI_Scene
         TutorialFallAsleepImage,
         TutorialSlapImage,
         TutorialStandingImage,
+        PassedStationImage,
         // 필요한 이미지 추가..
     }
 
@@ -158,15 +159,10 @@ public class UI_SubwayScene : UI_Scene
 
     private void SetStationText()
     {
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
-        {
-            GetText((int)Texts.PassedStationText).gameObject.SetActive(true);   
-            GetText((int)Texts.PassedStationText).text = $"지나온 역 : {StationManager.Instance.passedStations}";
-        }
-        else
-        {
-            GetText((int)Texts.PassedStationText).gameObject.SetActive(false);
-        }
+
+        GetText((int)Texts.PassedStationText).gameObject.SetActive(true);
+        GetText((int)Texts.PassedStationText).text = $"지나온 역 : {StationManager.Instance.passedStations}";
+
     }
 
     private void SetStandingButtonToSkip(PointerEventData data)
