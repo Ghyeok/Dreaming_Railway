@@ -101,8 +101,6 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         "지하철에 사람도 예전만큼 없고… 지하철에 타기만 해도 갑자기 졸리고…",
         "꿈도… 조금씩 다르긴 했지만 어둠에 쫓겨 구름 위를 계속해서 뛰어다닌다는 건 똑같았고…",
         "…",
-        "그러고 보니…",
-        "집앞 정거장도 그렇고 학교 쪽 정거장도 그렇고 내가 탔던 쪽엔 지하철 타는 곳이 없었던 것 같은데…",
     };
     public string[] day5Emotion =
     {
@@ -113,8 +111,6 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         "anger",
         "sigh",
         "close",
-        "thinking",
-        "down",
     };
 
     public enum DialogState
