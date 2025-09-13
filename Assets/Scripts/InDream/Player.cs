@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Player : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     private Animator MyAnimator;
     private Collider2D col;
 
+    public static event Action OnDreamExit;
 
     void Awake()
     {
@@ -251,6 +253,7 @@ public class Player : MonoBehaviour
             isTouchedExit = true;
             SoundManager.Instance.ExitDreamSFX();
             FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
+            OnDreamExit?.Invoke();
 
             if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
             {
