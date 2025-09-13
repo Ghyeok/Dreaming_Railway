@@ -25,7 +25,7 @@ public class BackgroundManager : MonoBehaviour
     public bool isHangangShown;
     private int grassLoop = 6;
     private int grassCnt = 0;
-    private int maxGrassCnt = 4;
+    private int maxGrassCnt = 2;
     public bool isGrassShown;
     public bool isTransferRecently;
 
@@ -86,9 +86,9 @@ public class BackgroundManager : MonoBehaviour
             lastSpeedBeforeStation = SetScrollSpeed(currentType);
             backgroundQueue.Enqueue(BackgroundType.Station);
         }
-        else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게
+        else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게, 환승하기까지 3정거장 이상 남았을 경우에만 야외 배경
         {
-            if (rand <= 10 && !isTransferRecently)
+            if (remain >=3 && rand <= 10 && !isTransferRecently)
             {
                 if (!isHangangShown && rand <= 5)
                 {

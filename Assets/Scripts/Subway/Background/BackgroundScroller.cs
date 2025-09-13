@@ -216,13 +216,14 @@ public class BackgroundScroller : MonoBehaviour
         if (bm.currentType == BackgroundType.Station && !stationLerpRunning)
         {
             stationLerpRunning = true;
-            StartCoroutine(StationStopRoutine(bm.lastSpeedBeforeStation, StationManager.Instance.GetCurrentStationStoppingTime()));
+            StartCoroutine(StationStopRoutine(bm.lastSpeedBeforeStation, StationManager.Instance.GetCurrentLineTotalTime() - TimerManager.Instance.lineTime));
+            Debug.Log(StationManager.Instance.GetCurrentLineTotalTime() - TimerManager.Instance.lineTime);
         }
     }
 
     private IEnumerator StationStopRoutine(float speed, float time)
     {
-        float waitTime = 4f;
+        float waitTime = 2f;
         yield return LerpSpeed(speed, 0f, time - waitTime);
         yield return new WaitForSeconds(waitTime);
         yield return LerpSpeed(0f, speed, time, true);
