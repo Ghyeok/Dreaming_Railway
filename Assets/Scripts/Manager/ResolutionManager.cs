@@ -33,7 +33,8 @@ public class ResolutionManager : SingletonManagers<ResolutionManager>, IManager
             // 완벽한 16:9
             Camera.main.rect = new Rect(0f, 0f, 1f, 1f);
         }
-        Screen.SetResolution(TARGET_WIDTH, TARGET_HEIGHT, true);
+
+        //Screen.SetResolution(TARGET_WIDTH, TARGET_HEIGHT, true);
 #endif
     }
 }
