@@ -382,7 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 0.8
-  MaxSpeed: 7.5
+  MaxSpeed: 7
   exitLayerMask:
     serializedVersion: 2
     m_Bits: 64
