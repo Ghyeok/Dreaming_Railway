@@ -130,6 +130,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StationManager.Instance.currentLineIdx++;
             StationManager.Instance.currentStationIdx = 0;
             StationManager.Instance.passedStations++;
+            StationManager.Instance.ResetLastStationIdx();
             OnTransferSuccess?.Invoke();
 
             string currentScene = SceneManager.GetActiveScene().name;
