@@ -31,7 +31,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
         if (!PlayerPrefs.HasKey("MaxClearStage"))
         {
-            PlayerPrefs.SetInt("MaxClearStage", 0);
+            PlayerPrefs.SetInt("MaxClearStage", -1);
             PlayerPrefs.Save();
         }
     }
