@@ -182,10 +182,12 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             StationManager.Instance.currentLineIdx = 0;
             StationManager.Instance.ResetLastStationIdx();
 
-            if (StageSelectManager.Instance.currentStage >= StageSelectManager.Instance.maxClearStage)
-                Mathf.Min(5, StageSelectManager.Instance.maxClearStage++);
+            if (StageSelectManager.Instance.currentStage > StageSelectManager.Instance.maxClearStage)
+                StageSelectManager.Instance.maxClearStage = StageSelectManager.Instance.currentStage;
+            PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
+            PlayerPrefs.Save();
 
-                GameManager.Instance.gameState = GameManager.GameState.DaySelect;
+            GameManager.Instance.gameState = GameManager.GameState.DaySelect;
             OnGetOffSuccess?.Invoke();
             UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
 

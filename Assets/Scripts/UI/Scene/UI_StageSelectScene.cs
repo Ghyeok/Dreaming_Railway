@@ -213,7 +213,7 @@ public class UI_StageSelectScene : UI_Scene
 
         yield return null;
     }
-    
+
     private void SaveSubwayPosition(Vector2 position)
     {
         PlayerPrefs.SetFloat("SubwayPosX", position.x); //x값만 저장
@@ -226,7 +226,7 @@ public class UI_StageSelectScene : UI_Scene
         if (PlayerPrefs.HasKey("SubwayPosX"))
         {
             float x = PlayerPrefs.GetFloat("SubwayPosX");
-            Vector2 savedPosition = new Vector2(x,464f);
+            Vector2 savedPosition = new Vector2(x, 464f);
 
             subwayMiniMove.transform.GetComponent<RectTransform>().anchoredPosition = savedPosition;
         }
@@ -236,43 +236,51 @@ public class UI_StageSelectScene : UI_Scene
         }
     }
 
-    private void SaveStageLock()
-    {
-        PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
-        PlayerPrefs.Save();
-    }
-
     private void LoadStageLock()
     {
-        SaveStageLock();
+        // 마지막으로 클리어한 스테이지의 인덱스 (아무 것도 안 깼으면 -1)
+        int m = PlayerPrefs.GetInt("MaxClearStage", -1);
 
-        if (PlayerPrefs.HasKey("MaxClearStage"))
+        // 1) m+1..5 잠금
+        for (int i = m + 1; i <= 5; i++)
         {
-            for (int i = PlayerPrefs.GetInt("MaxClearStage") + 1; i <= 5; i++) // 버튼 잠금
-            {
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().sprite = stageLock;
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().raycastTarget = false;
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Button>().interactable = false;
-                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = false;
-                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = false;
-            }
-            for (int i = PlayerPrefs.GetInt("MaxClearStage") + 1; i <= 4; i++) // 버튼 잠금
-            {
-                GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
-            }
+            var btn = GetButton((int)Buttons.Stage0 + i);
+            var img = btn.GetComponent<Image>();
+            var b = btn.GetComponent<Button>();
+            var cg = Util.GetOrAddComponent<CanvasGroup>(btn.gameObject);
 
-            for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제
-            {
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().sprite = stageUnlock;
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Image>().raycastTarget = true;
-                GetButton((int)Buttons.Stage0 + i).GetComponent<Button>().interactable = true;
-                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).blocksRaycasts = true;
-                Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.Stage0 + i).gameObject).interactable = true;
-            }
-            for (int i = 0; i < PlayerPrefs.GetInt("MaxClearStage"); i++) // 버튼 잠금해제
-            {
-                GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(1f, 1f, 1f);
-            }
+            img.sprite = stageLock;
+            img.raycastTarget = false;
+            b.interactable = false;
+            cg.blocksRaycasts = false;
+            cg.interactable = false;
+        }
+
+        // 언더바 잠금 색상: m+1..4
+        for (int i = m + 1; i <= 4; i++)
+        {
+            GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+        }
+
+        // 2) 0..m 잠금해제
+        for (int i = 0; i <= m; i++)
+        {
+            var btn = GetButton((int)Buttons.Stage0 + i);
+            var img = btn.GetComponent<Image>();
+            var b = btn.GetComponent<Button>();
+            var cg = Util.GetOrAddComponent<CanvasGroup>(btn.gameObject);
+
+            img.sprite = stageUnlock;
+            img.raycastTarget = true;
+            b.interactable = true;
+            cg.blocksRaycasts = true;
+            cg.interactable = true;
+        }
+
+        // 언더바 해제 색상: 0..m (언더바는 0..4까지만 존재하니 한 번 더 가드)
+        for (int i = 0; i <= m && i <= 4; i++)
+        {
+            GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(1f, 1f, 1f);
         }
     }
 }
