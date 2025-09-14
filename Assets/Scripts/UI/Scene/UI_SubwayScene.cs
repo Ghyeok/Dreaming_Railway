@@ -161,7 +161,7 @@ public class UI_SubwayScene : UI_Scene
     {
 
         GetText((int)Texts.PassedStationText).gameObject.SetActive(true);
-        GetText((int)Texts.PassedStationText).text = $"지나온 역 : {StationManager.Instance.passedStations}";
+        GetText((int)Texts.PassedStationText).text = $"환승 횟수 : {TransferManager.Instance.curTransferCount}";
 
     }
 
