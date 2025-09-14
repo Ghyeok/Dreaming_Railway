@@ -263,8 +263,10 @@ public class UI_StageSelectScene : UI_Scene
         }
 
         // 2) 0..m 잠금해제
-        for (int i = 0; i <= m; i++)
+        for (int i = 0; i <= m + 1; i++)
         {
+            if (i == 5) return;
+
             var btn = GetButton((int)Buttons.Stage0 + i);
             var img = btn.GetComponent<Image>();
             var b = btn.GetComponent<Button>();
@@ -278,8 +280,10 @@ public class UI_StageSelectScene : UI_Scene
         }
 
         // 언더바 해제 색상: 0..m (언더바는 0..4까지만 존재하니 한 번 더 가드)
-        for (int i = 0; i <= m && i <= 4; i++)
+        for (int i = 0; i <= m + 1; i++)
         {
+            if (i > 4) return;
+
             GetImage((int)Images.UnderBar + i).GetComponent<Image>().color = new Color(1f, 1f, 1f);
         }
     }
