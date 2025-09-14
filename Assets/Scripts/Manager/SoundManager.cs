@@ -71,8 +71,9 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
     public void PlayAudioClip(string path, Define.Sounds newSoundType, float volumeScale = 1f)
     {
         AudioClip clip = GetOrAddAudioClip(path);
+        ApplyMuteAndVolume();
 
-        if(newSoundType == Define.Sounds.BGM)
+        if (newSoundType == Define.Sounds.BGM)
         {
             if (BGMSource.clip == clip && BGMSource.isPlaying)
             {
@@ -95,7 +96,6 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
             SFXSource.clip = clip;
             SFXSource.PlayOneShot(clip, volumeScale);
         }
-
     }
 
     public AudioClip GetOrAddAudioClip(string path)

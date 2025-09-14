@@ -12,6 +12,8 @@ public class UI_GameOverPopup : UI_Popup
     private GameObject playerInputScript;
     [SerializeField] private float fadeInDuration = 1f;
 
+    private bool isBGMOffBefore;
+
     public enum Buttons
     {
         RetryButton,
@@ -135,6 +137,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void OnEnable()
     {
+        isBGMOffBefore = PlayerPrefs.GetInt("BGM_MUTE") == 1;
         SoundManager.Instance.SetBGMOff();
 
         // 블로커 패널 활성화
@@ -154,7 +157,8 @@ public class UI_GameOverPopup : UI_Popup
 
     private void OnDisable()
     {
-        SoundManager.Instance.SetBGMOn();
+        if (!isBGMOffBefore)
+            SoundManager.Instance.SetBGMOn();
     }
 
     private IEnumerator FadeInCoroutine(float duration)
