@@ -265,7 +265,7 @@ public class UI_StageSelectScene : UI_Scene
         // 2) 0..m 잠금해제
         for (int i = 0; i <= m + 1; i++)
         {
-            if (i == 5) return;
+            if (i == 6) return;
 
             var btn = GetButton((int)Buttons.Stage0 + i);
             var img = btn.GetComponent<Image>();
