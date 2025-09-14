@@ -26,7 +26,5 @@ public class ManagerInitializer : MonoBehaviour
         {
             manager.Init();
         }
-
-        Debug.Log("모든 매니저 초기화 완료");
     }
 }

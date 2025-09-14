@@ -42,6 +42,10 @@ public class BackgroundScroller : MonoBehaviour
     private bool hasExecutedThisFrame = false;
     [SerializeField]
     private bool stationLerpRunning = false;
+    [SerializeField]
+    private float waitTime = 1.5f;
+    [SerializeField]
+    private Coroutine accelRoutine;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,7 +75,6 @@ public class BackgroundScroller : MonoBehaviour
     void Update()
     {
         if (GameManager.Instance.gameState != GameManager.GameState.Subway) return;
-        if (scrollSpeed == 0) return;
 
         float deltaX = scrollSpeed * Time.deltaTime;
         ScrollBackground(image1, deltaX);
@@ -113,7 +116,6 @@ public class BackgroundScroller : MonoBehaviour
 
             if (bm.currentType != BackgroundManager.BackgroundType.ConnectL)
                 scrollSpeed = bm.SetScrollSpeed(bm.currentType);
-
         }
 
         if (image2.anchoredPosition.x <= -leftX)
@@ -211,33 +213,72 @@ public class BackgroundScroller : MonoBehaviour
         hasExecutedThisFrame = false;
     }
 
-    private void StopScrollSpeed() // 정차역이면 배경 스크롤 속도를 감소시킴
+    private void ForceShowStationBackground()
     {
-        if (bm.currentType == BackgroundType.Station && !stationLerpRunning)
+        image1.GetComponent<Image>().sprite = bm.ReturnBackgroundImage(BackgroundType.Station);
+        image2.GetComponent<Image>().sprite = bm.ReturnBackgroundImage(BackgroundType.Station);
+        image1Type = BackgroundType.Station;
+        image2Type = BackgroundType.Station;
+    }
+
+    private void DecelScrollSpeed() // 정차역이면 배경 스크롤 속도를 감소시킴
+    {
+        if (accelRoutine == null && bm.currentType == BackgroundType.Station && !stationLerpRunning && !TransferManager.Instance.isTransferRecently)
         {
             stationLerpRunning = true;
-            StartCoroutine(StationStopRoutine(bm.lastSpeedBeforeStation, StationManager.Instance.GetCurrentLineTotalTime() - TimerManager.Instance.lineTime));
-            Debug.Log(StationManager.Instance.GetCurrentLineTotalTime() - TimerManager.Instance.lineTime);
+
+            float decelTime = StationManager.Instance.GetRemainTimeToTransfer();
+            Debug.Log($"감속 시간: {decelTime}");
+            StartCoroutine(StationDecelRoutine(scrollSpeed, decelTime));
         }
     }
 
-    private IEnumerator StationStopRoutine(float speed, float time)
+    private void AccelScrollSpeed() // 환승 후, 정차역이면 배경 스크롤 속도를 증가시킴
     {
-        float waitTime = 2f;
-        yield return LerpSpeed(speed, 0f, time - waitTime);
-        yield return new WaitForSeconds(waitTime);
-        yield return LerpSpeed(0f, speed, time, true);
-        stationLerpRunning = false;
+        if (bm.currentType == BackgroundType.Station && StationManager.Instance.currentStationIdx == 0)
+        {
+            ForceShowStationBackground();
+            float accelTime = StationManager.Instance.GetCurrentStationStoppingTime(); // 평균 6초에 걸쳐 가속
+            Debug.Log($"가속 시간: {accelTime}");
+            accelRoutine = StartCoroutine(StationAccelRoutine(bm.lastSpeedBeforeStation, accelTime));
+        }
     }
 
-    private IEnumerator LerpSpeed(float from, float to, float duration, bool isEnd = false)
+    private IEnumerator StationDecelRoutine(float speed, float time)
     {
-        if (duration < 0f)
+        float lerptime = time - waitTime;
+        Debug.Log($"Lerp Time : {lerptime}");
+
+        if (lerptime <= 0) // 1.5초안에 환승함
+        {
+            float ratio = (float)(lerptime / StationManager.Instance.GetCurrentStationStoppingTime());
+            speed = Mathf.SmoothStep(speed, 0, ratio);
+            StartCoroutine(LerpSpeed(speed, 0f, Time.timeScale));
+        }
+        else
+        {
+            StartCoroutine(LerpSpeed(speed, 0f, lerptime));
+            yield return new WaitForSeconds(waitTime);
+        }
+    }
+
+    private IEnumerator StationAccelRoutine(float speed, float time)
+    {
+        yield return new WaitForSeconds(waitTime);
+        yield return LerpSpeed(0f, speed, time);
+
+        stationLerpRunning = false;
+        accelRoutine = null;
+    }
+
+    private IEnumerator LerpSpeed(float from, float to, float duration)
+    {
+        if (duration <= 0f)
         {
             scrollSpeed = to;
             yield break;
         }
-
+        
         float t = 0f;
         while (t < duration)
         {
@@ -248,9 +289,6 @@ public class BackgroundScroller : MonoBehaviour
         }
 
         scrollSpeed = to;
-
-        if(isEnd) bm.isTransferRecently = false;
-        else bm.isTransferRecently = true;  
     }
 
     private void ScrollBackground(RectTransform rect, float delta)
@@ -265,7 +303,8 @@ public class BackgroundScroller : MonoBehaviour
 
     private void OnEnable()
     {
-        OnBackgroundChange += StopScrollSpeed;
+        OnBackgroundChange += DecelScrollSpeed;
+        TransferManager.OnTransferSuccess += AccelScrollSpeed;
 
         SubwayGameManager.OnSubwayGameOver += OnDisableScroller;
         TransferManager.OnGetOffSuccess += OnDisableScroller;
@@ -273,7 +312,8 @@ public class BackgroundScroller : MonoBehaviour
 
     private void OnDisable()
     {
-        OnBackgroundChange -= StopScrollSpeed;
+        OnBackgroundChange -= DecelScrollSpeed;
+        TransferManager.OnTransferSuccess -= AccelScrollSpeed;
 
         SubwayGameManager.OnSubwayGameOver -= OnDisableScroller;
         TransferManager.OnGetOffSuccess -= OnDisableScroller;

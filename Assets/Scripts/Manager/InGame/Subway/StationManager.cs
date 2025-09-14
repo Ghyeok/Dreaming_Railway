@@ -91,6 +91,25 @@ public class StationManager : SingletonManagers<StationManager>, IManager
         return subwayLines[currentLineIdx].stations[currentStationIdx].stopTime;
     }
 
+    private float GetCurrentStationRemainStoppingTime()
+    {
+        var line = subwayLines[currentLineIdx]; // 현재 노선
+        int cur = subwayLines[currentLineIdx].transferIdx; // 현재 역
+
+        float stopStart = 0f;
+        for (int i = 0; i < cur; i++)
+            stopStart += line.stations[i].travelTime + line.stations[i].stopTime;
+        stopStart += line.stations[cur].travelTime;
+
+        float elapsed = TimerManager.Instance.lineTime - stopStart;
+        return Mathf.Clamp(elapsed, 0f, line.stations[cur].stopTime);
+    }
+
+    public float GetRemainTimeToTransfer()
+    {
+        return Mathf.Max(GetCurrentStationStoppingTime() - GetCurrentStationRemainStoppingTime(), 0f);
+    }
+
     private void ChooseStationType()
     {
         int transferCnt = 0;
@@ -197,6 +216,8 @@ public class StationManager : SingletonManagers<StationManager>, IManager
             if (timer.lineTime < accumulatedTime)
             {
                 currentStationIdx = i;
+                if (currentStationIdx >= 3)
+                    TransferManager.Instance.isTransferRecently = false;
                 if (i != 0 && lastStationIdx < currentStationIdx)
                 {
                     lastStationIdx = currentStationIdx;

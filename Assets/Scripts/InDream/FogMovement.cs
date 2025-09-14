@@ -114,7 +114,6 @@ public class FogMovement : MonoBehaviour
         if (!isCounting && IsFogCoveringScreen())
         {
             isCounting = true;
-            Debug.Log("안개 도착, 게임오버!");
             coverTimer = 0f;
         }
 

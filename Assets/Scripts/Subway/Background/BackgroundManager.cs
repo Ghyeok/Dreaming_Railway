@@ -27,7 +27,6 @@ public class BackgroundManager : MonoBehaviour
     private int grassCnt = 0;
     private int maxGrassCnt = 2;
     public bool isGrassShown;
-    public bool isTransferRecently;
 
     public float lastSpeedBeforeStation;
 
@@ -43,8 +42,6 @@ public class BackgroundManager : MonoBehaviour
             backgroundQueue.Enqueue(BackgroundType.Underground);
             currentType = BackgroundType.Underground;
         }
-
-        isTransferRecently = false;
     }
 
     /*
@@ -76,19 +73,18 @@ public class BackgroundManager : MonoBehaviour
                           currentType == BackgroundType.Grass ||
                           currentType == BackgroundType.ConnectL);
 
-        Debug.Log($"현재 큐 길이 : {backgroundQueue.Count}");
-
         if (isOutside) return;
 
         // 1. 배경이 바뀌는 순간에 남은 역이 1개이고 정차 구간이라면
-        if (remain <= 0 && SubwayGameManager.Instance.isStopping)
+        if ((remain <= 0 && SubwayGameManager.Instance.isStopping) ||
+            (remain == StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx && TransferManager.Instance.isTransferRecently))
         {
             lastSpeedBeforeStation = SetScrollSpeed(currentType);
             backgroundQueue.Enqueue(BackgroundType.Station);
         }
         else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게, 환승하기까지 3정거장 이상 남았을 경우에만 야외 배경
         {
-            if (remain >=3 && rand <= 10 && !isTransferRecently)
+            if (remain >= 3 && rand <= 10 && !TransferManager.Instance.isTransferRecently)
             {
                 if (!isHangangShown && rand <= 5)
                 {
@@ -130,6 +126,17 @@ public class BackgroundManager : MonoBehaviour
         BackgroundType type = backgroundQueue.Dequeue();
         currentType = type;
 
+        if (type == BackgroundType.Underground) return underground;
+        if (type == BackgroundType.Station) return station;
+        if (type == BackgroundType.ConnectR) return connectR;
+        if (type == BackgroundType.ConnectL) return connectL;
+        if (type == BackgroundType.Hangang) return hangang;
+        if (type == BackgroundType.Grass) return grass;
+        else return null;
+    }
+
+    public Sprite ReturnBackgroundImage(BackgroundType type)
+    {
         if (type == BackgroundType.Underground) return underground;
         if (type == BackgroundType.Station) return station;
         if (type == BackgroundType.ConnectR) return connectR;

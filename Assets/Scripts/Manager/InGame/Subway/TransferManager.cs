@@ -20,6 +20,8 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     private bool hasTransfered = false;
     private bool hasArrived = false;
 
+    public bool isTransferRecently;
+
     public void Init()
     {
         isInitialized = true;
@@ -43,6 +45,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     public void ResetTransferManager()
     {
         curTransferCount = 0;
+        isTransferRecently = false;
         DetermineMaxTransferCount();
     }
 
@@ -193,7 +196,6 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
     public void ForceTransferByStanding()
     {
         SubwayGameManager.Instance.isStopping = false;
-        Debug.Log("입석 성공!");
 
         curTransferCount++;
         SubwayGameManager.Instance.isStandingCoolDown = true; // 쿨다운 시작
@@ -208,17 +210,22 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
         OnTransferSuccess?.Invoke();
     }
 
+    private void TransferRecently()
+    {
+        isTransferRecently = true;
+    }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        //OnTransferSuccess += StationManager.Instance.CheckLastLine;
+        OnTransferSuccess += TransferRecently;
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        //OnTransferSuccess -= StationManager.Instance.CheckLastLine;
+        OnTransferSuccess -= TransferRecently;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)

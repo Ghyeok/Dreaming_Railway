@@ -59,7 +59,6 @@ public class MapXSpawn : MonoBehaviour
             if (!canSpawnRight && player.transform.position.x > startSpawnOffset)
             {
                 canSpawnRight = true;
-                Debug.Log("오른쪽 스폰 시작");
             }
 
             if (!lastRandomMapSpawn && canSpawnRight && player.transform.position.x + 20f > nextSpawnDistanceRight - tileLength /2f)
@@ -71,7 +70,6 @@ public class MapXSpawn : MonoBehaviour
             if (!canSpawnLeft && player.transform.position.x < -startSpawnOffset)
             {
                 canSpawnLeft = true;
-                Debug.Log("왼쪽 스폰 시작");
             }
 
             if (!lastRandomMapSpawn && canSpawnLeft && player.transform.position.x - 20f < nextSpawnDistanceLeft + tileLength /2f)
@@ -84,7 +82,6 @@ public class MapXSpawn : MonoBehaviour
         int mapLength = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
         if (!mapLengthLogged) // 디버그 로그는 한 번만 출력
         {
-            Debug.Log("맵 길이: " + mapLength);
             mapLengthLogged = true;
         }
 

@@ -133,7 +133,6 @@ public class UI_SubwayScene : UI_Scene
     private void PauseButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_PausePopup");
-        Debug.Log("일시정지!");
         Time.timeScale = 0;
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class WhitePanelSpawn : MonoBehaviour
 {
     public Image whitePanel;
-    public float fadeDuration = 0.2f;
+    public float fadeDuration = 0.5f;
     public float sceneDelay;
 
 
