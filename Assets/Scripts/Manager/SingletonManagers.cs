@@ -6,7 +6,7 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
     private static T _instance;
     public static T Instance { get { Init(); return _instance; } }
 
-    static void Init()
+    private static void Init()
     {
         if (_instance == null)
         {
@@ -19,10 +19,9 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
         }
     }
 
-    static void CreateInstance()
+    private static void CreateInstance()
     {
-        _instance = (T)FindAnyObjectByType(typeof(T));
-
+        // Lazy Initialization(지연 생성)
         if (_instance == null)
         {
             GameObject go = new GameObject();
@@ -48,17 +47,5 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ManagerInitializer : MonoBehaviour
+public static class ManagerInitializer
 {
-    private void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Initialize()
     {
-        List<IManager> managersInOrder = new()
+        IManager[] managersInOrder = new IManager[]
         {
             GameManager.Instance,
             ResolutionManager.Instance,
@@ -22,9 +23,29 @@ public class ManagerInitializer : MonoBehaviour
             DreamManager.Instance,
         };
 
-        foreach (var manager in managersInOrder)
+        InitializeManagers(managersInOrder);
+    }
+
+    // 내부 로직을 분리하면 유닛테스트로 주입해서 검증하기 쉬워집니다.
+    private static void InitializeManagers(IEnumerable<IManager> managers)
+    {
+        foreach (var manager in managers)
         {
-            manager.Init();
+            if (manager == null)
+            {
+                Debug.LogWarning("ManagerInitializer: found null manager in list, skipping.");
+                continue;
+            }
+
+            try
+            {
+                manager.Init();
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"ManagerInitializer: Init failed for {manager.GetType().Name}. Exception: {ex}");
+                // 계속 진행: 한 매니저 실패가 전체 초기화를 중단하지 않도록 합니다.
+            }
         }
     }
 }
