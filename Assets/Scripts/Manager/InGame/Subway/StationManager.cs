@@ -114,7 +114,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
     {
         int transferCnt = 0;
 
-        if (GameManager.Instance.gameMode != GameManager.GameMode.Infinite)
+        if (GameManager.Instance.gameMode != GameMode.NormalMode)
         {
             for (int i = 0; i < subwayLines.Count; i++)
             {
@@ -169,7 +169,7 @@ public class StationManager : SingletonManagers<StationManager>, IManager
                 }
             }
         }
-        else if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
+        else if (GameManager.Instance.gameMode == GameMode.InfiniteMode)
         {
             for (int i = 0; i < subwayLines.Count; i++)
             {

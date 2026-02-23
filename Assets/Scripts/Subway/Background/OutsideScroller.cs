@@ -57,7 +57,7 @@ public class OutsideScroller : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.gameState != GameManager.GameState.Subway) return;
+        if (GameManager.Instance.gameState != GameState.Subway) return;
         if (scrollSpeed == 0) return;
 
         float deltaX = scrollSpeed * Time.deltaTime;

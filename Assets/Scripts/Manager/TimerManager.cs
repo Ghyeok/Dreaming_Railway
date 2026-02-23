@@ -26,7 +26,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 
     private void FlowTime()
     {
-        if (!SubwayGameManager.Instance.isGameOver && !isStop && GameManager.Instance.gameState != GameManager.GameState.Main && GameManager.Instance.gameState != GameManager.GameState.DaySelect)
+        if (!SubwayGameManager.Instance.isGameOver && !isStop && GameManager.Instance.gameState != GameState.Main && GameManager.Instance.gameState != GameState.DaySelect)
         {
             playTime += Time.deltaTime;
 

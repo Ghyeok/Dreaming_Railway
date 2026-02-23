@@ -88,7 +88,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearTutorial()
     {
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorialEnd = false;
             UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
@@ -97,7 +97,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearNormalMode()
     {
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Normal)
+        if (GameManager.Instance.gameMode == GameMode.NormalMode)
         {
             if (ScriptManager.Instance.HasClearDialog(StageSelectManager.Instance.currentStage))
             {

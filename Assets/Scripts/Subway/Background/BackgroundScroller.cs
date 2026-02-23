@@ -74,7 +74,7 @@ public class BackgroundScroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.gameState != GameManager.GameState.Subway) return;
+        if (GameManager.Instance.gameState != GameState.Subway) return;
 
         float deltaX = scrollSpeed * Time.deltaTime;
         ScrollBackground(image1, deltaX);

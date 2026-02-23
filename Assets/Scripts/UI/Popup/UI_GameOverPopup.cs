@@ -68,7 +68,7 @@ public class UI_GameOverPopup : UI_Popup
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
         AddUIEvent(exit, ExitButtonOnClicked);
 
-        SoundManager.Instance.PlayAudioClip("GameOver", Define.Sounds.SFX);
+        SoundManager.Instance.PlayAudioClip("GameOver", Sounds.SFX);
 
         ShowPlayTime();
         GameOverTutorial();
@@ -110,7 +110,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void GameOverTutorial()
     {
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;

@@ -38,13 +38,13 @@ public class UI_HowToDoPopup : UI_Popup
         Bind<Image>(typeof(Images));
 
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
-        AddUIEvent(exit, ExitButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(exit, ExitButtonOnClicked, UIEvent.Click);
 
         GameObject before = GetButton((int)Buttons.BeforeButton).gameObject;
-        AddUIEvent(before, BeforeButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(before, BeforeButtonOnClicked, UIEvent.Click);
 
         GameObject next = GetButton((int)Buttons.NextButton).gameObject;
-        AddUIEvent(next, NextButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(next, NextButtonOnClicked, UIEvent.Click);
 
         GetImage((int)Images.HowToDoDreamImage).gameObject.SetActive(false);
         GetImage((int)Images.HowToDoSubwayImage).gameObject.SetActive(true);

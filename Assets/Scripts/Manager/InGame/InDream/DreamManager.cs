@@ -24,7 +24,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         mindreamTimeSpeed = 3.1f;
         maxdreamTimeSpeed = 4.1f;
 
-        dreamTimeSpeed = UnityEngine.Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
+        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
 
     }
 
@@ -41,15 +41,15 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     private void InitScene()
     {
-        GameManager.Instance.gameState = GameManager.GameState.Dream;
+        GameManager.Instance.gameState = GameState.Dream;
 
         isInDream = true;
         RandomDreamTimeSpeed();
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
         TiredManager.Instance.SetTiredAfterDream();
-        SoundManager.Instance.PlayAudioClip("DreamMusic", Define.Sounds.BGM);
+        SoundManager.Instance.PlayAudioClip("DreamMusic", Sounds.BGM);
 
-        if(GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if(GameManager.Instance.gameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;

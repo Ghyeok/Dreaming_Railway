@@ -28,7 +28,7 @@ public class UI_CreditPopup : UI_Popup
         Bind<Button>(typeof(Buttons));
 
         GameObject exit = GetButton((int)Buttons.ExitButton).gameObject;
-        AddUIEvent(exit, ExitButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(exit, ExitButtonOnClicked, UIEvent.Click);
     }
 
     private void ExitButtonOnClicked(PointerEventData data)

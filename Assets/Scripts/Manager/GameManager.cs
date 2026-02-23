@@ -2,22 +2,6 @@ using UnityEngine;
 
 public class GameManager : SingletonManagers<GameManager>, IManager
 {
-    public enum GameState
-    {
-        Main,
-        DaySelect,
-        Subway,
-        Dream,
-    }
-
-    public enum GameMode
-    {
-        None,
-        Tutorial,
-        Normal,
-        Infinite,
-    }
-
     public GameState gameState;
     public GameMode gameMode;
     public bool isStopped;

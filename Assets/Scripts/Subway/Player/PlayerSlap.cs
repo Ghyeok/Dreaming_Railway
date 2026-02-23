@@ -34,7 +34,7 @@ public class PlayerSlap : MonoBehaviour
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.SLAP;
             if (SubwayPlayerManager.Instance.playerBehave == SubwayPlayerManager.PlayerBehave.SLAP)
             {
-                SoundManager.Instance.PlayAudioClip("slap", Define.Sounds.SFX);
+                SoundManager.Instance.PlayAudioClip("slap", Sounds.SFX);
                 if (SubwayPlayerManager.Instance.subwayPlayer != null)
                 {
                     SubwayPlayerManager.Instance.subwayPlayer.GetComponent<Animator>().Play("PlayerSlap");
@@ -49,7 +49,7 @@ public class PlayerSlap : MonoBehaviour
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
             SubwayGameManager.Instance.isSlapCoolTime = false;
 
-            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
+            if (GameManager.Instance.gameMode == GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
             {
                 if (TutorialManager.Instance.tutorialPopup != null)
                 {

@@ -31,7 +31,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     private void InitScene()
     {
         TimerManager.Instance.StartTimer(); // 타이머 시작
-        GameManager.Instance.gameState = GameManager.GameState.Subway; // 게임 상태를 지하철로
+        GameManager.Instance.gameState = GameState.Subway; // 게임 상태를 지하철로
 
         UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene"); // 지하철 UI 출력
         SoundManager.Instance.SubwayBGM(); // 지하철 BGM 재생
@@ -41,7 +41,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         isStopping = false;
         isSlapCoolTime = false;
 
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Infinite)
+        if (GameManager.Instance.gameMode == GameMode.InfiniteMode)
         {
             tiredDecreaseBySlap = 4f;
         }
@@ -50,11 +50,11 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
             tiredDecreaseBySlap = 3f;
         }
 
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameMode.Tutorial)
         {
             StartCoroutine(LoadTutorialOverlay());
         }
-        else if(GameManager.Instance.gameMode == GameManager.GameMode.Normal)
+        else if(GameManager.Instance.gameMode == GameMode.NormalMode)
         {
             StartCoroutine(LoadScriptOverlay());  
         }
@@ -63,7 +63,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
         TimerManager.Instance.awakeTime = 0f; // 지하철 씬이 로드되는 순간 깨어있는 시간 0으로 초기화
 
-        if (isGameOver && GameManager.Instance.gameState == GameManager.GameState.Subway) // 꿈 속에서 지하철로 돌아 왔을때, 환승역을 지나친 상태라면 게임오버 판정
+        if (isGameOver && GameManager.Instance.gameState == GameState.Subway) // 꿈 속에서 지하철로 돌아 왔을때, 환승역을 지나친 상태라면 게임오버 판정
         {
             OnSubwayGameOver?.Invoke();
             GameOverInSubway();

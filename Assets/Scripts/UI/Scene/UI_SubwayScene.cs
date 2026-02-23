@@ -70,7 +70,7 @@ public class UI_SubwayScene : UI_Scene
         SetStationText();
         ShowStandingCoolDown();
 
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameMode.Tutorial)
             TutorialButtonBlocker();
     }
 
@@ -110,16 +110,16 @@ public class UI_SubwayScene : UI_Scene
         anim = subwayPlayer.GetComponent<Animator>();
 
         GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
-        AddUIEvent(pause, PauseButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(pause, PauseButtonOnClicked, UIEvent.Click);
 
         GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-        AddUIEvent(stand, SetStandingButtonToSkip, Define.UIEvent.Click);
+        AddUIEvent(stand, SetStandingButtonToSkip, UIEvent.Click);
 
         GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
-        AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), Define.UIEvent.Click);
+        AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), UIEvent.Click);
 
         GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
-        AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), Define.UIEvent.Click);
+        AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), UIEvent.Click);
 
         TextMeshProUGUI timerText = GetText((int)Texts.TimerText);
         TimerManager.Instance.timerText = timerText;
@@ -172,7 +172,7 @@ public class UI_SubwayScene : UI_Scene
         {
             // 초기 설정
             SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
-            SoundManager.Instance.PlayAudioClip("Standing", Define.Sounds.SFX);
+            SoundManager.Instance.PlayAudioClip("Standing", Sounds.SFX);
             TiredManager.Instance.currentTired = 99.9f;
             anim.SetTrigger("isStanding");
 
@@ -188,9 +188,9 @@ public class UI_SubwayScene : UI_Scene
             GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip");
             GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
             ClearUIEvent(stand);
-            AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), Define.UIEvent.Click);
+            AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), UIEvent.Click);
 
-            if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+            if (GameManager.Instance.gameMode == GameMode.Tutorial)
             {
                 StartCoroutine(StandingTutorial());
             }
@@ -199,7 +199,7 @@ public class UI_SubwayScene : UI_Scene
 
     IEnumerator StandingTutorial()
     {
-        if (GameManager.Instance.gameMode == GameManager.GameMode.Tutorial)
+        if (GameManager.Instance.gameMode == GameMode.Tutorial)
         {
             CanvasGroup cg = GetButton((int)Buttons.StandingButton).gameObject.AddComponent<CanvasGroup>();
             cg.blocksRaycasts = false;

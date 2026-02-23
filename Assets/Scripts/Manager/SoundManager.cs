@@ -9,11 +9,11 @@ using UnityEngine.SceneManagement;
 
 public class SoundManager : SingletonManagers<SoundManager>, IManager
 {
-    private AudioSource[] audioSources = new AudioSource[(int)Define.Sounds.MaxCount];
+    private AudioSource[] audioSources = new AudioSource[(int)Sounds.MaxCount];
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
-    private AudioSource BGMSource { get { return audioSources[(int)Define.Sounds.BGM]; } } // BGM으로 사용할 AudioSource
-    AudioSource SFXSource { get { return audioSources[(int)Define.Sounds.SFX]; } } // SFX(효과음)으로 사용할 AudioSource
+    private AudioSource BGMSource { get { return audioSources[(int)Sounds.BGM]; } } // BGM으로 사용할 AudioSource
+    AudioSource SFXSource { get { return audioSources[(int)Sounds.SFX]; } } // SFX(효과음)으로 사용할 AudioSource
 
     private GameObject bgmObject;
     private GameObject sfxObject;
@@ -36,13 +36,13 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
         {
             bgmObject = new GameObject("BGM");
             bgmObject.transform.parent = this.transform;
-            audioSources[(int)Define.Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
-            audioSources[(int)Define.Sounds.BGM].loop = true;
+            audioSources[(int)Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
+            audioSources[(int)Sounds.BGM].loop = true;
         }
 
         sfxObject = new GameObject("SFX");
         sfxObject.transform.parent = this.transform;
-        audioSources[(int)Define.Sounds.SFX] = sfxObject.AddComponent<AudioSource>();
+        audioSources[(int)Sounds.SFX] = sfxObject.AddComponent<AudioSource>();
 
         bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1.0f);
         sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1.0f);
@@ -56,24 +56,24 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     private void ApplyMuteAndVolume()
     {
-        if (audioSources[(int)Define.Sounds.BGM] != null)
+        if (audioSources[(int)Sounds.BGM] != null)
         {
-            audioSources[(int)Define.Sounds.BGM].volume = Mathf.Clamp01(bgmVolume);
-            audioSources[(int)Define.Sounds.BGM].mute = IsBGMOff;
+            audioSources[(int)Sounds.BGM].volume = Mathf.Clamp01(bgmVolume);
+            audioSources[(int)Sounds.BGM].mute = IsBGMOff;
         }
-        if (audioSources[(int)Define.Sounds.SFX] != null)
+        if (audioSources[(int)Sounds.SFX] != null)
         {
-            audioSources[(int)Define.Sounds.SFX].volume = Mathf.Clamp01(sfxVolume);
-            audioSources[(int)Define.Sounds.SFX].mute = IsSFXOff;
+            audioSources[(int)Sounds.SFX].volume = Mathf.Clamp01(sfxVolume);
+            audioSources[(int)Sounds.SFX].mute = IsSFXOff;
         }
     }
 
-    public void PlayAudioClip(string path, Define.Sounds newSoundType, float volumeScale = 1f)
+    public void PlayAudioClip(string path, Sounds newSoundType, float volumeScale = 1f)
     {
         AudioClip clip = GetOrAddAudioClip(path);
         ApplyMuteAndVolume();
 
-        if (newSoundType == Define.Sounds.BGM)
+        if (newSoundType == Sounds.BGM)
         {
             if (BGMSource.clip == clip && BGMSource.isPlaying)
             {
@@ -90,7 +90,7 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
             return;
         }
 
-        if (newSoundType == Define.Sounds.SFX)
+        if (newSoundType == Sounds.SFX)
         {
             // 효과음 재생 로직..
             SFXSource.clip = clip;
@@ -121,57 +121,57 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public void MainBGM()
     {
-        PlayAudioClip("TitleTheme", Define.Sounds.BGM);
+        PlayAudioClip("TitleTheme", Sounds.BGM);
     }
 
     public void SubwayBGM()
     {
-        PlayAudioClip("TrainMusic", Define.Sounds.BGM);
+        PlayAudioClip("TrainMusic", Sounds.BGM);
     }
 
     public void DreamBGM()
     {
-        PlayAudioClip("DreamMusic", Define.Sounds.BGM);
+        PlayAudioClip("DreamMusic", Sounds.BGM);
     }
     
     public void JumpSFX()
     {
-        PlayAudioClip("JumpSound", Define.Sounds.SFX);
+        PlayAudioClip("JumpSound", Sounds.SFX);
     }
 
     public void LandSFX()
     {
-        PlayAudioClip("LandSound", Define.Sounds.SFX);
+        PlayAudioClip("LandSound", Sounds.SFX);
     }
 
     public void Footstep1SFX()
     {
-        PlayAudioClip("FootstepCloud1", Define.Sounds.SFX);
+        PlayAudioClip("FootstepCloud1", Sounds.SFX);
     }
 
     public void Footstep2SFX()
     {
-        PlayAudioClip("FootstepCloud2", Define.Sounds.SFX);
+        PlayAudioClip("FootstepCloud2", Sounds.SFX);
     }
 
     public void EnterFogSFX()
     {
-        PlayAudioClip("EnterFog", Define.Sounds.SFX, 0.6f);
+        PlayAudioClip("EnterFog", Sounds.SFX, 0.6f);
     }
 
     public void ExitDreamSFX()
     {
-        PlayAudioClip("ExitDream", Define.Sounds.SFX);
+        PlayAudioClip("ExitDream", Sounds.SFX);
     }
 
     public void GameOverSFX()
     {
-        PlayAudioClip("GameOver", Define.Sounds.SFX);
+        PlayAudioClip("GameOver", Sounds.SFX);
     }
 
     public void GameClearSFX()
     {
-        PlayAudioClip("LastLine", Define.Sounds.SFX);
+        PlayAudioClip("LastLine", Sounds.SFX);
     }
 
     public float SetSFXVolume(float volume)

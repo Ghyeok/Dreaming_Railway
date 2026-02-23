@@ -53,7 +53,7 @@ public class UIManager : SingletonManagers<UIManager>, IManager
 
     // UI 코드가 한곳에 집중됩니다. 유지보수 편리하고 재사용성도 좋습니다
     // UIManager.LoadUI(Define.UIType.PauseUI) 이런식으로 쓰시면 됩니다
-    public static GameObject LoadUI(Define.UIType newUIType)
+    public static GameObject LoadUI(UIType newUIType)
     {
         GameObject ui;
         try

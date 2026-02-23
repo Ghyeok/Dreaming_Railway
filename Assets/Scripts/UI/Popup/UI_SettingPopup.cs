@@ -82,12 +82,12 @@ public class UI_SettingPopup : UI_Popup
         AddUIEvent(sfx, SFXButtonOnClicked);
 
         GameObject bgmThumb = GetButton((int)Buttons.BGMThumbButton).gameObject;
-        AddUIEvent(bgmThumb, BGMThumbButtonDragBegin, Define.UIEvent.DragBegin);
-        AddUIEvent(bgmThumb, BGMThumbButtonOnDrag, Define.UIEvent.Drag);
+        AddUIEvent(bgmThumb, BGMThumbButtonDragBegin, UIEvent.DragBegin);
+        AddUIEvent(bgmThumb, BGMThumbButtonOnDrag, UIEvent.Drag);
 
         GameObject sfxThumb = GetButton((int)Buttons.SFXThumbButton).gameObject;
-        AddUIEvent(sfxThumb, SFXThumbButtonDragBegin, Define.UIEvent.DragBegin);
-        AddUIEvent(sfxThumb, SFXThumbButtonOnDrag, Define.UIEvent.Drag);
+        AddUIEvent(sfxThumb, SFXThumbButtonDragBegin, UIEvent.DragBegin);
+        AddUIEvent(sfxThumb, SFXThumbButtonOnDrag, UIEvent.Drag);
 
         bgmThumbPos = GetButton((int)Buttons.BGMThumbButton).GetComponent<RectTransform>();
         sfxThumbPos = GetButton((int)Buttons.SFXThumbButton).GetComponent<RectTransform>();

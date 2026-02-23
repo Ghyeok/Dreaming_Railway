@@ -70,12 +70,12 @@ public class UI_PausePopup : UI_Popup
         ArrangeButtons();
 
         GameObject menuImage = GetImage((int)Images.MenuImage).gameObject;
-        AddUIEvent(menuImage, MenuImageOnDrag, Define.UIEvent.Drag);
-        AddUIEvent(menuImage, MenuImageDragBegin, Define.UIEvent.DragBegin);
-        AddUIEvent(menuImage, MenuImageDragEnd, Define.UIEvent.DragEnd);
+        AddUIEvent(menuImage, MenuImageOnDrag, UIEvent.Drag);
+        AddUIEvent(menuImage, MenuImageDragBegin, UIEvent.DragBegin);
+        AddUIEvent(menuImage, MenuImageDragEnd, UIEvent.DragEnd);
 
         GameObject chooseButton = GetButton((int)Buttons.ChooseButton).gameObject;
-        AddUIEvent(chooseButton, ChooseButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(chooseButton, ChooseButtonOnClicked, UIEvent.Click);
 
     }
 

@@ -40,18 +40,18 @@ public class UI_NonGameOverScene : UI_Scene
 
         Bind<Button>(typeof(Buttons));
         GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
-        AddUIEvent(pause, PauseButtonOnClicked, Define.UIEvent.Click);
+        AddUIEvent(pause, PauseButtonOnClicked, UIEvent.Click);
 
         GameObject left = GetButton((int)Buttons.LeftButton).gameObject;
-        AddUIEvent(left, LeftButtonOnClicked, Define.UIEvent.PointerDown);
-        AddUIEvent(left, StopMoveOnPointerUp, Define.UIEvent.PointerUp);
+        AddUIEvent(left, LeftButtonOnClicked, UIEvent.PointerDown);
+        AddUIEvent(left, StopMoveOnPointerUp, UIEvent.PointerUp);
 
         GameObject right = GetButton((int)Buttons.RightButton).gameObject;
-        AddUIEvent(right, RightButtonOnClicked, Define.UIEvent.PointerDown);
-        AddUIEvent(right, StopMoveOnPointerUp, Define.UIEvent.PointerUp);
+        AddUIEvent(right, RightButtonOnClicked, UIEvent.PointerDown);
+        AddUIEvent(right, StopMoveOnPointerUp, UIEvent.PointerUp);
 
         GameObject jump = GetButton((int)Buttons.JumpButton).gameObject;
-        AddUIEvent(jump, JumpButtonOnClicked, Define.UIEvent.PointerDown);
+        AddUIEvent(jump, JumpButtonOnClicked, UIEvent.PointerDown);
     }
 
     private void PauseButtonOnClicked(PointerEventData data)

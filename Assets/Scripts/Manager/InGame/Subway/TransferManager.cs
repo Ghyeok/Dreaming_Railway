@@ -51,7 +51,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
     private void DetermineMaxTransferCount()
     {
-        if (GameManager.Instance.gameMode != GameManager.GameMode.Infinite)
+        if (GameManager.Instance.gameMode != GameMode.InfiniteMode)
         {
             switch (StageSelectManager.Instance.currentStage)
             {
@@ -187,7 +187,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
             PlayerPrefs.Save();
 
-            GameManager.Instance.gameState = GameManager.GameState.DaySelect;
+            GameManager.Instance.gameState = GameState.DaySelect;
             OnGetOffSuccess?.Invoke();
             UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
 
