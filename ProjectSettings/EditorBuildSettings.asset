@@ -9,13 +9,13 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: ac97f8b9481be0b4dbe66878ecb4b632
   - enabled: 1
-    path: Assets/Scenes/StageSelect.unity
+    path: Assets/Scenes/StageSelectScene.unity
     guid: 56cd8db3d9eef434fa5ce28c94cf1304
   - enabled: 1
-    path: Assets/Scenes/TestSubwayScene.unity
+    path: Assets/Scenes/SubwayScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/InDream_PlayerMove.unity
+    path: Assets/Scenes/DreamScene.unity
     guid: 7c0399c0d78cdad409c5bbf3ec311ac4
   - enabled: 1
     path: Assets/Scenes/TutorialScene.unity
