@@ -9,9 +9,11 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
     private float mindreamTimeSpeed;
     private float maxdreamTimeSpeed;
 
+    public bool isGameOverInDream;
+
     public void Init()
     {
-
+        isGameOverInDream = false;
     }
 
     public void ResetDreamManager()
@@ -35,13 +37,13 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     public void GameOverInDream()
     {
-        GameManager.Instance.isGameOverInDream = true;
+        isGameOverInDream = true;
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }
 
     private void InitScene()
     {
-        GameManager.Instance.gameState = GameState.Dream;
+        //GameManager.Instance.GameState = GameState.Dream; 
 
         isInDream = true;
         RandomDreamTimeSpeed();
@@ -49,7 +51,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         TiredManager.Instance.SetTiredAfterDream();
         SoundManager.Instance.PlayAudioClip("DreamMusic", Sounds.BGM);
 
-        if(GameManager.Instance.gameMode == GameMode.Tutorial)
+        if(GameManager.Instance.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;

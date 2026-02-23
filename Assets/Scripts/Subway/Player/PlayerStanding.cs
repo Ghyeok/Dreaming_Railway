@@ -15,7 +15,7 @@ public class PlayerStanding : MonoBehaviour
 
         if (SubwayGameManager.Instance.isStandingCoolDown) return;
 
-        if (GameManager.Instance.gameMode == GameMode.Tutorial)
+        if (GameManager.Instance.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isStandingTutorial = false;
             TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);

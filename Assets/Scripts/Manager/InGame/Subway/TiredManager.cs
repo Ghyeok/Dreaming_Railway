@@ -77,8 +77,8 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
     {
         if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.SLEEP &&
             !SubwayGameManager.Instance.isGameOver &&
-            (GameManager.Instance.gameMode != GameMode.Tutorial && !TutorialManager.Instance.startFlowTime) || // 튜토리얼 아닐때는 변수 체크 X
-             GameManager.Instance.gameMode == GameMode.Tutorial && TutorialManager.Instance.startIncreaseTired) 
+            (GameManager.Instance.GameMode != GameMode.Tutorial && !TutorialManager.Instance.startFlowTime) || // 튜토리얼 아닐때는 변수 체크 X
+             GameManager.Instance.GameMode == GameMode.Tutorial && TutorialManager.Instance.startIncreaseTired) 
         {
             currentTired += Time.deltaTime;
 

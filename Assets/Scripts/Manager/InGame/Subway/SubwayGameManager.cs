@@ -18,11 +18,14 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     public bool isGameOver;
     public static event Action OnSubwayGameOver;
 
+    public bool isGameOverInSubway;
+
     public void Init()
     {
         standingCount = 0;
         isStandingCoolDown = false;
         slapCoolTime = 5f;
+        isGameOverInSubway = false;
 
         SoundManager.Instance.SetBGMVolume(PlayerPrefs.GetFloat("BGM_VOLUME", 1f));
         SoundManager.Instance.SetSFXVolume(PlayerPrefs.GetFloat("SFX_VOLUME", 1f));
@@ -31,7 +34,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
     private void InitScene()
     {
         TimerManager.Instance.StartTimer(); // 타이머 시작
-        GameManager.Instance.gameState = GameState.Subway; // 게임 상태를 지하철로
+        GameManager.Instance.GameState = GameState.Subway; // 게임 상태를 지하철로
 
         UI_SubwayScene _subway = UIManager.Instance.ShowSceneUI<UI_SubwayScene>("UI_SubwayScene"); // 지하철 UI 출력
         SoundManager.Instance.SubwayBGM(); // 지하철 BGM 재생
@@ -41,7 +44,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         isStopping = false;
         isSlapCoolTime = false;
 
-        if (GameManager.Instance.gameMode == GameMode.InfiniteMode)
+        if (GameManager.Instance.GameMode == GameMode.InfiniteMode)
         {
             tiredDecreaseBySlap = 4f;
         }
@@ -50,11 +53,11 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
             tiredDecreaseBySlap = 3f;
         }
 
-        if (GameManager.Instance.gameMode == GameMode.Tutorial)
+        if (GameManager.Instance.GameMode == GameMode.Tutorial)
         {
             StartCoroutine(LoadTutorialOverlay());
         }
-        else if(GameManager.Instance.gameMode == GameMode.NormalMode)
+        else if(GameManager.Instance.GameMode == GameMode.NormalMode)
         {
             StartCoroutine(LoadScriptOverlay());  
         }
@@ -101,7 +104,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
     public void GameOverInSubway()
     {
-        GameManager.Instance.isGameOverInSubway = true;
+        isGameOverInSubway = true;
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup2");
     }
 
@@ -111,7 +114,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
         var op = SceneManager.LoadSceneAsync("TutorialScene", LoadSceneMode.Additive);
         yield return op;
 
-        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isPassedGameOverTutorial || GameManager.Instance.isGameOverInSubway)
+        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isPassedGameOverTutorial || SubwayGameManager.Instance.isGameOverInSubway)
         {
             // 튜토리얼 팝업 띄우기
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_TutorialPopup");

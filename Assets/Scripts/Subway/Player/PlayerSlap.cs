@@ -49,7 +49,7 @@ public class PlayerSlap : MonoBehaviour
             SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
             SubwayGameManager.Instance.isSlapCoolTime = false;
 
-            if (GameManager.Instance.gameMode == GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
+            if (GameManager.Instance.GameMode == GameMode.Tutorial && TutorialManager.Instance.isSlapTutorial)
             {
                 if (TutorialManager.Instance.tutorialPopup != null)
                 {

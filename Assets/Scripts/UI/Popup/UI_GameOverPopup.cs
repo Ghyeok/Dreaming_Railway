@@ -110,7 +110,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void GameOverTutorial()
     {
-        if (GameManager.Instance.gameMode == GameMode.Tutorial)
+        if (GameManager.Instance.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;

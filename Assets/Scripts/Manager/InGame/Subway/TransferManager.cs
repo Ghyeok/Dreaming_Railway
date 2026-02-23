@@ -51,7 +51,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
     private void DetermineMaxTransferCount()
     {
-        if (GameManager.Instance.gameMode != GameMode.InfiniteMode)
+        if (GameManager.Instance.GameMode != GameMode.InfiniteMode)
         {
             switch (StageSelectManager.Instance.currentStage)
             {

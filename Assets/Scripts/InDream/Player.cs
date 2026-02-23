@@ -255,7 +255,7 @@ public class Player : MonoBehaviour
             FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
             OnDreamExit?.Invoke();
 
-            if (GameManager.Instance.gameMode == GameMode.Tutorial)
+            if (GameManager.Instance.GameMode == GameMode.Tutorial)
             {
                 TutorialManager.Instance.startFlowTime = true; // 꿈 속에서 나갈때는 항상 시간 흐르게
                 TutorialManager.Instance.startIncreaseTired = true; // 꿈 속에서 나갈때는 항상 피로도 흐르게

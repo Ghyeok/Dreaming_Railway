@@ -1,17 +1,19 @@
+using System;
 using UnityEngine;
 
 public class GameManager : SingletonManagers<GameManager>, IManager
 {
-    public GameState gameState;
-    public GameMode gameMode;
-    public bool isStopped;
+    public GameState GameState { get; private set; }
+    public GameMode GameMode { get; private set; }
+    public bool IsStopped { get; private set; }
 
-    public bool isGameOverInDream;
-    public bool isGameOverInSubway;
+    public static event Action<GameState> OnGameStateChanged;
+    public static event Action<GameMode> OnGameModeChanged;
 
     public void Init()
     {
-        gameState = GameState.Main; // 메인에서 시작
+        // 메인에서 시작
+        this.GameState = GameState.Main;
 
         if (!PlayerPrefs.HasKey("MaxClearStage"))
         {
@@ -22,8 +24,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
 
     private void ResetGameManager()
     {
-        isGameOverInDream = false;
-        isGameOverInSubway = false;
+
     }
 
     public void ResetGame()
@@ -40,6 +41,23 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         ScriptManager.Instance.ResetScript();
     }
 
+    public void ChangeGameState(GameState newState)
+    {
+        if (GameState == newState) return;
+
+        GameState = newState;
+        OnGameStateChanged?.Invoke(newState);
+    }
+
+    // 게임 모드 변경
+    public void ChangeGameMode(GameMode newMode)
+    {
+        if (GameMode == newMode) return;
+
+        GameMode = newMode;
+        OnGameModeChanged?.Invoke(newMode);
+    }
+
     public void OnSelectInfiniteMode()
     {
         TransferManager.Instance.ResetTransferManager();
@@ -49,13 +67,13 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     public void StopGame()
     {
         Time.timeScale = 0f;
-        isStopped = true;
+        IsStopped = true;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-        isStopped = false;
+        IsStopped = false;
     }
 
     public void GameOverOrClear()
@@ -83,7 +101,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     private void OnDisable()
     {
         SubwayGameManager.OnSubwayGameOver -= GameOverOrClear;
-        TransferManager.OnGetOffSuccess += GameOverOrClear;
+        TransferManager.OnGetOffSuccess -= GameOverOrClear;
         FogMovement.OnDreamGameOver -= GameOverOrClear;
     }
 }

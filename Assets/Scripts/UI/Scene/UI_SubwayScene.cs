@@ -70,7 +70,7 @@ public class UI_SubwayScene : UI_Scene
         SetStationText();
         ShowStandingCoolDown();
 
-        if (GameManager.Instance.gameMode == GameMode.Tutorial)
+        if (GameManager.Instance.GameMode == GameMode.Tutorial)
             TutorialButtonBlocker();
     }
 
@@ -190,7 +190,7 @@ public class UI_SubwayScene : UI_Scene
             ClearUIEvent(stand);
             AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), UIEvent.Click);
 
-            if (GameManager.Instance.gameMode == GameMode.Tutorial)
+            if (GameManager.Instance.GameMode == GameMode.Tutorial)
             {
                 StartCoroutine(StandingTutorial());
             }
@@ -199,7 +199,7 @@ public class UI_SubwayScene : UI_Scene
 
     IEnumerator StandingTutorial()
     {
-        if (GameManager.Instance.gameMode == GameMode.Tutorial)
+        if (GameManager.Instance.GameMode == GameMode.Tutorial)
         {
             CanvasGroup cg = GetButton((int)Buttons.StandingButton).gameObject.AddComponent<CanvasGroup>();
             cg.blocksRaycasts = false;
