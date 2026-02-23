@@ -1,51 +1,54 @@
-using System;
 using UnityEngine;
 
 public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
-    public static T Instance { get { Init(); return _instance; } }
-
-    private static void Init()
+    private static bool _isShuttingDown = false;
+    public static T Instance
     {
-        if (_instance == null)
+        get
         {
-            _instance = (T)FindAnyObjectByType(typeof(T));
+            if (_isShuttingDown) // 이미 파괴된 싱글톤
+            {
+                Debug.LogWarning($"[Singleton] Instance '{typeof(T)}' already destroyed. Returning null.");
+                return null;
+            }
 
             if (_instance == null)
             {
-                CreateInstance();
+                _instance = FindFirstObjectByType<T>();
+
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject($"@{typeof(T).Name}");
+                    _instance = go.AddComponent<T>();
+                    DontDestroyOnLoad(go);
+                }
             }
+            return _instance;
         }
     }
 
-    private static void CreateInstance()
-    {
-        // Lazy Initialization(지연 생성)
-        if (_instance == null)
-        {
-            GameObject go = new GameObject();
-            go.name = "@" + typeof(T).Name;
-            _instance = go.AddComponent<T>();
-            DontDestroyOnLoad(go);
-        }
-    }
-
-    public virtual void Awake()
-    {
-        RemoveDuplicates();
-    }
-
-    private void RemoveDuplicates()
+    protected virtual void Awake()
     {
         if (_instance == null)
         {
             _instance = this as T;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (_instance != this)
         {
             Destroy(gameObject);
         }
+    }
+
+    protected virtual void OnApplicationQuit()
+    {
+        _isShuttingDown = true;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        _isShuttingDown = true;
     }
 }
