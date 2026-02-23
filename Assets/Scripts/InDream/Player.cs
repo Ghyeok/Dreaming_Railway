@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
 
                 if (TutorialManager.Instance.subwayIdx < TutorialManager.Instance.subwayEndIdx)
                 {
-                    if (!GameManager.Instance.isGameOverInDream)
+                    if (!DreamManager.Instance.isGameOverInDream)
                     {
                         TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
                         TutorialManager.Instance.isDreamTutorial = false;

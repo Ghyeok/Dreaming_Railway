@@ -80,8 +80,8 @@ public class UI_MainMenuScene : UI_Scene
 
     private void InitScene()
     {
-        GameManager.Instance.gameState = GameState.Main;
-        GameManager.Instance.gameMode = GameMode.None;
+        GameManager.Instance.ChangeGameState(GameState.Main);
+        GameManager.Instance.ChangeGameMode(GameMode.None);
     }
 
     private void OnEnable()
@@ -105,15 +105,15 @@ public class UI_MainMenuScene : UI_Scene
 
     private void NormalModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.gameMode = GameMode.NormalMode;
-        GameManager.Instance.gameState = GameState.DaySelect;
+        GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
+        GameManager.Instance.ChangeGameState(GameState.DaySelect);
 
         StartCoroutine(FadeAndLoadScene("StageSelect"));
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.gameMode = GameMode.InfiniteMode;
+        GameManager.Instance.ChangeGameMode(GameMode.InfiniteMode);
         StageSelectManager.Instance.InvokeStageSelect();
         GameManager.Instance.ResetGame();
         StartCoroutine(FadeAndLoadScene("TestSubwayScene"));

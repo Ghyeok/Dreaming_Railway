@@ -116,12 +116,12 @@ public class UI_GameOverPopup : UI_Popup
             TutorialManager.Instance.isGameoverTutorial = true;
             TutorialManager.Instance.startIncreaseTired = false;
 
-            if (GameManager.Instance.isGameOverInDream)
+            if (DreamManager.Instance.isGameOverInDream)
             {
                 TutorialManager.Instance.isDarkGameOverTutorial = true;
                 TutorialManager.Instance.gameoverIdx = 0;
             }
-            else if (GameManager.Instance.isGameOverInSubway)
+            else if (SubwayGameManager.Instance.isGameOverInSubway)
             {
                 TutorialManager.Instance.isPassedGameOverTutorial = true;
                 TutorialManager.Instance.gameoverIdx = 1;

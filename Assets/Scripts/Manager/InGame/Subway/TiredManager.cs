@@ -24,8 +24,8 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.Instance.gameState != GameState.Subway &&
-            GameManager.Instance.gameState != GameState.Dream)
+        if (GameManager.Instance.GameState != GameState.Subway &&
+            GameManager.Instance.GameState != GameState.Dream)
             return;
 
         SubwayCharacterSleepingMotion();

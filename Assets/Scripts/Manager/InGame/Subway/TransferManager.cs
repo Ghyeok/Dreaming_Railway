@@ -187,7 +187,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
             PlayerPrefs.Save();
 
-            GameManager.Instance.gameState = GameState.DaySelect;
+            GameManager.Instance.ChangeGameState(GameState.DaySelect);
             OnGetOffSuccess?.Invoke();
             UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
 
