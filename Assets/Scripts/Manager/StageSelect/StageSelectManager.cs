@@ -44,7 +44,7 @@ public class StageSelectManager : SingletonManagers<StageSelectManager>, IManage
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "StageSelect")
+        if (scene.name == "StageSelectScene")
         {
             UIManager.Instance.ShowSceneUI<UI_Scene>("UI_StageSelectScene");
             InitScene();

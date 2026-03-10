@@ -85,7 +85,7 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
             if (!isSceneLoading && currentTired >= maxTired)
             {
                 isSceneLoading = true;
-                StartCoroutine(FadeAndLoadScene("InDream_PlayerMove"));
+                StartCoroutine(FadeAndLoadScene("DreamScene"));
             }
         }
     }
@@ -103,7 +103,7 @@ public class TiredManager : SingletonManagers<TiredManager>, IManager
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestSubwayScene")
+        if (scene.name == "SubwayScene")
         {
             InitScene();
             isSceneLoading = false;

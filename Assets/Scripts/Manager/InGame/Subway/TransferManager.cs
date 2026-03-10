@@ -137,7 +137,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
             OnTransferSuccess?.Invoke();
 
             string currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == "TestSubwayScene")
+            if (currentScene == "SubwayScene")
             {
                 Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
                 anim.SetTrigger("isTransfer");
@@ -232,7 +232,7 @@ public class TransferManager : SingletonManagers<TransferManager>, IManager
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestSubwayScene")
+        if (scene.name == "SubwayScene")
         {
             InitScene();
         }

@@ -125,7 +125,7 @@ public class UI_StageSelectScene : UI_Scene
         StageSelectManager.Instance.InvokeStageSelect();
         yield return new WaitForSeconds(6.4f); //애니매이션 연출 시간
 
-        SceneManager.LoadScene("TestSubwayScene");
+        SceneManager.LoadScene("SubwayScene");
     }
 
     private void BackButtonOnClicked(PointerEventData data)

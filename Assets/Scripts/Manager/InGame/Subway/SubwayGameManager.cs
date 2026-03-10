@@ -164,7 +164,7 @@ public class SubwayGameManager : SingletonManagers<SubwayGameManager>, IManager
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestSubwayScene")
+        if (scene.name == "SubwayScene")
         {
             InitScene();
         }

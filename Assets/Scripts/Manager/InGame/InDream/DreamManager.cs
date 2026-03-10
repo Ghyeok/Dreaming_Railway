@@ -76,7 +76,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "InDream_PlayerMove")
+        if (scene.name == "DreamScene")
         {
             UIManager.Instance.ShowSceneUI<UI_Scene>("UI_NonGameOverScene");
             InitScene();

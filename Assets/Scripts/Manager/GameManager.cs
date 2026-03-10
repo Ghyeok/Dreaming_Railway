@@ -41,14 +41,6 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         ScriptManager.Instance.ResetScript();
     }
 
-    public void ChangeGameState(GameState newState)
-    {
-        if (GameState == newState) return;
-
-        GameState = newState;
-        OnGameStateChanged?.Invoke(newState);
-    }
-
     // 게임 모드 변경
     public void ChangeGameMode(GameMode newMode)
     {
@@ -58,7 +50,16 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         OnGameModeChanged?.Invoke(newMode);
     }
 
-    public void OnSelectInfiniteMode()
+    // 게임 상태 변경
+    public void ChangeGameState(GameState newState)
+    {
+        if (GameState == newState) return;
+
+        GameState = newState;
+        OnGameStateChanged?.Invoke(newState);
+    }
+
+    public void OnSelectInfiniteMode() // 이것도 OnGameModeChanged(Gamemode.Infinite)를 구독하면 될듯
     {
         TransferManager.Instance.ResetTransferManager();
         StationManager.Instance.ResetStationManager();
