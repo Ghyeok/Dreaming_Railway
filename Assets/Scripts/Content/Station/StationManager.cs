@@ -2,68 +2,124 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 역 생성을 담당하는 매니저
-public class StationManager : SingletonManagers<StationManager>, IManager
+// 싱글톤 상속 X, ITickable 규격 준수
+public class StationManager : MonoBehaviour, ITickable
 {
-    public bool isInitialized = false;
+    // 씬 컨텍스트 (게시판) 참조
+    private SubwaySceneRefs _refs;
 
+    [Header("Time Settings")]
     public float minTravelTime = 10f;
     public float maxTravelTime = 15f;
     public float minStopTime = 6f;
     public float maxStopTime = 8f;
 
-    public List<LineData> subwayLines = new List<LineData>();
+    [Header("Subway Data")]
+    public List<SubwayLineData> subwayLines = new List<SubwayLineData>();
 
-    public int currentLineIdx; // 현재 노선 인덱스
-    public int currentStationIdx; // 현재역 인덱스
-    private int lastStationIdx = -1;
-
+    public int currentLineIdx;
+    public int currentStationIdx;
     public int passedStations;
 
-    public static event Action OnStationStop;
+    public float CurrentLineTime { get; private set; }
+    public bool IsStopping { get; private set; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Init()
+    // 다음 상태(정차/출발)까지 남은 시간을 재는 타이머
+    private float _timeToNextState;
+
+    public event Action OnStationStop; // 정차 시간에 진입한 순간
+    public event Action OnStationDeparted; // 완전히 정차한 순간
+    public event Action OnLineEnded; // 노선이 완전히 끝난 순간
+
+    // SubwaySceneBinder가 호출하여 초기화
+    public void Init(SubwaySceneRefs refs)
     {
-        isInitialized = true;
-        GenerateSubwayLines();
+        _refs = refs;
+        int maxTransfer = refs.transferManager.maxTransferCount;
+        GenerateSubwayLines(maxTransfer);
+
+        // 첫 번째 역으로 가는 이동 시간 세팅
+        if (subwayLines.Count > 0 && subwayLines[0].stations.Count > 0)
+        {
+            _timeToNextState = subwayLines[currentLineIdx].stations[0].travelTime;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Tick(float deltaTime, float speed = 1.0f)
     {
-        if (!isInitialized || !TransferManager.Instance.isInitialized) return;
+        float dt = deltaTime * speed;
+        CurrentLineTime += dt;
+        _timeToNextState -= dt;
 
-        CheckCurrentStation();
-        IsSubwayStopped();
+        // 남은 시간이 0 이하가 되면 상태 전환!
+        if (_timeToNextState <= 0f)
+        {
+            AdvanceSubwayState();
+        }
+    }
+
+    private void AdvanceSubwayState()
+    {
+        SubwayLineData line = subwayLines[currentLineIdx];
+
+        if (!IsStopping)
+        {
+            // [주행 -> 정차] 역에 도착함
+            IsStopping = true;
+            _timeToNextState += line.stations[currentStationIdx].stopTime;
+            OnStationStop?.Invoke();
+        }
+        else
+        {
+            // [정차 -> 출발] 다음 동작 판별
+            IsStopping = false;
+
+            // 현재 역이 이 노선의 마지막 역(환승역/종착역)인가?
+            if (currentStationIdx == line.transferIdx)
+            {
+                // 노선 종료, 환승 타이밍
+                OnLineEnded?.Invoke();
+            }
+            else
+            {
+                // 다음 역으로 주행 시작
+                currentStationIdx++;
+                _timeToNextState += line.stations[currentStationIdx].travelTime;
+                OnStationDeparted?.Invoke();
+            }
+        }
     }
 
     public void ResetStationManager()
     {
-        GenerateSubwayLines();
+        int maxTransfer = _refs.transferManager.maxTransferCount;
+        GenerateSubwayLines(maxTransfer);
+
         currentLineIdx = 0;
         currentStationIdx = 0;
         passedStations = 0;
-        ResetLastStationIdx();
+        CurrentLineTime = 0f;
+        IsStopping = false;
+
+        if (subwayLines.Count > 0 && subwayLines[0].stations.Count > 0)
+        {
+            _timeToNextState = subwayLines[currentLineIdx].stations[currentStationIdx].travelTime;
+        }
     }
 
-    public void GenerateSubwayLines()
+    public void GenerateSubwayLines(int maxTransferCount)
     {
         subwayLines.Clear();
 
-        int lineCount = 0;
-        lineCount = TransferManager.Instance.maxTransferCount + 1;
-
-        int stationPerLine = 20; // 넉넉하게
+        int lineCount = maxTransferCount + 1;
+        int stationPerLine = 20; // 넉넉하게 생성
 
         for (int i = 0; i < lineCount; i++)
         {
-            LineData newLine = new LineData();
-
+            SubwayLineData newLine = new SubwayLineData();
             for (int j = 0; j < stationPerLine; j++)
             {
-                StationData station = new StationData(minTravelTime, maxTravelTime, minStopTime, maxStopTime);
-                newLine.stations.Add(station);
+                newLine.stations.Add(new StationData(minTravelTime, maxTravelTime, minStopTime, maxStopTime));
             }
             subwayLines.Add(newLine);
         }
@@ -71,194 +127,24 @@ public class StationManager : SingletonManagers<StationManager>, IManager
         ChooseStationType();
     }
 
-    public float GetCurrentLineTotalTime()
-    {
-        float total = 0f;
-        var stations = subwayLines[currentLineIdx].stations;
-        int lastIdx = subwayLines[currentLineIdx].transferIdx;
-
-        for (int i = 0; i <= lastIdx; i++)
-        {
-            total += stations[i].travelTime;
-            total += stations[i].stopTime;
-        }
-
-        return total;
-    }
-    
-    public float GetCurrentStationStoppingTime()
-    {
-        return subwayLines[currentLineIdx].stations[currentStationIdx].stopTime;
-    }
-
-    private float GetCurrentStationRemainStoppingTime()
-    {
-        var line = subwayLines[currentLineIdx]; // 현재 노선
-        int cur = subwayLines[currentLineIdx].transferIdx; // 현재 역
-
-        float stopStart = 0f;
-        for (int i = 0; i < cur; i++)
-            stopStart += line.stations[i].travelTime + line.stations[i].stopTime;
-        stopStart += line.stations[cur].travelTime;
-
-        float elapsed = TimerManager.Instance.lineTime - stopStart;
-        return Mathf.Clamp(elapsed, 0f, line.stations[cur].stopTime);
-    }
-
-    public float GetRemainTimeToTransfer()
-    {
-        return Mathf.Max(GetCurrentStationStoppingTime() - GetCurrentStationRemainStoppingTime(), 0f);
-    }
-
     private void ChooseStationType()
     {
-        int transferCnt = 0;
+        bool isNormalMode = GameManager.Instance.GameMode == GameMode.NormalMode;
 
-        if (GameManager.Instance.GameMode != GameMode.NormalMode)
+        for (int i = 0; i < subwayLines.Count; i++)
         {
-            for (int i = 0; i < subwayLines.Count; i++)
-            {
-                if (i < subwayLines.Count - 1)
-                {
-                    if (transferCnt >= 0 && transferCnt <= 3)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    else if (transferCnt >= 4 && transferCnt <= 6)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    else if (transferCnt >= 7)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    transferCnt++;
-                }
-                else if (i == subwayLines.Count - 1)
-                {
-                    if (transferCnt >= 0 && transferCnt <= 3)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                    else if (transferCnt >= 4 && transferCnt <= 6)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                    else if (transferCnt >= 7)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = true;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Destination;
-                    }
-                }
-            }
-        }
-        else if (GameManager.Instance.GameMode == GameMode.InfiniteMode)
-        {
-            for (int i = 0; i < subwayLines.Count; i++)
-            {
-                if (i < subwayLines.Count - 1)
-                {
-                    if (transferCnt >= 0 && transferCnt <= 3)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(8, 11);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    else if (transferCnt >= 4 && transferCnt <= 6)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(6, 9);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    else if (transferCnt >= 7)
-                    {
-                        int transferStationIdx = UnityEngine.Random.Range(4, 7);
-                        subwayLines[i].transferIdx = transferStationIdx;
-                        subwayLines[i].hasDestination = false;
-                        subwayLines[i].stations[transferStationIdx].stationType = StationType.Transfer;
-                    }
-                    transferCnt++;
-                }
-            }
-        }
-    }
+            bool isDestinationLine = isNormalMode && (i == subwayLines.Count - 1);
+            int transferStationIdx;
 
-    public void CheckCurrentStation() // 현재 어느 역을 지나고 있는지 확인하는 함수
-    {
-        TimerManager timer = TimerManager.Instance;
+            if (i <= 3) transferStationIdx = UnityEngine.Random.Range(8, 11);
+            else if (i <= 6) transferStationIdx = UnityEngine.Random.Range(6, 9);
+            else transferStationIdx = UnityEngine.Random.Range(4, 7);
 
-        float accumulatedTime = 0f;
+            subwayLines[i].transferIdx = transferStationIdx;
+            subwayLines[i].hasDestination = isDestinationLine;
 
-        for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)
-        {
-            accumulatedTime += subwayLines[currentLineIdx].stations[i].travelTime;
-            accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
-
-            if (timer.lineTime < accumulatedTime)
-            {
-                currentStationIdx = i;
-                if (currentStationIdx >= 3)
-                    TransferManager.Instance.isTransferRecently = false;
-                if (i != 0 && lastStationIdx < currentStationIdx)
-                {
-                    lastStationIdx = currentStationIdx;
-                    passedStations++;
-                }
-                break;
-            }
-        }
-    }
-
-    public void ResetLastStationIdx()
-    {
-        lastStationIdx = -1;
-    }
-
-    public void IsSubwayStopped()
-    {
-        TimerManager timer = TimerManager.Instance;
-        float tLine = timer.lineTime;
-        float accumulatedTime = 0f;
-
-        for (int i = 0; i <= subwayLines[currentLineIdx].transferIdx; i++)
-        {
-            accumulatedTime += subwayLines[currentLineIdx].stations[i].travelTime;
-
-            if (i == currentStationIdx)
-            {
-                float stopStart = accumulatedTime;
-                float stopEnd = accumulatedTime + subwayLines[currentLineIdx].stations[i].stopTime;
-
-                if (timer.lineTime > stopStart && timer.lineTime < stopEnd)
-                {
-                    SubwayGameManager.Instance.isStopping = true;
-                    OnStationStop?.Invoke();
-                }
-                else
-                {
-                    SubwayGameManager.Instance.isStopping = false;
-                }
-            }
-            accumulatedTime += subwayLines[currentLineIdx].stations[i].stopTime;
+            StationType type = isDestinationLine ? StationType.Destination : StationType.Transfer;
+            subwayLines[i].stations[transferStationIdx].stationType = type;
         }
     }
 }
