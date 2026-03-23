@@ -9,18 +9,12 @@ public static class ManagerInitializer
         IManager[] managersInOrder = new IManager[]
         {
             GameManager.Instance,
-            ResolutionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
             StageSelectManager.Instance,
-            TutorialManager.Instance,
             ScriptManager.Instance,
-            TransferManager.Instance,
-            StationManager.Instance,
-            TiredManager.Instance,
             SubwayGameManager.Instance,
             SubwayPlayerManager.Instance,
-            DreamManager.Instance,
         };
 
         InitializeManagers(managersInOrder);

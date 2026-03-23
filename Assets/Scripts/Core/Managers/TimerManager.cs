@@ -1,64 +1,61 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TimerManager : SingletonManagers<TimerManager>, IManager
+public class TimerManager : SingletonManagers<TimerManager>
 {
-    public TextMeshProUGUI timerText;
-    public float lineTime; // 노선 한개를 지나는 시간, 환승하면 0으로 초기화
-    public float awakeTime; // 깨어있던 시간
-    public float playTime; // 실제 플레이 타임
-    public bool isStop;
+    private List<ITickable> _tickable = new List<ITickable>();
 
-    private int min;
-    private int sec;
-    private int milSec;
+    public bool IsPaused {  get; private set; }
 
     public void Init()
     {
         StartTimer();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        FlowTime();
-    }
+        if (IsPaused) return;
 
-    private void FlowTime()
-    {
-        if (!SubwayGameManager.Instance.isGameOver && !isStop && GameManager.Instance.GameState != GameState.Main && GameManager.Instance.GameState != GameState.DaySelect)
+        float dt = Time.deltaTime;
+
+        // 역순으로 순회하여 리스트 크기가 중간에 변해도 인덱스는 변하지 않게 함
+        for (int i = _tickable.Count - 1; i >= 0; i--)
         {
-            playTime += Time.deltaTime;
-
-            lineTime += Time.deltaTime * DreamManager.Instance.dreamTimeSpeed;
-
-            if (SubwayPlayerManager.Instance.playerState != SubwayPlayerManager.PlayerState.DEEPSLEEP)
-            {
-                awakeTime += Time.deltaTime;
-            }
-
-            min = Mathf.FloorToInt(playTime / 60);
-            sec = Mathf.FloorToInt(playTime % 60);
-            milSec = Mathf.FloorToInt((playTime * 100f) % 100);
-
-            timerText.text = string.Format("{0:00}:{1:00}:{2:00}", min, sec, milSec);
+            _tickable[i].Tick(dt);
         }
     }
 
-    public void ResetTimer()
+    /// <summary>
+    /// 매 프레임 실행될 객체를 등록
+    /// </summary>
+    public void Register(ITickable tickable)
     {
-        lineTime = 0f;
-        awakeTime = 0f;
-        playTime = 0f;
+        if (_tickable.Contains(tickable))
+        {
+            _tickable.Add(tickable);
+        }
+    }
+
+    /// <summary>
+    /// 매 프레임 실행될 객체를 삭제
+    /// </summary>
+    public void Unregister(ITickable tickable)
+    {
+        if (_tickable.Contains(tickable))
+        {
+            _tickable.Remove(tickable);
+        }
+    }
+
+
+    public void StartTimer()
+    {
+        IsPaused = false;
     }
 
     public void StopTimer()
     {
-        isStop = true;
-    }
-
-    public void StartTimer()
-    {
-        isStop = false;
+        IsPaused = true;
     }
 }
