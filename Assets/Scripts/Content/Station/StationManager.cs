@@ -17,12 +17,12 @@ public class StationManager : MonoBehaviour, ITickable
     [Header("Subway Data")]
     public List<SubwayLineData> subwayLines = new List<SubwayLineData>();
 
-    public int currentLineIdx;
-    public int currentStationIdx;
-    public int passedStations;
+    public int currentLineIdx; // 현재 노선 인덱스
+    public int currentStationIdx; // 현재 역 인덱스
+    public int passedStations; // 지금까지 지나온 역의 개수
 
-    public float CurrentLineTime { get; private set; }
-    public bool IsStopping { get; private set; }
+    public float CurrentLineTime { get; private set; } // 현재 노선 타이머
+    public bool IsStopping { get; private set; } // 정차 구간을 지나는 중인가?
 
     // 다음 상태(정차/출발)까지 남은 시간을 재는 타이머
     private float _timeToNextState;

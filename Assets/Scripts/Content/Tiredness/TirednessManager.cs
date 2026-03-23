@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TirednessManager : MonoBehaviour, ITickable
 {
+    private SubwaySceneRefs _refs;
     public float MaxTired { get; private set; } = 100f;
     public float CurrentTired { get; private set; } = 30f;
 
@@ -15,14 +16,12 @@ public class TirednessManager : MonoBehaviour, ITickable
     private bool _isPaused = false; // 피로도 증가를 멈출 것인지?
     private bool _isMaxOut = false; // 최대 피로도를 넘었는지?
 
-    private void Start()
+    public void Init(SubwaySceneRefs refs)
     {
-        Init();
-    }
+        _refs = refs;
 
-    public void Init()
-    {
         CurrentTired = 30f;
+        MaxTired = 100f;
         _isMaxOut = false;
 
         if (TimerManager.Instance != null)
@@ -31,11 +30,11 @@ public class TirednessManager : MonoBehaviour, ITickable
         }
     }
 
-    public void Tick(float deltaTime, float speed)
+    public void Tick(float deltaTime, float speed = 1.0f)
     {
         if (_isPaused || _isMaxOut) return;
 
-        CurrentTired += deltaTime;
+        CurrentTired += deltaTime * speed;
         OnTiredChange?.Invoke(CurrentTired);
 
         if (CurrentTired >= MaxTired)
@@ -44,7 +43,6 @@ public class TirednessManager : MonoBehaviour, ITickable
             _isMaxOut = true;
             OnTiredMaxed?.Invoke();
         }
-
     }
 
     public void ResetTiredManager()
@@ -56,20 +54,22 @@ public class TirednessManager : MonoBehaviour, ITickable
         OnTiredChange?.Invoke(CurrentTired);
     }
 
-    //public void SetTiredAfterDream() // 잠에 들때 피로도 재설정
-    //{
-    //    if (awakeTime <= 100f)
-    //    {
-    //        CurrentTired /= 2f;
-    //    }
-    //    else if (awakeTime > 100f)
-    //    {
-    //        CurrentTired = (CurrentTired / 2f) * 3f;
-    //    }
+    public void SetTiredAfterDream() // 잠에 들때 피로도 재설정
+    {
+        float awakeTime = _refs.stationManager.CurrentLineTime;
 
-    //    _isMaxOut = false;
-    //    OnTiredChange?.Invoke(CurrentTired);
-    //}
+        if (awakeTime <= 100f)
+        {
+            CurrentTired /= 2f;
+        }
+        else if (awakeTime > 100f)
+        {
+            CurrentTired = (CurrentTired / 2f) * 3f;
+        }
+
+        _isMaxOut = false;
+        OnTiredChange?.Invoke(CurrentTired);
+    }
 
     private void OnDestroy()
     {

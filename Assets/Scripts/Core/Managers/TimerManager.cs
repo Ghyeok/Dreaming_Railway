@@ -48,7 +48,6 @@ public class TimerManager : SingletonManagers<TimerManager>
         }
     }
 
-
     public void StartTimer()
     {
         IsPaused = false;
