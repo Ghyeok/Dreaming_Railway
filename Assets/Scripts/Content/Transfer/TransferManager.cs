@@ -1,240 +1,125 @@
 using System;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-
-// 환승 로직을 담당하는 매니저
-public class TransferManager : SingletonManagers<TransferManager>, IManager
+public class TransferManager : MonoBehaviour
 {
-    public bool isInitialized = false;
+    private SubwaySceneRefs _refs;
 
-    public int curTransferCount;
-    public int maxTransferCount;
+    public int curTransferCount; // 현재 환승 횟수
+    public int maxTransferCount; // 최대 환승 횟수
 
-    public static event Action OnTransferSuccess;
-    public static event Action OnGetOffSuccess;
+    public  event Action OnTransferSuccess; // 조건 체크 후 환승에 성공한 순간 Invoke
+    public  event Action OnGetOffSuccess; // 도착(게임 클리어)에 성공한 순간 Invoke
 
-    private bool hasTransfered = false;
-    private bool hasArrived = false;
+    public bool isTransferRecently; // 최근에 환승했는지 체크
 
-    public bool isTransferRecently;
-
-    public void Init()
+    public void Init(SubwaySceneRefs refs)
     {
-        isInitialized = true;
+        _refs = refs;
         DetermineMaxTransferCount();
-    }
 
-    private void InitScene()
-    {
-        DetermineMaxTransferCount();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!isInitialized || !StationManager.Instance.isInitialized) return;
-
-        SuccessTransfer();
-        SuccessGetOff();
-    }
-
-    public void ResetTransferManager()
-    {
-        curTransferCount = 0;
-        isTransferRecently = false;
-        DetermineMaxTransferCount();
+        _refs.stationManager.OnLineEnded += HandleLineEnded;
     }
 
     private void DetermineMaxTransferCount()
     {
-        if (GameManager.Instance.GameMode != GameMode.InfiniteMode)
+        if (GameManager.Instance.GameMode == GameMode.InfiniteMode)
         {
-            switch (StageSelectManager.Instance.currentStage)
-            {
-                case 0: // 튜토리얼
-                    maxTransferCount = 1;
-                    break;
-                case 1: // Day 1
-                    maxTransferCount = 2;
-                    break;
-                case 2: // Day 2
-                    maxTransferCount = 3;
-                    break;
-                case 3: // Day 3
-                    maxTransferCount = 4;
-                    break;
-                case 4: // Day 4
-                    maxTransferCount = 5;
-                    break;
-                case 5: // Day 5
-                    maxTransferCount = 6;
-                    break;
-            }
+            maxTransferCount = 99;
+            return;
+        }
+
+        // StageSelectManager의 데이터를 기반으로 설정
+        int stage = StageSelectManager.Instance.currentStage;
+        maxTransferCount = stage == 0 ? 0 : stage + 1;
+    }
+
+    // 노선이 끝났을 때 호출되는 함수
+    private void HandleLineEnded()
+    {
+        int lineIdx = _refs.stationManager.currentLineIdx;
+        var currentLine = _refs.stationManager.subwayLines[lineIdx];
+
+        // 게임 오버 조건 체크: 노선이 끝났는데 꿈속이라면? -> 게임 오버
+        if (DreamManager.Instance.isInDream)
+        {
+            SubwayGameManager.Instance.isGameOver = true;
+            Debug.Log("환승/도착 시점에 꿈을 꾸고 있어 게임오버!");
+            return;
+        }
+
+        // 도착역(Destination)인지 환승역(Transfer)인지 판별
+        if (currentLine.hasDestination)
+        {
+            ProcessArrival();
         }
         else
         {
-            maxTransferCount = 99;
+            ProcessTransfer();
         }
     }
 
-    private float GetTimeToStationEnd(int lineIdx, int stationIdx)
+    private void ProcessTransfer()
     {
-        var line = StationManager.Instance.subwayLines[lineIdx];
-        float acc = 0f;
-        for (int i = 0; i <= stationIdx; i++)
-            acc += line.stations[i].travelTime + line.stations[i].stopTime;
-        return acc;
+        curTransferCount++;
+        isTransferRecently = true;
+
+        // StationManager의 데이터 업데이트 (다음 노선으로)
+        _refs.stationManager.currentLineIdx++;
+        _refs.stationManager.ResetStationManager(); // 내부 인덱스 및 타이머 리셋
+
+        PlayTransferAnimation(); // 플레이어 쪽에서 구독하는 방향
+        OnTransferSuccess?.Invoke();
+
+        Debug.Log($"환승 성공! 현재 환승 횟수: {curTransferCount}");
     }
 
-    private void SuccessTransfer()
+    private void ProcessArrival()
     {
-        // 1. 현재역이 환승역일때
-        // 2. 현재 노선에서 흐른 시간이 현재 노선 전체 시간보다 커질때
-        // 3. 도착역이 아닐때
-
-        if (SubwayPlayerManager.Instance.playerState == SubwayPlayerManager.PlayerState.STANDING)
-            return;
-
-        if (hasTransfered)
-            return;
-
-        int lineIdx = StationManager.Instance.currentLineIdx;
-        var line = StationManager.Instance.subwayLines[lineIdx];
-
-        bool atTransfer = (StationManager.Instance.currentStationIdx == line.transferIdx);
-        bool timeReached = (TimerManager.Instance.lineTime >= GetTimeToStationEnd(lineIdx, line.transferIdx));
-        bool notDestinationLine = !line.hasDestination;
-
-        if (atTransfer && timeReached && notDestinationLine)
+        // 세이브 데이터 갱신
+        var stageMng = StageSelectManager.Instance;
+        if (stageMng.currentStage > stageMng.maxClearStage)
         {
-            if (DreamManager.Instance.isInDream)
-            {
-                SubwayGameManager.Instance.isGameOver = true;
-            }
-
-            hasTransfered = true;
-            curTransferCount++;
-            TimerManager.Instance.lineTime = 0f;
-
-            if (SubwayGameManager.Instance.isStandingCoolDown)
-            {
-                SubwayGameManager.Instance.standingCount++;
-                if (SubwayGameManager.Instance.standingCount >= 2)
-                {
-                    SubwayGameManager.Instance.isStandingCoolDown = false;
-                    SubwayGameManager.Instance.standingCount = 0;
-                }
-            }
-
-            StationManager.Instance.currentLineIdx++;
-            StationManager.Instance.currentStationIdx = 0;
-            StationManager.Instance.passedStations++;
-            StationManager.Instance.ResetLastStationIdx();
-            OnTransferSuccess?.Invoke();
-
-            string currentScene = SceneManager.GetActiveScene().name;
-            if (currentScene == "SubwayScene")
-            {
-                Animator anim = SubwayPlayerManager.Instance.subwayPlayer.gameObject.GetComponent<Animator>();
-                anim.SetTrigger("isTransfer");
-            }
-            
-            hasTransfered = false;
-        }
-    }
-
-    private void SuccessGetOff()
-    {
-        // 1. 현재역이 도착역일때
-        // 2. 현재 노선에서 흐른 시간이 현재 노선 전체 시간보다 커질때
-        // 3. 꿈 속이 아닐때
-
-        if (hasArrived)
-            return;
-
-        int lineIdx = StationManager.Instance.currentLineIdx;
-        var lines = StationManager.Instance.subwayLines;
-        if (lines == null || lineIdx < 0 || lineIdx >= lines.Count) return;
-
-        var line = lines[lineIdx];
-
-        bool atDest = (StationManager.Instance.currentStationIdx == line.transferIdx);
-        bool timeReached = (TimerManager.Instance.lineTime >= GetTimeToStationEnd(lineIdx, line.transferIdx));
-        bool isDestinationLine = line.hasDestination;
-
-        if (atDest && timeReached && isDestinationLine)
-        {
-            if (DreamManager.Instance.isInDream)
-            {
-                SubwayGameManager.Instance.isGameOver = true;
-                return;
-            }
-
-            if (SubwayGameManager.Instance.isGameOver)
-                return;
-
-            hasArrived = true;
-
-            StationManager.Instance.currentLineIdx = 0;
-            StationManager.Instance.ResetLastStationIdx();
-
-            if (StageSelectManager.Instance.currentStage > StageSelectManager.Instance.maxClearStage)
-                StageSelectManager.Instance.maxClearStage = StageSelectManager.Instance.currentStage;
-            PlayerPrefs.SetInt("MaxClearStage", StageSelectManager.Instance.maxClearStage);
+            stageMng.maxClearStage = stageMng.currentStage;
+            PlayerPrefs.SetInt("MaxClearStage", stageMng.maxClearStage);
             PlayerPrefs.Save();
+        }
 
-            GameManager.Instance.ChangeGameState(GameState.DaySelect);
-            OnGetOffSuccess?.Invoke();
-            UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
+        GameManager.Instance.ChangeGameState(GameState.DaySelect);
+        OnGetOffSuccess?.Invoke();
+        UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
+    }
 
-            hasArrived = false;
+    private void PlayTransferAnimation()
+    {
+        if (SceneManager.GetActiveScene().name == "SubwayScene")
+        {
+            var player = SubwayPlayerManager.Instance.subwayPlayer;
+            if (player != null)
+            {
+                player.GetComponent<Animator>().SetTrigger("isTransfer");
+            }
         }
     }
 
+    // 플레이어가 강제로 환승을 시도할 때 (입석 기능)
     public void ForceTransferByStanding()
     {
-        SubwayGameManager.Instance.isStopping = false;
-
+        // 강제 환승 시에도 StationManager의 노선 종료 처리를 호출하거나 직접 인덱스 조정
         curTransferCount++;
-        SubwayGameManager.Instance.isStandingCoolDown = true; // 쿨다운 시작
-        TimerManager.Instance.lineTime = 0f;
-        StationManager.Instance.currentLineIdx++;
-        StationManager.Instance.currentStationIdx = 0;
-        StationManager.Instance.ResetLastStationIdx();
+        _refs.stationManager.currentLineIdx++;
+        _refs.stationManager.ResetStationManager();
 
         SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
-        SubwayPlayerManager.Instance.playerBehave = SubwayPlayerManager.PlayerBehave.NONE;
-
         OnTransferSuccess?.Invoke();
     }
 
-    private void TransferRecently()
+    private void OnDestroy()
     {
-        isTransferRecently = true;
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        OnTransferSuccess += TransferRecently;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        OnTransferSuccess -= TransferRecently;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "SubwayScene")
+        if (_refs != null && _refs.stationManager != null)
         {
-            InitScene();
+            _refs.stationManager.OnLineEnded -= HandleLineEnded;
         }
     }
 }
