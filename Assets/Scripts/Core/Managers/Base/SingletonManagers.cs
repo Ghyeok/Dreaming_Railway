@@ -20,7 +20,6 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
 
                 if (_instance == null)
                 {
-                    // Lazy Init(지연 생성)
                     GameObject go = new GameObject($"@{typeof(T).Name}");
                     _instance = go.AddComponent<T>();
                     DontDestroyOnLoad(go);
@@ -45,13 +44,11 @@ public class SingletonManagers<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnApplicationQuit()
     {
-        if (_instance == this)
-            _isShuttingDown = true;
+        _isShuttingDown = true;
     }
 
     protected virtual void OnDestroy()
     {
-        if (_instance == this)
-            _isShuttingDown = true;
+        _isShuttingDown = true;
     }
 }
