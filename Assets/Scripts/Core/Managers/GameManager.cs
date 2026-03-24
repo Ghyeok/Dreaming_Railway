@@ -1,47 +1,100 @@
 using System;
 using UnityEngine;
 
+[System.Serializable]
+public class SubwayRunData
+{
+    public int CurrentLineIdx;      // 현재 호선 인덱스
+    public float CurrentLineTime;   // 현재 호선에서 주행한 총 시간
+    public int PassedStations;      // 지나친 역의 개수
+    public bool IsMissedTransfer;   // 환승역을 놓쳤는지 여부
+
+    public void ResetData()
+    {
+        CurrentLineIdx = 0;
+        CurrentLineTime = 0f;
+        PassedStations = 0;
+        IsMissedTransfer = false;
+    }
+
+    public void TickSubwayTime(float deltaTime, float speed, float timePerStation, int transferStationIdx)
+    {
+        if (IsMissedTransfer) return;
+
+        // 1. 시간 누적
+        CurrentLineTime += deltaTime * speed;
+
+        // 2. 현재 시간을 기준으로 몇 정거장을 왔는지 계산
+        int calculatedStation = Mathf.FloorToInt(CurrentLineTime / timePerStation);
+
+        // 3. 만약 역을 하나 더 지나쳤다면 갱신
+        if (calculatedStation > PassedStations)
+        {
+            PassedStations = calculatedStation;
+
+            // 4. 환승역을 지나쳤는지 검사!
+            if (PassedStations > transferStationIdx)
+            {
+                IsMissedTransfer = true;
+                Debug.Log("🚨 [글로벌 데이터] 환승역을 지나쳤습니다!");
+            }
+        }
+    }
+}
+
 public class GameManager : SingletonManagers<GameManager>, IManager
 {
-    public GameState GameState { get; private set; }
-    public GameMode GameMode { get; private set; }
-    public bool IsStopped { get; private set; }
+    [Header("Game State & Mode")]
+    public GameMode GameMode { get; private set; } // 현재 게임 모드(노말, 무한)
+    public bool IsGameStopped { get; private set; }
 
-    public static event Action<GameState> OnGameStateChanged;
-    public static event Action<GameMode> OnGameModeChanged;
+    [Header("Progress Data")]
+    public int CurrentDay { get; private set; } = 1; // 현재 플레이 중인 Day
+    public int MaxClearDay { get; private set; } = -1; // 최대로 클리어한 Day
+
+    public SubwayRunData RunData { get; private set; } = new SubwayRunData();
+
+    public static event Action<GameMode> OnGameModeChanged; // 게임 모드가 변할 때 Invoke
 
     public void Init()
     {
-        // 메인에서 시작
-        this.GameState = GameState.Main;
-
         if (!PlayerPrefs.HasKey("MaxClearStage"))
         {
             PlayerPrefs.SetInt("MaxClearStage", -1);
             PlayerPrefs.Save();
         }
+
+        MaxClearDay = PlayerPrefs.GetInt("MaxClearStage", -1);
     }
 
     private void ResetGameManager()
     {
-
+        IsGameStopped = false;
+        RunData.ResetData();
     }
 
     public void ResetGame()
     {
         ResetGameManager();
-        SubwayGameManager.Instance.ResetSubwayGameManager();
-        StationManager.Instance.ResetStationManager();
-        SubwayPlayerManager.Instance.ResetPlayerManager();
-        TiredManager.Instance.ResetTiredManager();
-        TimerManager.Instance.ResetTimer();
-        TransferManager.Instance.ResetTransferManager();
-        DreamManager.Instance.ResetDreamManager();
-        TutorialManager.Instance.ResetTutorial();
-        ScriptManager.Instance.ResetScript();
+        // 필요시 다른 매니저들 리셋 호출
     }
 
-    // 게임 모드 변경
+    public void StartDay(int day)
+    {
+        CurrentDay = day;
+        RunData.ResetData(); // 주행 데이터 초기화
+    }
+
+    public void ClearCurrentDay()
+    {
+        if (CurrentDay > MaxClearDay)
+        {
+            MaxClearDay = CurrentDay;
+            PlayerPrefs.SetInt("MaxClearStage", MaxClearDay);
+            PlayerPrefs.Save();
+        }
+    }
+
     public void ChangeGameMode(GameMode newMode)
     {
         if (GameMode == newMode) return;
@@ -50,59 +103,15 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         OnGameModeChanged?.Invoke(newMode);
     }
 
-    // 게임 상태 변경
-    public void ChangeGameState(GameState newState)
-    {
-        if (GameState == newState) return;
-
-        GameState = newState;
-        OnGameStateChanged?.Invoke(newState);
-    }
-
-    public void OnSelectInfiniteMode() // 이것도 OnGameModeChanged(Gamemode.Infinite)를 구독하면 될듯
-    {
-        TransferManager.Instance.ResetTransferManager();
-        StationManager.Instance.ResetStationManager();
-    }
-
     public void StopGame()
     {
         Time.timeScale = 0f;
-        IsStopped = true;
+        IsGameStopped = true;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-        IsStopped = false;
-    }
-
-    public void GameOverOrClear()
-    {
-        // 1. 배경 움직임 멈춤
-        // 2. 플레이어 애니메이션 멈춤
-        // 3. 시간 멈춤
-        // 4. 피로도 증가 멈춤
-
-        // 1. BackgroundScroller에서 이벤트 구독으로 처리
-        // 2. UI_SubwayScene에서 이벤트 구독으로 처리
-        // 3. 시간 멈춤
-        TimerManager.Instance.StopTimer();
-        // 4. 피로도는 SubwayGameManager.Instance.isGameOver가 true면 증가하지 않음
-        SubwayGameManager.Instance.isGameOver = true;
-    }
-
-    private void OnEnable()
-    {
-        SubwayGameManager.OnSubwayGameOver += GameOverOrClear;
-        TransferManager.OnGetOffSuccess += GameOverOrClear;
-        FogMovement.OnDreamGameOver += GameOverOrClear;
-    }
-
-    private void OnDisable()
-    {
-        SubwayGameManager.OnSubwayGameOver -= GameOverOrClear;
-        TransferManager.OnGetOffSuccess -= GameOverOrClear;
-        FogMovement.OnDreamGameOver -= GameOverOrClear;
+        IsGameStopped = false;
     }
 }

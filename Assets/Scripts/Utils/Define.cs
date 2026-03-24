@@ -8,14 +8,6 @@ public enum GameMode
     InfiniteMode,
 }
 
-public enum GameState
-{
-    Main,
-    DaySelect,
-    Subway,
-    Dream,
-}
-
 public enum UIEvent
 {
     Click,
