@@ -2,110 +2,96 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-/* AudioClip : 실제로 재생되는 사운드 파일
-*  AudioSource : 해당 클립을 관리하는 역할
-*/
-
 public class SoundManager : SingletonManagers<SoundManager>, IManager
 {
     private AudioSource[] audioSources = new AudioSource[(int)Sounds.MaxCount];
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
 
-    private AudioSource BGMSource { get { return audioSources[(int)Sounds.BGM]; } } // BGM으로 사용할 AudioSource
-    AudioSource SFXSource { get { return audioSources[(int)Sounds.SFX]; } } // SFX(효과음)으로 사용할 AudioSource
-
-    private GameObject bgmObject;
-    private GameObject sfxObject;
+    private AudioSource BGMSource => audioSources[(int)Sounds.BGM];
+    private AudioSource SFXSource => audioSources[(int)Sounds.SFX];
 
     public bool IsBGMOff { get; private set; }
     public bool IsSFXOff { get; private set; }
-
-    public float bgmVolume;
-    public float sfxVolume;
+    public float bgmVolume { get; private set; }
+    public float sfxVolume { get; private set; }
 
     public void Init()
     {
-        if (!PlayerPrefs.HasKey("BGM_VOLUME")) PlayerPrefs.SetFloat("BGM_VOLUME", 1.0f);
-        if (!PlayerPrefs.HasKey("SFX_VOLUME")) PlayerPrefs.SetFloat("SFX_VOLUME", 1.0f);
-        if (!PlayerPrefs.HasKey("BGM_MUTE")) PlayerPrefs.SetInt("BGM_MUTE", 0);
-        if (!PlayerPrefs.HasKey("SFX_MUTE")) PlayerPrefs.SetInt("SFX_MUTE", 0);
-        PlayerPrefs.Save();
-
+        // AudioSource 생성
         if (transform.Find("BGM") == null)
         {
-            bgmObject = new GameObject("BGM");
+            GameObject bgmObject = new GameObject("BGM");
             bgmObject.transform.parent = this.transform;
             audioSources[(int)Sounds.BGM] = bgmObject.AddComponent<AudioSource>();
-            audioSources[(int)Sounds.BGM].loop = true;
+            BGMSource.loop = true;
         }
 
-        sfxObject = new GameObject("SFX");
-        sfxObject.transform.parent = this.transform;
-        audioSources[(int)Sounds.SFX] = sfxObject.AddComponent<AudioSource>();
+        if (transform.Find("SFX") == null)
+        {
+            GameObject sfxObject = new GameObject("SFX");
+            sfxObject.transform.parent = this.transform;
+            audioSources[(int)Sounds.SFX] = sfxObject.AddComponent<AudioSource>();
+        }
 
-        bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1.0f);
-        sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1.0f);
-        IsBGMOff = PlayerPrefs.GetInt("BGM_MUTE", 0) == 1;
-        IsSFXOff = PlayerPrefs.GetInt("SFX_MUTE", 0) == 1;
+        // SaveManager로부터 저장된 데이터 가져오기
+        bgmVolume = SaveManager.Instance.LoadBgmVolume();
+        sfxVolume = SaveManager.Instance.LoadSfxVolume();
+        IsBGMOff = SaveManager.Instance.LoadBgmMute();
+        IsSFXOff = SaveManager.Instance.LoadSfxMute();
 
+        // 현재 설정 적용
         ApplyMuteAndVolume();
-
-        MainBGM();
     }
 
     private void ApplyMuteAndVolume()
     {
-        if (audioSources[(int)Sounds.BGM] != null)
+        if (BGMSource != null)
         {
-            audioSources[(int)Sounds.BGM].volume = Mathf.Clamp01(bgmVolume);
-            audioSources[(int)Sounds.BGM].mute = IsBGMOff;
+            BGMSource.volume = bgmVolume;
+            BGMSource.mute = IsBGMOff;
         }
-        if (audioSources[(int)Sounds.SFX] != null)
+        if (SFXSource != null)
         {
-            audioSources[(int)Sounds.SFX].volume = Mathf.Clamp01(sfxVolume);
-            audioSources[(int)Sounds.SFX].mute = IsSFXOff;
+            SFXSource.volume = sfxVolume;
+            SFXSource.mute = IsSFXOff;
         }
     }
 
     public void PlayAudioClip(string path, Sounds newSoundType, float volumeScale = 1f)
     {
         AudioClip clip = GetOrAddAudioClip(path);
-        ApplyMuteAndVolume();
+        if (clip == null) return;
 
         if (newSoundType == Sounds.BGM)
         {
-            if (BGMSource.clip == clip && BGMSource.isPlaying)
-            {
-                return;
-            }
-            else if (BGMSource.clip == clip && !BGMSource.isPlaying)
+            // 이미 같은 BGM이 재생 중이면 무시
+            if (BGMSource.clip == clip && BGMSource.isPlaying) return;
+
+            // 같은 BGM인데 멈춰있으면 이어서 재생
+            if (BGMSource.clip == clip && !BGMSource.isPlaying)
             {
                 BGMSource.UnPause();
                 return;
             }
 
+            // 아예 새로운 BGM이면 교체 후 재생
             BGMSource.clip = clip;
             BGMSource.Play();
-            return;
         }
-
-        if (newSoundType == Sounds.SFX)
+        else if (newSoundType == Sounds.SFX)
         {
-            // 효과음 재생 로직..
-            SFXSource.clip = clip;
             SFXSource.PlayOneShot(clip, volumeScale);
         }
     }
 
     public AudioClip GetOrAddAudioClip(string path)
     {
-        if (audioClips.TryGetValue(path, out AudioClip clip)) // Get
+        if (audioClips.TryGetValue(path, out AudioClip clip))
             return clip;
 
-        clip = Resources.Load<AudioClip>($"Sounds/BGM/{path}"); // Add
+        clip = Resources.Load<AudioClip>($"Sounds/BGM/{path}");
         if (clip == null)
-            clip = Resources.Load<AudioClip>($"Sounds/SFX/{path}"); // Add
+            clip = Resources.Load<AudioClip>($"Sounds/SFX/{path}");
 
         if (clip == null)
         {
@@ -119,127 +105,47 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
         return clip;
     }
 
-    public void MainBGM()
+    public float SetBGMVolume(float volume)
     {
-        PlayAudioClip("TitleTheme", Sounds.BGM);
-    }
-
-    public void SubwayBGM()
-    {
-        PlayAudioClip("TrainMusic", Sounds.BGM);
-    }
-
-    public void DreamBGM()
-    {
-        PlayAudioClip("DreamMusic", Sounds.BGM);
-    }
-    
-    public void JumpSFX()
-    {
-        PlayAudioClip("JumpSound", Sounds.SFX);
-    }
-
-    public void LandSFX()
-    {
-        PlayAudioClip("LandSound", Sounds.SFX);
-    }
-
-    public void Footstep1SFX()
-    {
-        PlayAudioClip("FootstepCloud1", Sounds.SFX);
-    }
-
-    public void Footstep2SFX()
-    {
-        PlayAudioClip("FootstepCloud2", Sounds.SFX);
-    }
-
-    public void EnterFogSFX()
-    {
-        PlayAudioClip("EnterFog", Sounds.SFX, 0.6f);
-    }
-
-    public void ExitDreamSFX()
-    {
-        PlayAudioClip("ExitDream", Sounds.SFX);
-    }
-
-    public void GameOverSFX()
-    {
-        PlayAudioClip("GameOver", Sounds.SFX);
-    }
-
-    public void GameClearSFX()
-    {
-        PlayAudioClip("LastLine", Sounds.SFX);
+        bgmVolume = Mathf.Clamp01(volume);
+        SaveManager.Instance.SaveBgmVolume(bgmVolume);
+        ApplyMuteAndVolume();
+        return bgmVolume;
     }
 
     public float SetSFXVolume(float volume)
     {
         sfxVolume = Mathf.Clamp01(volume);
-        PlayerPrefs.SetFloat("SFX_VOLUME", sfxVolume);
-        PlayerPrefs.Save();
+        SaveManager.Instance.SaveSfxVolume(sfxVolume);
         ApplyMuteAndVolume();
         return sfxVolume;
     }
 
-    public float SetBGMVolume(float volume)
+    public void SetBGMOff(bool isOff)
     {
-        bgmVolume = Mathf.Clamp01(volume);
-        PlayerPrefs.SetFloat("BGM_VOLUME", bgmVolume);
-        PlayerPrefs.Save();
-        ApplyMuteAndVolume();
-        return bgmVolume;
-    }
-
-    public void SetSFXOff()
-    {
-        IsSFXOff = true;
-        PlayerPrefs.SetInt("SFX_MUTE", 1);
-        PlayerPrefs.Save();
+        IsBGMOff = isOff;
+        SaveManager.Instance.SaveBgmMute(IsBGMOff);
         ApplyMuteAndVolume();
     }
 
-    public void SetSFXOn()
+    public void SetSFXOff(bool isOff)
     {
-        IsSFXOff = false;
-        PlayerPrefs.SetInt("SFX_MUTE", 0);
-        PlayerPrefs.Save();
+        IsSFXOff = isOff;
+        SaveManager.Instance.SaveSfxMute(IsSFXOff);
         ApplyMuteAndVolume();
     }
 
-    public void SetBGMOff()
-    {
-        IsBGMOff = true;
-        PlayerPrefs.SetInt("BGM_MUTE", 1);
-        PlayerPrefs.Save();
-        ApplyMuteAndVolume();
-    }
+    // 헬퍼 함수들
+    public void MainBGM() => PlayAudioClip("TitleTheme", Sounds.BGM);
+    public void SubwayBGM() => PlayAudioClip("TrainMusic", Sounds.BGM);
+    public void DreamBGM() => PlayAudioClip("DreamMusic", Sounds.BGM);
 
-    public void SetBGMOn()
-    {
-        IsBGMOff = false;
-        PlayerPrefs.SetInt("BGM_MUTE", 0);
-        PlayerPrefs.Save();
-        ApplyMuteAndVolume();
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "MainScene")
-        {
-            MainBGM();
-        }
-    }
+    public void JumpSFX() => PlayAudioClip("JumpSound", Sounds.SFX);
+    public void LandSFX() => PlayAudioClip("LandSound", Sounds.SFX);
+    public void Footstep1SFX() => PlayAudioClip("FootstepCloud1", Sounds.SFX);
+    public void Footstep2SFX() => PlayAudioClip("FootstepCloud2", Sounds.SFX);
+    public void EnterFogSFX() => PlayAudioClip("EnterFog", Sounds.SFX, 0.6f);
+    public void ExitDreamSFX() => PlayAudioClip("ExitDream", Sounds.SFX);
+    public void GameOverSFX() => PlayAudioClip("GameOver", Sounds.SFX);
+    public void GameClearSFX() => PlayAudioClip("LastLine", Sounds.SFX);
 }
