@@ -5,9 +5,8 @@ using UnityEngine;
 public class TirednessManager : MonoBehaviour, ITickable
 {
     private SubwaySceneRefs _refs;
-    public float MaxTired { get; private set; } = 100f;
-    public float CurrentTired { get; private set; } = 30f;
-
+    [field: SerializeField] public float MaxTired { get; private set; } = 100f;
+    [field: SerializeField] public float CurrentTired { get; private set; } = 30f;
     public bool IsTiredHalf => CurrentTired >= (MaxTired / 2.0f); // 애니메이션 트리거, 맵 길이 판단 요소로 사용
 
     public event Action<float> OnTiredChange; // 피로도가 변할 때 마다 Invoke, 현재 피로도를 넘겨줌
@@ -28,13 +27,17 @@ public class TirednessManager : MonoBehaviour, ITickable
         {
             TimerManager.Instance.Register(this);
         }
+        else
+        {
+            Debug.Log("타이머 매니저 없음");
+        }
     }
 
-    public void Tick(float deltaTime, float speed = 1.0f)
+    public void Tick(float deltaTime)
     {
         if (_isPaused || _isMaxOut) return;
 
-        CurrentTired += deltaTime * speed;
+        CurrentTired += deltaTime;
         OnTiredChange?.Invoke(CurrentTired);
 
         if (CurrentTired >= MaxTired)

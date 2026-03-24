@@ -13,6 +13,7 @@ public class TransferManager : MonoBehaviour
     public  event Action OnGetOffSuccess; // 도착(게임 클리어)에 성공한 순간 Invoke
 
     public bool isTransferRecently; // 최근에 환승했는지 체크
+    public bool IsMissedTransferStation { get; private set; } = false;
 
     public void Init(SubwaySceneRefs refs)
     {
@@ -44,7 +45,7 @@ public class TransferManager : MonoBehaviour
         // 게임 오버 조건 체크: 노선이 끝났는데 꿈속이라면? -> 게임 오버
         if (DreamManager.Instance.isInDream)
         {
-            SubwayGameManager.Instance.isGameOver = true;
+            IsMissedTransferStation = true; 
             Debug.Log("환승/도착 시점에 꿈을 꾸고 있어 게임오버!");
             return;
         }
@@ -86,21 +87,21 @@ public class TransferManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        GameManager.Instance.ChangeGameState(GameState.DaySelect);
+        //GameManager.Instance.ChangeGameState(GameState.DaySelect);
         OnGetOffSuccess?.Invoke();
         UIManager.Instance.ShowPopupUI<UI_GameClearPopup>("UI_GameClearPopup");
     }
 
     private void PlayTransferAnimation()
     {
-        if (SceneManager.GetActiveScene().name == "SubwayScene")
-        {
-            var player = SubwayPlayerManager.Instance.subwayPlayer;
-            if (player != null)
-            {
-                player.GetComponent<Animator>().SetTrigger("isTransfer");
-            }
-        }
+        //if (SceneManager.GetActiveScene().name == "SubwayScene")
+        //{
+        //    var player = SubwayPlayerController.subwayPlayer;
+        //    if (player != null)
+        //    {
+        //        player.GetComponent<Animator>().SetTrigger("isTransfer");
+        //    }
+        //}
     }
 
     // 플레이어가 강제로 환승을 시도할 때 (입석 기능)
@@ -111,7 +112,7 @@ public class TransferManager : MonoBehaviour
         _refs.stationManager.currentLineIdx++;
         _refs.stationManager.ResetStationManager();
 
-        SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.SLEEP;
+        //SubwayPlayerController.Instance.playerState = SubwayPlayerController.PlayerState.SLEEP;
         OnTransferSuccess?.Invoke();
     }
 

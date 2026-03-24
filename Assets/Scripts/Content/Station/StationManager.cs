@@ -38,6 +38,11 @@ public class StationManager : MonoBehaviour, ITickable
         int maxTransfer = refs.transferManager.maxTransferCount;
         GenerateSubwayLines(maxTransfer);
 
+        if (TimerManager.Instance != null)
+        {
+            TimerManager.Instance.Register(this);
+        }
+
         // 첫 번째 역으로 가는 이동 시간 세팅
         if (subwayLines.Count > 0 && subwayLines[0].stations.Count > 0)
         {
@@ -45,9 +50,9 @@ public class StationManager : MonoBehaviour, ITickable
         }
     }
 
-    public void Tick(float deltaTime, float speed = 1.0f)
+    public void Tick(float deltaTime)
     {
-        float dt = deltaTime * speed;
+        float dt = deltaTime;
         CurrentLineTime += dt;
         _timeToNextState -= dt;
 

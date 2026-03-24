@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TimerManager : SingletonManagers<TimerManager>
+public class TimerManager : SingletonManagers<TimerManager>, IManager
 {
     private List<ITickable> _tickable = new List<ITickable>();
+    public float playTime;
 
     public bool IsPaused {  get; private set; }
 
@@ -19,6 +20,7 @@ public class TimerManager : SingletonManagers<TimerManager>
 
         float dt = Time.deltaTime;
 
+        Debug.Log($"현재 등록된 객체: {_tickable.Count}개");
         // 역순으로 순회하여 리스트 크기가 중간에 변해도 인덱스는 변하지 않게 함
         for (int i = _tickable.Count - 1; i >= 0; i--)
         {
@@ -31,7 +33,7 @@ public class TimerManager : SingletonManagers<TimerManager>
     /// </summary>
     public void Register(ITickable tickable)
     {
-        if (_tickable.Contains(tickable))
+        if (!_tickable.Contains(tickable))
         {
             _tickable.Add(tickable);
         }
