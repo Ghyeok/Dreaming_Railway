@@ -59,7 +59,7 @@ public class TirednessManager : MonoBehaviour, ITickable
 
     public void SetTiredAfterDream() // 잠에 들때 피로도 재설정
     {
-        float awakeTime = _refs.stationManager.CurrentLineTime;
+        float awakeTime = SubwayFlowManager.Instance.CurrentLineTime;
 
         if (awakeTime <= 100f)
         {

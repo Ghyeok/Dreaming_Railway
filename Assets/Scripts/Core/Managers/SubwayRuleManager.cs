@@ -20,7 +20,7 @@ public class SubwayRuleManager : MonoBehaviour, ITickable
     public bool IsGameOverInSubway {  private set; get; } = false;
     public event Action OnSubwayGameOver;
 
-    public float CurrentSlapCooldown {  get; private set; }
+    public float CurrentSlapCooldown {  get; private set; } // UI 업데이트 용
 
     public void Init(SubwaySceneRefs refs)
     {

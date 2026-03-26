@@ -12,8 +12,8 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public bool IsBGMOff { get; private set; }
     public bool IsSFXOff { get; private set; }
-    public float bgmVolume { get; private set; }
-    public float sfxVolume { get; private set; }
+    public float BgmVolume { get; private set; }
+    public float SfxVolume { get; private set; }
 
     public void Init()
     {
@@ -34,8 +34,8 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
         }
 
         // SaveManager로부터 저장된 데이터 가져오기
-        bgmVolume = SaveManager.Instance.LoadBgmVolume();
-        sfxVolume = SaveManager.Instance.LoadSfxVolume();
+        BgmVolume = SaveManager.Instance.LoadBgmVolume();
+        SfxVolume = SaveManager.Instance.LoadSfxVolume();
         IsBGMOff = SaveManager.Instance.LoadBgmMute();
         IsSFXOff = SaveManager.Instance.LoadSfxMute();
 
@@ -47,12 +47,12 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
     {
         if (BGMSource != null)
         {
-            BGMSource.volume = bgmVolume;
+            BGMSource.volume = BgmVolume;
             BGMSource.mute = IsBGMOff;
         }
         if (SFXSource != null)
         {
-            SFXSource.volume = sfxVolume;
+            SFXSource.volume = SfxVolume;
             SFXSource.mute = IsSFXOff;
         }
     }
@@ -107,18 +107,18 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
 
     public float SetBGMVolume(float volume)
     {
-        bgmVolume = Mathf.Clamp01(volume);
-        SaveManager.Instance.SaveBgmVolume(bgmVolume);
+        BgmVolume = Mathf.Clamp01(volume);
+        SaveManager.Instance.SaveBgmVolume(BgmVolume);
         ApplyMuteAndVolume();
-        return bgmVolume;
+        return BgmVolume;
     }
 
     public float SetSFXVolume(float volume)
     {
-        sfxVolume = Mathf.Clamp01(volume);
-        SaveManager.Instance.SaveSfxVolume(sfxVolume);
+        SfxVolume = Mathf.Clamp01(volume);
+        SaveManager.Instance.SaveSfxVolume(SfxVolume);
         ApplyMuteAndVolume();
-        return sfxVolume;
+        return SfxVolume;
     }
 
     public void SetBGMOff(bool isOff)
