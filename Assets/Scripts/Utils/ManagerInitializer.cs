@@ -6,15 +6,16 @@ public static class ManagerInitializer
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Initialize()
     {
+        // 싱글톤 매니저들의 생성 순서를 정할 수 있음
         IManager[] managersInOrder = new IManager[]
         {
             GameManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
-            StageSelectManager.Instance,
-            ScriptManager.Instance,
-            SubwayGameManager.Instance,
-            SubwayPlayerManager.Instance,
+            TimerManager.Instance,
+            SubwayFlowManager.Instance
+            //StageSelectManager.Instance,
+            //ScriptManager.Instance,
         };
 
         InitializeManagers(managersInOrder);
