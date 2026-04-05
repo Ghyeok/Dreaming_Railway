@@ -102,8 +102,8 @@ public class UI_SettingPopup : UI_Popup
                                      RectTransformUtility.WorldToScreenPoint(null, sfxCenter.position));
 
         UpdateSoundButtons();
-        SetBGMThumbPositionByVolume(SoundManager.Instance.bgmVolume);
-        SetSFXThumbPositionByVolume(SoundManager.Instance.sfxVolume);
+        SetBGMThumbPositionByVolume(SoundManager.Instance.BgmVolume);
+        SetSFXThumbPositionByVolume(SoundManager.Instance.SfxVolume);
     }
 
     private void UpdateSoundButtons() // 팝업 창을 껐다 켜도 버튼 상태 유지
@@ -132,11 +132,11 @@ public class UI_SettingPopup : UI_Popup
     {
         if (!SoundManager.Instance.IsBGMOff)
         {
-            SoundManager.Instance.SetBGMOff();
+            SoundManager.Instance.SetBGMOff(true);
         }
         else
         {
-            SoundManager.Instance.SetBGMOn();
+            SoundManager.Instance.SetBGMOff(false);
         }
 
         UpdateSoundButtons();
@@ -146,11 +146,11 @@ public class UI_SettingPopup : UI_Popup
     {
         if (!SoundManager.Instance.IsSFXOff)
         {
-            SoundManager.Instance.SetSFXOff();
+            SoundManager.Instance.SetSFXOff(true);
         }
         else
         {
-            SoundManager.Instance.SetSFXOn();
+            SoundManager.Instance.SetSFXOff(false);
         }
 
         UpdateSoundButtons();
@@ -158,12 +158,12 @@ public class UI_SettingPopup : UI_Popup
 
     private void SetBGMText()
     {
-        GetText((int)Texts.BGMText).text = Mathf.RoundToInt((SoundManager.Instance.bgmVolume * 100f)).ToString();
+        GetText((int)Texts.BGMText).text = Mathf.RoundToInt((SoundManager.Instance.BgmVolume * 100f)).ToString();
     }
 
     private void SetSFXText()
     {
-        GetText((int)Texts.SFXText).text = Mathf.RoundToInt((SoundManager.Instance.sfxVolume * 100f)).ToString();
+        GetText((int)Texts.SFXText).text = Mathf.RoundToInt((SoundManager.Instance.SfxVolume * 100f)).ToString();
     }
 
     private struct ArcInfo // 각도 정보 저장 구조체
@@ -219,7 +219,7 @@ public class UI_SettingPopup : UI_Popup
     {
         float clampedFill = Mathf.Clamp01(fill);
         GetImage((int)Images.BGMBar).fillAmount = 1f - clampedFill;
-        SoundManager.Instance.bgmVolume = SoundManager.Instance.SetBGMVolume(1f - clampedFill);
+        SoundManager.Instance.SetBGMVolume(1f - clampedFill);
         SetBGMText();
 
         ArcInfo arc = GetBGMAngleArcInfo();
@@ -276,7 +276,7 @@ public class UI_SettingPopup : UI_Popup
     {
         float clampedFill = Mathf.Clamp01(fill);
         GetImage((int)Images.SFXBar).fillAmount = clampedFill;
-        SoundManager.Instance.sfxVolume = SoundManager.Instance.SetSFXVolume(clampedFill);
+        SoundManager.Instance.SetSFXVolume(clampedFill);
         SetSFXText();
 
         float angle = (360f * clampedFill) % 360f;

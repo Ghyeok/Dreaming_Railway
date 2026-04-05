@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class UI_TutorialPopup : UI_Popup
 {
+    private SubwaySceneRefs _refs;
     [Header("튜토리얼 스크립트")]
     private string[] subwayTutorialDialog =
     {
@@ -236,11 +237,11 @@ public class UI_TutorialPopup : UI_Popup
 
     private void SetTransferText()
     {
-        int line = StationManager.Instance.currentLineIdx;
-        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1}</size>역";
+        int line = SubwayFlowManager.Instance.currentLineIdx;
+        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{SubwayFlowManager.Instance.SubwayLines[line].transferIdx - SubwayFlowManager.Instance.currentStationIdx + 1}</size>역";
 
-        if ((line + 1) != StationManager.Instance.subwayLines.Count)
-            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{StationManager.Instance.subwayLines[line + 1].transferIdx + 1}</size>역";
+        if ((line + 1) != SubwayFlowManager.Instance.SubwayLines.Count)
+            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{SubwayFlowManager.Instance.SubwayLines[line + 1].transferIdx + 1}</size>역";
         else
             GetText((int)Texts.NextTransferText).text = null;
     }

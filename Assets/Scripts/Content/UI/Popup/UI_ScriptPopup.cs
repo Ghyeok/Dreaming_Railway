@@ -33,7 +33,7 @@ public class UI_ScriptPopup : UI_Popup
 
         if (ScriptManager.Instance.isStart || ScriptManager.Instance.isClear)
         {
-            ScriptManager.Instance.ShowDialog(StageSelectManager.Instance.currentStage);
+            ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
             GameManager.Instance.StopGame();
             this.gameObject.SetActive(true);
         }
@@ -48,7 +48,7 @@ public class UI_ScriptPopup : UI_Popup
 
             if (ScriptManager.Instance.isStart || ScriptManager.Instance.isClear) // 팝업 진행
             {
-                ScriptManager.Instance.ShowDialog(StageSelectManager.Instance.currentStage);
+                ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
             }
             else
             {

@@ -72,7 +72,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void ShowDayText()
     {
-        GetText((int)Texts.DayText).text = "Day " + StageSelectManager.Instance.currentStage;
+        GetText((int)Texts.DayText).text = "Day " + GameManager.Instance.CurrentDay;
     }
 
     private void ShowPlayTime()
@@ -99,14 +99,14 @@ public class UI_GameClearPopup : UI_Popup
     {
         if (GameManager.Instance.GameMode == GameMode.NormalMode)
         {
-            if (ScriptManager.Instance.HasClearDialog(StageSelectManager.Instance.currentStage))
+            if (ScriptManager.Instance.HasClearDialog(GameManager.Instance.CurrentDay))
             {
                 ScriptManager.Instance.isClear = true;
 
                 if (ScriptManager.Instance.scriptPopup != null)
                 {
                     ScriptManager.Instance.scriptPopup.gameObject.SetActive(true);
-                    ScriptManager.Instance.ShowDialog(StageSelectManager.Instance.currentStage);
+                    ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
                 }
                 else
                 {
@@ -119,7 +119,7 @@ public class UI_GameClearPopup : UI_Popup
     private void OnEnable()
     {
         isBGMOffBefore = PlayerPrefs.GetInt("BGM_MUTE") == 1;
-        SoundManager.Instance.SetBGMOff();
+        SoundManager.Instance.SetBGMOff(true);
 
         // 블로커 패널 활성화
         if (blockerPanel != null)
@@ -132,7 +132,9 @@ public class UI_GameClearPopup : UI_Popup
     private void OnDisable()
     {
         if (!isBGMOffBefore)
-            SoundManager.Instance.SetBGMOn();
+        {
+
+        }
     }
 
     private IEnumerator FadeInCoroutine(float duration)

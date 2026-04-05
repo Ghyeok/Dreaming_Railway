@@ -11,6 +11,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
 
     public void Init()
     {
+        playTime = 0f;
         StartTimer();
     }
 
@@ -18,6 +19,7 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
     {
         if (IsPaused) return;
 
+        playTime += Time.deltaTime;
         float dt = Time.deltaTime;
 
         Debug.Log($"현재 등록된 객체: {_tickable.Count}개");

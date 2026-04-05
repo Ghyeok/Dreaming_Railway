@@ -51,6 +51,9 @@ public class UI_MainMenuScene : UI_Scene
     {
         base.Init();
 
+        GameManager.Instance.ChangeGameMode(GameMode.None);
+        SoundManager.Instance.MainBGM();
+
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         GetImage((int)Images.TapToStart).gameObject.SetActive(true);
@@ -78,44 +81,15 @@ public class UI_MainMenuScene : UI_Scene
         LoadInfiniteModeLock();
     }
 
-    private void InitScene()
-    {
-        GameManager.Instance.ChangeGameState(GameState.Main);
-        GameManager.Instance.ChangeGameMode(GameMode.None);
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "MainScene")
-        {
-            InitScene();
-        }
-    }
-
     private void NormalModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        GameManager.Instance.ChangeGameState(GameState.DaySelect);
-
         StartCoroutine(FadeAndLoadScene("StageSelectScene"));
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.InfiniteMode);
-        StageSelectManager.Instance.InvokeStageSelect();
-        GameManager.Instance.ResetGame();
         StartCoroutine(FadeAndLoadScene("SubwayScene"));
     }
 
@@ -181,7 +155,7 @@ public class UI_MainMenuScene : UI_Scene
 
     private void LoadInfiniteModeLock()
     {
-        int stage = PlayerPrefs.GetInt("MaxClearStage");
+        int stage = SaveManager.Instance.LoadMaxClearDay();
 
         if (PlayerPrefs.HasKey("MaxClearStage"))
         {

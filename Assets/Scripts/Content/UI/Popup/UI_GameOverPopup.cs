@@ -78,7 +78,7 @@ public class UI_GameOverPopup : UI_Popup
     private void RetryButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
-        SubwayGameManager.Instance.isGameOver = false;
+        //SubwayRuleManager.Instance.isGameOver = false;
         GameManager.Instance.ResetGame();
         ScriptManager.Instance.isStart = true;
         SceneManager.LoadScene("TestSubwayScene");
@@ -88,7 +88,7 @@ public class UI_GameOverPopup : UI_Popup
     {
         UIManager.Instance.ClosePopupUI(this);
         GameManager.Instance.ResetGame();
-        SubwayGameManager.Instance.isGameOver = false;
+        //SubwayRuleManager.Instance.isGameOver = false;
         SceneManager.LoadScene("MainScene");
     }
 
@@ -121,11 +121,11 @@ public class UI_GameOverPopup : UI_Popup
                 TutorialManager.Instance.isDarkGameOverTutorial = true;
                 TutorialManager.Instance.gameoverIdx = 0;
             }
-            else if (SubwayGameManager.Instance.isGameOverInSubway)
-            {
-                TutorialManager.Instance.isPassedGameOverTutorial = true;
-                TutorialManager.Instance.gameoverIdx = 1;
-            }
+            //else if (SubwayRuleManager.Instance.isGameOverInSubway)
+            //{
+            //    TutorialManager.Instance.isPassedGameOverTutorial = true;
+            //    TutorialManager.Instance.gameoverIdx = 1;
+            //}
 
             if (TutorialManager.Instance.tutorialPopup != null)
             {
@@ -138,7 +138,7 @@ public class UI_GameOverPopup : UI_Popup
     private void OnEnable()
     {
         isBGMOffBefore = PlayerPrefs.GetInt("BGM_MUTE") == 1;
-        SoundManager.Instance.SetBGMOff();
+        SoundManager.Instance.SetBGMOff(true);
 
         // 블로커 패널 활성화
         if (blockerPanel != null)
@@ -158,7 +158,7 @@ public class UI_GameOverPopup : UI_Popup
     private void OnDisable()
     {
         if (!isBGMOffBefore)
-            SoundManager.Instance.SetBGMOn();
+            SoundManager.Instance.SetBGMOff(false);
     }
 
     private IEnumerator FadeInCoroutine(float duration)

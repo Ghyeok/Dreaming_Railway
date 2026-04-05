@@ -32,7 +32,7 @@ public class TransferManager : MonoBehaviour
         }
 
         // StageSelectManager의 데이터를 기반으로 설정
-        int stage = StageSelectManager.Instance.currentStage;
+        int stage = GameManager.Instance.CurrentDay;
         MaxTransferCount = stage == 0 ? 0 : stage + 1;
     }
 

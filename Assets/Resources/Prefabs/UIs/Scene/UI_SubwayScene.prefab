@@ -178,6 +178,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -718,12 +719,9 @@ GameObject:
   - component: {fileID: 5542368261741802658}
   - component: {fileID: 4398720913238835904}
   - component: {fileID: 8620190004519165009}
-  - component: {fileID: 8345569735132954617}
-  - component: {fileID: 3000011275563094096}
-  - component: {fileID: 1652935195236788480}
-  - component: {fileID: 2834871392272057939}
+  - component: {fileID: 6214717470436426064}
   m_Layer: 5
-  m_Name: PlayerImage
+  m_Name: SubwayPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -808,7 +806,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8345569735132954617
+--- !u!114 &6214717470436426064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -817,45 +815,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3638816473671594684}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c410a31512d17d409cbf3dfdf70a535, type: 3}
+  m_Script: {fileID: 11500000, guid: b5afbd4f200d2844f88f13a9d16ac019, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3000011275563094096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3638816473671594684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b2749298135f334f903f794d91539cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1652935195236788480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3638816473671594684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edbb7049449dd114a84e9a139e573fa4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2834871392272057939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3638816473671594684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd00471387d242e4491e07b43469a3eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::SubwayPlayerContext
 --- !u!1 &4484445774774568428
 GameObject:
   m_ObjectHideFlags: 0
@@ -940,7 +902,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3491550741047650582}
-  - component: {fileID: 6587014430545393011}
+  - component: {fileID: 8364361525682473295}
   m_Layer: 0
   m_Name: BackgroundRoot
   m_TagString: Untagged
@@ -969,7 +931,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6587014430545393011
+--- !u!114 &8364361525682473295
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -978,15 +940,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 4566705998834713911}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c3f75bc1f64d7441b16ce3d2c3e3ad2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5bf33df9222b3624fa67024a0ec12842, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  underground: {fileID: 21300000, guid: 52f247c2ea1627248af75724be8f7bac, type: 3}
-  station: {fileID: 21300000, guid: e78ce91d552702242bdd82a74841db03, type: 3}
-  connectR: {fileID: 21300000, guid: 1fd60846ddf88f748ae899c7c73a30dc, type: 3}
-  connectL: {fileID: 21300000, guid: 49d3326a12d96954e8fa8b990a98a83b, type: 3}
-  hangang: {fileID: 21300000, guid: 7d92741496bac97459bea5a1a953f7a2, type: 3}
-  grass: {fileID: 21300000, guid: 0dcf081fc49c90844b8c0d225bb3af12, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundManager
+  underground: {fileID: 0}
+  station: {fileID: 0}
+  connectR: {fileID: 0}
+  connectL: {fileID: 0}
+  hangang: {fileID: 0}
+  grass: {fileID: 0}
   isHangangShown: 0
   isGrassShown: 0
   lastSpeedBeforeStation: 0
@@ -1085,7 +1047,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -1134,7 +1096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2447632724765742845}
   - component: {fileID: 6645979172433460665}
-  - component: {fileID: 5718729339872354240}
+  - component: {fileID: 4796773510777081083}
   m_Layer: 0
   m_Name: UndergroundLayer
   m_TagString: Untagged
@@ -1171,7 +1133,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4977798085076984914}
   m_CullTransparentMesh: 1
---- !u!114 &5718729339872354240
+--- !u!114 &4796773510777081083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1180,10 +1142,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4977798085076984914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54d262b0ca5c7047823558bca8d5997, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f2448e5e55431144a70dc74eaae7fec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  canvasRect: {fileID: 6414106059898829346}
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundScroller
+  canvasRect: {fileID: 0}
   image1: {fileID: 1729463421537386629}
   image2: {fileID: 8889573464777333570}
   image1Type: 0
@@ -1191,7 +1153,7 @@ MonoBehaviour:
   bm: {fileID: 0}
   leftX: 0
   rightX: 0
-  scrollSpeed: 100
+  scrollSpeed: 0
   imageWidth: 0
   screenWidth: 0
   hasExecutedThisFrame: 0
@@ -1207,7 +1169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2536389450423725150}
   - component: {fileID: 7834966092061382580}
-  - component: {fileID: 2269093080728835176}
+  - component: {fileID: 3895149435048637256}
   m_Layer: 0
   m_Name: OutsideLayer
   m_TagString: Untagged
@@ -1244,7 +1206,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5417099718441262488}
   m_CullTransparentMesh: 1
---- !u!114 &2269093080728835176
+--- !u!114 &3895149435048637256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1253,20 +1215,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 5417099718441262488}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d20067f44c23f64d8a8f6be6e724fc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 5f2448e5e55431144a70dc74eaae7fec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  canvasRect: {fileID: 6414106059898829346}
+  m_EditorClassIdentifier: Assembly-CSharp::BackgroundScroller
+  canvasRect: {fileID: 0}
   image1: {fileID: 6356009378048347345}
   image2: {fileID: 4905660941726256591}
+  image1Type: 0
+  image2Type: 0
   bm: {fileID: 0}
-  hangang: {fileID: 21300000, guid: 7d92741496bac97459bea5a1a953f7a2, type: 3}
-  grass: {fileID: 21300000, guid: 0dcf081fc49c90844b8c0d225bb3af12, type: 3}
   leftX: 0
   rightX: 0
   scrollSpeed: 0
   imageWidth: 0
   screenWidth: 0
+  hasExecutedThisFrame: 0
+  stationLerpRunning: 0
+  waitTime: 1.5
 --- !u!1 &5480139754189958646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,6 +1619,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1865,6 +1831,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2003,6 +1970,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2497,6 +2465,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

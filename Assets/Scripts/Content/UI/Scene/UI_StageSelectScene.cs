@@ -71,11 +71,6 @@ public class UI_StageSelectScene : UI_Scene
         SetActiveTrueButtons();
     }
 
-    private void OnEnable()
-    {
-        SoundManager.Instance.MainBGM();
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -85,12 +80,6 @@ public class UI_StageSelectScene : UI_Scene
 
         LoadSubwayPosition(); //저장된 게임 정보
         LoadStageLock();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     private void SetActiveFalseButtons()
@@ -122,7 +111,6 @@ public class UI_StageSelectScene : UI_Scene
         anim.SetTrigger("ButtonClicked");
         SetActiveFalseButtons();
 
-        StageSelectManager.Instance.InvokeStageSelect();
         yield return new WaitForSeconds(6.4f); //애니매이션 연출 시간
 
         SceneManager.LoadScene("SubwayScene");
@@ -136,8 +124,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage0ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.Tutorial);
-        StageSelectManager.Instance.currentStage = 0;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(0);
 
         StartCoroutine(EnterToSubway(subwayMiniMove.position0)); //위치 정보 전달
     }
@@ -145,8 +132,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage1ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        StageSelectManager.Instance.currentStage = 1;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(1);
 
         ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position1)); //위치 정보 전달
@@ -155,8 +141,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage2ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        StageSelectManager.Instance.currentStage = 2;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(2);
 
         ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position2)); //위치 정보 전달
@@ -165,8 +150,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage3ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        StageSelectManager.Instance.currentStage = 3;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(3);
 
         ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position3)); //위치 정보 전달
@@ -175,8 +159,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage4ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        StageSelectManager.Instance.currentStage = 4;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(4);
 
         ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position4)); //위치 정보 전달
@@ -185,8 +168,7 @@ public class UI_StageSelectScene : UI_Scene
     private void Stage5ButtonOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        StageSelectManager.Instance.currentStage = 5;
-        GameManager.Instance.ResetGame();
+        GameManager.Instance.StartDay(5);
 
         ScriptManager.Instance.isStart = true;
         StartCoroutine(EnterToSubway(subwayMiniMove.position5)); //위치 정보 전달
@@ -239,7 +221,7 @@ public class UI_StageSelectScene : UI_Scene
     private void LoadStageLock()
     {
         // 마지막으로 클리어한 스테이지의 인덱스 (아무 것도 안 깼으면 -1)
-        int m = PlayerPrefs.GetInt("MaxClearStage", -1);
+        int m = SaveManager.Instance.LoadMaxClearDay();
 
         // 1) m+1..5 잠금
         for (int i = m + 1; i <= 5; i++)

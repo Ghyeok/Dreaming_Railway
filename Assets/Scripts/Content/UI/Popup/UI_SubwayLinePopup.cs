@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UI_SubwayLinePopup : UI_Popup
 {
+    private SubwaySceneRefs _refs;
     public enum Texts
     {
         LastTwoLineText,
@@ -48,13 +49,13 @@ public class UI_SubwayLinePopup : UI_Popup
 
     private void OnEnable()
     {
-        TransferManager.OnTransferSuccess -= UpdateLinePopup;
-        TransferManager.OnTransferSuccess += UpdateLinePopup;
+        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
+        //TransferManager.OnTransferSuccess += UpdateLinePopup;
     }
 
     private void OnDisable()
     {
-        TransferManager.OnTransferSuccess -= UpdateLinePopup;
+        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
     }
 
     private void UpdateLinePopup()
@@ -64,16 +65,16 @@ public class UI_SubwayLinePopup : UI_Popup
 
     private void SetLineText()
     {
-        StationManager station = StationManager.Instance;
+        StationManager station = _refs.stationManager;
 
-        int lastTwoLineIdx = station.currentLineIdx - 2;
-        int lastLineIdx = station.currentLineIdx - 1;
-        int curLineIdx = station.currentLineIdx;
-        int nextLineIdx = station.currentLineIdx + 1;
+        int lastTwoLineIdx = SubwayFlowManager.Instance.currentLineIdx - 2;
+        int lastLineIdx = SubwayFlowManager.Instance.currentLineIdx - 1;
+        int curLineIdx = SubwayFlowManager.Instance.currentLineIdx;
+        int nextLineIdx = SubwayFlowManager.Instance.currentLineIdx + 1;
 
         if (lastTwoLineIdx >= 0)
         {
-            GetText((int)Texts.LastTwoLineText).text = $"{station.subwayLines[lastTwoLineIdx].transferIdx + 1}역 이동";
+            GetText((int)Texts.LastTwoLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[lastTwoLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -82,7 +83,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (lastLineIdx >= 0)
         {
-            GetText((int)Texts.LastLineText).text = $"{station.subwayLines[lastLineIdx].transferIdx + 1}역 이동";
+            GetText((int)Texts.LastLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[lastLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -91,16 +92,16 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (!DreamManager.Instance.isInDream)
         {
-            GetText((int)Texts.CurrentLineText).text = $"앞으로 {station.subwayLines[curLineIdx].transferIdx - station.currentStationIdx + 1}역 뒤 환승";
+            GetText((int)Texts.CurrentLineText).text = $"앞으로 {SubwayFlowManager.Instance.SubwayLines[curLineIdx].transferIdx - SubwayFlowManager.Instance.currentStationIdx + 1}역 뒤 환승";
         }
         else
         {
             GetText((int)Texts.CurrentLineText).text = $"앞으로 ???역 뒤 환승";
         }
 
-        if (nextLineIdx < station.subwayLines.Count)
+        if (nextLineIdx < SubwayFlowManager.Instance.SubwayLines.Count)
         {
-            GetText((int)Texts.NextLineText).text = $"{station.subwayLines[nextLineIdx].transferIdx + 1}역 뒤 환승";
+            GetText((int)Texts.NextLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[nextLineIdx].transferIdx + 1}역 뒤 환승";
         }
         else
         {
