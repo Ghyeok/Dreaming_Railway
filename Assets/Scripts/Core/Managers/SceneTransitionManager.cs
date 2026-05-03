@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum FadeType { None, Black }
+public enum FadeType { None, Black, White }
 
 public class SceneTransitionManager : SingletonManagers<SceneTransitionManager>, IManager
 {
@@ -12,8 +12,8 @@ public class SceneTransitionManager : SingletonManagers<SceneTransitionManager>,
 
     public void GoToMain() => GoToScene(SceneName.Main);
     public void GoToStageSelect() => GoToScene(SceneName.StageSelect);
-    public void GoToSubway() => GoToScene(SceneName.Subway);
-    public void GoToDream() => GoToScene(SceneName.Dream);
+    public void GoToSubway() => GoToScene(SceneName.Subway, FadeType.White);
+    public void GoToDream() => GoToScene(SceneName.Dream, FadeType.Black);
 
     public void GoToScene(string sceneName, FadeType fadeType = FadeType.None)
     {
@@ -25,9 +25,15 @@ public class SceneTransitionManager : SingletonManagers<SceneTransitionManager>,
     {
         _isTransitioning = true;
 
-        if (fadeType == FadeType.Black) // 씬 전환 시 페이드 아웃, 씬 전환 후 새로운 씬에는 따로 처리 안돼있음
+        if (fadeType == FadeType.Black)
         {
             UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
+            fadePanel.Init();
+            yield return fadePanel.Fade(0f, 1f, 0.3f);
+        }
+        else if (fadeType == FadeType.White)
+        {
+            UI_FadeWhitePanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeWhitePanel>();
             fadePanel.Init();
             yield return fadePanel.Fade(0f, 1f, 0.3f);
         }
