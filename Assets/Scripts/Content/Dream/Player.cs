@@ -252,7 +252,7 @@ public class Player : MonoBehaviour
         {
             isTouchedExit = true;
             SoundManager.Instance.ExitDreamSFX();
-            FindFirstObjectByType<WhitePanelSpawn>()?.StartFadeAndLoadScene();
+            SceneTransitionManager.Instance.GoToSubway();
             OnDreamExit?.Invoke();
 
             if (GameManager.Instance.GameMode == GameMode.Tutorial)
