@@ -6,31 +6,17 @@ public class PlayerStandingState : ISubwayPlayerState
 
     public void Enter(SubwayPlayerContext player)
     {
+        SoundManager.Instance.StandingSFX();
+        player.Anim.SetTrigger("isStanding");
+        player.ForceMaxTiredness();
+    }
+    public void Update(SubwayPlayerContext player)
+    {
         throw new System.NotImplementedException();
     }
 
     public void Exit(SubwayPlayerContext player)
     {
-        throw new System.NotImplementedException();
-    }
 
-    public void HandleFallAsleep(SubwayPlayerContext player)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void HandleSlap(SubwayPlayerContext player)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void HandleStanding(SubwayPlayerContext player)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Update(SubwayPlayerContext player)
-    {
-        throw new System.NotImplementedException();
     }
 }

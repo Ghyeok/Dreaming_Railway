@@ -9,25 +9,13 @@ public class PlayerSleepState : ISubwayPlayerState
 
     }
 
-    public void Exit(SubwayPlayerContext player) { }
-
-    public void HandleFallAsleep(SubwayPlayerContext player)
-    {
-       
-    }
-
-    public void HandleSlap(SubwayPlayerContext player)
-    {
-
-    }
-
-    public void HandleStanding(SubwayPlayerContext player)
-    {
-        
-    }
-
     public void Update(SubwayPlayerContext player)
     {
-        
+        throw new System.NotImplementedException();
+    }
+
+    public void Exit(SubwayPlayerContext player)
+    {
+
     }
 }
