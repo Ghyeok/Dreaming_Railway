@@ -35,8 +35,8 @@ public class FogMovement : MonoBehaviour
 
     void Start()
     {
-        //깨어있던 시간에 의거한 어둠 이동 속도 계산
-        int awakeTime = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
+        // 깨어있던 시간에 의거한 어둠 이동 속도 계산
+        int awakeTime = SubwayFlowManager.Instance.GetDreamMapLength();
         float speedConstant = 1f;
 
         if (awakeTime <= 2)

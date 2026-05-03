@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+
 using UnityEngine.UI;
 using System.Collections;
 
@@ -79,17 +79,15 @@ public class UI_GameOverPopup : UI_Popup
     {
         UIManager.Instance.ClosePopupUI(this);
         //SubwayRuleManager.Instance.isGameOver = false;
-        GameManager.Instance.ResetGame();
         ScriptManager.Instance.isStart = true;
-        SceneManager.LoadScene("TestSubwayScene");
+        SceneTransitionManager.Instance.GoToSubway();
     }
 
     private void MainMenuButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
-        GameManager.Instance.ResetGame();
         //SubwayRuleManager.Instance.isGameOver = false;
-        SceneManager.LoadScene("MainScene");
+        SceneTransitionManager.Instance.GoToMain();
     }
 
     private void ExitButtonOnClicked(PointerEventData data)

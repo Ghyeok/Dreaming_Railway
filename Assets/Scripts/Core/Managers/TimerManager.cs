@@ -22,7 +22,6 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
         playTime += Time.deltaTime;
         float dt = Time.deltaTime;
 
-        Debug.Log($"현재 등록된 객체: {_tickable.Count}개");
         // 역순으로 순회하여 리스트 크기가 중간에 변해도 인덱스는 변하지 않게 함
         for (int i = _tickable.Count - 1; i >= 0; i--)
         {

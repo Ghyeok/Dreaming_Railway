@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 
@@ -10,23 +10,23 @@ public class MapXSpawn : MonoBehaviour
 
     public float groundY;
     public float tileLength;
-    public float startSpawnOffset; // 스폰 시작 설정점
+    public float startSpawnOffset; // ?ㅽ룿 ?쒖옉 ?ㅼ젙??
 
-    float nextSpawnDistanceRight; // 오른쪽 스폰 기준점
-    float nextSpawnDistanceLeft;  // 왼쪽 스폰 기준점
+    float nextSpawnDistanceRight; // ?ㅻⅨ履??ㅽ룿 湲곗???
+    float nextSpawnDistanceLeft;  // ?쇱そ ?ㅽ룿 湲곗???
 
 
     public bool canSpawnRight = false;
-    public bool canSpawnLeft = false; //기본맵 생성
+    public bool canSpawnLeft = false; //湲곕낯留??앹꽦
 
    
-    private bool mapLengthLogged = false; //맵 길이 디버그 위함
+    private bool mapLengthLogged = false; //留?湲몄씠 ?붾쾭洹??꾪븿
     private bool lastRandomMapSpawn = false; 
     private bool endMapSpawn = false;
 
 
-    private int spawnedCount;  //맵 길이 제한
-    public float ExitPointXPosition; //카메라, 안개 제한 위함
+    private int spawnedCount;  //留?湲몄씠 ?쒗븳
+    public float ExitPointXPosition; //移대찓?? ?덇컻 ?쒗븳 ?꾪븿
     private int SpawnedIndex;
 
 
@@ -47,7 +47,7 @@ public class MapXSpawn : MonoBehaviour
 
     public void SetIndex(int index)
     {
-        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
+        SpawnedIndex = index; //?쒕뜡 ?앹꽦???덇컻 ?꾩튂瑜?諛쏆븘?ㅺ린 ?꾪븿 0???? 1???? 2媛 ?꾨옒
     }
 
 
@@ -55,7 +55,7 @@ public class MapXSpawn : MonoBehaviour
     {
         if (SpawnedIndex == 0 || SpawnedIndex == 1)
         {
-            // 오른쪽 이동 및 스폰
+            // ?ㅻⅨ履??대룞 諛??ㅽ룿
             if (!canSpawnRight && player.transform.position.x > startSpawnOffset)
             {
                 canSpawnRight = true;
@@ -66,7 +66,7 @@ public class MapXSpawn : MonoBehaviour
                 MapXSpawnToRight();
             }
 
-            // 왼쪽 이동 및 스폰
+            // ?쇱そ ?대룞 諛??ㅽ룿
             if (!canSpawnLeft && player.transform.position.x < -startSpawnOffset)
             {
                 canSpawnLeft = true;
@@ -78,9 +78,9 @@ public class MapXSpawn : MonoBehaviour
             }
         }
 
-        // 맵 길이
-        int mapLength = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
-        if (!mapLengthLogged) // 디버그 로그는 한 번만 출력
+        // 留?湲몄씠
+        int mapLength = 0;
+        if (!mapLengthLogged) // ?붾쾭洹?濡쒓렇????踰덈쭔 異쒕젰
         {
             mapLengthLogged = true;
         }
@@ -89,16 +89,16 @@ public class MapXSpawn : MonoBehaviour
         if (!endMapSpawn)
         {
             if (mapLength == 1)
-            {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 4 + SubwayPlayerManager.Instance.slapNum)
+            {//?됯퇏 ?대━?????22~25珥?
+                if (spawnedCount >= 4 + DreamManager.Instance.SlapNum)
                 {
                     LimitMapSpawning();
                 }
             }
 
             else if (mapLength >= 2)
-            {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 6 + SubwayPlayerManager.Instance.slapNum)
+            {//?됯퇏 ?대━?????40~45珥?
+                if (spawnedCount >= 6 + DreamManager.Instance.SlapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -107,44 +107,44 @@ public class MapXSpawn : MonoBehaviour
     }
     
 
-    void MapXSpawnToRight() // 오른쪽으로 맵 생성
+    void MapXSpawnToRight() // ?ㅻⅨ履쎌쑝濡?留??앹꽦
     {
         int randomint = UnityEngine.Random.Range(0, mapList.Count - 1);
         Vector3 spawnPos = new Vector3(nextSpawnDistanceRight, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
         nextSpawnDistanceRight += tileLength;
 
-        spawnedCount++; // 맵 생성 수 증가
+        spawnedCount++; // 留??앹꽦 ??利앷?
 
 
     }
 
-    void MapXSpawnToLeft() // 왼쪽으로 맵 생성
+    void MapXSpawnToLeft() // ?쇱そ?쇰줈 留??앹꽦
     {
         int randomint = UnityEngine.Random.Range(0, mapList.Count - 1);
         Vector3 spawnPos = new Vector3(nextSpawnDistanceLeft, groundY, 0f);
         Instantiate(mapList[randomint], spawnPos, Quaternion.identity);
         nextSpawnDistanceLeft -= tileLength;
 
-        spawnedCount++; // 맵 생성 수 증가
+        spawnedCount++; // 留??앹꽦 ??利앷?
 
     }
 
-    //^^^^ 기본 맵 생성 로직
+    //^^^^ 湲곕낯 留??앹꽦 濡쒖쭅
 
 
 
 
     void LimitMapSpawning()
     {
-        endMapSpawn = true;    //탈출구 생성
-        lastRandomMapSpawn = true;  //그만 랜덤 생성, 마지막 랜덤맵 스폰됨
+        endMapSpawn = true;    //?덉텧援??앹꽦
+        lastRandomMapSpawn = true;  //洹몃쭔 ?쒕뜡 ?앹꽦, 留덉?留??쒕뜡留??ㅽ룿??
         SpawnExit();
     }
         
 
 
-    void SpawnExit() //탈출
+    void SpawnExit() //?덉텧
     {
         if (endMapSpawn)
         {
@@ -162,7 +162,7 @@ public class MapXSpawn : MonoBehaviour
             GameObject spawnedLastMap = Instantiate(mapList[10], spawnPos, Quaternion.identity);
 
 
-            // 프리팹 안의 "ExitDoor"를 찾기
+            // ?꾨━???덉쓽 "ExitDoor"瑜?李얘린
             Transform exitDoor = spawnedLastMap.transform.Find("ExitDoor");
 
             if (exitDoor != null)
@@ -175,7 +175,7 @@ public class MapXSpawn : MonoBehaviour
 
 
 
-//^^^^ 맵길이 조절 로직
+//^^^^ 留듦만??議곗젅 濡쒖쭅
 
 
 

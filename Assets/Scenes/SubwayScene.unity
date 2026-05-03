@@ -163,8 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d99bd4332345d1b45a915365770a3803, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TirednessManager
-  <MaxTired>k__BackingField: 100
-  <CurrentTired>k__BackingField: 30
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,9 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SubwaySceneBinder
   tirednessManager: {fileID: 46303892}
   stationManager: {fileID: 1547771300}
-  transferManager: {fileID: 1875999440}
   subwayPlayerContext: {fileID: 2111472012}
-  subwayRuleManager: {fileID: 2085447402}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,100 +745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StationManager
   subwayLines: []
-  currentLineIdx: 0
-  currentStationIdx: 0
-  passedStations: 0
---- !u!1 &1875999438
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1875999439}
-  - component: {fileID: 1875999440}
-  m_Layer: 0
-  m_Name: '@TransferManager'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1875999439
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875999438}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1875999440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875999438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 127fd82f1bf81964b918c8159fe82e8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TransferManager
-  curTransferCount: 0
-  maxTransferCount: 0
-  isTransferRecently: 0
---- !u!1 &2085447401
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2085447403}
-  - component: {fileID: 2085447402}
-  m_Layer: 0
-  m_Name: '@SubwayRuleManager'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2085447402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2085447401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb7b0584e0ebdd7479df9e7615708618, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SubwayRuleManager
---- !u!4 &2085447403
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2085447401}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2111472009
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -935,10 +837,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7419685321482178730, guid: f1bd6e9a6925ce445a256b012ddbea62, type: 3}
-      propertyPath: m_ScreenMatchMode
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -964,8 +862,6 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1138007194}
   - {fileID: 549959719}
-  - {fileID: 2085447403}
   - {fileID: 46303891}
   - {fileID: 1547771299}
-  - {fileID: 1875999439}
   - {fileID: 2111472009}

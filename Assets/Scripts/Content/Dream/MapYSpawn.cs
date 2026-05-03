@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 public class MapYSpawn : MonoBehaviour
 {
-    //public SubwayGameManager subwayGameManager;
     public GameObject player;
     public List<GameObject> mapList;
 
@@ -12,7 +11,7 @@ public class MapYSpawn : MonoBehaviour
    
     private bool canSpawnToUp = true;
 
-    private int spawnedCount; //맵길이 제한
+    private int spawnedCount; //留듦만???쒗븳
     private bool endMapSpawn = false;
     public float ExitPointYPosition;
     private int SpawnedIndex;
@@ -31,7 +30,7 @@ public class MapYSpawn : MonoBehaviour
         {
             cameraHeight = Camera.main.orthographicSize * 1.5f;
             
-            //시작 시 3개 미리 생성
+            //?쒖옉 ??3媛?誘몃━ ?앹꽦
             for (int i = 0; i < 3; i++)
             {
                 MapYSpawnToUp();
@@ -41,34 +40,34 @@ public class MapYSpawn : MonoBehaviour
 
     public void SetIndex(int index)
     {
-        SpawnedIndex = index; //랜덤 생성된 안개 위치를 받아오기 위함 0이 왼, 1이 오, 2가 아래
+        SpawnedIndex = index; //?쒕뜡 ?앹꽦???덇컻 ?꾩튂瑜?諛쏆븘?ㅺ린 ?꾪븿 0???? 1???? 2媛 ?꾨옒
     }
 
     void Update()
     {
-        //카메라보다 위에 미리 맵이 없으면 생성
+        //移대찓?쇰낫???꾩뿉 誘몃━ 留듭씠 ?놁쑝硫??앹꽦
         if (player.transform.position.y + cameraHeight > nextSpawnY)
         {
             MapYSpawnToUp();
         }
 
 
-        // 맵 길이
-        int mapLength = SubwayGameManager.Instance.SetDreamMapLengthByAwakenTime();
+        // 留?湲몄씠
+        int mapLength = 0;
 
         if (!endMapSpawn)
         {
             if (mapLength == 1)
-            {//평균 클리어 타임 22~25초
-                if (spawnedCount >= 15 + SubwayPlayerManager.Instance.slapNum)
+            {//?됯퇏 ?대━?????22~25珥?
+                if (spawnedCount >= 15 + DreamManager.Instance.SlapNum)
                 {
                     LimitMapSpawning();
                 }
             }
 
             else if (mapLength >= 2)
-            {//평균 클리어 타임 40~45초
-                if (spawnedCount >= 22 + SubwayPlayerManager.Instance.slapNum)
+            {//?됯퇏 ?대━?????40~45珥?
+                if (spawnedCount >= 22 + DreamManager.Instance.SlapNum)
                 {
                     LimitMapSpawning();
                 }
@@ -84,31 +83,31 @@ public class MapYSpawn : MonoBehaviour
             float randomX = UnityEngine.Random.Range(-5f, 5f);
             Instantiate(mapList[randomint], new Vector3(randomX, nextSpawnY, 0), Quaternion.identity);
 
-            //다음 생성 위치 설정
+            //?ㅼ쓬 ?앹꽦 ?꾩튂 ?ㅼ젙
             nextSpawnY += 5f;
 
-            // 맵 생성 수 증가
+            // 留??앹꽦 ??利앷?
             spawnedCount++;
         }
 
     }
     
-    //^^^기본 맵 로직
+    //^^^湲곕낯 留?濡쒖쭅
     void LimitMapSpawning()
     {
-        endMapSpawn = true;    //탈출구 생성
+        endMapSpawn = true;    //?덉텧援??앹꽦
         canSpawnToUp = false;
         SpawnExit();
     }
 
-    void SpawnExit() //탈출
+    void SpawnExit() //?덉텧
     {
         if (endMapSpawn)
         {
             GameObject spawnedLastMap = Instantiate(mapList[10], new Vector3(0, nextSpawnY, 0), Quaternion.identity);
 
 
-            // 프리팹 안의 "ExitDoor"를 찾기
+            // ?꾨━???덉쓽 "ExitDoor"瑜?李얘린
             Transform exitDoor = spawnedLastMap.transform.Find("ExitDoor");
 
             if (exitDoor != null)

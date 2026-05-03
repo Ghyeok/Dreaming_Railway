@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+
 using UnityEngine.UI;
 
 [Serializable]
@@ -269,8 +269,8 @@ public class UI_PausePopup : UI_Popup
     private void MainMenuButtonOnclicked(PointerEventData data)
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainScene");
         DreamManager.Instance.isInDream = false;
+        SceneTransitionManager.Instance.GoToMain();
     }
     #endregion
 }

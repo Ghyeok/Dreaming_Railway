@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+
 using UnityEngine.UI;
 
 public class UI_GameClearPopup : UI_Popup
@@ -35,17 +35,6 @@ public class UI_GameClearPopup : UI_Popup
         }
     }
 
-    void Awake()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public override void Init()
     {
         base.Init();
@@ -56,18 +45,18 @@ public class UI_GameClearPopup : UI_Popup
         GameObject lobby = GetButton((int)Buttons.LobbyButton).gameObject;
         AddUIEvent(lobby, LobbyButtonOnClicked);
 
+        SoundManager.Instance.GameClearSFX();
         TimerManager.Instance.StopTimer();
+
         ShowPlayTime();
         ShowDayText();
         GameClearTutorial();
         GameClearNormalMode();
-
-        SoundManager.Instance.GameClearSFX();
     }
 
     private void LobbyButtonOnClicked(PointerEventData data)
     {
-        SceneManager.LoadScene("StageSelect");
+        SceneTransitionManager.Instance.GoToStageSelect();
     }
 
     private void ShowDayText()

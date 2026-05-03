@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 public class BackgroundBlackImageFill : MonoBehaviour
 {
-    private float moveRatio;
     private Image image;
 
     private void Awake()
@@ -11,27 +10,18 @@ public class BackgroundBlackImageFill : MonoBehaviour
         image = GetComponent<Image>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        
+        TirednessManager.OnTiredChange += UpdateFill;
+        UpdateFill(TirednessManager.CurrentTired); // 초기값
+    }
+    private void OnDisable()
+    {
+        TirednessManager.OnTiredChange -= UpdateFill;
     }
 
-    // Update is called once per frame
-    void Update()
+    void UpdateFill(float currentTired)
     {
-        SetMoveRatio();
-        FillBlackImage();
+        image.fillAmount = 1f - (currentTired / TirednessManager.MaxTired);
     }
-
-    private void SetMoveRatio()
-    {
-        moveRatio = TiredManager.Instance.currentTired / TiredManager.Instance.maxTired;
-    }
-
-    private void FillBlackImage()
-    {
-        image.fillAmount = (1 - moveRatio);
-    }
-
 }

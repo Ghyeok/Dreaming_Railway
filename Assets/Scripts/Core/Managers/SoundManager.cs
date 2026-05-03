@@ -140,6 +140,8 @@ public class SoundManager : SingletonManagers<SoundManager>, IManager
     public void SubwayBGM() => PlayAudioClip("TrainMusic", Sounds.BGM);
     public void DreamBGM() => PlayAudioClip("DreamMusic", Sounds.BGM);
 
+    public void SlapSFX()=> PlayAudioClip("Slap", Sounds.SFX);
+    public void StandingSFX()=> PlayAudioClip("Standing", Sounds.SFX);
     public void JumpSFX() => PlayAudioClip("JumpSound", Sounds.SFX);
     public void LandSFX() => PlayAudioClip("LandSound", Sounds.SFX);
     public void Footstep1SFX() => PlayAudioClip("FootstepCloud1", Sounds.SFX);

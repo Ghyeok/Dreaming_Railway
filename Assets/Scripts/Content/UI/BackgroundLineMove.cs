@@ -1,5 +1,5 @@
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BackgroundLineMove : MonoBehaviour
 {
@@ -13,26 +13,20 @@ public class BackgroundLineMove : MonoBehaviour
         targetRotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnEnable()
     {
-        
+        TirednessManager.OnTiredChange += UpdateRotation;
+        UpdateRotation(TirednessManager.CurrentTired);
     }
 
-    // Update is called once per frame
-    void LateUpdate()
+    private void OnDisable()
     {
-        SetMoveRatio();
-        MoveLine();
+        TirednessManager.OnTiredChange -= UpdateRotation;
     }
 
-    private void SetMoveRatio()
+    private void UpdateRotation(float currentTired)
     {
-        moveRatio = TiredManager.Instance.currentTired / TiredManager.Instance.maxTired;
-    }
-
-    private void MoveLine()
-    {
+        moveRatio = currentTired / TirednessManager.MaxTired;
         transform.rotation = Quaternion.Slerp(originRotation, targetRotation, moveRatio);
     }
 }

@@ -3,18 +3,27 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_SubwayScene : UI_Scene
 {
-    public GameObject subwayPlayer;
+    private const float STANDING_COOLDOWN_STEP = 0.5f;
+    private const float STANDING_TUTORIAL_DELAY = 2f;
 
-    [SerializeField]
-    private Animator anim;
+    [SerializeField] private GameObject tirednessUI;
+    [SerializeField] private SubwayPlayerContext subwayPlayer;
+    [SerializeField] private Animator anim;
 
-    [SerializeField]
-    private GameObject tirednessUI;
+    private CanvasGroup _fallAsleepCg;
+    private CanvasGroup _slapCg;
+    private CanvasGroup _standingCg;
+    private TextMeshProUGUI _timerText;
+    private TextMeshProUGUI _transferText;
+    private TextMeshProUGUI _nextTransferText;
+    private TextMeshProUGUI _passedStationText;
+    private TextMeshProUGUI _slapText;
+
+    [SerializeField] private float _time;
 
     public enum Buttons
     {
@@ -23,7 +32,6 @@ public class UI_SubwayScene : UI_Scene
         SlapButton,
         PauseButton,
         MaxCount,
-        // 필요한 버튼 추가..
     }
 
     public enum Images
@@ -35,13 +43,10 @@ public class UI_SubwayScene : UI_Scene
         BackgroundImage,
         BackgroundLineImage,
         TimerImage,
-        SlapCoolTimeImage,
-        StandingCoolTimeImage,
-        TutorialFallAsleepImage,
-        TutorialSlapImage,
-        TutorialStandingImage,
+        FallAsleepFadeImage,
+        SlapFadeImage,
+        StandingFadeImage,
         PassedStationImage,
-        // 필요한 이미지 추가..
     }
 
     public enum Texts
@@ -51,162 +56,155 @@ public class UI_SubwayScene : UI_Scene
         TimerText,
         SlapText,
         PassedStationText,
-        // 필요한 텍스트 추가..
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Init();
-        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
-        fadePanel.StartFadeIn(0.3f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        SetTransferText();
-        SetSlapText();
-        SetStationText();
-        ShowStandingCoolDown();
-
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
-            TutorialButtonBlocker();
-    }
-
-    private void OnEnable()
-    {
-        SubwayGameManager.OnSubwayGameOver += OnDisableAnimator;
-        TransferManager.OnGetOffSuccess += OnDisableAnimator;
-        TransferManager.OnGetOffSuccess += HideTirednessUI;
-        SubwayGameManager.OnSubwayGameOver += HideTirednessUI;
-
-        PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
-        PlayerSlap.OnSlapSuccess += OnSlapButtonClicked;
-
-        // 현재 눌린 UI 상태 초기화
-        EventSystem.current.SetSelectedGameObject(null);
-    }
-
-    private void OnDisable()
-    {
-        SubwayGameManager.OnSubwayGameOver -= OnDisableAnimator;
-        TransferManager.OnGetOffSuccess -= OnDisableAnimator;
-        TransferManager.OnGetOffSuccess -= HideTirednessUI;
-        SubwayGameManager.OnSubwayGameOver -= HideTirednessUI;
-
-        PlayerSlap.OnSlapSuccess -= OnSlapButtonClicked;
     }
 
     public override void Init()
     {
         base.Init();
+
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
-        subwayPlayer = GetImage((int)Images.PlayerImage).gameObject;
-        SubwayPlayerManager.Instance.subwayPlayer = subwayPlayer;
-        anim = subwayPlayer.GetComponent<Animator>();
+        _fallAsleepCg = Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.FallAsleepButton).gameObject);
+        _slapCg = Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.SlapButton).gameObject);
+        _standingCg = Util.GetOrAddComponent<CanvasGroup>(GetButton((int)Buttons.StandingButton).gameObject);
+        _timerText = GetText((int)Texts.TimerText);
+        _transferText = GetText((int)Texts.TransferText);
+        _nextTransferText = GetText((int)Texts.NextTransferText);
+        _passedStationText = GetText((int)Texts.PassedStationText);
+        _slapText = GetText((int)Texts.SlapText);
 
-        GameObject pause = GetButton((int)Buttons.PauseButton).gameObject;
-        AddUIEvent(pause, PauseButtonOnClicked, UIEvent.Click);
+        AddUIEvent(GetButton((int)Buttons.SlapButton).gameObject, SlapButtonOnClicked, UIEvent.Click);
+        AddUIEvent(GetButton((int)Buttons.FallAsleepButton).gameObject, FallAsleepButtonOnClicked, UIEvent.Click);
+        AddUIEvent(GetButton((int)Buttons.PauseButton).gameObject, PauseButtonOnClicked, UIEvent.Click);
+        AddUIEvent(GetButton((int)Buttons.StandingButton).gameObject, StandButtonOnClicked, UIEvent.Click);
 
-        GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-        AddUIEvent(stand, SetStandingButtonToSkip, UIEvent.Click);
-
-        GameObject slap = GetButton((int)Buttons.SlapButton).gameObject;
-        AddUIEvent(slap, data => PlayerSlap.TriggerSlap(), UIEvent.Click);
-
-        GameObject fallAsleep = GetButton((int)Buttons.FallAsleepButton).gameObject;
-        AddUIEvent(fallAsleep, data => PlayerFallAsleep.TriggerFallAsleep(), UIEvent.Click);
-
-        TextMeshProUGUI timerText = GetText((int)Texts.TimerText);
-        TimerManager.Instance.timerText = timerText;
+        UpdateStationUI();
     }
 
-    private void OnDisableAnimator()
+    private void OnEnable()
     {
-        anim.enabled = false;
+        if (subwayPlayer != null && SubwayFlowManager.Instance != null)
+        {
+            subwayPlayer.OnStateChanged += HandlePlayerStateChanged;
+            subwayPlayer.OnSlapSuccessed += TriggerSlapCoolTimeUI;
+            subwayPlayer.OnSlapSuccessed += UpdateSlapUI;
+            SubwayFlowManager.Instance.OnStationCompleteDepart += UpdateStationUI;
+            SubwayFlowManager.Instance.OnTimeUpdated += UpdateTimerUI;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (subwayPlayer != null && SubwayFlowManager.Instance != null)
+        {
+            subwayPlayer.OnStateChanged -= HandlePlayerStateChanged;
+            subwayPlayer.OnSlapSuccessed -= TriggerSlapCoolTimeUI;
+            subwayPlayer.OnSlapSuccessed -= UpdateSlapUI;
+            SubwayFlowManager.Instance.OnStationCompleteDepart -= UpdateStationUI;
+            SubwayFlowManager.Instance.OnTimeUpdated -= UpdateTimerUI;
+        }
+    }
+
+    private void UpdateStationUI()
+    {
+        var flowManager = SubwayFlowManager.Instance;
+        if (flowManager == null) return;
+
+        int line = flowManager.CurrentLineIdx;
+        int totalLines = flowManager.SubwayLines.Count;
+
+        if (_transferText != null)
+        {
+            int remaining = Mathf.Max(0, flowManager.SubwayLines[line].transferIdx - flowManager.CurrentStationIdx + 1);
+            _transferText.text = $"환승까지 <size=300%>{remaining}</size>역";
+        }
+
+        if (_nextTransferText != null)
+        {
+            if (line + 1 < totalLines)
+            {
+                int nextTransferIdx = flowManager.SubwayLines[line + 1].transferIdx;
+                _nextTransferText.text = $"다음 환승 <size=300%>{Mathf.Max(0, nextTransferIdx + 1)}</size>역";
+            }
+            else
+            {
+                _nextTransferText.text = string.Empty;
+            }
+        }
+
+        if (_passedStationText != null)
+            _passedStationText.text = $"지나온 역: {flowManager.PassedStations}";
+    }
+
+    private void UpdateSlapUI()
+    {
+        if (_slapText != null)
+            _slapText.text = $"{subwayPlayer.Rule.SlapNum}";
+    }
+
+    private void UpdateTimerUI(float currentTime)
+    {
+        _time = currentTime;
+
+        if (_timerText != null)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(currentTime);
+            _timerText.text = time.ToString(@"mm\:ss\:ff");
+        }
+    }
+
+    private void HandlePlayerStateChanged(PlayerState newState)
+    {
+        if (newState != PlayerState.STANDING) return;
+
+        _slapCg.blocksRaycasts = false;
+        _fallAsleepCg.blocksRaycasts = false;
+        GetImage((int)Images.SlapFadeImage).fillAmount = 1f;
+        GetImage((int)Images.FallAsleepFadeImage).fillAmount = 1f;
+        GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip");
+
+        GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
+        ClearUIEvent(stand);
+        AddUIEvent(stand, data => subwayPlayer.TryStand(), UIEvent.Click);
     }
 
     private void PauseButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_PausePopup");
-        Time.timeScale = 0;
+        GameManager.Instance.StopGame();
     }
 
-    private void SetTransferText()
+    private void SlapButtonOnClicked(PointerEventData data)
     {
-        int line = StationManager.Instance.currentLineIdx;
-
-        if (GetText((int)Texts.TransferText) == null) return;
-        if (GetText((int)Texts.NextTransferText) == null) return;
-
-        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{Mathf.Max(0, StationManager.Instance.subwayLines[line].transferIdx - StationManager.Instance.currentStationIdx + 1)}</size>역";
-
-        if ((line + 1) != StationManager.Instance.subwayLines.Count)
-            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{Mathf.Max(0, StationManager.Instance.subwayLines[line + 1].transferIdx + 1)}</size>역";
-        else
-            GetText((int)Texts.NextTransferText).text = null;
+        subwayPlayer.TrySlap();
     }
 
-    private void SetSlapText()
+    private void FallAsleepButtonOnClicked(PointerEventData data)
     {
-        GetText((int)Texts.SlapText).text = $"{SubwayPlayerManager.Instance.slapNum}";
+        subwayPlayer.TryFallAsleep();
     }
 
-    private void SetStationText()
+    private void StandButtonOnClicked(PointerEventData data)
     {
-
-        GetText((int)Texts.PassedStationText).gameObject.SetActive(true);
-        GetText((int)Texts.PassedStationText).text = $"환승 횟수 : {TransferManager.Instance.curTransferCount}";
-
-    }
-
-    private void SetStandingButtonToSkip(PointerEventData data)
-    {
-        if (!SubwayGameManager.Instance.isStandingCoolDown &&
-            StationManager.Instance.currentStationIdx != StationManager.Instance.subwayLines[StationManager.Instance.currentLineIdx].transferIdx &&
-            TransferManager.Instance.curTransferCount != TransferManager.Instance.maxTransferCount)
-        {
-            // 초기 설정
-            SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.STANDING;
-            SoundManager.Instance.PlayAudioClip("Standing", Sounds.SFX);
-            TiredManager.Instance.currentTired = 99.9f;
-            anim.SetTrigger("isStanding");
-
-            // 1. 다른 버튼 비활성화
-            CanvasGroup cg = GetButton((int)Buttons.FallAsleepButton).gameObject.AddComponent<CanvasGroup>();
-            cg.blocksRaycasts = false;
-            cg = GetButton((int)Buttons.SlapButton).gameObject.AddComponent<CanvasGroup>();
-            cg.blocksRaycasts = false;
-            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
-            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
-
-            // 2. 스킵 버튼으로 변경, 이벤트 연결
-            GetButton((int)Buttons.StandingButton).GetComponent<Image>().sprite = Resources.Load<Sprite>("Arts/UIs/Subway/Player/Button_Skip");
-            GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
-            ClearUIEvent(stand);
-            AddUIEvent(stand, data => PlayerStanding.TriggerStanding(), UIEvent.Click);
-
-            if (GameManager.Instance.GameMode == GameMode.Tutorial)
-            {
-                StartCoroutine(StandingTutorial());
-            }
-        }
+        subwayPlayer.TryStand();
     }
 
     IEnumerator StandingTutorial()
     {
         if (GameManager.Instance.GameMode == GameMode.Tutorial)
         {
-            CanvasGroup cg = GetButton((int)Buttons.StandingButton).gameObject.AddComponent<CanvasGroup>();
-            cg.blocksRaycasts = false;
+            _standingCg.blocksRaycasts = false;
 
-            yield return new WaitForSecondsRealtime(2f);
+            yield return new WaitForSecondsRealtime(STANDING_TUTORIAL_DELAY);
 
-            cg.blocksRaycasts = true;
+            _standingCg.blocksRaycasts = true;
 
             TutorialManager.Instance.isStandingTutorial = false;
             TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
@@ -214,19 +212,18 @@ public class UI_SubwayScene : UI_Scene
         }
     }
 
-    IEnumerator ShowSlapCoolTime()
+    private void TriggerSlapCoolTimeUI() { StartCoroutine(ShowSlapCoolTime()); }
+    private IEnumerator ShowSlapCoolTime()
     {
+        float coolTime = subwayPlayer.Rule.SlapCoolTime;
         float startTime = Time.time;
-        float coolTime = SubwayGameManager.Instance.slapCoolTime;
-        Image slap = GetImage((int)Images.SlapCoolTimeImage);
+        Image slap = GetImage((int)Images.SlapFadeImage);
 
-        slap.fillAmount = 1f; // 뺨 때리기 누르면 1로 초기화
+        slap.fillAmount = 1f;
 
         while (Time.time < startTime + coolTime)
         {
-            float elapsed = Time.time - startTime;
-            float ratio =  1f - (elapsed / coolTime);
-            slap.fillAmount = ratio;
+            slap.fillAmount = 1f - (Time.time - startTime) / coolTime;
             yield return null;
         }
 
@@ -235,87 +232,42 @@ public class UI_SubwayScene : UI_Scene
 
     private void ShowStandingCoolDown()
     {
-        Image stand = GetImage((int)Images.StandingCoolTimeImage);
+        Image stand = GetImage((int)Images.StandingFadeImage);
 
-        if (SubwayGameManager.Instance.isStandingCoolDown)
+        if (subwayPlayer.Rule.IsStandingCoolDown)
         {
-            stand.fillAmount = 1 - SubwayGameManager.Instance.standingCount * 0.5f;
+            stand.fillAmount = 1 - subwayPlayer.Rule.StandingCount * STANDING_COOLDOWN_STEP;
         }
         else
         {
-            if (TransferManager.Instance.curTransferCount == TransferManager.Instance.maxTransferCount)
-            {
-                stand.fillAmount = 1f;
-            }
-            else
-            {
-                stand.fillAmount = 0f;
-            }
+            var flow = SubwayFlowManager.Instance;
+            stand.fillAmount = (flow.CurTransferCount == flow.MaxTransferCount) ? 1f : 0f;
         }
     }
 
-    private void OnSlapButtonClicked()
+    private void BlockAllButtonsExcept(int allowedButtonIdx, int clearFadeImageIdx)
     {
-        StartCoroutine(ShowSlapCoolTime());
+        GetImage((int)Images.SlapFadeImage).fillAmount = 1f;
+        GetImage((int)Images.FallAsleepFadeImage).fillAmount = 1f;
+        GetImage((int)Images.StandingFadeImage).fillAmount = 1f;
+        GetImage(clearFadeImageIdx).fillAmount = 0f;
+
+        for (int i = 0; i < (int)Buttons.MaxCount; i++)
+            GetButton(i).image.raycastTarget = (i == allowedButtonIdx);
+        GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
     }
 
     private void TutorialButtonBlocker()
     {
         if (TutorialManager.Instance.isSlapTutorial)
-        {
-            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
-            GetImage((int)Images.TutorialStandingImage).fillAmount = 1f;
-
-            for (int i = 0; i < (int)Buttons.MaxCount; i++)
-            {
-                GetButton(i).image.raycastTarget = false;
-
-                if (i == (int)Buttons.SlapButton)
-                {
-                    GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
-                    GetButton(i).image.raycastTarget = true;
-                }
-            }
-            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
-        }
-        else if (TutorialManager.Instance.isStandingTutorial)
-        {
-            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
-            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
-
-            for (int i = 0; i < (int)Buttons.MaxCount; i++)
-            {
-                GetButton(i).image.raycastTarget = false;
-
-                if (i == (int)Buttons.StandingButton)
-                {
-                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
-                    GetButton(i).image.raycastTarget = true;
-                }
-            }
-            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
-        }
-        else if (TutorialManager.Instance.isSkipTutorial)
-        {
-            GetImage((int)Images.TutorialSlapImage).fillAmount = 1f;
-            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 1f;
-
-            for (int i = 0; i < (int)Buttons.MaxCount; i++)
-            {
-                GetButton(i).image.raycastTarget = false;
-                if (i == (int)Buttons.StandingButton)
-                {
-                    GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
-                    GetButton(i).image.raycastTarget = true;
-                }
-            }
-            GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
-        }
+            BlockAllButtonsExcept((int)Buttons.SlapButton, (int)Images.SlapFadeImage);
+        else if (TutorialManager.Instance.isStandingTutorial || TutorialManager.Instance.isSkipTutorial)
+            BlockAllButtonsExcept((int)Buttons.StandingButton, (int)Images.StandingFadeImage);
         else
         {
-            GetImage((int)Images.TutorialSlapImage).fillAmount = 0f;
-            GetImage((int)Images.TutorialFallAsleepImage).fillAmount = 0f;
-            GetImage((int)Images.TutorialStandingImage).fillAmount = 0f;
+            GetImage((int)Images.SlapFadeImage).fillAmount = 0f;
+            GetImage((int)Images.FallAsleepFadeImage).fillAmount = 0f;
+            GetImage((int)Images.StandingFadeImage).fillAmount = 0f;
         }
     }
 

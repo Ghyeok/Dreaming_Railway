@@ -11,22 +11,17 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     public int CurrentDay { get; private set; } = 1; // 현재 플레이 중인 Day
     public int MaxClearDay { get; private set; } = -1; // 최대로 클리어한 Day
 
-    public static event Action<GameMode> OnGameModeChanged; // 게임 모드가 변할 때 Invoke
+    public event Action OnGameStart; // 게임이 시작되는 순간 
+    public event Action<GameMode> OnGameModeChange; // 게임 모드가 변할 때 Invoke
 
     public void Init()
     {
         MaxClearDay = SaveManager.Instance.LoadMaxClearDay();
     }
 
-    private void ResetGameManager()
+    private void Start()
     {
-        IsGameStopped = false;
-    }
-
-    public void ResetGame()
-    {
-        ResetGameManager();
-        // 필요시 다른 매니저들 리셋 호출
+        Init();
     }
 
     public void StartDay(int day)
@@ -39,8 +34,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         if (CurrentDay > MaxClearDay)
         {
             MaxClearDay = CurrentDay;
-            PlayerPrefs.SetInt("MaxClearStage", MaxClearDay);
-            PlayerPrefs.Save();
+            SaveManager.Instance.SaveMaxClearDay(MaxClearDay);
         }
     }
 
@@ -49,7 +43,7 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         if (GameMode == newMode) return;
 
         GameMode = newMode;
-        OnGameModeChanged?.Invoke(newMode);
+        OnGameModeChange?.Invoke(newMode);
     }
 
     public void StopGame()

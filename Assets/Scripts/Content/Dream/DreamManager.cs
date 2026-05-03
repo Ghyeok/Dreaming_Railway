@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class DreamManager : SingletonManagers<DreamManager>, IManager
 {
     public bool isInDream;
+    public int SlapNum { get; private set; }
 
     public float dreamTimeSpeed;
     private float mindreamTimeSpeed;
@@ -16,23 +17,15 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         isGameOverInDream = false;
     }
 
+    public void SetDreamData(int slapNum)
+    {
+        SlapNum = slapNum;
+    }
+
     public void ResetDreamManager()
     {
         isInDream = false;
-    }
-
-    public void RandomDreamTimeSpeed()
-    {
-        mindreamTimeSpeed = 3.1f;
-        maxdreamTimeSpeed = 4.1f;
-
-        dreamTimeSpeed = Random.Range(mindreamTimeSpeed, maxdreamTimeSpeed);
-
-    }
-
-    public void SetDreamTimeSpeedNormal()
-    {
-        dreamTimeSpeed = 1f;
+        SlapNum = 0;
     }
 
     public void GameOverInDream()
@@ -43,13 +36,8 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     private void InitScene()
     {
-        //GameManager.Instance.GameState = GameState.Dream; 
-
         isInDream = true;
-        RandomDreamTimeSpeed();
-        SubwayPlayerManager.Instance.playerState = SubwayPlayerManager.PlayerState.DEEPSLEEP;
-        TiredManager.Instance.SetTiredAfterDream();
-        SoundManager.Instance.PlayAudioClip("DreamMusic", Sounds.BGM);
+        SoundManager.Instance.DreamBGM();
 
         if(GameManager.Instance.GameMode == GameMode.Tutorial)
         {
@@ -76,7 +64,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "DreamScene")
+        if (scene.name == SceneName.Dream)
         {
             UIManager.Instance.ShowSceneUI<UI_Scene>("UI_NonGameOverScene");
             InitScene();
