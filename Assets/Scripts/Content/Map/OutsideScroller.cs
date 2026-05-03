@@ -4,37 +4,26 @@ using UnityEngine.UI;
 public class OutsideScroller : MonoBehaviour
 {
     [Header("참조")]
-    [SerializeField]
-    private RectTransform canvasRect;
-    [SerializeField]
-    private RectTransform image1;
-    [SerializeField]
-    private RectTransform image2;
-    [SerializeField]
-    private BackgroundManager bm;
-    [SerializeField]
-    private Sprite hangang;
-    [SerializeField]
-    private Sprite grass;
+    [SerializeField] private RectTransform canvasRect;
+    [SerializeField] private RectTransform image1;
+    [SerializeField] private RectTransform image2;
+    [SerializeField] private BackgroundManager bm;
+    [SerializeField] private Sprite hangang;
+    [SerializeField] private Sprite grass;
 
     [Header("배경 스크롤에 필요한 변수값")]
-    [SerializeField]
-    private float leftX; // 오른쪽 화면 끝의 좌표, 여기에 도착한 순간 다음 배경을 결정하고 출력한다
-    [SerializeField]
-    private float rightX; // 오른쪽 화면 끝의 좌표, 여기에 도착한 순간 다음 배경을 결정하고 출력한다
+    [SerializeField] private float leftX;
+    [SerializeField] private float rightX;
     private float prevX1, prevX2;
-    private const float EPS = 0.0001f; // 경계 떨림 방지용
     public float scrollSpeed;
 
     private float height;
-    [SerializeField]
-    private float imageWidth;
-    [SerializeField]
-    private float screenWidth;
-    [SerializeField]
-    private BackgroundManager.BackgroundType? outsideTheme = null;
+    [SerializeField] private float imageWidth;
+    [SerializeField] private float screenWidth;
+    [SerializeField] private BackgroundManager.BackgroundType? outsideTheme = null;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Image img1, img2;
+
     void Start()
     {
         bm = GetComponentInParent<BackgroundManager>();
@@ -52,12 +41,14 @@ public class OutsideScroller : MonoBehaviour
         prevX1 = image1.anchoredPosition.x;
         prevX2 = image2.anchoredPosition.x;
 
+        img1 = image1.GetComponent<Image>();
+        img2 = image2.GetComponent<Image>();
+
         scrollSpeed = bm.SetScrollSpeed(bm.currentType);
     }
 
     private void Update()
     {
-        if (GameManager.Instance.GameState != GameState.Subway) return;
         if (scrollSpeed == 0) return;
 
         float deltaX = scrollSpeed * Time.deltaTime;
@@ -73,36 +64,27 @@ public class OutsideScroller : MonoBehaviour
         if (isOutside && outsideTheme.HasValue)
         {
             var spr = (outsideTheme.Value == BackgroundManager.BackgroundType.Hangang) ? hangang : grass;
-            var img1 = image1.GetComponent<Image>();
-            var img2 = image2.GetComponent<Image>();
             if (img1.sprite != spr) img1.sprite = spr;
             if (img2.sprite != spr) img2.sprite = spr;
+            img1.enabled = true;
+            img2.enabled = true;
         }
         else
         {
-            // 바깥 시퀀스가 아니면 지우기
-            var img1 = image1.GetComponent<Image>();
-            var img2 = image2.GetComponent<Image>();
-            if (img1.sprite != null) img1.sprite = null;
-            if (img2.sprite != null) img2.sprite = null;
+            img1.enabled = false;
+            img2.enabled = false;
         }
 
         if (image1.anchoredPosition.x <= -leftX)
         {
             image1.anchoredPosition = image2.anchoredPosition + new Vector2(imageWidth, 0);
             prevX1 = image1.anchoredPosition.x;
-
-            //if (bm.currentType != BackgroundManager.BackgroundType.ConnectL)
-            //    scrollSpeed = bm.SetScrollSpeed(bm.currentType);
         }
 
         if (image2.anchoredPosition.x <= -leftX)
         {
             image2.anchoredPosition = image1.anchoredPosition + new Vector2(imageWidth, 0);
             prevX2 = image2.anchoredPosition.x;
-
-            //if (bm.currentType != BackgroundManager.BackgroundType.ConnectL)
-            //    scrollSpeed = bm.SetScrollSpeed(bm.currentType);
         }
 
         prevX1 = image1.anchoredPosition.x;
@@ -126,19 +108,20 @@ public class OutsideScroller : MonoBehaviour
         }
 
         if (bm.currentType == BackgroundManager.BackgroundType.Underground ||
-                 bm.currentType == BackgroundManager.BackgroundType.Station)
+            bm.currentType == BackgroundManager.BackgroundType.Station)
         {
             outsideTheme = null;
+            scrollSpeed = 0;
         }
     }
 
     private void OnEnable()
     {
-        BackgroundScroller.OnAfterBackgroundChange += HandleNextBackgroundChange;
+        UndergroundScroller.OnAfterUndergroundBgChange += HandleNextBackgroundChange;
     }
 
     private void OnDisable()
     {
-        BackgroundScroller.OnAfterBackgroundChange -= HandleNextBackgroundChange;
+        UndergroundScroller.OnAfterUndergroundBgChange -= HandleNextBackgroundChange;
     }
 }
