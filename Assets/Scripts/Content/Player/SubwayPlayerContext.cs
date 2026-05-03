@@ -18,11 +18,7 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
     public event Action<PlayerState> OnStateChanged;
     public event Action OnSlapSuccessed;
 
-    [SerializeField] private ISubwayPlayerState _currentState;
-    public PlayerState CurrentState
-    {
-        get { return _currentState != null ? _currentState.State : PlayerState.NONE; }
-    }
+    public PlayerState CurrentState { get; private set; } = PlayerState.NONE;
 
     public void Init(TirednessManager tirednessManager)
     {
@@ -36,7 +32,7 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
 
         SubwayFlowManager.Instance.OnLineEnded += Rule.AddStandingCount;
 
-        ChangeState(new PlayerSleepState());
+        ChangeState(PlayerState.SLEEP);
         TirednessManager.OnTiredChange += HandleTiredChange;
     }
 
@@ -47,37 +43,34 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
 
     public void ForceMaxTiredness() => _tirednessManager.SetTirednessForced(100f);
 
-    public void ChangeState(ISubwayPlayerState newState)
+    private void ChangeState(PlayerState newState)
     {
-        if (_currentState != null)
-            _currentState.Exit(this);
+        CurrentState = newState;
 
-        _currentState = newState;
-
-        if (_currentState != null)
+        if (newState == PlayerState.STANDING)
         {
-            _currentState.Enter(this);
-            OnStateChanged?.Invoke(CurrentState);
+            SoundManager.Instance.StandingSFX();
+            Anim.SetTrigger("isStanding");
+            ForceMaxTiredness();
         }
+
+        OnStateChanged?.Invoke(CurrentState);
     }
 
     public void HandleTiredChange(float currentTired)
     {
         if (CurrentState == PlayerState.SLEEP)
-        {
             Anim.SetBool("isSleeping", TirednessManager.IsTiredHalf);
-        }
     }
 
     public void TryTransfer()
     {
-        if (_currentState != null)
-            Anim.SetTrigger("isTransfer");
+        Anim.SetTrigger("isTransfer");
     }
 
     public void TrySlap()
     {
-        if (_currentState == null || Rule.IsSlapCoolTime) return;
+        if (CurrentState == PlayerState.NONE || Rule.IsSlapCoolTime) return;
 
         Rule.StartSlapCooldown();
         SoundManager.Instance.SlapSFX();
@@ -88,16 +81,15 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
 
     public void TryStand()
     {
-        if (_currentState == null || Rule.IsStandingCoolDown) return;
+        if (Rule.IsStandingCoolDown) return;
 
         Rule.StartStandingCooldown();
-        ChangeState(new PlayerStandingState());
+        ChangeState(PlayerState.STANDING);
     }
 
     public void TryFallAsleep()
     {
-        if (_currentState != null)
-            ChangeState(new PlayerDeepSleepState());
+        ChangeState(PlayerState.DEEPSLEEP);
     }
 
     private void OnDestroy()
