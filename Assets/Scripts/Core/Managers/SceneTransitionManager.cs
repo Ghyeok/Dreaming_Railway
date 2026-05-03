@@ -25,7 +25,7 @@ public class SceneTransitionManager : SingletonManagers<SceneTransitionManager>,
     {
         _isTransitioning = true;
 
-        if (fadeType == FadeType.Black)
+        if (fadeType == FadeType.Black) // 씬 전환 시 페이드 아웃, 씬 전환 후 새로운 씬에는 따로 처리 안돼있음
         {
             UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
             fadePanel.Init();

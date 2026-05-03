@@ -10,12 +10,11 @@ public static class ManagerInitializer
         IManager[] managersInOrder = new IManager[]
         {
             GameManager.Instance,
+            SceneTransitionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
             TimerManager.Instance,
             SubwayFlowManager.Instance
-            //StageSelectManager.Instance,
-            //ScriptManager.Instance,
         };
 
         InitializeManagers(managersInOrder);
