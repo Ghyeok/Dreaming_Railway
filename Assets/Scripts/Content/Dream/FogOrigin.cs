@@ -1,0 +1,1 @@
+public enum FogOrigin { FromLeft = 0, FromRight = 1, FromBottom = 2 }

@@ -64,16 +64,16 @@ public class UI_SubwayLinePopup : UI_Popup
 
     private void SetLineText()
     {
-        // StationManager station = _refs.stationManager;
+        SubwayData subway = GameDataManager.Instance.Subway;
 
-        int lastTwoLineIdx = SubwayFlowManager.Instance.CurrentLineIdx - 2;
-        int lastLineIdx = SubwayFlowManager.Instance.CurrentLineIdx - 1;
-        int curLineIdx = SubwayFlowManager.Instance.CurrentLineIdx;
-        int nextLineIdx = SubwayFlowManager.Instance.CurrentLineIdx + 1;
+        int lastTwoLineIdx = subway.CurrentLineIdx - 2;
+        int lastLineIdx = subway.CurrentLineIdx - 1;
+        int curLineIdx = subway.CurrentLineIdx;
+        int nextLineIdx = subway.CurrentLineIdx + 1;
 
         if (lastTwoLineIdx >= 0)
         {
-            GetText((int)Texts.LastTwoLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[lastTwoLineIdx].transferIdx + 1}역 이동";
+            GetText((int)Texts.LastTwoLineText).text = $"{subway.SubwayLines[lastTwoLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -82,7 +82,7 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (lastLineIdx >= 0)
         {
-            GetText((int)Texts.LastLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[lastLineIdx].transferIdx + 1}역 이동";
+            GetText((int)Texts.LastLineText).text = $"{subway.SubwayLines[lastLineIdx].transferIdx + 1}역 이동";
         }
         else
         {
@@ -91,16 +91,16 @@ public class UI_SubwayLinePopup : UI_Popup
 
         if (!DreamManager.Instance.isInDream)
         {
-            GetText((int)Texts.CurrentLineText).text = $"앞으로 {SubwayFlowManager.Instance.SubwayLines[curLineIdx].transferIdx - SubwayFlowManager.Instance.CurrentStationIdx + 1}역 뒤 환승";
+            GetText((int)Texts.CurrentLineText).text = $"앞으로 {subway.SubwayLines[curLineIdx].transferIdx - subway.CurrentStationIdx + 1}역 뒤 환승";
         }
         else
         {
             GetText((int)Texts.CurrentLineText).text = $"앞으로 ???역 뒤 환승";
         }
 
-        if (nextLineIdx < SubwayFlowManager.Instance.SubwayLines.Count)
+        if (nextLineIdx < subway.SubwayLines.Count)
         {
-            GetText((int)Texts.NextLineText).text = $"{SubwayFlowManager.Instance.SubwayLines[nextLineIdx].transferIdx + 1}역 뒤 환승";
+            GetText((int)Texts.NextLineText).text = $"{subway.SubwayLines[nextLineIdx].transferIdx + 1}역 뒤 환승";
         }
         else
         {

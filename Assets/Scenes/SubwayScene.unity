@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 46303891}
   - component: {fileID: 46303892}
   m_Layer: 0
-  m_Name: '@TirednessManager'
+  m_Name: '@TirednessSystem'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 549959719}
   - component: {fileID: 549959720}
   m_Layer: 0
-  m_Name: SubwaySceneManager
+  m_Name: '@SubwaySceneManager'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,8 +569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b6fbf2455458e243aaa232109396c60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SubwaySceneBinder
-  tirednessManager: {fileID: 46303892}
-  stationManager: {fileID: 1547771300}
+  _tiredness: {fileID: 46303892}
+  _station: {fileID: 1547771300}
   subwayPlayerContext: {fileID: 2111472012}
 --- !u!1 &832575517
 GameObject:
@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 1547771299}
   - component: {fileID: 1547771300}
   m_Layer: 0
-  m_Name: '@StationManager'
+  m_Name: '@StationSystem'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -744,7 +744,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8fe42f97755a084b895347511948a62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StationManager
-  subwayLines: []
 --- !u!1001 &2111472009
 PrefabInstance:
   m_ObjectHideFlags: 0

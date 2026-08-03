@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     private Collider2D col;
 
     public static event Action OnDreamExit;
+    public static event Action OnNearExit;
 
     void Awake()
     {
@@ -192,17 +193,9 @@ public class Player : MonoBehaviour
     {
         if (isTouchedExit) return;
 
-        // 플레이어 중심을 원점으로 원형 오버랩
         Collider2D hit = Physics2D.OverlapCircle((Vector2)transform.position, exitDetectRadius, exitLayerMask);
-        if (hit == null) return;
-
-        if (TutorialManager.Instance.isMoveTutorial && hit != null)
-        {
-            GameManager.Instance.StopGame();
-            TutorialManager.Instance.isMoveTutorial = false;
-            TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
-            TutorialManager.Instance.tutorialPopup.AdvanceDialog();
-        }
+        if (hit != null)
+            OnNearExit?.Invoke();
     }
 
 
@@ -252,30 +245,8 @@ public class Player : MonoBehaviour
         {
             isTouchedExit = true;
             SoundManager.Instance.ExitDreamSFX();
-            SceneTransitionManager.Instance.GoToSubway();
+            SceneTransitionManager.Instance.ExitFromDream();
             OnDreamExit?.Invoke();
-
-            if (GameManager.Instance.GameMode == GameMode.Tutorial)
-            {
-                TutorialManager.Instance.startFlowTime = true; // 꿈 속에서 나갈때는 항상 시간 흐르게
-                TutorialManager.Instance.startIncreaseTired = true; // 꿈 속에서 나갈때는 항상 피로도 흐르게
-
-                if (TutorialManager.Instance.subwayIdx < TutorialManager.Instance.subwayEndIdx)
-                {
-                    if (!DreamManager.Instance.isGameOverInDream)
-                    {
-                        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
-                        TutorialManager.Instance.isDreamTutorial = false;
-                        TutorialManager.Instance.isExitTutorial = false;
-                        TutorialManager.Instance.isSubwayTutorial = true;
-                        TutorialManager.Instance.tutorialPopup.AdvanceDialog();
-                    }
-                    else
-                    {
-
-                    }
-                }
-            }
         }
     }
 

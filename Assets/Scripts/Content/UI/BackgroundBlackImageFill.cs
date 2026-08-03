@@ -12,16 +12,16 @@ public class BackgroundBlackImageFill : MonoBehaviour
 
     private void OnEnable()
     {
-        TirednessManager.OnTiredChange += UpdateFill;
-        UpdateFill(TirednessManager.CurrentTired); // 초기값
+        GameDataManager.Instance.Tiredness.OnTiredChange += UpdateFill;
+        UpdateFill(GameDataManager.Instance.Tiredness.CurrentTiredness); // 초기값
     }
     private void OnDisable()
     {
-        TirednessManager.OnTiredChange -= UpdateFill;
+        GameDataManager.Instance.Tiredness.OnTiredChange -= UpdateFill;
     }
 
     void UpdateFill(float currentTired)
     {
-        image.fillAmount = 1f - (currentTired / TirednessManager.MaxTired);
+        image.fillAmount = 1f - (currentTired / GameDataManager.Instance.Tiredness.MaxTiredness);
     }
 }

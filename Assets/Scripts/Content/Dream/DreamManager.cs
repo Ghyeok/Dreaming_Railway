@@ -6,10 +6,6 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
     public bool isInDream;
     public int SlapNum { get; private set; }
 
-    public float dreamTimeSpeed;
-    private float mindreamTimeSpeed;
-    private float maxdreamTimeSpeed;
-
     public bool isGameOverInDream;
 
     public void Init()
@@ -37,7 +33,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
     private void InitScene()
     {
         isInDream = true;
-        SoundManager.Instance.DreamBGM();
+
 
         if(GameManager.Instance.GameMode == GameMode.Tutorial)
         {
@@ -66,7 +62,6 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
     {
         if (scene.name == SceneName.Dream)
         {
-            UIManager.Instance.ShowSceneUI<UI_Scene>("UI_NonGameOverScene");
             InitScene();
         }
     }

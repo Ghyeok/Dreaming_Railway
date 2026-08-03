@@ -103,6 +103,9 @@ public class UIManager : SingletonManagers<UIManager>, IManager
     int _order = 10;
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
 
+    /// <summary>
+    /// 팝업 생성해서 _popupStack에 추가
+    /// </summary>
     public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(name))
@@ -110,14 +113,16 @@ public class UIManager : SingletonManagers<UIManager>, IManager
             name = typeof(T).Name;
         }
 
-        GameObject go = LoadUI($"Popup/{name}"); // Resources/Prefabs/UIs/Popup/
+        GameObject go = LoadUI($"Popup/{name}"); // Resources/Prefabs/UIs + /Popup/
         T popup = Util.GetOrAddComponent<T>(go);
         _popupStack.Push(popup);
 
         return popup;
     }
 
-    // 엉뚱한 UI를 삭제하는 것을 방지
+    /// <summary>
+    /// 엉뚱한 UI를 삭제하는 것을 방지
+    /// </summary>
     public void ClosePopupUI(UI_Popup popup)
     {
         if (_popupStack.Count == 0)
@@ -134,7 +139,10 @@ public class UIManager : SingletonManagers<UIManager>, IManager
         ClosePopupUI();
     }
 
-    public void ClosePopupUI()
+    /// <summary>
+    /// 맨 위의 팝업 닫기
+    /// </summary>
+    private void ClosePopupUI()
     {
         if (_popupStack.Count == 0)
         {
@@ -147,26 +155,14 @@ public class UIManager : SingletonManagers<UIManager>, IManager
         _order--;
     }
 
+    /// <summary>
+    /// 모든 팝업 한번에 닫기
+    /// </summary>
     public void CloseAllPopupUI()
     {
         while (_popupStack.Count > 0)
         {
             ClosePopupUI();
         }
-    }
-
-    // 팝업이 아닌 Scene에 구현되어 있는 UI
-    UI_Scene _sceneUI = null;
-
-    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
-    {
-        if (string.IsNullOrEmpty(name))
-            name = typeof(T).Name;
-
-        GameObject go = LoadUI($"Scene/{name}");
-        T sceneUI = Util.GetOrAddComponent<T>(go);
-        _sceneUI = sceneUI;
-
-        return sceneUI;
     }
 }

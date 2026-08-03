@@ -14,6 +14,8 @@ public class UI_SubwayScene : UI_Scene
     [SerializeField] private SubwayPlayerContext subwayPlayer;
     [SerializeField] private Animator anim;
 
+    private SubwayData _subway;
+
     private CanvasGroup _fallAsleepCg;
     private CanvasGroup _slapCg;
     private CanvasGroup _standingCg;
@@ -90,39 +92,43 @@ public class UI_SubwayScene : UI_Scene
 
     private void OnEnable()
     {
-        if (subwayPlayer != null && SubwayFlowManager.Instance != null)
+        _subway ??= GameDataManager.Instance.Subway;
+
+        if (subwayPlayer != null && _subway != null)
         {
             subwayPlayer.OnStateChanged += HandlePlayerStateChanged;
             subwayPlayer.OnSlapSuccessed += TriggerSlapCoolTimeUI;
             subwayPlayer.OnSlapSuccessed += UpdateSlapUI;
-            SubwayFlowManager.Instance.OnStationCompleteDepart += UpdateStationUI;
-            SubwayFlowManager.Instance.OnTimeUpdated += UpdateTimerUI;
+            _subway.OnStationCompleteDepart += UpdateStationUI;
+            _subway.OnTimeUpdated += UpdateTimerUI;
+            _subway.OnLineEnded += CheckAndBlockStandingOnLastLine;
         }
     }
 
     private void OnDisable()
     {
-        if (subwayPlayer != null && SubwayFlowManager.Instance != null)
+        if (subwayPlayer != null && _subway != null)
         {
             subwayPlayer.OnStateChanged -= HandlePlayerStateChanged;
             subwayPlayer.OnSlapSuccessed -= TriggerSlapCoolTimeUI;
             subwayPlayer.OnSlapSuccessed -= UpdateSlapUI;
-            SubwayFlowManager.Instance.OnStationCompleteDepart -= UpdateStationUI;
-            SubwayFlowManager.Instance.OnTimeUpdated -= UpdateTimerUI;
+            _subway.OnStationCompleteDepart -= UpdateStationUI;
+            _subway.OnTimeUpdated -= UpdateTimerUI;
+            _subway.OnLineEnded -= CheckAndBlockStandingOnLastLine;
         }
     }
 
     private void UpdateStationUI()
     {
-        var flowManager = SubwayFlowManager.Instance;
-        if (flowManager == null) return;
+        SubwayData subway = GameDataManager.Instance.Subway;
+        if (subway == null || !subway.HasLines) return;
 
-        int line = flowManager.CurrentLineIdx;
-        int totalLines = flowManager.SubwayLines.Count;
+        int line = subway.CurrentLineIdx;
+        int totalLines = subway.SubwayLines.Count;
 
         if (_transferText != null)
         {
-            int remaining = Mathf.Max(0, flowManager.SubwayLines[line].transferIdx - flowManager.CurrentStationIdx + 1);
+            int remaining = Mathf.Max(0, subway.SubwayLines[line].transferIdx - subway.CurrentStationIdx + 1);
             _transferText.text = $"환승까지 <size=300%>{remaining}</size>역";
         }
 
@@ -130,7 +136,7 @@ public class UI_SubwayScene : UI_Scene
         {
             if (line + 1 < totalLines)
             {
-                int nextTransferIdx = flowManager.SubwayLines[line + 1].transferIdx;
+                int nextTransferIdx = subway.SubwayLines[line + 1].transferIdx;
                 _nextTransferText.text = $"다음 환승 <size=300%>{Mathf.Max(0, nextTransferIdx + 1)}</size>역";
             }
             else
@@ -140,13 +146,13 @@ public class UI_SubwayScene : UI_Scene
         }
 
         if (_passedStationText != null)
-            _passedStationText.text = $"지나온 역: {flowManager.PassedStations}";
+            _passedStationText.text = $"지나온 역: {subway.PassedStations}";
     }
 
     private void UpdateSlapUI()
     {
         if (_slapText != null)
-            _slapText.text = $"{subwayPlayer.Rule.SlapNum}";
+            _slapText.text = $"{subwayPlayer.Data.SlapNum}";
     }
 
     private void UpdateTimerUI(float currentTime)
@@ -164,6 +170,9 @@ public class UI_SubwayScene : UI_Scene
     {
         if (newState != PlayerState.STANDING) return;
 
+        // 플레이어 입석 버튼 -> 스킵 버튼
+        // 나머지 버튼 비활성화
+        // 실제 로직은 스킵 버튼 눌렀을 때
         _slapCg.blocksRaycasts = false;
         _fallAsleepCg.blocksRaycasts = false;
         GetImage((int)Images.SlapFadeImage).fillAmount = 1f;
@@ -172,7 +181,16 @@ public class UI_SubwayScene : UI_Scene
 
         GameObject stand = GetButton((int)Buttons.StandingButton).gameObject;
         ClearUIEvent(stand);
-        AddUIEvent(stand, data => subwayPlayer.TryStand(), UIEvent.Click);
+        AddUIEvent(stand, data => subwayPlayer.TrySkip(), UIEvent.Click);
+    }
+
+    private void CheckAndBlockStandingOnLastLine()
+    {
+        if (_subway.CurTransferCount >= _subway.MaxTransferCount - 1)
+        {
+            _standingCg.blocksRaycasts = false;
+            GetImage((int)Images.StandingFadeImage).fillAmount = 1f;
+        }
     }
 
     private void PauseButtonOnClicked(PointerEventData data)
@@ -215,7 +233,7 @@ public class UI_SubwayScene : UI_Scene
     private void TriggerSlapCoolTimeUI() { StartCoroutine(ShowSlapCoolTime()); }
     private IEnumerator ShowSlapCoolTime()
     {
-        float coolTime = subwayPlayer.Rule.SlapCoolTime;
+        float coolTime = subwayPlayer.Data.SlapCoolTime;
         float startTime = Time.time;
         Image slap = GetImage((int)Images.SlapFadeImage);
 
@@ -234,14 +252,13 @@ public class UI_SubwayScene : UI_Scene
     {
         Image stand = GetImage((int)Images.StandingFadeImage);
 
-        if (subwayPlayer.Rule.IsStandingCoolDown)
+        if (subwayPlayer.Data.IsStandingCoolDown)
         {
-            stand.fillAmount = 1 - subwayPlayer.Rule.StandingCount * STANDING_COOLDOWN_STEP;
+            stand.fillAmount = 1 - subwayPlayer.Data.StandingCount * STANDING_COOLDOWN_STEP;
         }
         else
         {
-            var flow = SubwayFlowManager.Instance;
-            stand.fillAmount = (flow.CurTransferCount == flow.MaxTransferCount) ? 1f : 0f;
+            stand.fillAmount = (_subway.CurTransferCount == _subway.MaxTransferCount) ? 1f : 0f;
         }
     }
 

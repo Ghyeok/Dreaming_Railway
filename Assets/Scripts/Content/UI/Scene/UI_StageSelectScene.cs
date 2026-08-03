@@ -57,7 +57,7 @@ public class UI_StageSelectScene : UI_Scene
         AddUIEvent(GetButton((int)Buttons.Stage5).gameObject, data => OnStageClicked(5, subwayMiniMove.position5));
         AddUIEvent(GetButton((int)Buttons.BackButton).gameObject, BackButtonOnClicked);
 
-        SetActiveTrueButtons();
+        ShowAllButtons();
     }
 
     void Start()
@@ -65,19 +65,16 @@ public class UI_StageSelectScene : UI_Scene
         Init();
         _animator = GetComponentInChildren<Animator>();
 
-        UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
-        fadePanel.StartFadeIn(0.3f);
-
         LoadSubwayPosition();
         LoadStageLock();
     }
 
-    private void SetActiveFalseButtons()
+    private void HideAllButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(false);
     }
 
-    private void SetActiveTrueButtons()
+    private void ShowAllButtons()
     {
         Get<GameObject>((int)GameObjects.ButtonRoot).gameObject.SetActive(true);
     }
@@ -100,6 +97,7 @@ public class UI_StageSelectScene : UI_Scene
     private IEnumerator EnterToSubway(RectTransform targetPosition)
     {
         float defaultX = subwayMiniMove.position0.anchoredPosition.x;
+
         float priorPosX = PlayerPrefs.HasKey(KEY_SUBWAY_POS_X)
             ? PlayerPrefs.GetFloat(KEY_SUBWAY_POS_X)
             : defaultX;
@@ -113,7 +111,7 @@ public class UI_StageSelectScene : UI_Scene
         SaveSubwayPosition(targetPosition.anchoredPosition);
 
         _animator.SetTrigger("ButtonClicked");
-        SetActiveFalseButtons();
+        HideAllButtons();
 
         yield return new WaitForSeconds(7f); // 애니메이션 재생 대기 시간
 
@@ -122,7 +120,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void BackButtonOnClicked(PointerEventData data)
     {
-        SceneTransitionManager.Instance.GoToScene(SceneName.Main, FadeType.Black);
+        SceneTransitionManager.Instance.GoToMain();
     }
 
     private void SaveSubwayPosition(Vector2 position)

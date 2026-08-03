@@ -1757,7 +1757,6 @@ GameObject:
   - component: {fileID: 325729785415705689}
   - component: {fileID: 355246480436425950}
   - component: {fileID: 691559002714871002}
-  - component: {fileID: 7236956534064665882}
   m_Layer: 5
   m_Name: CharacterImage
   m_TagString: Untagged
@@ -1845,18 +1844,6 @@ Animator:
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &691559002714871002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5817905302823836475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35b35bbd6b2d12340b88ef93a833a04c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimationEventHandler
---- !u!114 &7236956534064665882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

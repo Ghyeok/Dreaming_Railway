@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class UI_MainScene : UI_Scene
 {
+    [Tooltip("Tap To Start")]
     private float blinkSpeed = 0.8f;
     private float blinkTimer;
-
     private Vector2 targetPos;
     private Vector2 hiddenPos;
     private RectTransform rect;
@@ -81,13 +81,13 @@ public class UI_MainScene : UI_Scene
     private void NormalModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
-        SceneTransitionManager.Instance.GoToScene(SceneName.StageSelect, FadeType.Black);
+        SceneTransitionManager.Instance.GoToStageSelect();
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
     {
         GameManager.Instance.ChangeGameMode(GameMode.InfiniteMode);
-        SceneTransitionManager.Instance.GoToScene(SceneName.Subway, FadeType.Black);
+        SceneTransitionManager.Instance.GoToSubway();
     }
 
     private void SettingButtonOnClicked(PointerEventData data)
@@ -123,6 +123,7 @@ public class UI_MainScene : UI_Scene
 
         if (isTapped)
         {
+
             rect.anchoredPosition = Vector2.MoveTowards(rect.anchoredPosition, targetPos, slideSpeed * Time.deltaTime);
         }
     }

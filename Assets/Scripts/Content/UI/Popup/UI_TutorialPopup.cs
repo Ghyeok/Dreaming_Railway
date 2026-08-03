@@ -236,11 +236,13 @@ public class UI_TutorialPopup : UI_Popup
 
     private void SetTransferText()
     {
-        int line = SubwayFlowManager.Instance.CurrentLineIdx;
-        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{SubwayFlowManager.Instance.SubwayLines[line].transferIdx - SubwayFlowManager.Instance.CurrentStationIdx + 1}</size>역";
+        SubwayData subway = GameDataManager.Instance.Subway;
 
-        if ((line + 1) != SubwayFlowManager.Instance.SubwayLines.Count)
-            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{SubwayFlowManager.Instance.SubwayLines[line + 1].transferIdx + 1}</size>역";
+        int line = subway.CurrentLineIdx;
+        GetText((int)Texts.TransferText).text = $"환승까지 <size=300%>{subway.SubwayLines[line].transferIdx - subway.CurrentStationIdx + 1}</size>역";
+
+        if ((line + 1) != subway.SubwayLines.Count)
+            GetText((int)Texts.NextTransferText).text = $"환승까지 <size=300%>{subway.SubwayLines[line + 1].transferIdx + 1}</size>역";
         else
             GetText((int)Texts.NextTransferText).text = null;
     }

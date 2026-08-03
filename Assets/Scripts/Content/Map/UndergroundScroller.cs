@@ -33,6 +33,11 @@ public class UndergroundScroller : MonoBehaviour
     [SerializeField] private float waitTime = 1.5f;
     [SerializeField] private Coroutine accelRoutine;
 
+    [SerializeField] private float stopBeforeSeconds = 2f;
+    private bool _isFinalStation = false;
+
+    private SubwayData _subway;
+
     void Start()
     {
         bm = GetComponentInParent<BackgroundManager>();
@@ -169,22 +174,38 @@ public class UndergroundScroller : MonoBehaviour
 
     private void DecelScrollSpeed()
     {
-        if (accelRoutine == null && bm.currentType == BackgroundType.Station && !stationLerpRunning && !SubwayFlowManager.Instance.IsTransferRecently)
+        if (_isFinalStation) return;
+
+        if (accelRoutine == null && bm.currentType == BackgroundType.Station && !stationLerpRunning)
         {
             stationLerpRunning = true;
-            float decelTime = SubwayFlowManager.Instance.GetRemainTimeToDepartNextStation();
+            float decelTime = _subway.GetRemainTimeToDepartNextStation();
             StartCoroutine(StationDecelRoutine(scrollSpeed, decelTime));
         }
     }
 
     private void AccelScrollSpeed()
     {
-        if (bm.currentType == BackgroundType.Station && SubwayFlowManager.Instance.CurrentStationIdx == 0)
+        _isFinalStation = false;
+
+        if (bm.currentType == BackgroundType.Station && _subway.CurrentStationIdx == 0)
         {
             ForceShowStationBackground();
-            float accelTime = SubwayFlowManager.Instance.GetCurrentStationStoppingTime();
+            float accelTime = _subway.GetCurrentStationStoppingTime();
             accelRoutine = StartCoroutine(StationAccelRoutine(bm.lastSpeedBeforeStation, accelTime));
         }
+    }
+
+    private void OnStationEnterStopInterval(bool isFinalStation)
+    {
+        if (!isFinalStation) return;
+
+        _isFinalStation = true;
+        bm.backgroundQueue.Enqueue(BackgroundManager.BackgroundType.Station);
+
+        float stopTime = _subway.GetCurrentStationStoppingTime();
+        float decelDuration = stopTime - stopBeforeSeconds;
+        StartCoroutine(LerpSpeed(scrollSpeed, 0f, decelDuration));
     }
 
     private IEnumerator StationDecelRoutine(float speed, float time)
@@ -194,7 +215,7 @@ public class UndergroundScroller : MonoBehaviour
 
         if (lerptime <= 0)
         {
-            float ratio = lerptime / SubwayFlowManager.Instance.GetCurrentStationStoppingTime();
+            float ratio = lerptime / _subway.GetCurrentStationStoppingTime();
             speed = Mathf.SmoothStep(speed, 0, ratio);
             StartCoroutine(LerpSpeed(speed, 0f, Time.timeScale));
         }
@@ -246,15 +267,23 @@ public class UndergroundScroller : MonoBehaviour
 
     private void OnEnable()
     {
+        _subway ??= GameDataManager.Instance.Subway;
+
         OnUndergroundBgChange += DecelScrollSpeed;
-        SubwayFlowManager.Instance.OnLineEnded += AccelScrollSpeed;
-        SubwayData.OnSubwayGameOver += OnDisableScroller;
+        _subway.OnLineEnded += AccelScrollSpeed;
+        _subway.OnStationEnterStopInterval += OnStationEnterStopInterval;
+        _subway.OnSubwayGameOver += OnDisableScroller;
     }
 
     private void OnDisable()
     {
         OnUndergroundBgChange -= DecelScrollSpeed;
-        SubwayFlowManager.Instance.OnLineEnded -= AccelScrollSpeed;
-        SubwayData.OnSubwayGameOver -= OnDisableScroller;
+
+        if (_subway != null)
+        {
+            _subway.OnLineEnded -= AccelScrollSpeed;
+            _subway.OnStationEnterStopInterval -= OnStationEnterStopInterval;
+            _subway.OnSubwayGameOver -= OnDisableScroller;
+        }
     }
 }

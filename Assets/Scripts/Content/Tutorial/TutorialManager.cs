@@ -62,6 +62,45 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
         ResetTutorial();
     }
 
+    private void OnEnable()
+    {
+        Player.OnNearExit += HandleNearExit;
+        Player.OnDreamExit += HandleDreamExit;
+    }
+
+    private void OnDisable()
+    {
+        Player.OnNearExit -= HandleNearExit;
+        Player.OnDreamExit -= HandleDreamExit;
+    }
+
+    private void HandleNearExit()
+    {
+        if (!isMoveTutorial) return;
+
+        GameManager.Instance.StopGame();
+        isMoveTutorial = false;
+        tutorialPopup.gameObject.SetActive(true);
+        tutorialPopup.AdvanceDialog();
+    }
+
+    private void HandleDreamExit()
+    {
+        if (GameManager.Instance.GameMode != GameMode.Tutorial) return;
+
+        startFlowTime = true;
+        startIncreaseTired = true;
+
+        if (subwayIdx < subwayEndIdx && !DreamManager.Instance.isGameOverInDream)
+        {
+            dialogState = DialogState.Subway;
+            isDreamTutorial = false;
+            isExitTutorial = false;
+            isSubwayTutorial = true;
+            tutorialPopup.AdvanceDialog();
+        }
+    }
+
     public void ResetTutorial()
     {
         dialogState = DialogState.Subway;

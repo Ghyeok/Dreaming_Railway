@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,47 +5,36 @@ public enum FadeType { None, Black, White }
 
 public class SceneTransitionManager : SingletonManagers<SceneTransitionManager>, IManager
 {
+    private const float FadeOutDuration = 0.3f;
+    private const float FadeInDuration = 0.3f;
+
     private bool _isTransitioning;
 
     public void Init() { }
 
-    public void GoToMain() => GoToScene(SceneName.Main);
-    public void GoToStageSelect() => GoToScene(SceneName.StageSelect);
-    public void GoToSubway() => GoToScene(SceneName.Subway, FadeType.White);
+    public void GoToMain() => GoToScene(SceneName.Main,FadeType.Black);
+    public void GoToStageSelect() => GoToScene(SceneName.StageSelect,FadeType.Black);
+    public void ExitFromDream() => GoToScene(SceneName.Subway, FadeType.White);
+    public void GoToSubway() => GoToScene(SceneName.Subway, FadeType.Black);
+
     public void GoToDream() => GoToScene(SceneName.Dream, FadeType.Black);
 
-    public void GoToScene(string sceneName, FadeType fadeType = FadeType.None)
+    private void GoToScene(string sceneName, FadeType fadeType = FadeType.None)
     {
         if (_isTransitioning) return;
-        StartCoroutine(TransitionRoutine(sceneName, fadeType));
-    }
-
-    private IEnumerator TransitionRoutine(string sceneName, FadeType fadeType)
-    {
         _isTransitioning = true;
 
-        if (fadeType == FadeType.Black)
+        void LoadScene() => SceneManager.LoadScene(sceneName);
+        void Finish() => _isTransitioning = false;
+
+        if (fadeType == FadeType.Black && UI_FadeBlackPanel.Instance != null)
+            UI_FadeBlackPanel.Instance.FadeOutThenIn(FadeOutDuration, FadeInDuration, LoadScene, Finish);
+        else if (fadeType == FadeType.White && UI_FadeWhitePanel.Instance != null)
+            UI_FadeWhitePanel.Instance.FadeOutThenIn(FadeOutDuration, FadeInDuration, LoadScene, Finish);
+        else
         {
-            UI_FadeBlackPanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeBlackPanel>();
-            fadePanel.Init();
-            yield return fadePanel.Fade(0f, 1f, 0.3f);
+            LoadScene();
+            Finish();
         }
-        else if (fadeType == FadeType.White)
-        {
-            UI_FadeWhitePanel fadePanel = UIManager.Instance.ShowPopupUI<UI_FadeWhitePanel>();
-            fadePanel.Init();
-            yield return fadePanel.Fade(0f, 1f, 0.3f);
-        }
-
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-        async.allowSceneActivation = false;
-
-        while (async.progress < 0.9f)
-            yield return null;
-
-        async.allowSceneActivation = true;
-        yield return null;
-
-        _isTransitioning = false;
     }
 }

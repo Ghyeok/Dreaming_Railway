@@ -9,39 +9,43 @@ public enum PlayerState
     DEEPSLEEP,
 }
 
-public class SubwayPlayerContext : MonoBehaviour, ITickable
+public class SubwayPlayerContext : MonoBehaviour
 {
-    private TirednessManager _tirednessManager;
-    public SubwayData Rule { get; private set; }
+    private TirednessSystem _tirednessManager;
+    private TirednessData _tiredness;
+    public SubwayData Data { get; private set; }
     public Animator Anim { get; private set; }
 
     public event Action<PlayerState> OnStateChanged;
     public event Action OnSlapSuccessed;
+    public event Action OnSkipped;
 
     public PlayerState CurrentState { get; private set; } = PlayerState.NONE;
 
-    public void Init(TirednessManager tirednessManager)
+    public void Init(TirednessSystem tirednessManager)
     {
         _tirednessManager = tirednessManager;
-        Rule = new SubwayData();
-        Rule.Reset(GameManager.Instance.GameMode == GameMode.InfiniteMode);
+        _tiredness = GameDataManager.Instance.Tiredness;
+
+        Data = GameDataManager.Instance.Subway;
+        Data.ResetPlayerSession(GameManager.Instance.GameMode == GameMode.InfiniteMode);
         Anim = GetComponent<Animator>();
 
-        if (TimerManager.Instance != null)
-            TimerManager.Instance.Register(this);
-
-        SubwayFlowManager.Instance.OnLineEnded += Rule.AddStandingCount;
+        Data.OnLineEnded -= Data.AddStandingCount;
+        Data.OnLineEnded += Data.AddStandingCount;
 
         ChangeState(PlayerState.SLEEP);
-        TirednessManager.OnTiredChange += HandleTiredChange;
+        _tiredness.OnTiredChange += HandleTiredChange;
     }
 
-    public void Tick(float deltaTime)
+    private void Update()
     {
-        Rule.TickSlapCooldown(deltaTime);
+        if (TimerManager.Instance == null || TimerManager.Instance.IsPaused) return;
+
+        Data.TickSlapCooldown(Time.deltaTime);
     }
 
-    public void ForceMaxTiredness() => _tirednessManager.SetTirednessForced(100f);
+    public void ForceMaxTiredness() => _tirednessManager.SetTirednessForced(99.9f);
 
     private void ChangeState(PlayerState newState)
     {
@@ -60,7 +64,7 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
     public void HandleTiredChange(float currentTired)
     {
         if (CurrentState == PlayerState.SLEEP)
-            Anim.SetBool("isSleeping", TirednessManager.IsTiredHalf);
+            Anim.SetBool("isSleeping", _tiredness.IsTiredHalf);
     }
 
     public void TryTransfer()
@@ -70,21 +74,26 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
 
     public void TrySlap()
     {
-        if (CurrentState == PlayerState.NONE || Rule.IsSlapCoolTime) return;
+        if (CurrentState == PlayerState.NONE || Data.IsSlapCoolTime) return;
 
-        Rule.StartSlapCooldown();
+        Data.StartSlapCooldown();
         SoundManager.Instance.SlapSFX();
         Anim.SetTrigger("isSlap");
-        _tirednessManager.DecreaseTiredness(Rule.TiredDecreaseBySlap);
+        _tirednessManager.DecreaseTiredness(Data.TiredDecreaseBySlap);
         OnSlapSuccessed?.Invoke();
     }
 
     public void TryStand()
     {
-        if (Rule.IsStandingCoolDown) return;
-
-        Rule.StartStandingCooldown();
+        if (Data.IsStandingCoolDown) return;
         ChangeState(PlayerState.STANDING);
+    }
+
+    public void TrySkip()
+    {
+        Data.StartStandingCooldown();
+        Data.ForceTransferByStanding();
+        OnSkipped?.Invoke();
     }
 
     public void TryFallAsleep()
@@ -94,12 +103,11 @@ public class SubwayPlayerContext : MonoBehaviour, ITickable
 
     private void OnDestroy()
     {
-        if (TimerManager.Instance != null)
-            TimerManager.Instance.Unregister(this);
+        // 순수 C# 데이터 객체이므로 종료 중에도 null이 되지 않는다 (싱글톤 재접근 회피)
+        if (Data != null)
+            Data.OnLineEnded -= Data.AddStandingCount;
 
-        if (SubwayFlowManager.Instance != null)
-            SubwayFlowManager.Instance.OnLineEnded -= Rule.AddStandingCount;
-
-        TirednessManager.OnTiredChange -= HandleTiredChange;
+        if (_tiredness != null)
+            _tiredness.OnTiredChange -= HandleTiredChange;
     }
 }

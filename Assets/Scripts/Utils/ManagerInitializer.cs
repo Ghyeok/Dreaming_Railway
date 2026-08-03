@@ -14,7 +14,7 @@ public static class ManagerInitializer
             SoundManager.Instance,
             UIManager.Instance,
             TimerManager.Instance,
-            SubwayFlowManager.Instance
+            SubwayFlowSystem.Instance
         };
 
         InitializeManagers(managersInOrder);

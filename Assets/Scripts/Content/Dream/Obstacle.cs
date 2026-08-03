@@ -1,14 +1,3 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
-{
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-}
+public class Obstacle : MonoBehaviour { }

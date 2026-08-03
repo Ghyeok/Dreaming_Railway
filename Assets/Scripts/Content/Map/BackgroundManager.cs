@@ -32,6 +32,8 @@ public class BackgroundManager : MonoBehaviour
 
     public BackgroundType currentType;
 
+    private SubwayData _subway;
+
     void Awake()
     {
         if (backgroundQueue == null)
@@ -58,7 +60,7 @@ public class BackgroundManager : MonoBehaviour
 
     public void DecideNextBackground()
     {
-        int remain = SubwayFlowManager.Instance.SubwayLines[SubwayFlowManager.Instance.CurrentLineIdx].transferIdx - SubwayFlowManager.Instance.CurrentStationIdx;
+        int remain = _subway.CurrentLine.transferIdx - _subway.CurrentStationIdx;
         int rand = Random.Range(1, 101); // 1 ~ 100의 랜덤한 숫자
 
         bool isOutside = (currentType == BackgroundType.ConnectR ||
@@ -69,15 +71,14 @@ public class BackgroundManager : MonoBehaviour
         if (isOutside) return;
 
         // 배경이 바뀌는 순간에 남은 역이 1개이고 정차 구간이라면
-        if ((remain <= 0 && SubwayFlowManager.Instance.IsStopping) ||
-            (remain == SubwayFlowManager.Instance.SubwayLines[SubwayFlowManager.Instance.CurrentLineIdx].transferIdx && SubwayFlowManager.Instance.IsTransferRecently))
+        if (remain <= 0 && _subway.IsSubwayStopping)
         {
             lastSpeedBeforeStation = SetScrollSpeed(currentType);
             backgroundQueue.Enqueue(BackgroundType.Station);
         }
         else // 2. 지하 배경 9, 한강 배경 0.5, 풀 배경 0.5 가중치로 등장, 환승한 직후 몇초는 지하 배경만 나오게, 환승하기까지 3정거장 이상 남았을 경우에만 야외 배경
         {
-            if (remain >= 3 && rand <= 10 && !SubwayFlowManager.Instance.IsTransferRecently)
+            if (remain >= 3 && rand <= 10)
             {
                 if (!isHangangShown && rand <= 5)
                 {
@@ -148,14 +149,18 @@ public class BackgroundManager : MonoBehaviour
 
     private void OnEnable()
     {
+        _subway ??= GameDataManager.Instance.Subway;
+
         UndergroundScroller.OnUndergroundBgChange += DecideNextBackground;
-        SubwayFlowManager.Instance.OnLineEnded += ResetOutsideBackground;
+        _subway.OnLineEnded += ResetOutsideBackground;
     }
 
     private void OnDisable()
     {
         UndergroundScroller.OnUndergroundBgChange -= DecideNextBackground;
-        SubwayFlowManager.Instance.OnLineEnded -= ResetOutsideBackground;
+
+        if (_subway != null)
+            _subway.OnLineEnded -= ResetOutsideBackground;
     }
 }   
     

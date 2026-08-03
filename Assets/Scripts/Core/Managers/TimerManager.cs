@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class TimerManager : SingletonManagers<TimerManager>, IManager
 {
-    private List<ITickable> _tickable = new List<ITickable>();
     public float playTime;
 
-    public bool IsPaused {  get; private set; }
+    public bool IsPaused { get; private set; }
 
     public void Init()
     {
@@ -20,35 +17,6 @@ public class TimerManager : SingletonManagers<TimerManager>, IManager
         if (IsPaused) return;
 
         playTime += Time.deltaTime;
-        float dt = Time.deltaTime;
-
-        // 역순으로 순회하여 리스트 크기가 중간에 변해도 인덱스는 변하지 않게 함
-        for (int i = _tickable.Count - 1; i >= 0; i--)
-        {
-            _tickable[i].Tick(dt);
-        }
-    }
-
-    /// <summary>
-    /// 매 프레임 실행될 객체를 등록
-    /// </summary>
-    public void Register(ITickable tickable)
-    {
-        if (!_tickable.Contains(tickable))
-        {
-            _tickable.Add(tickable);
-        }
-    }
-
-    /// <summary>
-    /// 매 프레임 실행될 객체를 삭제
-    /// </summary>
-    public void Unregister(ITickable tickable)
-    {
-        if (_tickable.Contains(tickable))
-        {
-            _tickable.Remove(tickable);
-        }
     }
 
     public void StartTimer()

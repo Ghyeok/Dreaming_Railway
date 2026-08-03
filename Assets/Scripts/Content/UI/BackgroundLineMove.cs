@@ -15,18 +15,18 @@ public class BackgroundLineMove : MonoBehaviour
 
     private void OnEnable()
     {
-        TirednessManager.OnTiredChange += UpdateRotation;
-        UpdateRotation(TirednessManager.CurrentTired);
+        GameDataManager.Instance.Tiredness.OnTiredChange += UpdateRotation;
+        UpdateRotation(GameDataManager.Instance.Tiredness.CurrentTiredness);
     }
 
     private void OnDisable()
     {
-        TirednessManager.OnTiredChange -= UpdateRotation;
+        GameDataManager.Instance.Tiredness.OnTiredChange -= UpdateRotation;
     }
 
     private void UpdateRotation(float currentTired)
     {
-        moveRatio = currentTired / TirednessManager.MaxTired;
+        moveRatio = currentTired / GameDataManager.Instance.Tiredness.MaxTiredness;
         transform.rotation = Quaternion.Slerp(originRotation, targetRotation, moveRatio);
     }
 }

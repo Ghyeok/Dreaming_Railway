@@ -80,7 +80,7 @@ public class UI_GameOverPopup : UI_Popup
         UIManager.Instance.ClosePopupUI(this);
         //SubwayRuleManager.Instance.isGameOver = false;
         ScriptManager.Instance.isStart = true;
-        SceneTransitionManager.Instance.GoToSubway();
+        SceneTransitionManager.Instance.ExitFromDream();
     }
 
     private void MainMenuButtonOnClicked(PointerEventData data)

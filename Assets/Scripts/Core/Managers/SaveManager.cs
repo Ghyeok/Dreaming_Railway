@@ -57,6 +57,7 @@ public class SaveManager : SingletonManagers<SaveManager>, IManager
     public void SaveSfxMute(bool isMute)
     {
         PlayerPrefs.SetInt(KEY_SFX_MUTE, isMute ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
 }

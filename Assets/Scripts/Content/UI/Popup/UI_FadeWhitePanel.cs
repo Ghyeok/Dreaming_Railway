@@ -1,100 +1,80 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
+using System;
 
-public class UI_FadeWhitePanel : UI_Popup
+public class UI_FadeWhitePanel : MonoBehaviour
 {
-    private bool isInited = false;
-    CanvasGroup _canvasGroup;
+    private CanvasGroup _canvasGroup;
     private Coroutine fadeCoroutine;
 
-    enum Images
-    {
-        WhitePanel,
-    }
+    public static UI_FadeWhitePanel Instance { get; private set; }
 
-    public override void Init()
+    private void Awake()
     {
-        base.Init();
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        if (isInited) return;
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         _canvasGroup = GetComponent<CanvasGroup>();
         SetAlpha(0f);
-        isInited = true;
     }
 
-    public void SetAlpha(float alpha)
+    public void FadeIn(float duration, Action onComplete = null) => PlayFade(1f, 0f, duration, onComplete);
+    public void FadeOut(float duration, Action onComplete = null) => PlayFade(0f, 1f, duration, onComplete);
+
+    public void FadeOutThenIn(float outDuration, float inDuration, Action duringCovered = null, Action onComplete = null)
     {
-        if (_canvasGroup != null)
-            _canvasGroup.alpha = alpha;
+        FadeOut(outDuration, () =>
+        {
+            duringCovered?.Invoke();
+            FadeIn(inDuration, onComplete);
+        });
     }
 
-    public void StartFadeOut(float duration, float waitTime)
-    {
-        if (!isInited) Init();
-        StartFadeCoroutine(FadeAndDestroy(0f, 1f, duration, waitTime));
-    }
-
-    public void StartFadeIn(float duration)
-    {
-        if (!isInited) Init();
-        StartFadeCoroutine(FadeAndDestroy(1f, 0f, duration, 0f));
-    }
-
-    public void FadeInOut(float duration, float waitTime)
-    {
-        if (!isInited) Init();
-        StartFadeCoroutine(FadeRoutine(duration, waitTime));
-    }
-
-    private void StartFadeCoroutine(IEnumerator routine)
-    {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(routine);
-    }
-
-    public IEnumerator FadeRoutine(float duration, float waitTime)
-    {
-        yield return StartCoroutine(FadeOut(duration));
-        yield return new WaitForSeconds(waitTime);
-        yield return StartCoroutine(FadeIn(duration));
-
-        UIManager.Instance.ClosePopupUI(this);
-    }
-
-    public IEnumerator FadeOut(float duration)
-    {
-        yield return Fade(0f, 1f, duration);
-    }
-
-    public IEnumerator FadeIn(float duration)
-    {
-        yield return Fade(1f, 0f, duration);
-    }
-
-    public IEnumerator FadeAndDestroy(float from, float to, float duration, float waitTime)
-    {
-        yield return Fade(from, to, duration);
-
-        if (waitTime > 0f)
-            yield return new WaitForSeconds(waitTime);
-
-        UIManager.Instance.ClosePopupUI(this);
-    }
-
-    public IEnumerator Fade(float from, float to, float duration)
+    private IEnumerator Fade(float from, float to, float duration, Action onComplete = null)
     {
         float timer = 0f;
+
         while (timer < duration)
         {
             float alpha = Mathf.Lerp(from, to, timer / duration);
             SetAlpha(alpha);
+
             timer += Time.unscaledDeltaTime;
             yield return null;
         }
 
-        SetAlpha(to);
+        SetAlpha(to); // 마지막 값
+
+        // 완전히 투명해지면 입력 허용
+        if (Mathf.Approximately(to, 0f))
+        {
+            _canvasGroup.blocksRaycasts = false;
+            _canvasGroup.interactable = true;
+        }
+
+        fadeCoroutine = null;
+        onComplete?.Invoke();
+    }
+
+    private void PlayFade(float from, float to, float duration, Action onComplete = null)
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = false;
+        fadeCoroutine = StartCoroutine(Fade(from, to, duration, onComplete));
+    }
+
+    private void SetAlpha(float alpha)
+    {
+        if (_canvasGroup != null)
+            _canvasGroup.alpha = alpha;
     }
 }
