@@ -51,7 +51,7 @@ public class UI_MainScene : UI_Scene
     {
         base.Init();
 
-        GameManager.Instance.ChangeGameMode(GameMode.None);
+        GameDataManager.Instance.Game.SetGameMode(GameMode.None);
         SoundManager.Instance.MainBGM();
 
         Bind<Button>(typeof(Buttons));
@@ -80,13 +80,17 @@ public class UI_MainScene : UI_Scene
 
     private void NormalModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
+        GameDataManager.Instance.Game.SetGameMode(GameMode.NormalMode);
         SceneTransitionManager.Instance.GoToStageSelect();
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.ChangeGameMode(GameMode.InfiniteMode);
+        GameDataManager.Instance.Game.SetGameMode(GameMode.InfiniteMode);
+
+        // 무한 모드는 StartDay()를 거치지 않으므로 여기서 직접 꿈 상태를 초기화한다
+        GameDataManager.Instance.Dream.Reset();
+
         SceneTransitionManager.Instance.GoToSubway();
     }
 
@@ -130,7 +134,7 @@ public class UI_MainScene : UI_Scene
 
     private void LoadInfiniteModeLock()
     {
-        int maxClearDay = SaveManager.Instance.LoadMaxClearDay();
+        int maxClearDay = GameDataManager.Instance.Game.MaxClearDay;
         SetInfiniteButtonState(maxClearDay >= 5);
     }
 

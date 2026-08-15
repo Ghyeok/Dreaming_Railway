@@ -30,13 +30,15 @@ public class StationSystem : MonoBehaviour
     private const int TRANSFER_IDX_LATE_MAX = 7;
 
     private SubwayData _subway;
+    private GameData _game;
     private bool _isNormalMode;
 
     public void Init()
     {
         _subway = GameDataManager.Instance.Subway;
+        _game = GameDataManager.Instance.Game;
         // 필드 이니셜라이저로 두면 Awake 이전(씬 역직렬화 중)에 평가되므로 여기서 읽는다
-        _isNormalMode = GameManager.Instance.GameMode == GameMode.NormalMode;
+        _isNormalMode = _game.GameMode == GameMode.NormalMode;
 
         // 꿈속씬에서 복귀한 경우 — 이미 노선 데이터가 있으므로 재생성/리셋하지 않는다
         if (_subway.HasLines) return;
@@ -47,19 +49,19 @@ public class StationSystem : MonoBehaviour
         _subway.BeginRun(lines, DetermineMaxTransferCount());
     }
 
-    private int GetLineCount() => _isNormalMode ? GameManager.Instance.CurrentDay + 1 : INFINITE_LINE_COUNT;
+    private int GetLineCount() => _isNormalMode ? _game.CurrentDay + 1 : INFINITE_LINE_COUNT;
 
     /// <summary>
     /// 현재 Day에 맞는 최대 환승 횟수 결정하기
     /// </summary>
     private int DetermineMaxTransferCount()
     {
-        if (GameManager.Instance.GameMode == GameMode.InfiniteMode)
+        if (_game.GameMode == GameMode.InfiniteMode)
         {
             return INFINITE_TRANSFER_COUNT;
         }
 
-        int stage = GameManager.Instance.CurrentDay;
+        int stage = _game.CurrentDay;
         return stage == 0 ? 1 : stage + 1;
     }
 

@@ -67,7 +67,7 @@ public class UI_SettingPopup : UI_Popup
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
 
-        GetImage((int)Images.BGMImage).sprite = DreamManager.Instance.isInDream ? Resources.Load<Sprite>("Arts/UIs/Dream/set_bg_2")
+        GetImage((int)Images.BGMImage).sprite = GameDataManager.Instance.Dream.IsInDream ? Resources.Load<Sprite>("Arts/UIs/Dream/set_bg_2")
                                                                                 : Resources.Load<Sprite>("Arts/UIs/Subway/Pause/Settings/set_bg_1");
         GameObject credit = GetButton((int)Buttons.CreditButton).gameObject;
         AddUIEvent(credit, CreditButtonOnClicked);

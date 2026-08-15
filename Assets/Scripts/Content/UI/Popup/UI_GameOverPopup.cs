@@ -72,7 +72,7 @@ public class UI_GameOverPopup : UI_Popup
 
         ShowPlayTime();
         GameOverTutorial();
-        TimerManager.Instance.StopTimer();
+        GameDataManager.Instance.Timer.Pause();
     }
 
     private void RetryButtonOnClicked(PointerEventData data)
@@ -97,7 +97,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void ShowPlayTime()
     {
-        float playTime = TimerManager.Instance.playTime;
+        float playTime = GameDataManager.Instance.Timer.PlayTime;
 
         int min = Mathf.FloorToInt(playTime / 60);
         int sec = Mathf.FloorToInt(playTime % 60);
@@ -108,13 +108,13 @@ public class UI_GameOverPopup : UI_Popup
 
     private void GameOverTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;
             TutorialManager.Instance.startIncreaseTired = false;
 
-            if (DreamManager.Instance.isGameOverInDream)
+            if (GameDataManager.Instance.Dream.IsGameOverInDream)
             {
                 TutorialManager.Instance.isDarkGameOverTutorial = true;
                 TutorialManager.Instance.gameoverIdx = 0;

@@ -13,7 +13,9 @@ public static class ManagerInitializer
             SceneTransitionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
-            TimerManager.Instance,
+            TimerSystem.Instance,
+            // 꿈 씬 로드 전에 생성돼 sceneLoaded를 구독하고 있어야 한다
+            DreamManager.Instance,
             SubwayFlowSystem.Instance
         };
 

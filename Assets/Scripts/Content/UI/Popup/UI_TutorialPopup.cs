@@ -201,11 +201,11 @@ public class UI_TutorialPopup : UI_Popup
 
         if (!TutorialManager.Instance.startFlowTime)
         {
-            TimerManager.Instance.StopTimer();
+            GameDataManager.Instance.Timer.Pause();
         }
         else
         {
-            TimerManager.Instance.StartTimer();
+            GameDataManager.Instance.Timer.Resume();
         }
     }
 

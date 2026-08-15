@@ -1,41 +1,35 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// 꿈 씬의 진입 조정자. 상태는 갖지 않는다 — 값은 DreamData가 소유한다.
+/// sceneLoaded를 구독해 꿈 씬 진입을 감지하므로, 꿈 씬이 로드되기 전에 반드시 생성돼 있어야 한다.
+/// (그래서 ManagerInitializer 목록에 포함된다)
+/// </summary>
 public class DreamManager : SingletonManagers<DreamManager>, IManager
 {
-    public bool isInDream;
-    public int SlapNum { get; private set; }
+    private DreamData _data; // 실제 데이터
 
-    public bool isGameOverInDream;
+    public DreamData Data => _data;
 
     public void Init()
     {
-        isGameOverInDream = false;
-    }
-
-    public void SetDreamData(int slapNum)
-    {
-        SlapNum = slapNum;
-    }
-
-    public void ResetDreamManager()
-    {
-        isInDream = false;
-        SlapNum = 0;
+        _data = GameDataManager.Instance.Dream;
     }
 
     public void GameOverInDream()
     {
-        isGameOverInDream = true;
+        _data.SetGameOverInDream();
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }
 
     private void InitScene()
     {
-        isInDream = true;
+        // Init()보다 먼저 씬이 로드되는 경우를 대비한 방어 (정상 흐름에서는 이미 캐싱돼 있다)
+        _data ??= GameDataManager.Instance.Dream;
+        _data.EnterDream();
 
-
-        if(GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;

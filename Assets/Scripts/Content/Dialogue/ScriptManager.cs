@@ -141,35 +141,35 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
 
     public void SetScriptTrigger()
     {
-        if(GameManager.Instance.CurrentDay == 1)
+        if(GameDataManager.Instance.Game.CurrentDay == 1)
         {
             if(curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 2)
+        if (GameDataManager.Instance.Game.CurrentDay == 2)
         {
             if (curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 3)
+        if (GameDataManager.Instance.Game.CurrentDay == 3)
         {
             if (curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 4)
+        if (GameDataManager.Instance.Game.CurrentDay == 4)
         {
             if (curIdx == 2)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 5)
+        if (GameDataManager.Instance.Game.CurrentDay == 5)
         {
             if (curIdx == 0)
             {

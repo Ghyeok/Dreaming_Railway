@@ -216,7 +216,7 @@ public class UI_SubwayScene : UI_Scene
 
     IEnumerator StandingTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
             _standingCg.blocksRaycasts = false;
 

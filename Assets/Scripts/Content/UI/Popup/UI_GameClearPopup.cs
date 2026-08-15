@@ -46,7 +46,7 @@ public class UI_GameClearPopup : UI_Popup
         AddUIEvent(lobby, LobbyButtonOnClicked);
 
         SoundManager.Instance.GameClearSFX();
-        TimerManager.Instance.StopTimer();
+        GameDataManager.Instance.Timer.Pause();
 
         ShowPlayTime();
         ShowDayText();
@@ -61,12 +61,12 @@ public class UI_GameClearPopup : UI_Popup
 
     private void ShowDayText()
     {
-        GetText((int)Texts.DayText).text = "Day " + GameManager.Instance.CurrentDay;
+        GetText((int)Texts.DayText).text = "Day " + GameDataManager.Instance.Game.CurrentDay;
     }
 
     private void ShowPlayTime()
     {
-        float playTime = TimerManager.Instance.playTime;
+        float playTime = GameDataManager.Instance.Timer.PlayTime;
 
         int min = Mathf.FloorToInt(playTime / 60);
         int sec = Mathf.FloorToInt(playTime % 60);
@@ -77,7 +77,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorialEnd = false;
             UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
@@ -86,16 +86,16 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearNormalMode()
     {
-        if (GameManager.Instance.GameMode == GameMode.NormalMode)
+        if (GameDataManager.Instance.Game.GameMode == GameMode.NormalMode)
         {
-            if (ScriptManager.Instance.HasClearDialog(GameManager.Instance.CurrentDay))
+            if (ScriptManager.Instance.HasClearDialog(GameDataManager.Instance.Game.CurrentDay))
             {
                 ScriptManager.Instance.isClear = true;
 
                 if (ScriptManager.Instance.scriptPopup != null)
                 {
                     ScriptManager.Instance.scriptPopup.gameObject.SetActive(true);
-                    ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
+                    ScriptManager.Instance.ShowDialog(GameDataManager.Instance.Game.CurrentDay);
                 }
                 else
                 {

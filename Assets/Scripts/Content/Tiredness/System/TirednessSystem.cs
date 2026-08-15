@@ -1,45 +1,38 @@
 using UnityEngine;
 
+/// <summary>
+/// 피로도 데이터를 매 프레임 구동하는 시스템. 상태는 갖지 않는다.
+/// 값 변경이 필요한 쪽은 이 클래스를 거치지 말고 TirednessData를 직접 호출한다.
+/// </summary>
 public class TirednessSystem : MonoBehaviour
 {
     private TirednessData _data; // 실제 데이터
-    private bool _isPaused = false; // 피로도 증가를 멈출 것인지?
+    private TimerData _timer;
 
     public TirednessData Data => _data;
 
     public void Init()
     {
         _data = GameDataManager.Instance.Tiredness;
-        _isPaused = false;
+        _timer = GameDataManager.Instance.Timer;
+
+        // 입석으로 멈춰 있던 증가를 지하철 씬 재진입 시 재개한다
+        _data.Resume();
     }
 
     private void Update()
     {
-        if (_data == null || _isPaused) return;
-        if (TimerManager.Instance == null || TimerManager.Instance.IsPaused) return;
+        if (_data == null) return;
+        if (_timer == null || _timer.IsPaused) return;
 
         _data.Tick(Time.deltaTime);
     }
 
     // 초기값으로 초기화
-    public void ResetTiredness()
-    {
-        _isPaused = false;
-        _data.Reset();
-    }
-
-    // 피로도를 강제로 설정하고 증가를 멈추는 함수
-    public void SetTirednessForced(float value)
-    {
-        _isPaused = true;
-        _data.Set(value);
-    }
+    public void ResetTiredness() => _data.Reset();
 
     public void SetTirednessOnDreamEnter() // 잠에 들때 피로도 재설정
     {
         _data.ApplyDreamEnterRecovery(GameDataManager.Instance.Subway.CurrentLineTime);
     }
-
-    // 피로도를 줄이는 함수
-    public void DecreaseTiredness(float value) => _data.Decrease(value);
 }

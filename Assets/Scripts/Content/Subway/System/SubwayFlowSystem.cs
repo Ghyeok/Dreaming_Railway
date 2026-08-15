@@ -3,10 +3,12 @@ using UnityEngine;
 public class SubwayFlowSystem : SingletonManagers<SubwayFlowSystem>, IManager
 {
     private SubwayData _data;
+    private TimerData _timer;
 
     public void Init()
     {
         _data = GameDataManager.Instance.Subway;
+        _timer = GameDataManager.Instance.Timer;
 
         // Init이 두 번 호출돼도 중복 구독되지 않도록
         _data.OnDayCleared -= HandleDayCleared;
@@ -16,7 +18,7 @@ public class SubwayFlowSystem : SingletonManagers<SubwayFlowSystem>, IManager
     private void Update()
     {
         if (_data == null) return;
-        if (TimerManager.Instance == null || TimerManager.Instance.IsPaused) return;
+        if (_timer == null || _timer.IsPaused) return;
         if (GameManager.Instance.IsGameStopped) return;
 
         _data.Tick(Time.deltaTime);

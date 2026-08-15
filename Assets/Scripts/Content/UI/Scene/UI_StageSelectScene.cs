@@ -83,11 +83,11 @@ public class UI_StageSelectScene : UI_Scene
     {
         if (day == 0)
         {
-            GameManager.Instance.ChangeGameMode(GameMode.Tutorial);
+            GameDataManager.Instance.Game.SetGameMode(GameMode.Tutorial);
         }
         else
         {
-            GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
+            GameDataManager.Instance.Game.SetGameMode(GameMode.NormalMode);
             ScriptManager.Instance.isStart = true;
         }
         GameManager.Instance.StartDay(day);
@@ -138,7 +138,7 @@ public class UI_StageSelectScene : UI_Scene
 
     private void LoadStageLock()
     {
-        int m = SaveManager.Instance.LoadMaxClearDay();
+        int m = GameDataManager.Instance.Game.MaxClearDay;
 
         for (int i = 0; i <= 5; i++)
             SetStageButtonState(i, i <= m + 1);

@@ -89,7 +89,7 @@ public class UI_SubwayLinePopup : UI_Popup
             GetText((int)Texts.LastLineText).text = " ";
         }
 
-        if (!DreamManager.Instance.isInDream)
+        if (!GameDataManager.Instance.Dream.IsInDream)
         {
             GetText((int)Texts.CurrentLineText).text = $"앞으로 {subway.SubwayLines[curLineIdx].transferIdx - subway.CurrentStationIdx + 1}역 뒤 환승";
         }

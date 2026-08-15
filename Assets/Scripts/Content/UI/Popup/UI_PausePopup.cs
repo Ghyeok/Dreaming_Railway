@@ -256,11 +256,11 @@ public class UI_PausePopup : UI_Popup
 
     private void SettingButtonOnClicked(PointerEventData data)
     {
-        if (!DreamManager.Instance.isInDream)
+        if (!GameDataManager.Instance.Dream.IsInDream)
         {
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_SettingPopup");
         }
-        else if (DreamManager.Instance.isInDream)
+        else
         {
             UIManager.Instance.ShowPopupUI<UI_Popup>("UI_DreamSettingPopup");
         }
@@ -269,7 +269,7 @@ public class UI_PausePopup : UI_Popup
     private void MainMenuButtonOnclicked(PointerEventData data)
     {
         Time.timeScale = 1f;
-        DreamManager.Instance.isInDream = false;
+        GameDataManager.Instance.Dream.ExitDream();
         SceneTransitionManager.Instance.GoToMain();
     }
     #endregion

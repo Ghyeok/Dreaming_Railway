@@ -1,7 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// 지하철 씬의 진행을 총괄한다.
+/// Start()에서 씬 부트스트랩(초기화 순서 제어 + 1회성 로직)을 수행하고,
+/// 이후 씬이 유지되는 동안 꿈씬 진입과 팝업 표시를 단일 지점에서 조정한다.
+/// </summary>
 [DefaultExecutionOrder(-100)]
-public class SubwaySceneInitializer : MonoBehaviour
+public class SubwaySceneDirector : MonoBehaviour
 {
     [SerializeField] private TirednessSystem _tiredness;
     [SerializeField] private StationSystem _station;
@@ -21,7 +26,7 @@ public class SubwaySceneInitializer : MonoBehaviour
         // ㅡㅡㅡㅡ 초기화 순서 제어 및 의존성 주입 ㅡㅡㅡㅡ
         _station.Init();
         _tiredness.Init();
-        subwayPlayerContext.Init(_tiredness);
+        subwayPlayerContext.Init();
 
         // ㅡㅡㅡㅡ 그 외 일회성 메서드 ㅡㅡㅡㅡ
         // 지하철 Scene이 로드되고 한번 실행되야 하는 메서드들
@@ -42,7 +47,6 @@ public class SubwaySceneInitializer : MonoBehaviour
         if (_isEnteringDream) return;
         _isEnteringDream = true;
 
-        DreamManager.Instance.SetDreamData(subwayPlayerContext.Data.SlapNum);
         _tiredness.SetTirednessOnDreamEnter();
         SceneTransitionManager.Instance.GoToDream();
     }

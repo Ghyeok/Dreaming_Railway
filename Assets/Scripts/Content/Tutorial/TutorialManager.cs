@@ -86,12 +86,12 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 
     private void HandleDreamExit()
     {
-        if (GameManager.Instance.GameMode != GameMode.Tutorial) return;
+        if (GameDataManager.Instance.Game.GameMode != GameMode.Tutorial) return;
 
         startFlowTime = true;
         startIncreaseTired = true;
 
-        if (subwayIdx < subwayEndIdx && !DreamManager.Instance.isGameOverInDream)
+        if (subwayIdx < subwayEndIdx && !GameDataManager.Instance.Dream.IsGameOverInDream)
         {
             dialogState = DialogState.Subway;
             isDreamTutorial = false;

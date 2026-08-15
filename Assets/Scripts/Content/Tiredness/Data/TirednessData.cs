@@ -8,6 +8,8 @@ public class TirednessData
 
     [field: SerializeField] public float MaxTiredness { get; private set; } = TirednessConfigData.MAX_TIREDNESS;
 
+    [field: SerializeField] public bool IsPaused { get; private set; } = false;
+
     public bool IsTiredHalf => CurrentTiredness >= (MaxTiredness / 2.0f);
     public bool IsMaxed => CurrentTiredness >= MaxTiredness;
 
@@ -16,7 +18,7 @@ public class TirednessData
 
     public void Tick(float deltaTime)
     {
-        if (IsMaxed) return;
+        if (IsPaused || IsMaxed) return;
 
         CurrentTiredness = Math.Min(CurrentTiredness + deltaTime, MaxTiredness);
         OnTiredChange?.Invoke(CurrentTiredness);
@@ -31,9 +33,24 @@ public class TirednessData
     {
         CurrentTiredness = TirednessConfigData.INITIAL_TIREDNESS;
         MaxTiredness = TirednessConfigData.MAX_TIREDNESS;
+        IsPaused = false;
 
         OnTiredChange?.Invoke(CurrentTiredness);
     }
+
+    /// <summary>
+    /// 피로도를 특정 값으로 고정하고 증가를 멈춘다. (입석)
+    /// </summary>
+    public void SetForced(float value)
+    {
+        IsPaused = true;
+        Set(value);
+    }
+
+    /// <summary>
+    /// 멈춰 있던 피로도 증가를 재개한다.
+    /// </summary>
+    public void Resume() => IsPaused = false;
 
     /// <summary>
     /// 피로도를 특정 값으로 강제 설정
