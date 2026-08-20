@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -137,6 +137,8 @@ public class UI_TutorialPopup : UI_Popup
     [SerializeField] private Image playerEmotion;
     [SerializeField] private TextMeshProUGUI dialog;
 
+    private TutorialData _tutorial;
+
     public enum Images
     {
         Player,
@@ -150,45 +152,67 @@ public class UI_TutorialPopup : UI_Popup
         NextTransferText,
     }
 
+    private void Awake()
+    {
+        // 순수 C# 데이터 객체이므로 한 번만 캐싱한다 (종료 중 싱글톤 재접근 회피)
+        _tutorial = GameDataManager.Instance.Tutorial;
+    }
+
+    private void OnEnable()
+    {
+        if (_tutorial == null) return;
+
+        _tutorial.OnFlowTimeChanged += HandleFlowTimeChanged;
+        HandleFlowTimeChanged(_tutorial.StartFlowTime); // 초기 반영
+    }
+
+    private void OnDisable()
+    {
+        if (_tutorial == null) return;
+
+        _tutorial.OnFlowTimeChanged -= HandleFlowTimeChanged;
+    }
+
+    private void HandleFlowTimeChanged(bool startFlowTime)
+    {
+        if (startFlowTime) GameDataManager.Instance.Timer.Resume();
+        else GameDataManager.Instance.Timer.Pause();
+    }
+
     private void Update()
     {
         SetTransferText();
-        TutorialManager.Instance.SetTutorialTrigger();
+        UpdateHintVisibility();
 
-        if (Input.GetMouseButtonDown(0))
+        if (!Input.GetMouseButtonDown(0)) return;
+
+        // 주의: 반드시 증가 전에 캡처한다.
+        // 예전 코드는 SetTutorialTrigger()가 프레임 시작에 계산한 '증가 이전' 값을 읽었다.
+        // 계산 프로퍼티는 즉시 반영되므로 여기서 캡처하지 않으면 단계가 한 칸 밀린다.
+        bool wasWaiting = _tutorial.IsWaitingForPlayerAction;
+
+        _tutorial.AdvanceIdx();
+
+        if (wasWaiting)
         {
-            TutorialManager.Instance.IncreaseIdx();
-
-            if (TutorialManager.Instance.isSlapTutorial ||
-                TutorialManager.Instance.isStandingTutorial ||
-                TutorialManager.Instance.isSkipTutorial ||
-                TutorialManager.Instance.isEnterDreamTutorial ||
-                TutorialManager.Instance.isSubwayTutorialEnd ||
-                TutorialManager.Instance.isGameClearTutorial ||
-                TutorialManager.Instance.isEnterDreamTutorial ||
-                TutorialManager.Instance.isMoveTutorial ||
-                TutorialManager.Instance.isExitTutorial ||
-                TutorialManager.Instance.isDarkGameOverTutorial ||
-                TutorialManager.Instance.isPassedGameOverTutorial)
-            { 
-                GameManager.Instance.ResumeGame();
-                this.gameObject.SetActive(false);
-                return;
-            }
-            else
-            {
-                AdvanceDialog();
-                GameManager.Instance.StopGame();
-                this.gameObject.SetActive(true);
-            }
+            GameManager.Instance.ResumeGame();
+            gameObject.SetActive(false);
+            return;
         }
 
-        if(TutorialManager.Instance.subwayIdx == 8)
+        AdvanceDialog();
+        GameManager.Instance.StopGame();
+        gameObject.SetActive(true);
+    }
+
+    private void UpdateHintVisibility()
+    {
+        if (_tutorial.IsTirednessHintStep)
         {
             ShowTirednessUI();
             HideTransferText();
         }
-        else if (TutorialManager.Instance.subwayIdx == 9)
+        else if (_tutorial.IsTransferHintStep)
         {
             ShowTransferText();
             HideTirednessUI();
@@ -197,15 +221,6 @@ public class UI_TutorialPopup : UI_Popup
         {
             HideTirednessUI();
             HideTransferText();
-        }
-
-        if (!TutorialManager.Instance.startFlowTime)
-        {
-            GameDataManager.Instance.Timer.Pause();
-        }
-        else
-        {
-            GameDataManager.Instance.Timer.Resume();
         }
     }
 
@@ -219,13 +234,13 @@ public class UI_TutorialPopup : UI_Popup
         playerEmotion = GetImage((int)Images.Player);
         dialog = GetText((int)Texts.Dialog);
 
-        if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isGameoverTutorial)
+        if (!_tutorial.IsSubwayEndStep || _tutorial.IsGameOverActive)
         {
             GameManager.Instance.StopGame();
             AdvanceDialog();
         }
 
-        TutorialManager.Instance.tutorialPopup = this;
+        TutorialSystem.Instance.TutorialPopup = this;
     }
 
     private void ShowTirednessUI() { TirednessUI.SetActive(true); }
@@ -261,46 +276,42 @@ public class UI_TutorialPopup : UI_Popup
 
     private void ShowSubwayDialog()
     {
-        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Subway;
-        dialog.text = subwayTutorialDialog[TutorialManager.Instance.subwayIdx];
-        playerEmotion.sprite = ChangeEmotion(subwayEmotions[TutorialManager.Instance.subwayIdx]);
-
+        dialog.text = subwayTutorialDialog[_tutorial.SubwayIdx];
+        playerEmotion.sprite = ChangeEmotion(subwayEmotions[_tutorial.SubwayIdx]);
     }
 
     private void ShowDreamDialog()
     {
-        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
-        dialog.text = dreamTutorialDialog[TutorialManager.Instance.dreamIdx];
-        playerEmotion.sprite = ChangeEmotion(dreamEmotions[TutorialManager.Instance.dreamIdx]);
+        dialog.text = dreamTutorialDialog[_tutorial.DreamIdx];
+        playerEmotion.sprite = ChangeEmotion(dreamEmotions[_tutorial.DreamIdx]);
     }
 
     private void ShowGameOverDialog()
     {
-        TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
-        dialog.text = gameoverTutorialDialog[TutorialManager.Instance.gameoverIdx];
-        playerEmotion.sprite = ChangeEmotion(gameoverEmotions[TutorialManager.Instance.gameoverIdx]);
+        dialog.text = gameoverTutorialDialog[_tutorial.GameOverIdx];
+        playerEmotion.sprite = ChangeEmotion(gameoverEmotions[_tutorial.GameOverIdx]);
     }
 
     public void AdvanceDialog()
     {
-        switch (TutorialManager.Instance.dialogState)
+        switch (_tutorial.Phase)
         {
-            case TutorialManager.DialogState.Subway:
-                if (TutorialManager.Instance.subwayIdx < subwayTutorialDialog.Length)
+            case TutorialPhase.Subway:
+                if (_tutorial.SubwayIdx < subwayTutorialDialog.Length)
                 {
                     ShowSubwayDialog();
                 }
                 break;
 
-            case TutorialManager.DialogState.Dream:
-                if (TutorialManager.Instance.dreamIdx < dreamTutorialDialog.Length)
+            case TutorialPhase.Dream:
+                if (_tutorial.DreamIdx < dreamTutorialDialog.Length)
                 {
                     ShowDreamDialog();
                 }
                 break;
-        
-            case TutorialManager.DialogState.Gameover:
-                if (TutorialManager.Instance.gameoverIdx < gameoverTutorialDialog.Length)
+
+            case TutorialPhase.GameOver:
+                if (_tutorial.GameOverIdx < gameoverTutorialDialog.Length)
                 {
                     ShowGameOverDialog();
                 }
