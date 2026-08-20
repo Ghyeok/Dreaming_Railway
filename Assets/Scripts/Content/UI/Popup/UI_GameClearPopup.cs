@@ -79,7 +79,6 @@ public class UI_GameClearPopup : UI_Popup
     {
         if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
-            // 변경 전: TutorialManager.Instance.isSubwayTutorialEnd = false;
             // 새 팝업의 Init()이 AdvanceDialog()를 타도록 현재 단계를 소비 처리한다
             GameDataManager.Instance.Tutorial.ConsumeCurrentStep();
             UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
