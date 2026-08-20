@@ -16,7 +16,10 @@ public class TutorialSystem : SingletonManagers<TutorialSystem>, IManager
     {
         _data = GameDataManager.Instance.Tutorial;
 
-        // Init()이 두 번 호출돼도 중복 구독되지 않도록
+        // 의도적으로 OnEnable이 아니라 Init()에서 구독한다.
+        // 이 구독은 씬/활성 상태와 무관하게 살아 있어야 한다 — 뷰에 두었다가
+        // 꿈 탈출 시점의 SetFlowTime(true)를 놓친 것이 원래 버그였다.
+        // Init()이 두 번 호출돼도 중복 구독되지 않도록 -= 를 먼저 부른다.
         _data.OnFlowTimeChanged -= HandleFlowTimeChanged;
         _data.OnFlowTimeChanged += HandleFlowTimeChanged;
     }
@@ -58,16 +61,24 @@ public class TutorialSystem : SingletonManagers<TutorialSystem>, IManager
 
         _data ??= GameDataManager.Instance.Tutorial;
 
+        // 이벤트는 값이 바뀔 때만 온다 — 씬 진입 시 현재 값을 한 번 반영한다.
+        // 옛 UI_TutorialPopup.OnEnable이 하던 일이며, 없으면 첫 플레이와 재플레이가 갈린다.
+        HandleFlowTimeChanged(_data.StartFlowTime);
+
         if (_data.SubwayIdx < TutorialConfigData.GAME_CLEAR_IDX)
             TutorialPopup = UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
     }
 
-    /// <summary>꿈 씬 진입 — 예전 DreamManager가 필드 4개를 직접 대입하던 자리.</summary>
+    /// <summary>꿈 씬 진입 — 꿈 단계로 전환하고 팝업을 띄운다. EnterSubwayPhase()의 꿈 짝.</summary>
     public void EnterDreamPhase()
     {
         if (GameDataManager.Instance.Game.GameMode != GameMode.Tutorial) return;
 
         _data ??= GameDataManager.Instance.Tutorial;
+
+        // 이벤트는 값이 바뀔 때만 온다 — 씬 진입 시 현재 값을 한 번 반영한다.
+        // 옛 UI_TutorialPopup.OnEnable이 하던 일이며, 없으면 첫 플레이와 재플레이가 갈린다.
+        HandleFlowTimeChanged(_data.StartFlowTime);
 
         _data.EnterDream();
 
@@ -81,6 +92,29 @@ public class TutorialSystem : SingletonManagers<TutorialSystem>, IManager
         _data ??= GameDataManager.Instance.Tutorial;
 
         _data.EnterGameOver(kind);
+
+        if (TutorialPopup != null)
+        {
+            TutorialPopup.gameObject.SetActive(true);
+            TutorialPopup.AdvanceDialog();
+        }
+    }
+
+    /// <summary>
+    /// 지하철에서 기다리던 조작이 완료됐다 — 단계를 소비하고 팝업을 다시 띄운다.
+    /// 꿈 쪽 HandleNearExit()의 지하철 짝. UI_SubwayScene이 SubwayPlayer의 행동 이벤트를 받아 전달한다.
+    /// 스킵/잠들기는 곧바로 꿈 씬으로 넘어가므로 여기서 다루지 않는다 — EnterDreamPhase()가 받는다.
+    /// </summary>
+    public void NotifySubwayActionDone()
+    {
+        if (GameDataManager.Instance.Game.GameMode != GameMode.Tutorial) return;
+
+        _data ??= GameDataManager.Instance.Tutorial;
+
+        if (!_data.IsSlapStep && !_data.IsStandingStep) return;
+
+        _data.ConsumeCurrentStep();
+        GameManager.Instance.StopGame();
 
         if (TutorialPopup != null)
         {

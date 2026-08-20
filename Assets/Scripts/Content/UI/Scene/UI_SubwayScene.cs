@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UI_SubwayScene : UI_Scene
 {
     private const float STANDING_COOLDOWN_STEP = 0.5f;
-    private const float STANDING_TUTORIAL_DELAY = 2f;
 
     [SerializeField] private GameObject tirednessUI;
     [SerializeField] private SubwayPlayer subwayPlayer;
@@ -106,6 +105,8 @@ public class UI_SubwayScene : UI_Scene
             subwayPlayer.OnStood += HandleStood;
             subwayPlayer.OnSlapSuccessed += TriggerSlapCoolTimeUI;
             subwayPlayer.OnSlapSuccessed += UpdateSlapUI;
+            subwayPlayer.OnSlapSuccessed += HandleTutorialActionDone;
+            subwayPlayer.OnStood += HandleTutorialActionDone;
         }
 
         if (_subway != null)
@@ -124,6 +125,8 @@ public class UI_SubwayScene : UI_Scene
             subwayPlayer.OnStood -= HandleStood;
             subwayPlayer.OnSlapSuccessed -= TriggerSlapCoolTimeUI;
             subwayPlayer.OnSlapSuccessed -= UpdateSlapUI;
+            subwayPlayer.OnSlapSuccessed -= HandleTutorialActionDone;
+            subwayPlayer.OnStood -= HandleTutorialActionDone;
         }
 
         if (_subway != null)
@@ -227,22 +230,6 @@ public class UI_SubwayScene : UI_Scene
         subwayPlayer.TryStand();
     }
 
-    IEnumerator StandingTutorial()
-    {
-        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
-        {
-            _standingCg.blocksRaycasts = false;
-
-            yield return new WaitForSecondsRealtime(STANDING_TUTORIAL_DELAY);
-
-            _standingCg.blocksRaycasts = true;
-
-            GameDataManager.Instance.Tutorial.ConsumeCurrentStep();
-            TutorialSystem.Instance.TutorialPopup.gameObject.SetActive(true);
-            TutorialSystem.Instance.TutorialPopup.AdvanceDialog();
-        }
-    }
-
     private void TriggerSlapCoolTimeUI() { StartCoroutine(ShowSlapCoolTime()); }
     private IEnumerator ShowSlapCoolTime()
     {
@@ -289,6 +276,10 @@ public class UI_SubwayScene : UI_Scene
             GetButton(i).image.raycastTarget = (i == allowedButtonIdx);
         GetButton((int)Buttons.PauseButton).image.raycastTarget = true;
     }
+
+    // 뺨/입석 조작이 끝났음을 튜토리얼에 알린다 — 단계 소비와 팝업 재표시는 TutorialSystem이 한다.
+    // subwayPlayer에서 해제하므로 OnDisable에 TutorialSystem.Instance가 등장하지 않는다.
+    private void HandleTutorialActionDone() => TutorialSystem.Instance.NotifySubwayActionDone();
 
     private void TutorialButtonBlocker()
     {

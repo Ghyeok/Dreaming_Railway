@@ -24,6 +24,8 @@ public class GameDataManager : SingletonManagers<GameDataManager>, IManager
     public void ResetForNewRun()
     {
         _tiredness.Reset();
+        // 순서 주의: _tutorial.Reset()의 SetFlowTime(false)가 TutorialSystem을 통해
+        // Timer를 멈추므로, _timer.Reset()이 먼저 와야 그 일시정지가 살아남는다.
         _timer.Reset();
         _dream.Reset();
         _subway.Reset();

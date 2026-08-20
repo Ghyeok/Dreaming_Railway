@@ -27,21 +27,18 @@ public class DreamSystem : SingletonManagers<DreamSystem>, IManager
     /// <summary>꿈 씬 진입. DreamSceneDirector가 부른다.</summary>
     public void EnterDream()
     {
-        _data ??= GameDataManager.Instance.Dream;
         _data.EnterDream();
     }
 
     /// <summary>지하철 씬 복귀. SubwaySceneDirector가 부른다.</summary>
     public void ExitDream()
     {
-        _data ??= GameDataManager.Instance.Dream;
         _data.ExitDream();
     }
 
     /// <summary>꿈 속 게임오버 — 안개에 덮였을 때 FogMovement가 발행한다.</summary>
     private void HandleGameOver()
     {
-        _data ??= GameDataManager.Instance.Dream;
         _data.SetGameOverInDream();
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_GameOverPopup");
     }

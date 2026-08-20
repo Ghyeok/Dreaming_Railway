@@ -30,7 +30,7 @@ All global managers inherit `SingletonManagers<T>` (`Assets/Scripts/Core/Manager
 
 Initialization order (driven by `ManagerInitializer`, at `RuntimeInitializeOnLoadMethod(BeforeSceneLoad)`):
 ```
-GameManager → GameDataManager → SceneTransitionManager → SoundManager → UIManager → DreamManager → TutorialSystem
+GameManager → GameDataManager → SceneTransitionManager → SoundManager → UIManager → DreamSystem → TutorialSystem
 ```
 
 Access pattern everywhere: `GameManager.Instance`, `UIManager.Instance`, etc.
@@ -60,7 +60,7 @@ The rules:
 
 - **Data classes** (`GameData`, `TirednessData`, `SubwayData`, `TimerData`, `DreamData`, `TutorialData`) are pure C# — no `MonoBehaviour`, no singleton. State is `private set`; all mutation goes through explicit methods. **Events live on the data class**, not on the system.
 - **Data instances are created only by `GameDataManager`.** Never `new TirednessData()` / `new SubwayData()` elsewhere — a second instance produces silently divergent state rather than a loud failure.
-- **System classes** (`TirednessSystem`, `SubwayFlowSystem`, `StationSystem`, `TimerSystem`, `TutorialSystem`) hold no game state. They cache their data in `Init()` via `GameDataManager.Instance.<X>` and drive it from `Update()`.
+- **System classes** (`TirednessSystem`, `SubwayFlowSystem`, `StationSystem`, `TimerSystem`, `DreamSystem`, `TutorialSystem`) hold no game state. They cache their data in `Init()` via `GameDataManager.Instance.<X>` and drive it from there. 구동 방식은 둘로 갈린다 — `TirednessSystem` / `SubwayFlowSystem` / `TimerSystem`은 매 프레임 `Update()`로 티킹하고, `DreamSystem` / `TutorialSystem`은 씬 진입과 이벤트 시점에만 데이터를 바꾼다.
 - **Readers** (UI, background scrollers) subscribe to the data's events and read the data directly — they never go through a system.
 - Data classes must not reference `GameManager`/`UIManager`. Values that depend on them (e.g. `MaxTransferCount`) are computed by a system and passed in as a parameter.
 - `GameDataManager.Instance` may be read at initialization time, but **cache the result in a field** — do not re-read it per frame or during teardown.
@@ -84,6 +84,8 @@ private void OnDisable(){ _tiredness.OnTiredChange -= UpdateFill; }
 `TimerData` owns `PlayTime` (shown on the GameOver/GameClear results screens) and the global pause flag `IsPaused`, mutated via `Pause()` / `Resume()`. `TimerSystem` is a `DontDestroyOnLoad` singleton that only calls `_data.Tick(Time.deltaTime)` — time must keep running across scene transitions, same as `SubwayFlowSystem`. `Init()`는 `SubwaySceneDirector.Start()`가 부르며 데이터 캐싱만 한다 — `PlayTime` 리셋은 `GameDataManager.ResetForNewRun()` 한 곳에서만 일어난다. 꿈에서 돌아와 지하철 씬이 다시 올라와도 누적 시간이 날아가지 않는 이유다.
 
 Per-frame gameplay systems (`SubwayFlowSystem`, `TirednessSystem`) each run their own `Update()` and guard it with `if (_timer == null || _timer.IsPaused) return;`, where `_timer` is cached from `GameDataManager.Instance.Timer` in `Init()`. There is no central tick-dispatch interface. `Pause()` is used specifically where a popup (GameOver/GameClear) needs gameplay frozen without touching `Time.timeScale` (which would also freeze the popup's own fade-in). Full freezes that should also stop animations/coroutines use `GameManager.StopGame()/ResumeGame()` (`Time.timeScale = 0`) instead.
+
+**`IsPaused`에는 세 번째 쓰기 주체가 생겼다 — `TutorialSystem.HandleFlowTimeChanged()`다.** 앞의 둘은 팝업(GameOver/GameClear)과 `GameDataManager.ResetForNewRun()`의 `TimerData.Reset()`이고, 새로 붙은 셋째는 `TutorialData.StartFlowTime`이 false면 `Timer.Pause()`, true면 `Timer.Resume()`을 부르며 모드 가드가 걸려 있어 튜토리얼 모드에서만 동작한다. 튜토리얼 인트로 동안 지하철 흐름과 피로도가 함께 멈춰 서는 것이 이 경로다 — 그 구간에서는 팝업이 `Time.timeScale`을 1로 되돌려 놓으므로 `IsPaused`가 세계를 붙잡는 유일한 수단이다.
 
 > 일시정지 축이 세 개 있다: `TimerData.IsPaused`(전역, timeScale 무관), `GameManager.IsGameStopped`(`Time.timeScale = 0`), `TirednessData.IsPaused`(입석 전용). 앞의 두 개를 하나로 합치는 작업은 아직 하지 않았다.
 
@@ -190,17 +192,17 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 `UI_Popup` is stack-managed by `UIManager` (`ShowPopupUI<T>(name)` / `ClosePopupUI()`). `UI_Scene` is a single persistent overlay per scene (`ShowSceneUI<T>(name)`). All UI prefabs live under `Resources/Prefabs/UIs/`.
 
-### Dream (DreamData + DreamManager)
+### Dream (DreamData + DreamSystem)
 
-꿈 상태는 `DreamData`(`GameDataManager.Dream`)가 소유한다 — `IsInDream`, `IsGameOverInDream`. `DreamManager`(`Assets/Scripts/Content/Dream/DreamManager.cs`)는 상태를 갖지 않고 진입만 조정한다: `SceneManager.sceneLoaded`를 구독해 꿈 씬 진입 시 `EnterDream()`을 호출하고, 튜토리얼 모드에서는 `TutorialSystem.Instance.EnterDreamPhase()`를 불러 진행을 게이트한다.
+꿈 상태는 `DreamData`(`GameDataManager.Dream`)가 소유한다 — `IsInDream`, `IsGameOverInDream`. `DreamSystem`(`Content/Dream/System/DreamSystem.cs`)은 상태를 갖지 않고 꿈 데이터의 단일 변경 창구 역할만 한다 — `EnterDream()` / `ExitDream()`, 그리고 static `FogMovement.OnDreamGameOver`를 받는 `HandleGameOver()`. **`SceneManager.sceneLoaded` 구독은 없다.** 이제 각 씬의 디렉터가 자기 진입을 직접 선언한다 — `DreamSceneDirector.cs:24-25`가 `DreamSystem.Instance.EnterDream()` + `TutorialSystem.Instance.EnterDreamPhase()`를, `SubwaySceneDirector.cs:43-44`가 `DreamSystem.Instance.ExitDream()` + `TutorialSystem.Instance.EnterSubwayPhase()`를 부른다.
 
-> ⚠️ **`DreamManager`는 `ManagerInitializer` 목록에 반드시 있어야 한다.** 꿈 씬이 로드되기 *전에* 생성돼 `sceneLoaded`를 구독하고 있어야 하기 때문 — 빠지면 `IsInDream`이 영영 false로 남아 일시정지/설정/노선 팝업이 조용히 오작동한다.
+> ⚠️ **`DreamSystem`은 `ManagerInitializer` 목록에 반드시 있어야 한다 — 근거는 예전 `DreamManager` 때와 다르다.** `sceneLoaded`를 구독하지 않으므로 "씬 로드 전에 구독해야 한다"는 이유는 더 이상 성립하지 않는다. 남겨야 하는 이유는 두 가지다: (1) `OnEnable()`이 static `FogMovement.OnDreamGameOver`를 구독하므로 꿈 씬이 올라오기 전에 GameObject가 존재해야 꿈속 게임오버가 잡힌다, (2) 두 씬 디렉터가 `Start()`에서 `EnterDream()` / `ExitDream()`을 부르는데 그 전에 `Init()`이 `_data`를 캐싱해 두어야 한다 — 방어용 `_data ??=`를 제거했으므로 목록에서 빠지면 `NullReferenceException`으로 터진다.
 
 `IsGameOverInDream`은 새 런 시작 시 `GameDataManager.ResetForNewRun()`이 부르는 `DreamData.Reset()`으로 해제된다.
 
 뺨 횟수는 `DreamData`에 두지 않는다 — 맵 스포너(`MapXSpawn`, `MapYSpawn`)가 `GameDataManager.Instance.Subway.SlapNum`을 직접 읽는다. 예전에는 꿈 진입 시 복사본을 만들었는데, 원본과 조용히 어긋날 수 있어 제거했다.
 
-`DreamSceneManager` is the dream-side counterpart to `SubwaySceneDirector` — it controls dream init order and calls `Subway.SetFlowSpeed(true)`. `FogOrigin` centralizes the fog/map/camera direction decision.
+`DreamSceneDirector` is the dream-side counterpart to `SubwaySceneDirector` — it controls dream init order, calls `Subway.SetFlowSpeed(true)`, 그리고 씬 진입 선언(`DreamSystem.Instance.EnterDream()` + `TutorialSystem.Instance.EnterDreamPhase()`)까지 담당한다. `FogOrigin` centralizes the fog/map/camera direction decision.
 
 ### Dialogue & Tutorial
 
@@ -208,7 +210,9 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 **TutorialData** (`Content/Tutorial/Data/TutorialData.cs`, owned by `GameDataManager.Tutorial`): pure C# progress state — `Phase`(`TutorialPhase.Subway/Dream/GameOver`) + `SubwayIdx`/`DreamIdx`/`GameOverIdx`. 각 단계 트리거는 `is*Step`류 getter-only 프로퍼티(`IsSlapStep`, `IsStandingStep`, `IsSkipStep`, `IsEnterDreamStep`, `IsSubwayEndStep`, `IsGameClearStep`, `IsMoveStep`, `IsExitStep`)로 노출되며, 인덱스를 `TutorialConfigData` 상수와 비교해 매번 계산된다 (`SLAP_IDX=12`, `STANDING_IDX=16`, `ENTER_DREAM_IDX=19`, …) — 세터가 없다. `AdvanceIdx()` / `EnterDream()` / `ReturnToSubway()` / `EnterGameOver(kind)`가 상태를 바꾸고 `OnStepChanged`를 발행한다.
 
-**TutorialSystem** (`Content/Tutorial/System/TutorialSystem.cs`)은 `DontDestroyOnLoad` 싱글톤으로 `ManagerInitializer` 목록에 있다 — `Player`(꿈 씬)의 static 이벤트 `OnNearExit` / `OnDreamExit`를 구독해야 해서 꿈 씬 로드 **전에** 존재해야 하기 때문 (`DreamManager`와 같은 이유). 상태는 갖지 않고 `Init()`에서 `TutorialData`를 캐싱만 한다. `EnterDreamPhase()` / `EnterGameOverPhase(kind)`가 진입을 조정하며, `UI_TutorialPopup` 참조(`TutorialPopup` 프로퍼티)도 여기 둔다 — 뷰 참조는 데이터가 아니므로 `TutorialData`에 두지 않는다.
+**TutorialSystem** (`Content/Tutorial/System/TutorialSystem.cs`)은 `DontDestroyOnLoad` 싱글톤으로 `ManagerInitializer` 목록에 있다 — `Player`(꿈 씬)의 static 이벤트 `OnNearExit` / `OnDreamExit`를 구독해야 해서 꿈 씬 로드 **전에** 존재해야 하기 때문 (`DreamSystem`이 `FogMovement.OnDreamGameOver`를 구독하는 것과 같은 구조). 상태는 갖지 않고 `Init()`에서 `TutorialData`를 캐싱한다. `EnterSubwayPhase()` / `EnterDreamPhase()` / `EnterGameOverPhase(kind)`가 씬 진입을 조정하고, `NotifySubwayActionDone()`은 지하철 조작(뺨/입석)이 끝났다는 신호를 `UI_SubwayScene`에서 받아 단계를 소비하고 팝업을 다시 띄운다 — 꿈 쪽 `HandleNearExit()`의 지하철 짝이다. `UI_TutorialPopup` 참조(`TutorialPopup` 프로퍼티)도 여기 둔다 — 뷰 참조는 데이터가 아니므로 `TutorialData`에 두지 않는다.
+
+> **흐름 시간 → 전역 타이머 배선을 이 시스템이 소유한다.** `Init()`에서 `TutorialData.OnFlowTimeChanged`를 구독하고(`OnEnable`이 **아니다** — 씬/활성 상태와 무관하게 살아 있어야 꿈 탈출 시점의 `SetFlowTime(true)`를 놓치지 않는다), `HandleFlowTimeChanged()`가 모드 가드를 통과하면 `Timer.Pause()` / `Timer.Resume()`을 부른다. 이벤트는 **값이 바뀔 때만** 발행되므로 `EnterSubwayPhase()` / `EnterDreamPhase()`가 씬 진입마다 `HandleFlowTimeChanged(_data.StartFlowTime)`로 현재 값을 한 번 반영한다 — 이 prime이 없으면 세션 첫 플레이(초기값 false라 이벤트 미발생)와 재플레이(직전 값 true라 이벤트 발생)가 서로 다른 게임이 된다.
 
 > **대기 래치(await-action latch).** 예전 `TutorialManager`에서는 `SetTutorialTrigger()`의 유일한 호출부가 `UI_TutorialPopup.Update()`였고, 팝업이 플레이어 조작을 기다리며 스스로 비활성화되면 그 프레임에서 계산된 값이 그대로 얼어붙었다 — `HandleNearExit()`은 그 얼어붙은 값에 의존했다. `TutorialData`는 이를 명시적으로 재현한다: 팝업이 꺼질 때 `BeginAwaitAction()`이 게이트 인덱스를 그 순간 값으로 고정하고, 팝업의 `OnEnable()`에서 부르는 `EndAwaitAction()`이 풀어준다. 8개 단계 프로퍼티는 이 고정된 게이트(`GateIdx`/`GatePhase`)를 읽는다. 힌트 2개(`IsTirednessHintStep`, `IsTransferHintStep`)는 원본과 동일하게 예외다 — **라이브** `Phase`/`SubwayIdx`를 그대로 읽으며 래치를 거치지 않는다.
 
@@ -241,7 +245,7 @@ Thin wrapper around Unity `PlayerPrefs`. PlayerPrefs keys: `MaxClearStage`, `BGM
 
 ## Core Event Flow
 
-**Dream entry**: Tiredness hits 100 → `TirednessData.OnTiredMaxed` → `SubwaySceneDirector.MoveToDreamScene()` (피로도 재계산 + `GoToDream()`). `SubwayPlayer.OnFellAsleep`(바로 잠들기)과 `OnSkipped`(입석 후 스킵)도 동일한 단일 경로를 통하며, `_isEnteringDream`이 세 경로의 중복 발화를 막는다. DreamScene 로드 후 `DreamSceneManager.Start()`가 `Subway.SetFlowSpeed(true)`로 흐름을 3–4배로 올린다 — 그동안 `SubwayFlowSystem`은 계속 틱한다.
+**Dream entry**: Tiredness hits 100 → `TirednessData.OnTiredMaxed` → `SubwaySceneDirector.MoveToDreamScene()` (피로도 재계산 + `GoToDream()`). `SubwayPlayer.OnFellAsleep`(바로 잠들기)과 `OnSkipped`(입석 후 스킵)도 동일한 단일 경로를 통하며, `_isEnteringDream`이 세 경로의 중복 발화를 막는다. DreamScene 로드 후 `DreamSceneDirector.Start()`가 `Subway.SetFlowSpeed(true)`로 흐름을 3–4배로 올린다 — 그동안 `SubwayFlowSystem`은 계속 틱한다.
 
 **Dream exit**: Player touches `ExitDoor` → `WhitePanelSpawn` fades → SubwayScene reloads → `SubwaySceneDirector.Start()`가 `Subway.SetFlowSpeed(false)`로 복구. `StationSystem.Init()`은 `HasLines`가 true라 노선을 재생성하지 않으므로 진행 상태가 이어진다.
 
@@ -271,7 +275,8 @@ Assets/Scripts/
 │   ├── Player/                    # SubwayPlayer (UI 반응 행동 + 애니메이션), AnimationEventHanlder
 │   ├── Dream/
 │   │   ├── Data/                  # DreamData
-│   │   └── (DreamManager, DreamSceneManager, FogOrigin, map spawners)
+│   │   ├── System/                # DreamSystem(DontDestroyOnLoad)
+│   │   └── (DreamSceneDirector, FogOrigin, map spawners)
 │   ├── Map/                       # Background/parallax scrollers
 │   ├── UI/
 │   │   ├── Base/                  # UI_Base, UI_EventHandler
@@ -293,4 +298,4 @@ Assets/Scripts/
 - **`UI_SubwayScene.HideTirednessUI()`** — private이고 호출부가 없다.
 - **`SubwayPlayer.TryTransfer()`** — 호출부가 없다. 애니메이터에 `isTransfer` 파라미터와 `PlayerTransferStanding` 상태가 실재하므로 환승 연출을 붙일 자리는 남아 있다.
 - **`SubwayData.AdvanceState()`의 `isFinalStation`이 노선 진행 판정에도 쓰인다.** `CurTransferCount`는 `GoToNextLine()` 안에서만 증가하는데, 거기 도달하는 조건이 `CurTransferCount == MaxTransferCount - 1`이라 자기참조 교착이다. 노말/무한 모드에서는 `GoToNextLine()`이 **영영 호출되지 않고**, 열차가 환승역을 지나쳐 `stations` 배열 끝을 넘어가 `ArgumentOutOfRangeException`으로 터진다. 튜토리얼(Day 0)은 `MaxTransferCount = 1`이라 `0 == 0`으로 우연히 통과해 영향이 없다. 진행 판정은 `CurrentStationIdx == transferIdx`만 봐야 하고, `isFinalStation`은 종착 배경 신호 전용으로 남겨야 한다.
-- **`UI_TutorialPopup`은 꿈 진입(`TutorialSystem.EnterDreamPhase()`)과 게임 클리어(`UI_GameClearPopup`) 두 곳에서만 생성된다.** 지하철 씬 진입 시 팝업을 띄우는 코드가 없고 `SceneName.Tutorial`을 읽는 곳도 없어, **지하철 단계 튜토리얼(뺨 12 / 입석 16 / 스킵 17)이 시작되지 않는다.** `SubwayIdx`가 0에서 벗어나지 못한다. 이 때문에 `UI_SubwayScene.StandingTutorial()`과 `TutorialButtonBlocker()`도 호출부가 없다. 이번 리팩토링 이전부터의 결함이다.
+- **`UI_SubwayScene.TutorialButtonBlocker()`에 호출부가 없다.** "튜토리얼 중 해당 단계의 버튼만 활성화"를 위해 `BlockAllButtonsExcept()`와 함께 남아 있지만 아무도 부르지 않는다 — 배선은 아직 하지 않았다. (지하철 단계 튜토리얼이 아예 시작되지 않던 문제는 `TutorialSystem.EnterSubwayPhase()`가 지하철 씬 진입마다 팝업을 띄우면서 해소됐다.)
