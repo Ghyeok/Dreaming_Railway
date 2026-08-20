@@ -165,22 +165,6 @@ public class UI_TutorialPopup : UI_Popup
         // 팝업이 다시 보인다 = 기다리던 조작이 완료됐다.
         // 최초 활성화 때도 호출되지만 대기 중이 아니면 무해하다.
         _tutorial.EndAwaitAction();
-
-        _tutorial.OnFlowTimeChanged += HandleFlowTimeChanged;
-        HandleFlowTimeChanged(_tutorial.StartFlowTime); // 초기 반영
-    }
-
-    private void OnDisable()
-    {
-        if (_tutorial == null) return;
-
-        _tutorial.OnFlowTimeChanged -= HandleFlowTimeChanged;
-    }
-
-    private void HandleFlowTimeChanged(bool startFlowTime)
-    {
-        if (startFlowTime) GameDataManager.Instance.Timer.Resume();
-        else GameDataManager.Instance.Timer.Pause();
     }
 
     private void Update()

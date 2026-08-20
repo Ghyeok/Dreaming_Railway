@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [DefaultExecutionOrder(-100)]
-public class DreamSceneManager : MonoBehaviour
+public class DreamSceneDirector : MonoBehaviour
 {
     [SerializeField] private FogSpawn fogSpawn;
     [SerializeField] private MapXSpawn mapXSpawn;
@@ -19,6 +19,10 @@ public class DreamSceneManager : MonoBehaviour
         // ㅡㅡㅡㅡ 그 외 일회성 메서드 ㅡㅡㅡㅡ
         SoundManager.Instance.DreamBGM();
         GameDataManager.Instance.Subway.SetFlowSpeed(true);
+
+        // ㅡㅡㅡㅡ 씬 진입 선언 ㅡㅡㅡㅡ
+        DreamSystem.Instance.EnterDream();
+        TutorialSystem.Instance.EnterDreamPhase();
     }
 
     private void OnDestroy()

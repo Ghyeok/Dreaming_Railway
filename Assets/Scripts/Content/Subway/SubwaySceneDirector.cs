@@ -39,6 +39,10 @@ public class SubwaySceneDirector : MonoBehaviour
         SoundManager.Instance.SubwayBGM();
         _subwayData.SetFlowSpeed(false);
 
+        // ㅡㅡㅡㅡ 씬 진입 선언 ㅡㅡㅡㅡ
+        DreamSystem.Instance.ExitDream();
+        TutorialSystem.Instance.EnterSubwayPhase();
+
         // ㅡㅡㅡㅡ 씬 전환 이벤트 구독 ㅡㅡㅡㅡ
         _tirednessData.OnTiredMaxed += MoveToDreamScene; // 피로도 100
         _subwayPlayer.OnFellAsleep += MoveToDreamScene; // 바로 잠들기

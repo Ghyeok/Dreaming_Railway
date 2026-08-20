@@ -14,7 +14,7 @@ public static class ManagerInitializer
             SceneTransitionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
-            DreamManager.Instance,
+            DreamSystem.Instance,
             TutorialSystem.Instance
         };
 

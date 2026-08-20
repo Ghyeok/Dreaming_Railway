@@ -95,7 +95,6 @@ public class FogMovement : MonoBehaviour
                 if (!gameOverTriggered)
                 {
                     OnDreamGameOver?.Invoke();
-                    DreamManager.Instance.GameOverInDream();
                     cameraMoveScript.enabled = false;
                     gameOverTriggered = true;
                 }
