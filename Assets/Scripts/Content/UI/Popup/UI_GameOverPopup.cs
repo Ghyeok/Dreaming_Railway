@@ -102,29 +102,12 @@ public class UI_GameOverPopup : UI_Popup
 
     private void GameOverTutorial()
     {
-        if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
-        {
-            TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
-            TutorialManager.Instance.isGameoverTutorial = true;
-            TutorialManager.Instance.startIncreaseTired = false;
+        if (GameDataManager.Instance.Game.GameMode != GameMode.Tutorial) return;
 
-            if (GameDataManager.Instance.Dream.IsGameOverInDream)
-            {
-                TutorialManager.Instance.isDarkGameOverTutorial = true;
-                TutorialManager.Instance.gameoverIdx = TutorialConfigData.DARK_GAMEOVER_IDX;
-            }
-            //else if (SubwayRuleManager.Instance.isGameOverInSubway)
-            //{
-            //    TutorialManager.Instance.isPassedGameOverTutorial = true;
-            //    TutorialManager.Instance.gameoverIdx = TutorialConfigData.PASS_GAMEOVER_IDX;
-            //}
-
-            if (TutorialManager.Instance.tutorialPopup != null)
-            {
-                TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
-                TutorialManager.Instance.tutorialPopup.AdvanceDialog();
-            }
-        }
+        // 현재 도달 가능한 게임오버는 '꿈속 게임오버' 하나뿐이다.
+        // 환승 실패 경로는 SubwayData.SetGameOver() 호출부가 없어 죽어 있으므로
+        // (스펙 8장), 복구되면 여기서 GameOverKind.Passed로 분기하면 된다.
+        TutorialSystem.Instance.EnterGameOverPhase(GameOverKind.Dark);
     }
 
     private void OnEnable()

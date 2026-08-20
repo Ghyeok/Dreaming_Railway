@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -31,13 +31,14 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
         if (GameDataManager.Instance.Game.GameMode == GameMode.Tutorial)
         {
-            TutorialManager.Instance.isSubwayTutorial = false;
-            TutorialManager.Instance.isDreamTutorial = true;
-            TutorialManager.Instance.startIncreaseTired = false;
-            TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
-
-            if (TutorialManager.Instance.dreamIdx < TutorialConfigData.EXIT_IDX)
-                TutorialManager.Instance.tutorialPopup = UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+            // 변경 전 (5줄):
+            //   TutorialManager.Instance.isSubwayTutorial = false;
+            //   TutorialManager.Instance.isDreamTutorial = true;
+            //   TutorialManager.Instance.startIncreaseTired = false;
+            //   TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
+            //   if (TutorialManager.Instance.dreamIdx < TutorialConfigData.EXIT_IDX)
+            //       TutorialManager.Instance.tutorialPopup = UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
+            TutorialSystem.Instance.EnterDreamPhase();
         }
     }
 
