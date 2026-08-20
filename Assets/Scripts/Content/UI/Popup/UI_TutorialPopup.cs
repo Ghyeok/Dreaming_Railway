@@ -162,6 +162,10 @@ public class UI_TutorialPopup : UI_Popup
     {
         if (_tutorial == null) return;
 
+        // 팝업이 다시 보인다 = 기다리던 조작이 완료됐다.
+        // 최초 활성화 때도 호출되지만 대기 중이 아니면 무해하다.
+        _tutorial.EndAwaitAction();
+
         _tutorial.OnFlowTimeChanged += HandleFlowTimeChanged;
         HandleFlowTimeChanged(_tutorial.StartFlowTime); // 초기 반영
     }
@@ -195,6 +199,10 @@ public class UI_TutorialPopup : UI_Popup
 
         if (wasWaiting)
         {
+            // 팝업이 꺼지면 Update가 멈춰 게이트가 갱신되지 않는다.
+            // 예전에는 그 덕에 플래그가 얼어붙었고, HandleNearExit이 그 값에 의존했다.
+            _tutorial.BeginAwaitAction();
+
             GameManager.Instance.ResumeGame();
             gameObject.SetActive(false);
             return;
