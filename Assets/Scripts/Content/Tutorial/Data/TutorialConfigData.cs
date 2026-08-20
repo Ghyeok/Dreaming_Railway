@@ -1,6 +1,6 @@
 ﻿/// <summary>
 /// 튜토리얼 진행 인덱스 상수.
-/// TutorialManager는 씬에 배치되지 않고 런타임에 자동 생성되므로,
+/// TutorialSystem은 씬에 배치되지 않고 런타임에 자동 생성되므로,
 /// 인스펙터 오버라이드가 존재할 수 없어 const로 고정해도 동작이 같다.
 /// </summary>
 public static class TutorialConfigData

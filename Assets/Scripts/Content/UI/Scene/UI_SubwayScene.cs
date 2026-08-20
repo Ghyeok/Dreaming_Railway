@@ -235,9 +235,9 @@ public class UI_SubwayScene : UI_Scene
 
             _standingCg.blocksRaycasts = true;
 
-            TutorialManager.Instance.isStandingTutorial = false;
-            TutorialManager.Instance.tutorialPopup.gameObject.SetActive(true);
-            TutorialManager.Instance.tutorialPopup.AdvanceDialog();
+            GameDataManager.Instance.Tutorial.ConsumeCurrentStep();
+            TutorialSystem.Instance.TutorialPopup.gameObject.SetActive(true);
+            TutorialSystem.Instance.TutorialPopup.AdvanceDialog();
         }
     }
 
@@ -290,9 +290,9 @@ public class UI_SubwayScene : UI_Scene
 
     private void TutorialButtonBlocker()
     {
-        if (TutorialManager.Instance.isSlapTutorial)
+        if (GameDataManager.Instance.Tutorial.IsSlapStep)
             BlockAllButtonsExcept((int)Buttons.SlapButton, (int)Images.SlapFadeImage);
-        else if (TutorialManager.Instance.isStandingTutorial || TutorialManager.Instance.isSkipTutorial)
+        else if (GameDataManager.Instance.Tutorial.IsStandingStep || GameDataManager.Instance.Tutorial.IsSkipStep)
             BlockAllButtonsExcept((int)Buttons.StandingButton, (int)Images.StandingFadeImage);
         else
         {

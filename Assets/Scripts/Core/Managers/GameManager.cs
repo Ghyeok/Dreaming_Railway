@@ -23,7 +23,6 @@ public class GameManager : SingletonManagers<GameManager>, IManager
         _data.SetCurrentDay(day);
 
         GameDataManager.Instance.ResetForNewRun();
-        TutorialManager.Instance.ResetTutorial(); // 튜토리얼 상태는 매니저 소유라 별도로 부른다
     }
 
     public void UpdateMaxClearDay()

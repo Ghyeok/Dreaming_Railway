@@ -15,7 +15,7 @@ public static class ManagerInitializer
             SoundManager.Instance,
             UIManager.Instance,
             DreamManager.Instance,
-            TutorialManager.Instance
+            TutorialSystem.Instance
         };
 
         InitializeManagers(managersInOrder);
