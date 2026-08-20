@@ -10,13 +10,12 @@ public static class ManagerInitializer
         IManager[] managersInOrder = new IManager[]
         {
             GameManager.Instance,
+            GameDataManager.Instance,
             SceneTransitionManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
-            TimerSystem.Instance,
-            // 꿈 씬 로드 전에 생성돼 sceneLoaded를 구독하고 있어야 한다
             DreamManager.Instance,
-            SubwayFlowSystem.Instance
+            TutorialManager.Instance
         };
 
         InitializeManagers(managersInOrder);

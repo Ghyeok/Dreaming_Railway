@@ -7,14 +7,11 @@ using UnityEngine;
 /// </summary>
 public class TimerSystem : SingletonManagers<TimerSystem>, IManager
 {
-    private TimerData _data; // 실제 데이터
-
-    public TimerData Data => _data;
+    private TimerData _data;
 
     public void Init()
     {
         _data = GameDataManager.Instance.Timer;
-        _data.Reset();
     }
 
     private void Update()

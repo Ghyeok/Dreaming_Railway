@@ -37,8 +37,12 @@ public class StationSystem : MonoBehaviour
     {
         _subway = GameDataManager.Instance.Subway;
         _game = GameDataManager.Instance.Game;
+
         // 필드 이니셜라이저로 두면 Awake 이전(씬 역직렬화 중)에 평가되므로 여기서 읽는다
         _isNormalMode = _game.GameMode == GameMode.NormalMode;
+
+        // 뺨/입석 세션 값은 노선 재생성 여부와 무관하게 지하철 씬 진입마다 초기화한다
+        _subway.ResetPlayerSession(_game.GameMode == GameMode.InfiniteMode);
 
         // 꿈속씬에서 복귀한 경우 — 이미 노선 데이터가 있으므로 재생성/리셋하지 않는다
         if (_subway.HasLines) return;

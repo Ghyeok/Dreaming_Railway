@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -13,12 +13,6 @@ public abstract class UI_Base : MonoBehaviour
     void Start()
     {
         Init();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     // 유니티 최상위 클래스인 Object 배열로 저장

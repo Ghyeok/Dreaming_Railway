@@ -6,6 +6,9 @@ using UnityEngine;
 [System.Serializable]
 public class TimerData
 {
+    /// <summary>
+    /// 실제 게임 플레이 타임
+    /// </summary>
     [field: SerializeField] public float PlayTime { get; private set; } = 0f;
 
     // 전역 일시정지 — 팝업이 뜬 동안 게임플레이 시스템들의 Tick을 멈추는 용도.

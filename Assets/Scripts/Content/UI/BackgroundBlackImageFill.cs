@@ -9,8 +9,6 @@ public class BackgroundBlackImageFill : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-
-        // 순수 C# 데이터 객체이므로 한 번만 캐싱한다 (종료 중 싱글톤 재접근 회피)
         _tiredness = GameDataManager.Instance.Tiredness;
     }
 
@@ -18,7 +16,7 @@ public class BackgroundBlackImageFill : MonoBehaviour
     {
         if (_tiredness == null) return;
 
-        _tiredness.OnTiredChange += UpdateFill;
+        _tiredness.OnTiredChanged += UpdateFill;
         UpdateFill(_tiredness.CurrentTiredness); // 초기값
     }
 
@@ -26,7 +24,7 @@ public class BackgroundBlackImageFill : MonoBehaviour
     {
         if (_tiredness == null) return;
 
-        _tiredness.OnTiredChange -= UpdateFill;
+        _tiredness.OnTiredChanged -= UpdateFill;
     }
 
     void UpdateFill(float currentTired)

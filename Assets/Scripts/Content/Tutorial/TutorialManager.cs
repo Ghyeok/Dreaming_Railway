@@ -41,20 +41,6 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
     public bool isDarkGameOverTutorial;
     public bool isPassedGameOverTutorial;
 
-    [Header("팝업이 내려가기 전까지의 인덱스")]
-    public int slapIdx = 12; 
-    public int standingIdx = 16;
-    public int skipIdx = 17;
-    public int enterDreamIdx = 19;
-    public int subwayEndIdx = 25;
-    public int gameClearIdx = 28;
-
-    public int moveIdx = 3;
-    public int exitIdx = 4;
-
-    public int darkIdx = 0;
-    public int passIdx = 1;
-
     public UI_TutorialPopup tutorialPopup;
 
     public void Init()
@@ -91,7 +77,7 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
         startFlowTime = true;
         startIncreaseTired = true;
 
-        if (subwayIdx < subwayEndIdx && !GameDataManager.Instance.Dream.IsGameOverInDream)
+        if (subwayIdx < TutorialConfigData.SUBWAY_END_IDX && !GameDataManager.Instance.Dream.IsGameOverInDream)
         {
             dialogState = DialogState.Subway;
             isDreamTutorial = false;
@@ -136,34 +122,34 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 
     public void SetTutorialTrigger()
     {
-        if (subwayIdx == slapIdx) isSlapTutorial = true;
+        if (subwayIdx == TutorialConfigData.SLAP_IDX) isSlapTutorial = true;
         else isSlapTutorial = false;
 
-        if (subwayIdx == standingIdx) isStandingTutorial = true;
+        if (subwayIdx == TutorialConfigData.STANDING_IDX) isStandingTutorial = true;
         else isStandingTutorial = false;
 
-        if (subwayIdx == skipIdx) isSkipTutorial = true;
+        if (subwayIdx == TutorialConfigData.SKIP_IDX) isSkipTutorial = true;
         else isSkipTutorial = false;
 
-        if (subwayIdx == enterDreamIdx) isEnterDreamTutorial = true;
+        if (subwayIdx == TutorialConfigData.ENTER_DREAM_IDX) isEnterDreamTutorial = true;
         else isEnterDreamTutorial = false;
 
-        if (subwayIdx == enterDreamIdx)
+        if (subwayIdx == TutorialConfigData.ENTER_DREAM_IDX)
         {
             startFlowTime = true;
             startIncreaseTired = true;
         }
 
-        if (subwayIdx == subwayEndIdx) isSubwayTutorialEnd = true;
+        if (subwayIdx == TutorialConfigData.SUBWAY_END_IDX) isSubwayTutorialEnd = true;
         else isSubwayTutorialEnd = false;
 
-        if (subwayIdx == gameClearIdx) isGameClearTutorial = true;
+        if (subwayIdx == TutorialConfigData.GAME_CLEAR_IDX) isGameClearTutorial = true;
         else isGameClearTutorial = false;
 
-        if (dreamIdx == moveIdx) isMoveTutorial = true;
+        if (dreamIdx == TutorialConfigData.MOVE_IDX) isMoveTutorial = true;
         else isMoveTutorial = false;
 
-        if (dreamIdx == exitIdx) isExitTutorial = true;
+        if (dreamIdx == TutorialConfigData.EXIT_IDX) isExitTutorial = true;
         else isExitTutorial= false;
     }
 

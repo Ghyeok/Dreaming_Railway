@@ -22,8 +22,8 @@ public class GameManager : SingletonManagers<GameManager>, IManager
     {
         _data.SetCurrentDay(day);
 
-        // 새 런이 시작되므로 이전 런의 꿈 상태(특히 IsGameOverInDream)를 지운다
-        GameDataManager.Instance.Dream.Reset();
+        GameDataManager.Instance.ResetForNewRun();
+        TutorialManager.Instance.ResetTutorial(); // 튜토리얼 상태는 매니저 소유라 별도로 부른다
     }
 
     public void UpdateMaxClearDay()

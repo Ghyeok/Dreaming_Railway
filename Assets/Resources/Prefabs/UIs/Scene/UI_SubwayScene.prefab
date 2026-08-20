@@ -742,7 +742,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5afbd4f200d2844f88f13a9d16ac019, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SubwayPlayerContext
+  m_EditorClassIdentifier: Assembly-CSharp::SubwayPlayer
 --- !u!1 &4484445774774568428
 GameObject:
   m_ObjectHideFlags: 0

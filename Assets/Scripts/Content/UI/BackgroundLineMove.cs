@@ -13,7 +13,6 @@ public class BackgroundLineMove : MonoBehaviour
         originRotation = Quaternion.Euler(new Vector3(0f, 0f, -90f));
         targetRotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
 
-        // 순수 C# 데이터 객체이므로 한 번만 캐싱한다 (종료 중 싱글톤 재접근 회피)
         _tiredness = GameDataManager.Instance.Tiredness;
     }
 
@@ -21,7 +20,7 @@ public class BackgroundLineMove : MonoBehaviour
     {
         if (_tiredness == null) return;
 
-        _tiredness.OnTiredChange += UpdateRotation;
+        _tiredness.OnTiredChanged += UpdateRotation;
         UpdateRotation(_tiredness.CurrentTiredness);
     }
 
@@ -29,7 +28,7 @@ public class BackgroundLineMove : MonoBehaviour
     {
         if (_tiredness == null) return;
 
-        _tiredness.OnTiredChange -= UpdateRotation;
+        _tiredness.OnTiredChanged -= UpdateRotation;
     }
 
     private void UpdateRotation(float currentTired)

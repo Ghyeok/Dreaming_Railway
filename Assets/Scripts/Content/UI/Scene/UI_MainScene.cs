@@ -88,8 +88,8 @@ public class UI_MainScene : UI_Scene
     {
         GameDataManager.Instance.Game.SetGameMode(GameMode.InfiniteMode);
 
-        // 무한 모드는 StartDay()를 거치지 않으므로 여기서 직접 꿈 상태를 초기화한다
-        GameDataManager.Instance.Dream.Reset();
+        // 무한 모드는 StartDay()를 거치지 않으므로 여기서 직접 초기화한다
+        GameDataManager.Instance.ResetForNewRun();
 
         SceneTransitionManager.Instance.GoToSubway();
     }

@@ -22,6 +22,7 @@ public class SubwayFlowSystem : SingletonManagers<SubwayFlowSystem>, IManager
         if (GameManager.Instance.IsGameStopped) return;
 
         _data.Tick(Time.deltaTime);
+        _data.TickSlapCooldown(Time.deltaTime);
     }
 
     // Day 클리어는 꿈 씬 안에서도 발생할 수 있다.

@@ -60,7 +60,7 @@ public class BackgroundManager : MonoBehaviour
 
     public void DecideNextBackground()
     {
-        int remain = _subway.CurrentLine.transferIdx - _subway.CurrentStationIdx;
+        int remain = _subway.CurrentLineData.transferIdx - _subway.CurrentStationIdx;
         int rand = Random.Range(1, 101); // 1 ~ 100의 랜덤한 숫자
 
         bool isOutside = (currentType == BackgroundType.ConnectR ||

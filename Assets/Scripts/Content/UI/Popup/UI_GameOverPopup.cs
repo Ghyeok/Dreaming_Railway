@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -44,12 +44,6 @@ public class UI_GameOverPopup : UI_Popup
         var player = FindAnyObjectByType<Player>();
         if (player != null)
             playerInputScript = player.gameObject;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public override void Init()
@@ -117,12 +111,12 @@ public class UI_GameOverPopup : UI_Popup
             if (GameDataManager.Instance.Dream.IsGameOverInDream)
             {
                 TutorialManager.Instance.isDarkGameOverTutorial = true;
-                TutorialManager.Instance.gameoverIdx = 0;
+                TutorialManager.Instance.gameoverIdx = TutorialConfigData.DARK_GAMEOVER_IDX;
             }
             //else if (SubwayRuleManager.Instance.isGameOverInSubway)
             //{
             //    TutorialManager.Instance.isPassedGameOverTutorial = true;
-            //    TutorialManager.Instance.gameoverIdx = 1;
+            //    TutorialManager.Instance.gameoverIdx = TutorialConfigData.PASS_GAMEOVER_IDX;
             //}
 
             if (TutorialManager.Instance.tutorialPopup != null)

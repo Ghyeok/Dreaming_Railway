@@ -1,27 +1,62 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 [System.Serializable]
 public class TirednessData
 {
+    /// <summary>
+    /// 현재 피로도
+    /// </summary>
     [field: SerializeField] public float CurrentTiredness {  get; private set; } = TirednessConfigData.INITIAL_TIREDNESS;
 
+    /// <summary>
+    /// 최대 피로도
+    /// </summary>
     [field: SerializeField] public float MaxTiredness { get; private set; } = TirednessConfigData.MAX_TIREDNESS;
 
+    /// <summary>
+    /// 피로도 증가가 멈췄는가?
+    /// </summary>
     [field: SerializeField] public bool IsPaused { get; private set; } = false;
 
+    /// <summary>
+    /// 피로도가 절반 이상 찼는가?
+    /// </summary>
     public bool IsTiredHalf => CurrentTiredness >= (MaxTiredness / 2.0f);
+    /// <summary>
+    /// 피로도가 최대인가?
+    /// </summary>
     public bool IsMaxed => CurrentTiredness >= MaxTiredness;
 
-    public event Action<float> OnTiredChange; // 피로도가 변할 때 마다 Invoke, 현재 피로도를 넘겨줌
-    public event Action OnTiredMaxed; // 피로도가 최대에 도달했을 때 Invoke
+    public event Action<float> OnTiredChanged;
+    public event Action OnTiredMaxed;
+    /// <summary>
+    /// IsTiredHalf가 실제로 바뀔 때만 발행한다. (OnTiredChanged는 매 틱 발행되므로
+    /// 애니메이션처럼 전이 시점만 필요한 구독자는 이쪽을 쓴다)
+    /// </summary>
+    public event Action<bool> OnTiredHalfChanged;
+
+    private bool _wasTiredHalf = false;
+
+    /// <summary>
+    /// 값 변경 알림을 한 곳으로 모은다. 모든 변경 메서드는 이걸 거친다.
+    /// </summary>
+    private void NotifyChanged()
+    {
+        OnTiredChanged?.Invoke(CurrentTiredness);
+
+        if (_wasTiredHalf == IsTiredHalf) return;
+
+        _wasTiredHalf = IsTiredHalf;
+        OnTiredHalfChanged?.Invoke(_wasTiredHalf);
+    }
 
     public void Tick(float deltaTime)
     {
         if (IsPaused || IsMaxed) return;
 
         CurrentTiredness = Math.Min(CurrentTiredness + deltaTime, MaxTiredness);
-        OnTiredChange?.Invoke(CurrentTiredness);
+        NotifyChanged();
 
         if (IsMaxed) OnTiredMaxed?.Invoke();
     }
@@ -35,7 +70,7 @@ public class TirednessData
         MaxTiredness = TirednessConfigData.MAX_TIREDNESS;
         IsPaused = false;
 
-        OnTiredChange?.Invoke(CurrentTiredness);
+        NotifyChanged();
     }
 
     /// <summary>
@@ -58,7 +93,7 @@ public class TirednessData
     public void Set(float value)
     {
         CurrentTiredness = Math.Clamp(value, 0f, MaxTiredness);
-        OnTiredChange?.Invoke(CurrentTiredness);
+        NotifyChanged();
     }
 
     /// <summary>
@@ -67,7 +102,7 @@ public class TirednessData
     public void Decrease(float value)
     {
         CurrentTiredness = Math.Clamp(CurrentTiredness - value, 0f, MaxTiredness);
-        OnTiredChange?.Invoke(CurrentTiredness);
+        NotifyChanged();
     }
 
     /// <summary>
@@ -79,6 +114,6 @@ public class TirednessData
             ? CurrentTiredness / 2f            // 깨어있는 시간이 100초 이하
             : (CurrentTiredness / 3f) * 2f;    // 깨어있는 시간이 100초 초과
 
-        OnTiredChange?.Invoke(CurrentTiredness);
+        NotifyChanged();
     }
 }

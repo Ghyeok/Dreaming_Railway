@@ -36,7 +36,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
             TutorialManager.Instance.startIncreaseTired = false;
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Dream;
 
-            if (TutorialManager.Instance.dreamIdx < TutorialManager.Instance.exitIdx)
+            if (TutorialManager.Instance.dreamIdx < TutorialConfigData.EXIT_IDX)
                 TutorialManager.Instance.tutorialPopup = UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
         }
     }

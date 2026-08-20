@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -34,30 +34,9 @@ public class UI_SubwayLinePopup : UI_Popup
         Init();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // 팝업은 열릴 때마다 새로 Instantiate되고, 열려 있는 동안 지하철은 멈춰 있다.
+    // 그래서 이벤트 구독 없이 여는 시점에 한 번 읽는 것으로 충분하다.
     void Start()
-    {
-        SetLineText();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnEnable()
-    {
-        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
-        //TransferManager.OnTransferSuccess += UpdateLinePopup;
-    }
-
-    private void OnDisable()
-    {
-        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
-    }
-
-    private void UpdateLinePopup()
     {
         SetLineText();
     }

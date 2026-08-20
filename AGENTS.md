@@ -30,12 +30,14 @@ All global managers inherit `SingletonManagers<T>` (`Assets/Scripts/Core/Manager
 
 Initialization order (driven by `ManagerInitializer`, at `RuntimeInitializeOnLoadMethod(BeforeSceneLoad)`):
 ```
-GameManager → SceneTransitionManager → SoundManager → UIManager → TimerSystem → DreamManager → SubwayFlowSystem
+GameManager → GameDataManager → SceneTransitionManager → SoundManager → UIManager → DreamManager → TutorialManager
 ```
 
 Access pattern everywhere: `GameManager.Instance`, `UIManager.Instance`, etc.
 
-`GameDataManager` is deliberately **not** in that list — it does not implement `IManager` and is created lazily on first access (`SubwayFlowSystem.Init()` pulls it at `BeforeSceneLoad`, so creation is still deterministic).
+이 리스트에는 **싱글톤 매니저만** 넣는다. `GameDataManager`는 `Init()`가 비어 있지만 모든 데이터의 소유자라 누가 읽기 전에 존재해야 하므로 목록 앞쪽에 둔다.
+
+`TimerSystem`과 `SubwayFlowSystem`은 매니저가 아니라 **이 목록에 없다.** 둘 다 `SubwaySceneDirector.Start()`가 `Init()`을 부른다 — 지하철 씬에 들어올 때마다. 단 구현은 여전히 `SingletonManagers<T>`라 GameObject는 `DontDestroyOnLoad`로 살아남고, 꿈 씬에서도 계속 틱한다 (싱글톤을 떼면 지하철 흐름이 꿈에서 멈춰 핵심 메커닉이 깨진다).
 
 > `SingletonManagers<T>.Instance` returns **null** after `OnDestroy`/`OnApplicationQuit` (`_isShuttingDown`). Never call `.Instance` from `OnDisable`/`OnDestroy` — cache the reference in a field during `Awake`/`Init` and unsubscribe through that field.
 
@@ -61,6 +63,7 @@ The rules:
 - **Readers** (UI, background scrollers) subscribe to the data's events and read the data directly — they never go through a system.
 - Data classes must not reference `GameManager`/`UIManager`. Values that depend on them (e.g. `MaxTransferCount`) are computed by a system and passed in as a parameter.
 - `GameDataManager.Instance` may be read at initialization time, but **cache the result in a field** — do not re-read it per frame or during teardown.
+- **런 단위 리셋은 `GameDataManager.ResetForNewRun()` 하나로 수렴한다.** 각 데이터의 `Reset()`을 개별 호출하지 말 것. 호출 지점은 두 곳 — `GameManager.StartDay()`(튜토리얼+노말)와 `UI_MainScene.InfiniteModeOnClicked()`(무한 모드는 `StartDay()`를 타지 않는다). 튜토리얼 상태는 데이터가 아니라 매니저 소유라 `TutorialManager.ResetTutorial()`을 그 옆에서 나란히 부른다.
 
 Example:
 
@@ -77,9 +80,9 @@ private void OnDisable(){ _tiredness.OnTiredChange -= UpdateFill; }
 
 ### Timer (TimerData + TimerSystem) — Global Pause & Play Time
 
-`TimerData` owns `PlayTime` (shown on the GameOver/GameClear results screens) and the global pause flag `IsPaused`, mutated via `Pause()` / `Resume()`. `TimerSystem` is a `DontDestroyOnLoad` singleton that only calls `_data.Tick(Time.deltaTime)` — time must keep running across scene transitions, same as `SubwayFlowSystem`.
+`TimerData` owns `PlayTime` (shown on the GameOver/GameClear results screens) and the global pause flag `IsPaused`, mutated via `Pause()` / `Resume()`. `TimerSystem` is a `DontDestroyOnLoad` singleton that only calls `_data.Tick(Time.deltaTime)` — time must keep running across scene transitions, same as `SubwayFlowSystem`. `Init()`는 `SubwaySceneDirector.Start()`가 부르며 데이터 캐싱만 한다 — `PlayTime` 리셋은 `GameDataManager.ResetForNewRun()` 한 곳에서만 일어난다. 꿈에서 돌아와 지하철 씬이 다시 올라와도 누적 시간이 날아가지 않는 이유다.
 
-Per-frame gameplay systems (`SubwayFlowSystem`, `TirednessSystem`, `SubwayPlayerContext`) each run their own `Update()` and guard it with `if (_timer == null || _timer.IsPaused) return;`, where `_timer` is cached from `GameDataManager.Instance.Timer` in `Init()`. There is no central tick-dispatch interface. `Pause()` is used specifically where a popup (GameOver/GameClear) needs gameplay frozen without touching `Time.timeScale` (which would also freeze the popup's own fade-in). Full freezes that should also stop animations/coroutines use `GameManager.StopGame()/ResumeGame()` (`Time.timeScale = 0`) instead.
+Per-frame gameplay systems (`SubwayFlowSystem`, `TirednessSystem`) each run their own `Update()` and guard it with `if (_timer == null || _timer.IsPaused) return;`, where `_timer` is cached from `GameDataManager.Instance.Timer` in `Init()`. There is no central tick-dispatch interface. `Pause()` is used specifically where a popup (GameOver/GameClear) needs gameplay frozen without touching `Time.timeScale` (which would also freeze the popup's own fade-in). Full freezes that should also stop animations/coroutines use `GameManager.StopGame()/ResumeGame()` (`Time.timeScale = 0`) instead.
 
 > 일시정지 축이 세 개 있다: `TimerData.IsPaused`(전역, timeScale 무관), `GameManager.IsGameStopped`(`Time.timeScale = 0`), `TirednessData.IsPaused`(입석 전용). 앞의 두 개를 하나로 합치는 작업은 아직 하지 않았다.
 
@@ -109,13 +112,16 @@ Per-frame gameplay systems (`SubwayFlowSystem`, `TirednessSystem`, `SubwayPlayer
 _subwayData = GameDataManager.Instance.Subway;
 _tirednessData = GameDataManager.Instance.Tiredness;
 
+TimerSystem.Instance.Init();       // 씬을 넘는 전역 시스템도 여기서 물린다
+SubwayFlowSystem.Instance.Init();
+
 _station.Init();   // 노선이 없으면 생성 → _subway.BeginRun()
 _tiredness.Init();
 subwayPlayerContext.Init();
 
 // 꿈속 진입 이벤트를 단일 지점에서 처리 (_isEnteringDream으로 중복 진입 차단)
 _tirednessData.OnTiredMaxed += MoveToDreamScene;
-subwayPlayerContext.OnStateChanged += MoveToDreamScene; // DEEPSLEEP 상태 필터
+subwayPlayerContext.OnFellAsleep += MoveToDreamScene;   // 바로 잠들기
 subwayPlayerContext.OnSkipped += MoveToDreamScene;      // 입석 후 스킵
 
 // 팝업 표시도 Director가 담당 (데이터는 이벤트만 발행)
@@ -125,7 +131,7 @@ _subwayData.OnSubwayGameOver += OnSubwayGameOver;
 
 `MoveToDreamScene()`은 진입 전처리(피로도 조정, 흐름 속도 변경)와 `SceneTransitionManager.Instance.GoToDream()` 호출을 순서대로 담당한다. `Start()`의 `SetFlowSpeed(false)`가 꿈에서 걸린 3–4배속을 되돌리는 **유일한 지점**이므로 제거하면 안 된다.
 
-> ⚠️ **프리팹 안의 컴포넌트에 씬 오브젝트 참조를 `[SerializeField]`로 물리지 말 것.** `SubwayPlayerContext`는 `UI_SubwayScene.prefab` 소속이라, 씬 오브젝트를 가리키는 필드는 프리팹 애셋에 저장될 수 없고 프리팹 인스턴스 override로만 남는다 — Revert 한 번이나 다른 씬 배치에서 조용히 null이 된다. 그런 의존은 만들지 말고 데이터를 직접 쓰도록 설계할 것.
+> ⚠️ **프리팹 안의 컴포넌트에 씬 오브젝트 참조를 `[SerializeField]`로 물리지 말 것.** `SubwayPlayer`는 `UI_SubwayScene.prefab` 소속이라, 씬 오브젝트를 가리키는 필드는 프리팹 애셋에 저장될 수 없고 프리팹 인스턴스 override로만 남는다 — Revert 한 번이나 다른 씬 배치에서 조용히 null이 된다. 그런 의존은 만들지 말고 데이터를 직접 쓰도록 설계할 것.
 
 ### Tiredness (TirednessData + TirednessSystem)
 
@@ -133,34 +139,44 @@ _subwayData.OnSubwayGameOver += OnSubwayGameOver;
 
 `IsPaused`도 **데이터가 소유한다.** 입석 시 `SetForced(STANDING_TIREDNESS)`가 값을 99.9로 고정하면서 증가를 멈추고 (`Tick()`이 `IsPaused`에서 조기 return), `TirednessSystem.Init()`의 `Resume()`이 지하철 씬 재진입 때 해제한다. 99.9인 이유는 100 미만이어야 `OnTiredMaxed`로 인한 자동 꿈 진입이 걸리지 않기 때문.
 
-`TirednessSystem`은 틱 구동 전용이다 — 상태도, 값 변경 래퍼도 갖지 않는다. **값을 바꾸는 쪽은 시스템을 거치지 말고 `TirednessData`를 직접 호출한다** (`SubwayPlayerContext`가 `_tiredness.Decrease()` / `_tiredness.SetForced()`를 직접 부르는 식). 시스템 참조를 주입하면 위의 프리팹 제약에 걸린다.
+`TirednessSystem`은 틱 구동 전용이다 — 상태도, 값 변경 래퍼도 갖지 않는다. **값을 바꾸는 쪽은 시스템을 거치지 말고 `TirednessData`를 직접 호출한다** (`SubwayPlayer`가 `_tiredness.Decrease()` / `_tiredness.SetForced()`를 직접 부르는 식). 시스템 참조를 주입하면 위의 프리팹 제약에 걸린다.
 
 ### Subway Flow (SubwayData + SubwayFlowSystem)
 
 `SubwayData.Tick()` is the state machine. It alternates between travelling (`IsSubwayStopping = false`) and stopped at a station (`IsSubwayStopping = true`), driven by `TimeToNextState` counting down at `FlowSpeed` (1× normally, 3.1–4.1× while in the dream scene). `Tick()` no-ops until `HasLines` is true, so it is safe for it to run before `StationSystem` has generated the lines.
 
-`SubwayFlowSystem` is a **`DontDestroyOnLoad` singleton, not a scene object** — the subway must keep ticking while the player is in DreamScene, which is the core mechanic. It holds no state; it only calls `_data.Tick()` and forwards `OnDayCleared` to `GameManager.UpdateMaxClearDay()` (that must happen even when the day is cleared mid-dream, where `SubwaySceneDirector` doesn't exist).
+`SubwayFlowSystem` is a **`DontDestroyOnLoad` singleton, not a scene object** — the subway must keep ticking while the player is in DreamScene, which is the core mechanic. It holds no state; it only calls `_data.Tick()` / `_data.TickSlapCooldown()` and forwards `OnDayCleared` to `GameManager.UpdateMaxClearDay()` (that must happen even when the day is cleared mid-dream, where `SubwaySceneDirector` doesn't exist). `Init()` 호출은 `SubwaySceneDirector.Start()`가 맡고, 재진입 시 중복 구독은 `Init()` 안에서 막는다.
 
-`StationSystem` generates the line data once per run (travel time 10–15 s, stop time 6–8 s, 20 stations per line) and hands it over with `_subway.BeginRun(lines, maxTransferCount)`. It skips generation entirely when `_subway.HasLines` is already true, which is how state survives the DreamScene round trip. Transfer count: `day + 1` in normal mode, 999 in infinite mode.
+`StationSystem` generates the line data once per run (travel time 10–15 s, stop time 6–8 s, 20 stations per line) and hands it over with `_subway.BeginRun(lines, maxTransferCount)`. It skips generation entirely when `_subway.HasLines` is already true, which is how state survives the DreamScene round trip. `Init()`은 그 조기 return **앞에서** `_subway.ResetPlayerSession()`을 부른다 — 뺨/입석 세션 값은 노선 재생성 여부와 무관하게 지하철 씬 진입마다 초기화돼야 하기 때문. Transfer count: `day + 1` in normal mode, 999 in infinite mode.
 
 > `IsRunFinished` is set when the last transfer completes. It is required: without it `Tick()`'s `while` loop would index past the end of `SubwayLines` forever and freeze the editor.
 
 ### Subway Rules (in SubwayData)
 
-The former `SubwayRuleManager` is gone; its rules now live as data + `SubwayPlayerContext` actions:
-- **Slap**: `SubwayPlayerContext.TrySlap()` → `SubwayData.StartSlapCooldown()`, reduces tiredness by `TiredDecreaseBySlap` (3 normal / 4 infinite) with a 5-second cooldown ticked by `TickSlapCooldown()`.
-- **Standing**: `TryStand()` forces tiredness to 99.9; `TrySkip()` calls `SubwayData.ForceTransferByStanding()`. After standing, the player cannot stand again until 2 more lines end (`AddStandingCount()` subscribed to `OnLineEnded`).
+The former `SubwayRuleManager` is gone; its rules now live as data + `SubwayPlayer` actions:
+- **Slap**: `SubwayPlayer.TrySlap()` → `SubwayData.StartSlapCooldown()`, reduces tiredness by `TiredDecreaseBySlap` (3 normal / 4 infinite) with a 5-second cooldown ticked by `SubwayFlowSystem.Update()` → `TickSlapCooldown()`.
+- **Standing**: `TryStand()` forces tiredness to 99.9; `TrySkip()` calls `SubwayData.ForceTransferByStanding()`. After standing, the player cannot stand again until 2 more lines end — `AdvanceState()`가 `OnLineEnded` 발행 직전에 `AddStandingCount()`를 직접 부른다. **`ForceTransferByStanding()`은 이 경로를 타지 않는다** (스킵한 그 자리에서 쿨다운이 한 칸 새면 안 되므로).
 - **Game over**: `SubwayData.SetGameOver()` fires `OnSubwayGameOver`; `SubwaySceneDirector` shows the popup. ⚠️ Nothing currently calls `SetGameOver()` — the missed-transfer detection was lost when `SubwayRuleManager` was deleted, so the subway game-over path is dead.
 
-### Player State Machine (SubwayPlayerContext)
+### SubwayPlayer — UI 반응 행동 + 애니메이션
 
-The state-class FSM was removed; state is now a plain `PlayerState` enum (`NONE / SLEEP / STANDING / DEEPSLEEP`) switched by `ChangeState()`, which fires `OnStateChanged`:
+FSM은 완전히 사라졌다. `PlayerState` enum / `ChangeState()` / `OnStateChanged`는 없다. `SubwayPlayer`가 하는 일은 두 가지뿐이다:
 
-- **SLEEP** — default; tiredness accumulates
-- **STANDING** — plays `isStanding` animation, triggers `StandingSFX()`, forces tiredness to 99.9
-- **DEEPSLEEP** — `SubwaySceneDirector` filters this state to trigger the dream scene load
+1. **UI 입력에 반응하는 행동** — 각 메서드가 `규칙 판정 → 데이터 변경 → SFX → 애니메이션 → 이벤트`를 직선으로 수행한다.
 
-`SubwayPlayerContext.Data` is **the shared `GameDataManager.Instance.Subway` instance**, not a private copy — `Init()` calls `Data.ResetPlayerSession(isInfiniteMode)` to clear the per-run slap/standing values. `AnimationEventHandler` (`Assets/Scripts/Content/Player/AnimationEventHanlder.cs`) bridges Unity animation events to player callbacks.
+| 메서드 | 데이터 변경 | 애니메이터 | 이벤트 | 구독자 |
+|---|---|---|---|---|
+| `TrySlap()` | `StartSlapCooldown()` + `Tiredness.Decrease()` | `isSlap` | `OnSlapSuccessed` | `UI_SubwayScene` (쿨타임 게이지 / 횟수) |
+| `TryStand()` | `Tiredness.SetForced(99.9)` | `isStanding` | `OnStood` | `UI_SubwayScene` (입석 → 스킵 버튼 교체) |
+| `TrySkip()` | `StartStandingCooldown()` + `ForceTransferByStanding()` | `isSkip` | `OnSkipped` | `SubwaySceneDirector` (꿈 진입) |
+| `TryFallAsleep()` | 없음 | `isFallAsleep` | `OnFellAsleep` | `SubwaySceneDirector` (꿈 진입) |
+| `TryTransfer()` | 없음 | `isTransfer` | 없음 | ⚠️ 현재 호출부 없음 |
+
+2. **피로도에 따른 애니메이션** — `TirednessData.OnTiredChange`를 구독해 `isSleeping` bool을 `IsTiredHalf`로 갱신한다.
+
+> `_isPoseLocked` bool 하나가 FSM이 하던 게이팅을 대신한다. 입석/잠들기로 포즈를 잡으면 true가 되고, 그 뒤로는 피로도 변화가 `isSleeping`을 건드리지 못한다 — 입석은 피로도를 99.9로 **고정**하므로 이 잠금이 없으면 `OnTiredChange`가 곧바로 입석 포즈를 수면 포즈로 덮어쓴다. 상태기계가 아니라 애니메이션 포즈 잠금 플래그다.
+
+`SubwayPlayer`는 게임 데이터를 **소유하지도, 중계하지도 않는다.** 예전의 `public SubwayData Data` 패스스루는 사라졌고, UI는 `GameDataManager.Instance.Subway`를 직접 읽는다. 런 세션 초기화(`ResetPlayerSession()`)는 `StationSystem.Init()`이, 뺨 쿨타임 틱은 `SubwayFlowSystem.Update()`가 담당한다. `AnimationEventHandler` (`Assets/Scripts/Content/Player/AnimationEventHanlder.cs`) bridges Unity animation events to player callbacks.
 
 ### UI Framework
 
@@ -179,7 +195,7 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 > ⚠️ **`DreamManager`는 `ManagerInitializer` 목록에 반드시 있어야 한다.** 꿈 씬이 로드되기 *전에* 생성돼 `sceneLoaded`를 구독하고 있어야 하기 때문 — 빠지면 `IsInDream`이 영영 false로 남아 일시정지/설정/노선 팝업이 조용히 오작동한다.
 
-`IsGameOverInDream`은 새 런 시작 시 `DreamData.Reset()`으로 해제된다. 호출 지점이 **두 곳**인 이유는 무한 모드가 `StartDay()`를 거치지 않기 때문이다: `GameManager.StartDay()`(튜토리얼+노말)와 `UI_MainScene.InfiniteModeOnClicked()`(무한). 리셋 창구가 통합되면 하나로 합쳐질 자리다.
+`IsGameOverInDream`은 새 런 시작 시 `GameDataManager.ResetForNewRun()`이 부르는 `DreamData.Reset()`으로 해제된다.
 
 뺨 횟수는 `DreamData`에 두지 않는다 — 맵 스포너(`MapXSpawn`, `MapYSpawn`)가 `GameDataManager.Instance.Subway.SlapNum`을 직접 읽는다. 예전에는 꿈 진입 시 복사본을 만들었는데, 원본과 조용히 어긋날 수 있어 제거했다.
 
@@ -189,7 +205,9 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 **ScriptManager** (`Assets/Scripts/Content/Dialogue/ScriptManager.cs`): Loads per-day story text as `DialogLine` structs (Text + Emotion fields). Shows `UI_ScriptPopup` at day start and after clearing. Emotion sprites are loaded from `Resources/`.
 
-**TutorialManager** (`Assets/Scripts/Content/Tutorial/TutorialManager.cs`): Drives multi-phase tutorial (Subway, Dream, GameOver phases) via progression indices (e.g., `slapIdx=12`, `standingIdx=16`, `enterDreamIdx=19`). Controls tutorial popup visibility and overlays. Uses additive scene loading for `TutorialScene` and `ScriptScene`.
+**TutorialManager** (`Assets/Scripts/Content/Tutorial/TutorialManager.cs`): Drives multi-phase tutorial (Subway, Dream, GameOver phases). 진행 인덱스(`subwayIdx` / `dreamIdx` / `gameoverIdx`)를 들고 있고, 각 단계의 트리거 값은 `TutorialConfigData` 상수와 비교한다 (`SLAP_IDX=12`, `STANDING_IDX=16`, `ENTER_DREAM_IDX=19`, …). Controls tutorial popup visibility and overlays. Uses additive scene loading for `TutorialScene` and `ScriptScene`.
+
+> `TutorialManager`는 씬에 배치되지 않고 런타임 자동 생성되므로 인스펙터 오버라이드가 존재할 수 없다 — 그래서 트리거 인덱스를 `const`로 고정해도 동작이 같다. 아직 남은 진행 상태(`is*Tutorial` 플래그, `dialogState`, 세 인덱스)는 `TutorialData`로 분리할 자리다.
 
 ### SoundManager
 
@@ -209,6 +227,7 @@ Thin wrapper around Unity `PlayerPrefs`. PlayerPrefs keys: `MaxClearStage`, `BGM
 | `StationData` | `Content/Subway/Data/StationData.cs` | `stationType` (Normal/Transfer/Destination), `travelTime`, `stopTime` |
 | `TirednessData` | `Content/Tiredness/Data/TirednessData.cs` | Owned by `GameDataManager.Tiredness`. `CurrentTiredness` / `MaxTiredness` / `IsPaused` |
 | `TirednessConfigData` | `Content/Tiredness/Data/TirednessConfigData.cs` | 피로도 상수 (초기/최대값, 꿈 회복 기준, `STANDING_TIREDNESS`) |
+| `TutorialConfigData` | `Content/Tutorial/Data/TutorialConfigData.cs` | 튜토리얼 트리거 인덱스 상수 (`SLAP_IDX`, `EXIT_IDX`, `DARK_GAMEOVER_IDX` 등) |
 | `TimerData` | `Content/Timer/Data/TimerData.cs` | Owned by `GameDataManager.Timer`. `PlayTime` / `IsPaused` (전역 일시정지) |
 | `DreamData` | `Content/Dream/Data/DreamData.cs` | Owned by `GameDataManager.Dream`. `IsInDream` / `IsGameOverInDream` |
 | `GameData` | `Content/GameData.cs` | Owned by `GameDataManager.Game`. `GameMode` / `CurrentDay` / `MaxClearDay` |
@@ -218,7 +237,7 @@ Thin wrapper around Unity `PlayerPrefs`. PlayerPrefs keys: `MaxClearStage`, `BGM
 
 ## Core Event Flow
 
-**Dream entry**: Tiredness hits 100 → `TirednessData.OnTiredMaxed` → `SubwaySceneDirector.MoveToDreamScene()` (피로도 재계산 + `GoToDream()`). DeepSleep 상태 진입과 입석 스킵도 동일한 단일 경로를 통하며, `_isEnteringDream`이 세 경로의 중복 발화를 막는다. DreamScene 로드 후 `DreamSceneManager.Start()`가 `Subway.SetFlowSpeed(true)`로 흐름을 3–4배로 올린다 — 그동안 `SubwayFlowSystem`은 계속 틱한다.
+**Dream entry**: Tiredness hits 100 → `TirednessData.OnTiredMaxed` → `SubwaySceneDirector.MoveToDreamScene()` (피로도 재계산 + `GoToDream()`). `SubwayPlayer.OnFellAsleep`(바로 잠들기)과 `OnSkipped`(입석 후 스킵)도 동일한 단일 경로를 통하며, `_isEnteringDream`이 세 경로의 중복 발화를 막는다. DreamScene 로드 후 `DreamSceneManager.Start()`가 `Subway.SetFlowSpeed(true)`로 흐름을 3–4배로 올린다 — 그동안 `SubwayFlowSystem`은 계속 틱한다.
 
 **Dream exit**: Player touches `ExitDoor` → `WhitePanelSpawn` fades → SubwayScene reloads → `SubwaySceneDirector.Start()`가 `Subway.SetFlowSpeed(false)`로 복구. `StationSystem.Init()`은 `HasLines`가 true라 노선을 재생성하지 않으므로 진행 상태가 이어진다.
 
@@ -245,7 +264,7 @@ Assets/Scripts/
 │   ├── Timer/
 │   │   ├── Data/                  # TimerData (플레이 타임 + 전역 일시정지)
 │   │   └── System/                # TimerSystem(DontDestroyOnLoad)
-│   ├── Player/                    # SubwayPlayerContext (enum 기반 상태), AnimationEventHanlder
+│   ├── Player/                    # SubwayPlayer (UI 반응 행동 + 애니메이션), AnimationEventHanlder
 │   ├── Dream/
 │   │   ├── Data/                  # DreamData
 │   │   └── (DreamManager, DreamSceneManager, FogOrigin, map spawners)
@@ -255,7 +274,9 @@ Assets/Scripts/
 │   │   ├── Scene/                 # UI_Scene, UI_SubwayScene, UI_DreamScene, UI_MainScene, ...
 │   │   └── Popup/                 # UI_Popup + all popup implementations
 │   ├── Dialogue/                  # ScriptManager (per-day story text)
-│   └── Tutorial/                  # TutorialManager (multi-phase tutorial)
+│   └── Tutorial/
+│       ├── Data/                  # TutorialConfigData (트리거 인덱스 상수)
+│       └── (TutorialManager — multi-phase tutorial)
 └── Utils/                         # ManagerInitializer, Util, Define, SceneName
 ```
 
@@ -264,6 +285,7 @@ Assets/Scripts/
 이미 파악됐지만 아직 고치지 않은 것들 — 관련 코드를 건드릴 때 참고할 것.
 
 - **지하철 게임오버 경로 단절** — `SubwayData.SetGameOver()` 호출부가 없다. 환승 실패 감지가 `SubwayRuleManager` 삭제와 함께 사라졌다.
-- **Day 재시작 시 데이터 리셋 창구 부재** — `TirednessSystem.ResetTiredness()`는 정의만 있고 호출부가 없다. `GameDataManager`에 리셋 진입점이 없는 것이 근본 원인. `DreamData.Reset()`은 임시로 `GameManager.StartDay()` + `UI_MainScene.InfiniteModeOnClicked()` 두 곳에서 직접 호출하고 있는데, 통합 진입점(`GameDataManager.ResetForNewRun()` 등)이 생기면 그리로 흡수돼야 한다.
 - **`TirednessSystem.SetTirednessOnDreamEnter()`의 도메인 결합** — 피로도 시스템이 `GameDataManager.Instance.Subway.CurrentLineTime`을 직접 읽는다. `TirednessData.ApplyDreamEnterRecovery(awakeTime)`는 파라미터로 받도록 잘 설계돼 있으므로, 호출부가 값을 넘기는 형태가 맞다.
 - **`UI_SubwayScene.HideTirednessUI()`** — private이고 호출부가 없다.
+- **`SubwayPlayer.TryTransfer()`** — 호출부가 없다. 애니메이터에 `isTransfer` 파라미터와 `PlayerTransferStanding` 상태가 실재하므로 환승 연출을 붙일 자리는 남아 있다.
+- **`TutorialManager`의 상태가 여전히 public 필드 19개** — `is*Tutorial` 플래그들은 진행 인덱스에서 파생되는 값이면서(`SetTutorialTrigger()`) 동시에 외부에서 꺼서 소비하는 래치다(`UI_SubwayScene`, `UI_GameClearPopup`, `DreamManager`). 그대로 `TutorialData`로 옮기면 세터만 19개 생기므로, 제대로 하려면 인덱스 기반 상태기계로 재설계해야 한다 — 데이터 이관이 아니라 별도 설계 과제.

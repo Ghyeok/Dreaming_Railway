@@ -9,8 +9,6 @@ public class TirednessSystem : MonoBehaviour
     private TirednessData _data; // 실제 데이터
     private TimerData _timer;
 
-    public TirednessData Data => _data;
-
     public void Init()
     {
         _data = GameDataManager.Instance.Tiredness;
@@ -27,9 +25,6 @@ public class TirednessSystem : MonoBehaviour
 
         _data.Tick(Time.deltaTime);
     }
-
-    // 초기값으로 초기화
-    public void ResetTiredness() => _data.Reset();
 
     public void SetTirednessOnDreamEnter() // 잠에 들때 피로도 재설정
     {
