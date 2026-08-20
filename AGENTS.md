@@ -51,15 +51,16 @@ GameDataManager
   ├─ Tiredness : TirednessData      // 피로도
   ├─ Timer     : TimerData          // 플레이 타임 + 전역 일시정지
   ├─ Dream     : DreamData          // 꿈 진입 여부 + 꿈속 게임오버
+  ├─ Tutorial  : TutorialData       // 튜토리얼 진행 단계 + 인덱스
   └─ Subway    : SubwayData         // 노선 + 진행 + 환승 + 뺨/입석/게임오버
                    └─ List<LineData> → List<StationData>
 ```
 
 The rules:
 
-- **Data classes** (`GameData`, `TirednessData`, `SubwayData`, `TimerData`, `DreamData`) are pure C# — no `MonoBehaviour`, no singleton. State is `private set`; all mutation goes through explicit methods. **Events live on the data class**, not on the system.
+- **Data classes** (`GameData`, `TirednessData`, `SubwayData`, `TimerData`, `DreamData`, `TutorialData`) are pure C# — no `MonoBehaviour`, no singleton. State is `private set`; all mutation goes through explicit methods. **Events live on the data class**, not on the system.
 - **Data instances are created only by `GameDataManager`.** Never `new TirednessData()` / `new SubwayData()` elsewhere — a second instance produces silently divergent state rather than a loud failure.
-- **System classes** (`TirednessSystem`, `SubwayFlowSystem`, `StationSystem`, `TimerSystem`) hold no game state. They cache their data in `Init()` via `GameDataManager.Instance.<X>` and drive it from `Update()`.
+- **System classes** (`TirednessSystem`, `SubwayFlowSystem`, `StationSystem`, `TimerSystem`, `TutorialSystem`) hold no game state. They cache their data in `Init()` via `GameDataManager.Instance.<X>` and drive it from `Update()`.
 - **Readers** (UI, background scrollers) subscribe to the data's events and read the data directly — they never go through a system.
 - Data classes must not reference `GameManager`/`UIManager`. Values that depend on them (e.g. `MaxTransferCount`) are computed by a system and passed in as a parameter.
 - `GameDataManager.Instance` may be read at initialization time, but **cache the result in a field** — do not re-read it per frame or during teardown.
@@ -291,3 +292,5 @@ Assets/Scripts/
 - **`TirednessSystem.SetTirednessOnDreamEnter()`의 도메인 결합** — 피로도 시스템이 `GameDataManager.Instance.Subway.CurrentLineTime`을 직접 읽는다. `TirednessData.ApplyDreamEnterRecovery(awakeTime)`는 파라미터로 받도록 잘 설계돼 있으므로, 호출부가 값을 넘기는 형태가 맞다.
 - **`UI_SubwayScene.HideTirednessUI()`** — private이고 호출부가 없다.
 - **`SubwayPlayer.TryTransfer()`** — 호출부가 없다. 애니메이터에 `isTransfer` 파라미터와 `PlayerTransferStanding` 상태가 실재하므로 환승 연출을 붙일 자리는 남아 있다.
+- **`SubwayData.AdvanceState()`의 `isFinalStation`이 노선 진행 판정에도 쓰인다.** `CurTransferCount`는 `GoToNextLine()` 안에서만 증가하는데, 거기 도달하는 조건이 `CurTransferCount == MaxTransferCount - 1`이라 자기참조 교착이다. 노말/무한 모드에서는 `GoToNextLine()`이 **영영 호출되지 않고**, 열차가 환승역을 지나쳐 `stations` 배열 끝을 넘어가 `ArgumentOutOfRangeException`으로 터진다. 튜토리얼(Day 0)은 `MaxTransferCount = 1`이라 `0 == 0`으로 우연히 통과해 영향이 없다. 진행 판정은 `CurrentStationIdx == transferIdx`만 봐야 하고, `isFinalStation`은 종착 배경 신호 전용으로 남겨야 한다.
+- **`UI_TutorialPopup`은 꿈 진입(`TutorialSystem.EnterDreamPhase()`)과 게임 클리어(`UI_GameClearPopup`) 두 곳에서만 생성된다.** 지하철 씬 진입 시 팝업을 띄우는 코드가 없고 `SceneName.Tutorial`을 읽는 곳도 없어, **지하철 단계 튜토리얼(뺨 12 / 입석 16 / 스킵 17)이 시작되지 않는다.** `SubwayIdx`가 0에서 벗어나지 못한다. 이 때문에 `UI_SubwayScene.StandingTutorial()`과 `TutorialButtonBlocker()`도 호출부가 없다. 이번 리팩토링 이전부터의 결함이다.

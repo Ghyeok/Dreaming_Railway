@@ -19,6 +19,8 @@ public class TutorialData
     [field: SerializeField] public int GameOverIdx { get; private set; } = 0;
     [field: SerializeField] public bool StartFlowTime { get; private set; } = false;
     [field: SerializeField] public bool IsGameOverActive { get; private set; } = false;
+    // 지금은 아무도 읽지 않는다 — GameOverKind.Passed 경로가 아직 도달 불가능이라서다.
+    // 그 경로가 복구되면 분기에 쓸 자리이므로 남겨 둔다 (죽은 상태 아님).
     [field: SerializeField] public GameOverKind OverKind { get; private set; } = GameOverKind.Dark;
 
     /// <summary>
@@ -51,7 +53,7 @@ public class TutorialData
     };
 
     /// <summary>플레이어 조작을 기다리는 중인가 (팝업이 꺼져 있는 구간)</summary>
-    public bool IsAwaitingAction => _awaitingIdx >= 0;
+    private bool IsAwaitingAction => _awaitingIdx >= 0;
 
     /// <summary>단계 게이트가 읽는 Phase — 대기 중이면 얼어붙은 값</summary>
     private TutorialPhase GatePhase => IsAwaitingAction ? _awaitingPhase : Phase;
@@ -115,6 +117,8 @@ public class TutorialData
     {
         Phase = TutorialPhase.Dream;
         _consumedIdx = -1;
+        // 이전 phase에서 얼어붙은 게이트가 새 phase까지 살아남으면 안 되므로 대기 래치도 함께 푼다.
+        EndAwaitAction();
         OnStepChanged?.Invoke();
     }
 
@@ -122,6 +126,8 @@ public class TutorialData
     {
         Phase = TutorialPhase.Subway;
         _consumedIdx = -1;
+        // 이전 phase에서 얼어붙은 게이트가 새 phase까지 살아남으면 안 되므로 대기 래치도 함께 푼다.
+        EndAwaitAction();
         OnStepChanged?.Invoke();
     }
 
@@ -134,6 +140,8 @@ public class TutorialData
             ? TutorialConfigData.DARK_GAMEOVER_IDX
             : TutorialConfigData.PASS_GAMEOVER_IDX;
         _consumedIdx = -1;
+        // 이전 phase에서 얼어붙은 게이트가 새 phase까지 살아남으면 안 되므로 대기 래치도 함께 푼다.
+        EndAwaitAction();
         OnStepChanged?.Invoke();
     }
 

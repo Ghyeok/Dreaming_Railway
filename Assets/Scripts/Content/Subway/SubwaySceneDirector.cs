@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// 지하철 씬의 진행을 총괄한다.
@@ -10,6 +11,7 @@ public class SubwaySceneDirector : MonoBehaviour
 {
     [SerializeField] private TirednessSystem _tiredness;
     [SerializeField] private StationSystem _station;
+    [FormerlySerializedAs("subwayPlayerContext")]
     [SerializeField] private SubwayPlayer _subwayPlayer;
 
     private SubwayData _subwayData;
@@ -71,7 +73,7 @@ public class SubwaySceneDirector : MonoBehaviour
         _subwayPlayer.OnSkipped -= MoveToDreamScene;
 
         // 순수 C# 데이터 객체이므로 종료 중에도 null이 되지 않는다 (싱글톤 재접근 회피)
-        if (_tiredness != null)
+        if (_tirednessData != null)
             _tirednessData.OnTiredMaxed -= MoveToDreamScene;
 
         if (_subwayData != null)

@@ -14,6 +14,7 @@ public class UI_SubwayScene : UI_Scene
     [SerializeField] private SubwayPlayer subwayPlayer;
 
     private SubwayData _subway;
+    private TutorialData _tutorial;
 
     private CanvasGroup _fallAsleepCg;
     private CanvasGroup _slapCg;
@@ -61,6 +62,7 @@ public class UI_SubwayScene : UI_Scene
     {
         // 순수 C# 데이터 객체이므로 한 번만 캐싱한다 (종료 중 싱글톤 재접근 회피)
         _subway = GameDataManager.Instance.Subway;
+        _tutorial = GameDataManager.Instance.Tutorial;
     }
 
     void Start()
@@ -290,9 +292,9 @@ public class UI_SubwayScene : UI_Scene
 
     private void TutorialButtonBlocker()
     {
-        if (GameDataManager.Instance.Tutorial.IsSlapStep)
+        if (_tutorial.IsSlapStep)
             BlockAllButtonsExcept((int)Buttons.SlapButton, (int)Images.SlapFadeImage);
-        else if (GameDataManager.Instance.Tutorial.IsStandingStep || GameDataManager.Instance.Tutorial.IsSkipStep)
+        else if (_tutorial.IsStandingStep || _tutorial.IsSkipStep)
             BlockAllButtonsExcept((int)Buttons.StandingButton, (int)Images.StandingFadeImage);
         else
         {
