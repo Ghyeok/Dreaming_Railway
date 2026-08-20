@@ -30,7 +30,7 @@ All global managers inherit `SingletonManagers<T>` (`Assets/Scripts/Core/Manager
 
 Initialization order (driven by `ManagerInitializer`, at `RuntimeInitializeOnLoadMethod(BeforeSceneLoad)`):
 ```
-GameManager → GameDataManager → SceneTransitionManager → SoundManager → UIManager → DreamManager → TutorialManager
+GameManager → GameDataManager → SceneTransitionManager → SoundManager → UIManager → DreamManager → TutorialSystem
 ```
 
 Access pattern everywhere: `GameManager.Instance`, `UIManager.Instance`, etc.
@@ -63,7 +63,7 @@ The rules:
 - **Readers** (UI, background scrollers) subscribe to the data's events and read the data directly — they never go through a system.
 - Data classes must not reference `GameManager`/`UIManager`. Values that depend on them (e.g. `MaxTransferCount`) are computed by a system and passed in as a parameter.
 - `GameDataManager.Instance` may be read at initialization time, but **cache the result in a field** — do not re-read it per frame or during teardown.
-- **런 단위 리셋은 `GameDataManager.ResetForNewRun()` 하나로 수렴한다.** 각 데이터의 `Reset()`을 개별 호출하지 말 것. 호출 지점은 두 곳 — `GameManager.StartDay()`(튜토리얼+노말)와 `UI_MainScene.InfiniteModeOnClicked()`(무한 모드는 `StartDay()`를 타지 않는다). 튜토리얼 상태는 데이터가 아니라 매니저 소유라 `TutorialManager.ResetTutorial()`을 그 옆에서 나란히 부른다.
+- **런 단위 리셋은 `GameDataManager.ResetForNewRun()` 하나로 수렴한다.** 각 데이터의 `Reset()`을 개별 호출하지 말 것. 호출 지점은 두 곳 — `GameManager.StartDay()`(튜토리얼+노말)와 `UI_MainScene.InfiniteModeOnClicked()`(무한 모드는 `StartDay()`를 타지 않는다). 튜토리얼 진행 상태도 이제 `TutorialData`라 `ResetForNewRun()`이 `_tutorial.Reset()`을 다른 데이터와 나란히 부른다 — 예전처럼 매니저를 따로 거치지 않는다.
 
 Example:
 
@@ -191,7 +191,7 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 ### Dream (DreamData + DreamManager)
 
-꿈 상태는 `DreamData`(`GameDataManager.Dream`)가 소유한다 — `IsInDream`, `IsGameOverInDream`. `DreamManager`(`Assets/Scripts/Content/Dream/DreamManager.cs`)는 상태를 갖지 않고 진입만 조정한다: `SceneManager.sceneLoaded`를 구독해 꿈 씬 진입 시 `EnterDream()`을 호출하고, 튜토리얼 모드에서는 `TutorialManager`와 협조해 진행을 게이트한다.
+꿈 상태는 `DreamData`(`GameDataManager.Dream`)가 소유한다 — `IsInDream`, `IsGameOverInDream`. `DreamManager`(`Assets/Scripts/Content/Dream/DreamManager.cs`)는 상태를 갖지 않고 진입만 조정한다: `SceneManager.sceneLoaded`를 구독해 꿈 씬 진입 시 `EnterDream()`을 호출하고, 튜토리얼 모드에서는 `TutorialSystem.Instance.EnterDreamPhase()`를 불러 진행을 게이트한다.
 
 > ⚠️ **`DreamManager`는 `ManagerInitializer` 목록에 반드시 있어야 한다.** 꿈 씬이 로드되기 *전에* 생성돼 `sceneLoaded`를 구독하고 있어야 하기 때문 — 빠지면 `IsInDream`이 영영 false로 남아 일시정지/설정/노선 팝업이 조용히 오작동한다.
 
@@ -205,9 +205,11 @@ Button btn = GetButton((int)Buttons.StartButton);
 
 **ScriptManager** (`Assets/Scripts/Content/Dialogue/ScriptManager.cs`): Loads per-day story text as `DialogLine` structs (Text + Emotion fields). Shows `UI_ScriptPopup` at day start and after clearing. Emotion sprites are loaded from `Resources/`.
 
-**TutorialManager** (`Assets/Scripts/Content/Tutorial/TutorialManager.cs`): Drives multi-phase tutorial (Subway, Dream, GameOver phases). 진행 인덱스(`subwayIdx` / `dreamIdx` / `gameoverIdx`)를 들고 있고, 각 단계의 트리거 값은 `TutorialConfigData` 상수와 비교한다 (`SLAP_IDX=12`, `STANDING_IDX=16`, `ENTER_DREAM_IDX=19`, …). Controls tutorial popup visibility and overlays. Uses additive scene loading for `TutorialScene` and `ScriptScene`.
+**TutorialData** (`Content/Tutorial/Data/TutorialData.cs`, owned by `GameDataManager.Tutorial`): pure C# progress state — `Phase`(`TutorialPhase.Subway/Dream/GameOver`) + `SubwayIdx`/`DreamIdx`/`GameOverIdx`. 각 단계 트리거는 `is*Step`류 getter-only 프로퍼티(`IsSlapStep`, `IsStandingStep`, `IsSkipStep`, `IsEnterDreamStep`, `IsSubwayEndStep`, `IsGameClearStep`, `IsMoveStep`, `IsExitStep`)로 노출되며, 인덱스를 `TutorialConfigData` 상수와 비교해 매번 계산된다 (`SLAP_IDX=12`, `STANDING_IDX=16`, `ENTER_DREAM_IDX=19`, …) — 세터가 없다. `AdvanceIdx()` / `EnterDream()` / `ReturnToSubway()` / `EnterGameOver(kind)`가 상태를 바꾸고 `OnStepChanged`를 발행한다.
 
-> `TutorialManager`는 씬에 배치되지 않고 런타임 자동 생성되므로 인스펙터 오버라이드가 존재할 수 없다 — 그래서 트리거 인덱스를 `const`로 고정해도 동작이 같다. 아직 남은 진행 상태(`is*Tutorial` 플래그, `dialogState`, 세 인덱스)는 `TutorialData`로 분리할 자리다.
+**TutorialSystem** (`Content/Tutorial/System/TutorialSystem.cs`)은 `DontDestroyOnLoad` 싱글톤으로 `ManagerInitializer` 목록에 있다 — `Player`(꿈 씬)의 static 이벤트 `OnNearExit` / `OnDreamExit`를 구독해야 해서 꿈 씬 로드 **전에** 존재해야 하기 때문 (`DreamManager`와 같은 이유). 상태는 갖지 않고 `Init()`에서 `TutorialData`를 캐싱만 한다. `EnterDreamPhase()` / `EnterGameOverPhase(kind)`가 진입을 조정하며, `UI_TutorialPopup` 참조(`TutorialPopup` 프로퍼티)도 여기 둔다 — 뷰 참조는 데이터가 아니므로 `TutorialData`에 두지 않는다.
+
+> **대기 래치(await-action latch).** 예전 `TutorialManager`에서는 `SetTutorialTrigger()`의 유일한 호출부가 `UI_TutorialPopup.Update()`였고, 팝업이 플레이어 조작을 기다리며 스스로 비활성화되면 그 프레임에서 계산된 값이 그대로 얼어붙었다 — `HandleNearExit()`은 그 얼어붙은 값에 의존했다. `TutorialData`는 이를 명시적으로 재현한다: 팝업이 꺼질 때 `BeginAwaitAction()`이 게이트 인덱스를 그 순간 값으로 고정하고, 팝업의 `OnEnable()`에서 부르는 `EndAwaitAction()`이 풀어준다. 8개 단계 프로퍼티는 이 고정된 게이트(`GateIdx`/`GatePhase`)를 읽는다. 힌트 2개(`IsTirednessHintStep`, `IsTransferHintStep`)는 원본과 동일하게 예외다 — **라이브** `Phase`/`SubwayIdx`를 그대로 읽으며 래치를 거치지 않는다.
 
 ### SoundManager
 
@@ -227,7 +229,8 @@ Thin wrapper around Unity `PlayerPrefs`. PlayerPrefs keys: `MaxClearStage`, `BGM
 | `StationData` | `Content/Subway/Data/StationData.cs` | `stationType` (Normal/Transfer/Destination), `travelTime`, `stopTime` |
 | `TirednessData` | `Content/Tiredness/Data/TirednessData.cs` | Owned by `GameDataManager.Tiredness`. `CurrentTiredness` / `MaxTiredness` / `IsPaused` |
 | `TirednessConfigData` | `Content/Tiredness/Data/TirednessConfigData.cs` | 피로도 상수 (초기/최대값, 꿈 회복 기준, `STANDING_TIREDNESS`) |
-| `TutorialConfigData` | `Content/Tutorial/Data/TutorialConfigData.cs` | 튜토리얼 트리거 인덱스 상수 (`SLAP_IDX`, `EXIT_IDX`, `DARK_GAMEOVER_IDX` 등) |
+| `TutorialData` | `Content/Tutorial/Data/TutorialData.cs` | Owned by `GameDataManager.Tutorial`. `Phase` / `SubwayIdx`/`DreamIdx`/`GameOverIdx` + 파생 `is*Step` 프로퍼티 |
+| `TutorialConfigData` | `Content/Tutorial/Data/TutorialConfigData.cs` | 튜토리얼 트리거 인덱스 상수 (`SLAP_IDX`, `EXIT_IDX`, `DARK_GAMEOVER_IDX`, `TIREDNESS_HINT_IDX`, `TRANSFER_HINT_IDX` 등) |
 | `TimerData` | `Content/Timer/Data/TimerData.cs` | Owned by `GameDataManager.Timer`. `PlayTime` / `IsPaused` (전역 일시정지) |
 | `DreamData` | `Content/Dream/Data/DreamData.cs` | Owned by `GameDataManager.Dream`. `IsInDream` / `IsGameOverInDream` |
 | `GameData` | `Content/GameData.cs` | Owned by `GameDataManager.Game`. `GameMode` / `CurrentDay` / `MaxClearDay` |
@@ -275,8 +278,8 @@ Assets/Scripts/
 │   │   └── Popup/                 # UI_Popup + all popup implementations
 │   ├── Dialogue/                  # ScriptManager (per-day story text)
 │   └── Tutorial/
-│       ├── Data/                  # TutorialConfigData (트리거 인덱스 상수)
-│       └── (TutorialManager — multi-phase tutorial)
+│       ├── Data/                  # TutorialData (진행 상태), TutorialConfigData (트리거 인덱스 상수)
+│       └── System/                # TutorialSystem(DontDestroyOnLoad)
 └── Utils/                         # ManagerInitializer, Util, Define, SceneName
 ```
 
@@ -288,4 +291,3 @@ Assets/Scripts/
 - **`TirednessSystem.SetTirednessOnDreamEnter()`의 도메인 결합** — 피로도 시스템이 `GameDataManager.Instance.Subway.CurrentLineTime`을 직접 읽는다. `TirednessData.ApplyDreamEnterRecovery(awakeTime)`는 파라미터로 받도록 잘 설계돼 있으므로, 호출부가 값을 넘기는 형태가 맞다.
 - **`UI_SubwayScene.HideTirednessUI()`** — private이고 호출부가 없다.
 - **`SubwayPlayer.TryTransfer()`** — 호출부가 없다. 애니메이터에 `isTransfer` 파라미터와 `PlayerTransferStanding` 상태가 실재하므로 환승 연출을 붙일 자리는 남아 있다.
-- **`TutorialManager`의 상태가 여전히 public 필드 19개** — `is*Tutorial` 플래그들은 진행 인덱스에서 파생되는 값이면서(`SetTutorialTrigger()`) 동시에 외부에서 꺼서 소비하는 래치다(`UI_SubwayScene`, `UI_GameClearPopup`, `DreamManager`). 그대로 `TutorialData`로 옮기면 세터만 19개 생기므로, 제대로 하려면 인덱스 기반 상태기계로 재설계해야 한다 — 데이터 이관이 아니라 별도 설계 과제.
