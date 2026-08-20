@@ -1,17 +1,32 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GameDataManager : SingletonManagers<GameDataManager>
+public class GameDataManager : SingletonManagers<GameDataManager>, IManager
 {
-    public GameData Game => _game;
-    public TirednessData Tiredness => _tiredness;
-    public SubwayData Subway => _subway;
-    public TimerData Timer => _timer;
-    public DreamData Dream => _dream;
+    public void Init() { }
 
-    // 인스펙터에서 진행 상태를 보기 위해 필드로 보유 (SubwayLines는 직렬화하지 않음)
     [SerializeField] private GameData _game = new();
     [SerializeField] private TirednessData _tiredness = new();
     [SerializeField] private SubwayData _subway = new();
     [SerializeField] private TimerData _timer = new();
     [SerializeField] private DreamData _dream = new();
+    [SerializeField] private TutorialData _tutorial = new();
+
+    public GameData Game => _game;
+    public TirednessData Tiredness => _tiredness;
+    public SubwayData Subway => _subway;
+    public TimerData Timer => _timer;
+    public DreamData Dream => _dream;
+    public TutorialData Tutorial => _tutorial;
+
+    /// <summary>
+    /// 새로운 게임을 위한 인게임 데이터 전체 초기화
+    /// </summary>
+    public void ResetForNewRun()
+    {
+        _tiredness.Reset();
+        _timer.Reset();
+        _dream.Reset();
+        _subway.Reset();
+        _tutorial.Reset();
+    }
 }
