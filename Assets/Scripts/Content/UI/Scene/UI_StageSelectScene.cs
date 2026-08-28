@@ -10,6 +10,8 @@ public class UI_StageSelectScene : UI_Scene
     private SubwayMiniMove subwayMiniMove;
     private Animator _animator;
 
+    private GameData _game = GameDataManager.Instance.Game;
+
     [SerializeField] private Sprite stageLock;
     [SerializeField] private Sprite stageUnlock;
 
@@ -83,14 +85,14 @@ public class UI_StageSelectScene : UI_Scene
     {
         if (day == 0)
         {
-            GameManager.Instance.ChangeGameMode(GameMode.Tutorial);
+            _game.ChangeGameMode(GameMode.Tutorial);
         }
         else
         {
-            GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
+            _game.ChangeGameMode(GameMode.NormalMode);
             ScriptManager.Instance.isStart = true;
         }
-        GameManager.Instance.StartDay(day);
+        _game.StartDay(day);
         StartCoroutine(EnterToSubway(position));
     }
 

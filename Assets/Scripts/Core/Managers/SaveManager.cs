@@ -8,11 +8,7 @@ public class SaveManager : SingletonManagers<SaveManager>, IManager
     private const string KEY_BGM_MUTE = "BGM_MUTE";
     private const string KEY_SFX_MUTE = "SFX_MUTE";
 
-    public void Init()
-    {
-        // 필요하다면 초기화 로직 작성
-    }
-
+    public void Init() { }
     public int LoadMaxClearDay()
     {
         // 저장된 값이 없으면 기본값 -1을 반환합니다.

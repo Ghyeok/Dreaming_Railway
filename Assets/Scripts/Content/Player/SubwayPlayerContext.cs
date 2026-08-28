@@ -13,6 +13,7 @@ public class SubwayPlayerContext : MonoBehaviour
 {
     private TirednessSystem _tirednessManager;
     private TirednessData _tiredness;
+    private GameData _game;
     public SubwayData Data { get; private set; }
     public Animator Anim { get; private set; }
 
@@ -26,9 +27,10 @@ public class SubwayPlayerContext : MonoBehaviour
     {
         _tirednessManager = tirednessManager;
         _tiredness = GameDataManager.Instance.Tiredness;
+        _game  = GameDataManager.Instance.Game;
 
         Data = GameDataManager.Instance.Subway;
-        Data.ResetPlayerSession(GameManager.Instance.GameMode == GameMode.InfiniteMode);
+        Data.ResetPlayerSession(_game.GameMode == GameMode.InfiniteMode);
         Anim = GetComponent<Animator>();
 
         Data.OnLineEnded -= Data.AddStandingCount;

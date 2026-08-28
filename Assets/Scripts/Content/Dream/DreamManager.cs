@@ -8,8 +8,12 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
 
     public bool isGameOverInDream;
 
+    private GameData _game;
+
     public void Init()
     {
+        _game = GameDataManager.Instance.Game;
+
         isGameOverInDream = false;
     }
 
@@ -35,7 +39,7 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         isInDream = true;
 
 
-        if(GameManager.Instance.GameMode == GameMode.Tutorial)
+        if(_game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorial = false;
             TutorialManager.Instance.isDreamTutorial = true;

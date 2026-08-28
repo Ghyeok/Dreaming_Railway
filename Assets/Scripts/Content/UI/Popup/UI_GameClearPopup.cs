@@ -13,6 +13,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private bool isBGMOffBefore;
 
+    private GameData _game = GameDataManager.Instance.Game;
     public enum Buttons
     {
         LobbyButton,
@@ -61,7 +62,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void ShowDayText()
     {
-        GetText((int)Texts.DayText).text = "Day " + GameManager.Instance.CurrentDay;
+        GetText((int)Texts.DayText).text = "Day " + _game.CurrentDay;
     }
 
     private void ShowPlayTime()
@@ -77,7 +78,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (_game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.isSubwayTutorialEnd = false;
             UIManager.Instance.ShowPopupUI<UI_TutorialPopup>("UI_TutorialPopup");
@@ -86,16 +87,16 @@ public class UI_GameClearPopup : UI_Popup
 
     private void GameClearNormalMode()
     {
-        if (GameManager.Instance.GameMode == GameMode.NormalMode)
+        if (_game.GameMode == GameMode.NormalMode)
         {
-            if (ScriptManager.Instance.HasClearDialog(GameManager.Instance.CurrentDay))
+            if (ScriptManager.Instance.HasClearDialog(_game.CurrentDay))
             {
                 ScriptManager.Instance.isClear = true;
 
                 if (ScriptManager.Instance.scriptPopup != null)
                 {
                     ScriptManager.Instance.scriptPopup.gameObject.SetActive(true);
-                    ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
+                    ScriptManager.Instance.ShowDialog(_game.CurrentDay);
                 }
                 else
                 {

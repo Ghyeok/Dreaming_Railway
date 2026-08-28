@@ -8,6 +8,7 @@ public class UI_ScriptPopup : UI_Popup
     public Image playerEmotion;
     public TextMeshProUGUI dialog;
 
+    private GameData _game = GameDataManager.Instance.Game;
     public enum Images
     {
         Player,
@@ -33,8 +34,8 @@ public class UI_ScriptPopup : UI_Popup
 
         if (ScriptManager.Instance.isStart || ScriptManager.Instance.isClear)
         {
-            ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
-            GameManager.Instance.StopGame();
+            ScriptManager.Instance.ShowDialog(_game.CurrentDay);
+            _game.StopGame();
             this.gameObject.SetActive(true);
         }
     }
@@ -48,11 +49,11 @@ public class UI_ScriptPopup : UI_Popup
 
             if (ScriptManager.Instance.isStart || ScriptManager.Instance.isClear) // 팝업 진행
             {
-                ScriptManager.Instance.ShowDialog(GameManager.Instance.CurrentDay);
+                ScriptManager.Instance.ShowDialog(_game.CurrentDay);
             }
             else
             {
-                GameManager.Instance.ResumeGame();
+                _game.ResumeGame();
                 this.gameObject.SetActive(false);
             }
         }

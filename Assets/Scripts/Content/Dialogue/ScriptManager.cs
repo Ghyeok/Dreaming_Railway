@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class ScriptManager : SingletonManagers<ScriptManager>, IManager
 {
+    private GameData _game = GameDataManager.Instance.Game;
+
     public struct DialogLine
     {
         public string Text { get; }
@@ -135,41 +137,41 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         {
             isClear = false;
             UIManager.Instance.ClosePopupUI(scriptPopup);
-            GameManager.Instance.ResumeGame();
+            _game.ResumeGame();
         }
     }
 
     public void SetScriptTrigger()
     {
-        if(GameManager.Instance.CurrentDay == 1)
+        if(_game.CurrentDay == 1)
         {
             if(curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 2)
+        if (_game.CurrentDay == 2)
         {
             if (curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 3)
+        if (_game.CurrentDay == 3)
         {
             if (curIdx == 3)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 4)
+        if (_game.CurrentDay == 4)
         {
             if (curIdx == 2)
             {
                 isStart = false;
             }
         }
-        if (GameManager.Instance.CurrentDay == 5)
+        if (_game.CurrentDay == 5)
         {
             if (curIdx == 0)
             {

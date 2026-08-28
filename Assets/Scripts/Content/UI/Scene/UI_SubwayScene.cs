@@ -15,6 +15,7 @@ public class UI_SubwayScene : UI_Scene
     [SerializeField] private Animator anim;
 
     private SubwayData _subway;
+    private GameData _gameData;
 
     private CanvasGroup _fallAsleepCg;
     private CanvasGroup _slapCg;
@@ -196,7 +197,7 @@ public class UI_SubwayScene : UI_Scene
     private void PauseButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_PausePopup");
-        GameManager.Instance.StopGame();
+        _gameData.StopGame();
     }
 
     private void SlapButtonOnClicked(PointerEventData data)
@@ -216,7 +217,7 @@ public class UI_SubwayScene : UI_Scene
 
     IEnumerator StandingTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (_gameData.GameMode == GameMode.Tutorial)
         {
             _standingCg.blocksRaycasts = false;
 

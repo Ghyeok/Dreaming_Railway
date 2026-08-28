@@ -6,6 +6,8 @@ using static UI_TutorialPopup;
 
 public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 {
+    private GameData _game = GameDataManager.Instance.Game;
+
     public enum DialogState
     {
         Subway,
@@ -78,7 +80,7 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
     {
         if (!isMoveTutorial) return;
 
-        GameManager.Instance.StopGame();
+        _game.StopGame();
         isMoveTutorial = false;
         tutorialPopup.gameObject.SetActive(true);
         tutorialPopup.AdvanceDialog();
@@ -86,7 +88,7 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
 
     private void HandleDreamExit()
     {
-        if (GameManager.Instance.GameMode != GameMode.Tutorial) return;
+        if (_game.GameMode != GameMode.Tutorial) return;
 
         startFlowTime = true;
         startIncreaseTired = true;

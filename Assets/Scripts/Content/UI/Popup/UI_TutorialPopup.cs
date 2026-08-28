@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class UI_TutorialPopup : UI_Popup
 {
+    private GameData _game = GameDataManager.Instance.Game;
+
     [Header("튜토리얼 스크립트")]
     private string[] subwayTutorialDialog =
     {
@@ -171,14 +173,14 @@ public class UI_TutorialPopup : UI_Popup
                 TutorialManager.Instance.isDarkGameOverTutorial ||
                 TutorialManager.Instance.isPassedGameOverTutorial)
             { 
-                GameManager.Instance.ResumeGame();
+                _game.ResumeGame();
                 this.gameObject.SetActive(false);
                 return;
             }
             else
             {
                 AdvanceDialog();
-                GameManager.Instance.StopGame();
+                _game.StopGame();
                 this.gameObject.SetActive(true);
             }
         }
@@ -221,7 +223,7 @@ public class UI_TutorialPopup : UI_Popup
 
         if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isGameoverTutorial)
         {
-            GameManager.Instance.StopGame();
+            _game.StopGame();
             AdvanceDialog();
         }
 

@@ -14,6 +14,8 @@ public class UI_GameOverPopup : UI_Popup
 
     private bool isBGMOffBefore;
 
+    private GameData _game = GameDataManager.Instance.Game;
+
     public enum Buttons
     {
         RetryButton,
@@ -108,7 +110,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void GameOverTutorial()
     {
-        if (GameManager.Instance.GameMode == GameMode.Tutorial)
+        if (_game.GameMode == GameMode.Tutorial)
         {
             TutorialManager.Instance.dialogState = TutorialManager.DialogState.Gameover;
             TutorialManager.Instance.isGameoverTutorial = true;

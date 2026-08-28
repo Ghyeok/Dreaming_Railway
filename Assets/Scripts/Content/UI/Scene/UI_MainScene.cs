@@ -21,6 +21,8 @@ public class UI_MainScene : UI_Scene
     private Button _infiniteButton;
     private CanvasGroup _infiniteButtonCG;
 
+    private GameData _game;
+
     public enum Buttons
     {
         NormalModeButton,
@@ -35,8 +37,7 @@ public class UI_MainScene : UI_Scene
         TapToStart,
         MainMenu,
     }
-
-    void Start()
+    private void Start()
     {
         Init();
     }
@@ -51,7 +52,9 @@ public class UI_MainScene : UI_Scene
     {
         base.Init();
 
-        GameManager.Instance.ChangeGameMode(GameMode.None);
+        _game = GameDataManager.Instance.Game;
+
+        _game.ChangeGameMode(GameMode.None);
         SoundManager.Instance.MainBGM();
 
         Bind<Button>(typeof(Buttons));
@@ -80,13 +83,13 @@ public class UI_MainScene : UI_Scene
 
     private void NormalModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.ChangeGameMode(GameMode.NormalMode);
+        _game.ChangeGameMode(GameMode.NormalMode);
         SceneTransitionManager.Instance.GoToStageSelect();
     }
 
     private void InfiniteModeOnClicked(PointerEventData data)
     {
-        GameManager.Instance.ChangeGameMode(GameMode.InfiniteMode);
+        _game.ChangeGameMode(GameMode.InfiniteMode);
         SceneTransitionManager.Instance.GoToSubway();
     }
 
