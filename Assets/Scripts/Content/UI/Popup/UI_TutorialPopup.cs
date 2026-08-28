@@ -173,14 +173,14 @@ public class UI_TutorialPopup : UI_Popup
                 TutorialManager.Instance.isDarkGameOverTutorial ||
                 TutorialManager.Instance.isPassedGameOverTutorial)
             { 
-                _game.ResumeGame();
+                GameManager.Instance.ResumeGame();
                 this.gameObject.SetActive(false);
                 return;
             }
             else
             {
                 AdvanceDialog();
-                _game.StopGame();
+                GameManager.Instance.StopGame();
                 this.gameObject.SetActive(true);
             }
         }
@@ -203,11 +203,11 @@ public class UI_TutorialPopup : UI_Popup
 
         if (!TutorialManager.Instance.startFlowTime)
         {
-            TimerManager.Instance.StopTimer();
+            GameDataManager.Instance.Timer.Pause();
         }
         else
         {
-            TimerManager.Instance.StartTimer();
+            GameDataManager.Instance.Timer.Resume();
         }
     }
 
@@ -223,7 +223,7 @@ public class UI_TutorialPopup : UI_Popup
 
         if (!TutorialManager.Instance.isSubwayTutorialEnd || TutorialManager.Instance.isGameoverTutorial)
         {
-            _game.StopGame();
+            GameManager.Instance.StopGame();
             AdvanceDialog();
         }
 

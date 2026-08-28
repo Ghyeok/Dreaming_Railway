@@ -66,12 +66,12 @@ public class MapXSpawn : MonoBehaviour
             int mapLength = _subway.GetDreamMapLength();
             if (mapLength == 1)
             {
-                if (spawnedCount >= 4 + DreamManager.Instance.SlapNum)
+                if (spawnedCount >= 4 + _subway.SlapNum)
                     LimitMapSpawning();
             }
             else if (mapLength >= 2)
             {
-                if (spawnedCount >= 6 + DreamManager.Instance.SlapNum)
+                if (spawnedCount >= 6 + _subway.SlapNum)
                     LimitMapSpawning();
             }
         }

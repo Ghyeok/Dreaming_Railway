@@ -6,9 +6,15 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
 {
     private GameData _game = GameDataManager.Instance.Game;
 
-    public struct DialogLine
+    public readonly struct DialogLine
     {
+        /// <summary>
+        /// 출력되는 대사
+        /// </summary>
         public string Text { get; }
+        /// <summary>
+        /// 대사에 맞는 감정 표정
+        /// </summary>
         public string Emotion { get; }
 
         public DialogLine(string text, string emotion)
@@ -18,7 +24,7 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         }
     }
 
-    private readonly DialogLine[] day1Dialog =
+    private DialogLine[] day1Dialog =
     {
         new DialogLine("으에… 무슨 일이 있어도 일찍 자려고 했는데…", "confusion"),
         new DialogLine("어제가 숙제 제일 많이 해야 되는 날인 걸 까먹고 있었네… 흑…", "sigh"),
@@ -28,14 +34,14 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         new DialogLine("꿈 속에서 하도 뛰어다녀서 그렇게 느껴지는 건가…?", "thinking"),
     };
 
-    private readonly DialogLine[] day2Dialog =
+    private DialogLine[] day2Dialog =
     {
         new DialogLine("오늘은… 후문 근처에서 수업이 있으니까 다른 노선으로 가야 하는데…", "thinking"),
         new DialogLine("어째서 요즘따라 지하철에 사람이 없는 것 같지…?", "anger"),
         new DialogLine("원래도 사람이 많이 없긴 했지만… 이렇게 없었던가…", "close"),
     };
 
-    private readonly DialogLine[] day3Dialog =
+    private DialogLine[] day3Dialog =
     {
         new DialogLine("오늘은 예전에 예약해뒀던 테마 카페 가는 날…♪", "smile"),
         new DialogLine("공강이기도 하고… 예약 시간대도 점심 시간대라 푹 잤으니 오늘은 안 졸아도 되겠지…", "thinking"),
@@ -45,7 +51,7 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         new DialogLine("지하철 안에서 자는 게 그새 습관이 돼 버렸나…", "sigh"),
     };
 
-    private readonly DialogLine[] day4Dialog =
+    private DialogLine[] day4Dialog =
     {
         new DialogLine("과제도 일찍 끝냈고… 잠도 일찍 잤고…", "anger"),
         new DialogLine("오늘이야말로 안 자고 풀컨디션으로 학교까지 갈 수 있겠지…?", "smile"),
@@ -54,7 +60,7 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         new DialogLine("그나저나… 요 며칠 간 왜 잘 때마다 항상 똑같은 꿈을 꾼 것 같지…? 기분 탓이려나…", "anger"),
     };
 
-    private readonly DialogLine[] day5Dialog =
+    private DialogLine[] day5Dialog =
     {
         new DialogLine("흐아암…", "sigh"),
         new DialogLine("내일은 드디어 주말이니… 집 가자마자 자야겠어…", "down"),
@@ -64,18 +70,9 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         new DialogLine("…", "close"),
     };
 
-    public enum DialogState
-    {
-        Day1,
-        Day2,
-        Day3, 
-        Day4, 
-        Day5,
-    }
-
     public UI_ScriptPopup scriptPopup;
-    public int curIdx;
 
+    public int curIdx;
     public bool isStart;
     public bool isClear;
 
@@ -137,7 +134,7 @@ public class ScriptManager : SingletonManagers<ScriptManager>, IManager
         {
             isClear = false;
             UIManager.Instance.ClosePopupUI(scriptPopup);
-            _game.ResumeGame();
+            GameManager.Instance.ResumeGame();
         }
     }
 

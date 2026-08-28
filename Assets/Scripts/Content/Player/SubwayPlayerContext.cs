@@ -14,7 +14,8 @@ public class SubwayPlayerContext : MonoBehaviour
     private TirednessSystem _tirednessManager;
     private TirednessData _tiredness;
     private GameData _game;
-    public SubwayData Data { get; private set; }
+    private SubwayData _subway;
+    private TimerData _timer;
     public Animator Anim { get; private set; }
 
     public event Action<PlayerState> OnStateChanged;
@@ -28,13 +29,14 @@ public class SubwayPlayerContext : MonoBehaviour
         _tirednessManager = tirednessManager;
         _tiredness = GameDataManager.Instance.Tiredness;
         _game  = GameDataManager.Instance.Game;
+        _timer = GameDataManager.Instance.Timer;
 
-        Data = GameDataManager.Instance.Subway;
-        Data.ResetPlayerSession(_game.GameMode == GameMode.InfiniteMode);
+        _subway = GameDataManager.Instance.Subway;
+        _subway.ResetPlayerSession(_game.GameMode == GameMode.InfiniteMode);
         Anim = GetComponent<Animator>();
 
-        Data.OnLineEnded -= Data.AddStandingCount;
-        Data.OnLineEnded += Data.AddStandingCount;
+        _subway.OnLineEnded -= _subway.AddStandingCount;
+        _subway.OnLineEnded += _subway.AddStandingCount;
 
         ChangeState(PlayerState.SLEEP);
         _tiredness.OnTiredChange += HandleTiredChange;
@@ -42,9 +44,9 @@ public class SubwayPlayerContext : MonoBehaviour
 
     private void Update()
     {
-        if (TimerManager.Instance == null || TimerManager.Instance.IsPaused) return;
+        if (_timer == null || _timer.IsPaused) return;
 
-        Data.TickSlapCooldown(Time.deltaTime);
+        _subway.TickSlapCooldown(Time.deltaTime);
     }
 
     public void ForceMaxTiredness() => _tirednessManager.SetTirednessForced(99.9f);
@@ -76,25 +78,25 @@ public class SubwayPlayerContext : MonoBehaviour
 
     public void TrySlap()
     {
-        if (CurrentState == PlayerState.NONE || Data.IsSlapCoolTime) return;
+        if (CurrentState == PlayerState.NONE || _subway.IsSlapCoolTime) return;
 
-        Data.StartSlapCooldown();
+        _subway.StartSlapCooldown();
         SoundManager.Instance.SlapSFX();
         Anim.SetTrigger("isSlap");
-        _tirednessManager.DecreaseTiredness(Data.TiredDecreaseBySlap);
+        _tirednessManager.DecreaseTiredness(_subway.TiredDecreaseBySlap);
         OnSlapSuccessed?.Invoke();
     }
 
     public void TryStand()
     {
-        if (Data.IsStandingCoolDown) return;
+        if (_subway.IsStandingCoolDown) return;
         ChangeState(PlayerState.STANDING);
     }
 
     public void TrySkip()
     {
-        Data.StartStandingCooldown();
-        Data.ForceTransferByStanding();
+        _subway.StartStandingCooldown();
+        _subway.ForceTransferByStanding();
         OnSkipped?.Invoke();
     }
 
@@ -106,8 +108,8 @@ public class SubwayPlayerContext : MonoBehaviour
     private void OnDestroy()
     {
         // 순수 C# 데이터 객체이므로 종료 중에도 null이 되지 않는다 (싱글톤 재접근 회피)
-        if (Data != null)
-            Data.OnLineEnded -= Data.AddStandingCount;
+        if (_subway != null)
+            _subway.OnLineEnded -= _subway.AddStandingCount;
 
         if (_tiredness != null)
             _tiredness.OnTiredChange -= HandleTiredChange;

@@ -80,7 +80,8 @@ public class TutorialManager : SingletonManagers<TutorialManager>, IManager
     {
         if (!isMoveTutorial) return;
 
-        _game.StopGame();
+        GameManager.Instance.StopGame();
+
         isMoveTutorial = false;
         tutorialPopup.gameObject.SetActive(true);
         tutorialPopup.AdvanceDialog();

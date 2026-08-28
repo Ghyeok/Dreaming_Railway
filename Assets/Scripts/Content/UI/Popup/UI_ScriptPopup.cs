@@ -35,7 +35,7 @@ public class UI_ScriptPopup : UI_Popup
         if (ScriptManager.Instance.isStart || ScriptManager.Instance.isClear)
         {
             ScriptManager.Instance.ShowDialog(_game.CurrentDay);
-            _game.StopGame();
+            GameManager.Instance.StopGame();
             this.gameObject.SetActive(true);
         }
     }
@@ -53,7 +53,7 @@ public class UI_ScriptPopup : UI_Popup
             }
             else
             {
-                _game.ResumeGame();
+                GameManager.Instance.ResumeGame();
                 this.gameObject.SetActive(false);
             }
         }

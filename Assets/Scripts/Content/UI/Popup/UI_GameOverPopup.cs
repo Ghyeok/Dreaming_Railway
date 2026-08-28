@@ -74,7 +74,7 @@ public class UI_GameOverPopup : UI_Popup
 
         ShowPlayTime();
         GameOverTutorial();
-        TimerManager.Instance.StopTimer();
+        GameDataManager.Instance.Timer.Pause();
     }
 
     private void RetryButtonOnClicked(PointerEventData data)
@@ -99,7 +99,7 @@ public class UI_GameOverPopup : UI_Popup
 
     private void ShowPlayTime()
     {
-        float playTime = TimerManager.Instance.playTime;
+        float playTime = GameDataManager.Instance.Timer.PlayTime;
 
         int min = Mathf.FloorToInt(playTime / 60);
         int sec = Mathf.FloorToInt(playTime % 60);

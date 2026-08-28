@@ -93,6 +93,7 @@ public class UI_StageSelectScene : UI_Scene
             ScriptManager.Instance.isStart = true;
         }
         _game.StartDay(day);
+        GameDataManager.Instance.ResetForNewRun();
         StartCoroutine(EnterToSubway(position));
     }
 
@@ -140,17 +141,18 @@ public class UI_StageSelectScene : UI_Scene
 
     private void LoadStageLock()
     {
-        int m = SaveManager.Instance.LoadMaxClearDay();
+        int m = _game.MaxClearDay;
 
         for (int i = 0; i <= 5; i++)
             SetStageButtonState(i, i <= m + 1);
 
-        for (int i = 0; i <= 4; i++)
+        for (int i = 1; i <= 4; i++)
             GetImage((int)Images.UnderBar + i).color = i <= m ? Color.white : new Color(0.65f, 0.65f, 0.65f);
     }
 
     private void SetStageButtonState(int stageIndex, bool unlocked)
     {
+        // Stage0은 튜토리얼(Day 0) 버튼이므로 Stage{N}이 곧 Day N이다
         var btn = GetButton((int)Buttons.Stage0 + stageIndex);
         var img = btn.GetComponent<Image>();
         var cg = Util.GetOrAddComponent<CanvasGroup>(btn.gameObject);

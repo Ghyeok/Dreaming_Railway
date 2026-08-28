@@ -47,7 +47,7 @@ public class UI_GameClearPopup : UI_Popup
         AddUIEvent(lobby, LobbyButtonOnClicked);
 
         SoundManager.Instance.GameClearSFX();
-        TimerManager.Instance.StopTimer();
+        GameDataManager.Instance.Timer.Pause();
 
         ShowPlayTime();
         ShowDayText();
@@ -67,7 +67,7 @@ public class UI_GameClearPopup : UI_Popup
 
     private void ShowPlayTime()
     {
-        float playTime = TimerManager.Instance.playTime;
+        float playTime = GameDataManager.Instance.Timer.PlayTime;
 
         int min = Mathf.FloorToInt(playTime / 60);
         int sec = Mathf.FloorToInt(playTime % 60);

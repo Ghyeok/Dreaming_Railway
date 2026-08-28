@@ -3,20 +3,20 @@ using UnityEngine;
 public class TirednessSystem : MonoBehaviour
 {
     private TirednessData _data; // 실제 데이터
+    private TimerData _timer;
     private bool _isPaused = false; // 피로도 증가를 멈출 것인지?
-
-    public TirednessData Data => _data;
 
     public void Init()
     {
         _data = GameDataManager.Instance.Tiredness;
+        _timer = GameDataManager.Instance.Timer;
         _isPaused = false;
     }
 
     private void Update()
     {
         if (_data == null || _isPaused) return;
-        if (TimerManager.Instance == null || TimerManager.Instance.IsPaused) return;
+        if (_timer == null || _timer.IsPaused) return;
 
         _data.Tick(Time.deltaTime);
     }

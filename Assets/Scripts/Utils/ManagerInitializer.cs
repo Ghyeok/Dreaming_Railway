@@ -9,10 +9,12 @@ public static class ManagerInitializer
         // 싱글톤 매니저들의 생성 순서를 정할 수 있음
         IManager[] managersInOrder = new IManager[]
         {
-            SceneTransitionManager.Instance,
+            GameDataManager.Instance,
+            GameManager.Instance,
             SoundManager.Instance,
             UIManager.Instance,
-            TimerManager.Instance,
+            SceneTransitionManager.Instance,
+            TimerSystem.Instance,
             SubwayFlowSystem.Instance
         };
 

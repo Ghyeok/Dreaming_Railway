@@ -5,7 +5,6 @@ using UnityEngine;
 public class GameData
 {
     public GameMode GameMode { get; private set; } = GameMode.None;
-    public bool IsGameStopped {  get; private set; }
     public int CurrentDay { get; private set; } = 1;
     public int MaxClearDay { get; private set; } = 0;
 
@@ -23,8 +22,13 @@ public class GameData
     /// </summary>
     public void UpdateMaxClearDay()
     {
-        if(CurrentDay < MaxClearDay) {  MaxClearDay = CurrentDay; }
+        if (CurrentDay > MaxClearDay) {  MaxClearDay = CurrentDay; }
     }
+
+    /// <summary>
+    /// MaxClearDay를 게임 시작과 동시에 초기화 시켜줘야 한다.
+    /// </summary>
+    public void InitMaxClearDay(int max) { MaxClearDay = max; }
 
     /// <summary>
     /// 게임 모드를 변경하는 함수. 게임 모드를 선택하면 모드에 맞는 OnGameModeChanged 콜백이 실행된다.
@@ -36,22 +40,6 @@ public class GameData
 
         GameMode = newMode;
         OnGameModeChanged?.Invoke(newMode);
-    }
-
-    /// <summary>
-    /// 게임 전체를 멈춘다. timeScale을 0으로
-    /// </summary>
-    public void StopGame()
-    {
-        IsGameStopped = true;
-        Time.timeScale = 0f;
-    }
-
-    /// 게임을 재개한다. timeScale을 1로
-    public void ResumeGame()
-    {
-        IsGameStopped = false;
-        Time.timeScale = 1f;
     }
 }
 

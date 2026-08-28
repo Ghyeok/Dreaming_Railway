@@ -90,6 +90,7 @@ public class UI_MainScene : UI_Scene
     private void InfiniteModeOnClicked(PointerEventData data)
     {
         _game.ChangeGameMode(GameMode.InfiniteMode);
+        GameDataManager.Instance.ResetForNewRun(); // 무한 모드는 StartDay()를 타지 않는다
         SceneTransitionManager.Instance.GoToSubway();
     }
 
@@ -133,8 +134,7 @@ public class UI_MainScene : UI_Scene
 
     private void LoadInfiniteModeLock()
     {
-        int maxClearDay = SaveManager.Instance.LoadMaxClearDay();
-        SetInfiniteButtonState(maxClearDay >= 5);
+        SetInfiniteButtonState(_game.MaxClearDay >= 5);
     }
 
     private void SetInfiniteButtonState(bool unlocked)

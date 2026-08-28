@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class DreamManager : SingletonManagers<DreamManager>, IManager
 {
     public bool isInDream;
-    public int SlapNum { get; private set; }
 
     public bool isGameOverInDream;
 
@@ -17,15 +16,9 @@ public class DreamManager : SingletonManagers<DreamManager>, IManager
         isGameOverInDream = false;
     }
 
-    public void SetDreamData(int slapNum)
-    {
-        SlapNum = slapNum;
-    }
-
     public void ResetDreamManager()
     {
         isInDream = false;
-        SlapNum = 0;
     }
 
     public void GameOverInDream()

@@ -9,6 +9,7 @@ public class SubwaySceneInitializer : MonoBehaviour
 
     private SubwayData _subwayData;
     private TirednessData _tirednessData;
+    private TimerData _timerData;
 
     private bool _isEnteringDream = false;
 
@@ -17,6 +18,7 @@ public class SubwaySceneInitializer : MonoBehaviour
         // ㅡㅡㅡㅡ 게임 데이터 참조 캐싱 ㅡㅡㅡㅡ
         _subwayData = GameDataManager.Instance.Subway;
         _tirednessData = GameDataManager.Instance.Tiredness;
+        _timerData = GameDataManager.Instance.Timer;
 
         // ㅡㅡㅡㅡ 초기화 순서 제어 및 의존성 주입 ㅡㅡㅡㅡ
         _station.Init();
@@ -27,6 +29,9 @@ public class SubwaySceneInitializer : MonoBehaviour
         // 지하철 Scene이 로드되고 한번 실행되야 하는 메서드들
         SoundManager.Instance.SubwayBGM();
         _subwayData.SetFlowSpeed(false);
+
+        // 게임오버 팝업이 멈춰둔 흐름을 재개한다. Retry는 런을 이어서 진행하므로 PlayTime은 유지한다.
+        _timerData.Resume();
 
         // ㅡㅡㅡㅡ 씬 전환 이벤트 구독 ㅡㅡㅡㅡ
         _tirednessData.OnTiredMaxed += MoveToDreamScene; // 피로도 100
@@ -42,7 +47,6 @@ public class SubwaySceneInitializer : MonoBehaviour
         if (_isEnteringDream) return;
         _isEnteringDream = true;
 
-        DreamManager.Instance.SetDreamData(subwayPlayerContext.Data.SlapNum);
         _tiredness.SetTirednessOnDreamEnter();
         SceneTransitionManager.Instance.GoToDream();
     }

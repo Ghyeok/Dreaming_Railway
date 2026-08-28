@@ -14,8 +14,8 @@ public class UI_SubwayScene : UI_Scene
     [SerializeField] private SubwayPlayerContext subwayPlayer;
     [SerializeField] private Animator anim;
 
+    private GameData _game;
     private SubwayData _subway;
-    private GameData _gameData;
 
     private CanvasGroup _fallAsleepCg;
     private CanvasGroup _slapCg;
@@ -69,6 +69,9 @@ public class UI_SubwayScene : UI_Scene
     public override void Init()
     {
         base.Init();
+
+        _game = GameDataManager.Instance.Game;
+        _subway = GameDataManager.Instance.Subway;
 
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
@@ -153,7 +156,7 @@ public class UI_SubwayScene : UI_Scene
     private void UpdateSlapUI()
     {
         if (_slapText != null)
-            _slapText.text = $"{subwayPlayer.Data.SlapNum}";
+            _slapText.text = $"{_subway.SlapNum}";
     }
 
     private void UpdateTimerUI(float currentTime)
@@ -197,7 +200,7 @@ public class UI_SubwayScene : UI_Scene
     private void PauseButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ShowPopupUI<UI_Popup>("UI_PausePopup");
-        _gameData.StopGame();
+        GameManager.Instance.StopGame();
     }
 
     private void SlapButtonOnClicked(PointerEventData data)
@@ -217,7 +220,7 @@ public class UI_SubwayScene : UI_Scene
 
     IEnumerator StandingTutorial()
     {
-        if (_gameData.GameMode == GameMode.Tutorial)
+        if (_game.GameMode == GameMode.Tutorial)
         {
             _standingCg.blocksRaycasts = false;
 
@@ -234,7 +237,7 @@ public class UI_SubwayScene : UI_Scene
     private void TriggerSlapCoolTimeUI() { StartCoroutine(ShowSlapCoolTime()); }
     private IEnumerator ShowSlapCoolTime()
     {
-        float coolTime = subwayPlayer.Data.SlapCoolTime;
+        float coolTime = _subway.SlapCoolTime;
         float startTime = Time.time;
         Image slap = GetImage((int)Images.SlapFadeImage);
 
@@ -253,9 +256,9 @@ public class UI_SubwayScene : UI_Scene
     {
         Image stand = GetImage((int)Images.StandingFadeImage);
 
-        if (subwayPlayer.Data.IsStandingCoolDown)
+        if (_subway.IsStandingCoolDown)
         {
-            stand.fillAmount = 1 - subwayPlayer.Data.StandingCount * STANDING_COOLDOWN_STEP;
+            stand.fillAmount = 1 - _subway.StandingCount * STANDING_COOLDOWN_STEP;
         }
         else
         {

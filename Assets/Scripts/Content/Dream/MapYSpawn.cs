@@ -48,12 +48,12 @@ public class MapYSpawn : MonoBehaviour
             int mapLength = _subway.GetDreamMapLength();
             if (mapLength == 1)
             {
-                if (spawnedCount >= 15 + DreamManager.Instance.SlapNum)
+                if (spawnedCount >= 15 + _subway.SlapNum)
                     LimitMapSpawning();
             }
             else if (mapLength >= 2)
             {
-                if (spawnedCount >= 22 + DreamManager.Instance.SlapNum)
+                if (spawnedCount >= 22 + _subway.SlapNum)
                     LimitMapSpawning();
             }
         }
