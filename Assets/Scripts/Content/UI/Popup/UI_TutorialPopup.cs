@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UI_TutorialPopup : UI_Popup
 {
-    private GameData _game = GameDataManager.Instance.Game;
+    private GameData _game;
 
     [Header("튜토리얼 스크립트")]
     private string[] subwayTutorialDialog =
@@ -214,6 +214,8 @@ public class UI_TutorialPopup : UI_Popup
     public override void Init()
     {
         base.Init();
+
+        _game = GameDataManager.Instance.Game;
 
         Bind<Image>(typeof(Images));
         Bind<TextMeshProUGUI>(typeof(Texts));

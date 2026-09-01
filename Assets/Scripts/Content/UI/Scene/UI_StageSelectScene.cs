@@ -10,7 +10,7 @@ public class UI_StageSelectScene : UI_Scene
     private SubwayMiniMove subwayMiniMove;
     private Animator _animator;
 
-    private GameData _game = GameDataManager.Instance.Game;
+    private GameData _game;
 
     [SerializeField] private Sprite stageLock;
     [SerializeField] private Sprite stageUnlock;
@@ -44,6 +44,8 @@ public class UI_StageSelectScene : UI_Scene
     public override void Init()
     {
         base.Init();
+
+        _game = GameDataManager.Instance.Game;
 
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));

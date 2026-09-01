@@ -40,28 +40,6 @@ public class UI_SubwayLinePopup : UI_Popup
         SetLineText();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnEnable()
-    {
-        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
-        //TransferManager.OnTransferSuccess += UpdateLinePopup;
-    }
-
-    private void OnDisable()
-    {
-        //TransferManager.OnTransferSuccess -= UpdateLinePopup;
-    }
-
-    private void UpdateLinePopup()
-    {
-        SetLineText();
-    }
-
     private void SetLineText()
     {
         SubwayData subway = GameDataManager.Instance.Subway;

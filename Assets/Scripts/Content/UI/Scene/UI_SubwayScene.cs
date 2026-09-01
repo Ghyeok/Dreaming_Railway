@@ -96,8 +96,6 @@ public class UI_SubwayScene : UI_Scene
 
     private void OnEnable()
     {
-        _subway ??= GameDataManager.Instance.Subway;
-
         if (subwayPlayer != null && _subway != null)
         {
             subwayPlayer.OnStateChanged += HandlePlayerStateChanged;

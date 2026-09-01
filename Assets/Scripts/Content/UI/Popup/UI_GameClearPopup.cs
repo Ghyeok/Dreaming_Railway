@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-
 using UnityEngine.UI;
 
 public class UI_GameClearPopup : UI_Popup
@@ -12,8 +11,8 @@ public class UI_GameClearPopup : UI_Popup
     [SerializeField] private float fadeInDuration = 1f;
 
     private bool isBGMOffBefore;
+    private GameData _game;
 
-    private GameData _game = GameDataManager.Instance.Game;
     public enum Buttons
     {
         LobbyButton,
@@ -39,6 +38,8 @@ public class UI_GameClearPopup : UI_Popup
     public override void Init()
     {
         base.Init();
+
+        _game = GameDataManager.Instance.Game;
 
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
@@ -123,7 +124,7 @@ public class UI_GameClearPopup : UI_Popup
     {
         if (!isBGMOffBefore)
         {
-
+            SoundManager.Instance.SetBGMOff(false);
         }
     }
 

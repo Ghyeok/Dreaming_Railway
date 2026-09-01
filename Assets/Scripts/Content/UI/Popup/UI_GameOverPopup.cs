@@ -14,14 +14,13 @@ public class UI_GameOverPopup : UI_Popup
 
     private bool isBGMOffBefore;
 
-    private GameData _game = GameDataManager.Instance.Game;
+    private GameData _game;
 
     public enum Buttons
     {
         RetryButton,
         MainMenuButton,
         ExitButton,
-
     }
 
     public enum Texts
@@ -58,6 +57,8 @@ public class UI_GameOverPopup : UI_Popup
     {
         base.Init();
 
+        _game = GameDataManager.Instance.Game;
+
         Bind<Button>(typeof(Buttons));
         Bind<TextMeshProUGUI>(typeof(Texts));
 
@@ -80,7 +81,6 @@ public class UI_GameOverPopup : UI_Popup
     private void RetryButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
-        //SubwayRuleManager.Instance.isGameOver = false;
         ScriptManager.Instance.isStart = true;
         SceneTransitionManager.Instance.ExitFromDream();
     }
@@ -88,7 +88,6 @@ public class UI_GameOverPopup : UI_Popup
     private void MainMenuButtonOnClicked(PointerEventData data)
     {
         UIManager.Instance.ClosePopupUI(this);
-        //SubwayRuleManager.Instance.isGameOver = false;
         SceneTransitionManager.Instance.GoToMain();
     }
 
@@ -121,11 +120,6 @@ public class UI_GameOverPopup : UI_Popup
                 TutorialManager.Instance.isDarkGameOverTutorial = true;
                 TutorialManager.Instance.gameoverIdx = 0;
             }
-            //else if (SubwayRuleManager.Instance.isGameOverInSubway)
-            //{
-            //    TutorialManager.Instance.isPassedGameOverTutorial = true;
-            //    TutorialManager.Instance.gameoverIdx = 1;
-            //}
 
             if (TutorialManager.Instance.tutorialPopup != null)
             {
@@ -158,7 +152,9 @@ public class UI_GameOverPopup : UI_Popup
     private void OnDisable()
     {
         if (!isBGMOffBefore)
+        {
             SoundManager.Instance.SetBGMOff(false);
+        }
     }
 
     private IEnumerator FadeInCoroutine(float duration)
